@@ -773,3 +773,21 @@ Closed out the portfolio sub-pages work and cut the release:
   DECISIONS (AGENTS.md pivot, unified config root) and BACKLOG were already
   up to date. All suites green (8 manifest, 151 portfolio, Claude hooks,
   Antigravity hooks, config migration).
+
+## 2026-10-04 — Naming settled: BRACE
+
+- Checked the candidates' availability with a few targeted searches.
+  **Steward** is crowded (at least four Claude Code plugins, one with a
+  near-identical "durable memory" positioning). **`project-tracker`** is
+  crowded too (another Claude Code plugin with the exact same name),
+  though this repo ranks first. **BRACE** is free in the Claude Code /
+  AI-agent space.
+- Explored acronyms ending in "PT" to keep the project-tracker lineage
+  (JAPT, JADEPT, JARIPT, then non-J ones: ALEPT, ADEPT, KADEPT, MODEPT);
+  ALEPT was the best of them. The user preferred BRACE, seeing its
+  searchability weakness as something to exploit (curly-brace logo, "holds
+  things together", "support").
+- **Decided: rename to BRACE** (see `DECISIONS.md`). The DA item is
+  unblocked; a rename item was added to `BACKLOG.md` with its open
+  questions (repo name, `docs/project-tracker/` path, config dir, version
+  bump). Nothing renamed yet.

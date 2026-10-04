@@ -331,3 +331,36 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
 - **Benefits**: Both platforms share the exact same scopes, portfolio location,
   and trackignore rules transparently without needing synchronization logic
   or background reconciliation.
+
+## 2026-10-04 — The plugin is renamed BRACE (umbrella name)
+
+- **Context**: The naming question blocking the DA work since 2026-09-22:
+  the real purpose settled then ("make working with AI frictionless and
+  reliable in general") is broader than tracking, and a future
+  `project-tracker:design` skill reads oddly. The plugin now also ships on
+  Antigravity, so a rename only gets costlier with each release.
+- **Chosen**: **BRACE** — *Barely Remarkable, Admittedly Capable Engine* —
+  as an umbrella name hosting several skills (`brace:track`,
+  `brace:design`, future ones). The comma before "Admittedly" is
+  deliberate (the self-deprecating, Jarvis-style wink). Checked
+  2026-10-04: no existing Claude Code plugin or known AI-agent tool uses
+  the name (the `brace` npm/PyPI packages are unrelated).
+- **Its weakness, turned into a strength**: "brace" is a common word (the
+  curly brace) and hard to search on its own. Exploited instead: curly
+  braces `{ }` as a minimal logo motif fitting the "reduce" visual pole;
+  braces hold a block together, as the plugin holds a project's context;
+  "brace" also means support/reinforcement. Mitigated by always presenting
+  it with context ("BRACE for Claude Code & Antigravity") and a
+  distinctive repo name.
+- **Rejected**: **Steward** — already used by at least four Claude Code
+  plugins, one with a near-identical positioning (durable memory for
+  coding agents), plus several AI-agent tools; it would be
+  indistinguishable. **Keeping `project-tracker`** — descriptive, so
+  crowded by design (another Claude Code plugin has the exact same name,
+  others are close), and it does not cover non-tracking skills.
+  **Acronyms ending in "PT"** to keep the project-tracker lineage (e.g.
+  ALEPT, *Arguably the Least Embarrassing Project Tracker*; JARIPT;
+  JADEPT) — explored; ALEPT was the strongest, but BRACE carried the
+  better story and the user preferred it.
+- **Supersedes**: the 2026-09-03 "keep `project-tracker`" name decision
+  (recorded in `BACKLOG.md`, DA item).

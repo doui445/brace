@@ -174,6 +174,12 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   naming exercise, alongside "Steward" above. Nothing decided — both names
   are on the table for the same fresh-session naming decision.
 
+  **Resolved 2026-10-04 — UNBLOCKED:** the plugin is renamed **BRACE**
+  (see `DECISIONS.md`, 2026-10-04). The DA work can resume; the BRACE name
+  feeds it directly (curly braces `{ }` as a candidate logo motif,
+  coherent with the "reduce" pole). The 2026-09-03 "keep `project-tracker`"
+  name decision above is superseded.
+
 - [ ] **Public website** (L, ⭐⭐) — surfaced 2026-09-02, **depends on the
   brand / visual identity item above.** A marketing + docs site for the
   plugin. Firm constraints from the user: visually striking, at least as
@@ -240,6 +246,19 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   permanent suite, nothing in CI**; scenarios kept in the gitignored
   `docs/superpowers/`, not shipped. No date — take it up when a break from
   design work is wanted; no dependency on the DA.
+
+- [ ] **Rename the plugin `project-tracker` → BRACE** (M, ⭐⭐) — decided
+  2026-10-04 (see `DECISIONS.md`). Touches: both `.claude-plugin/`
+  manifests, `platforms/antigravity/plugin.json`, the marketplace listing,
+  the generated installers, the `/project-tracker:*` commands (→
+  `/brace:*`, e.g. `brace:track`, `brace:design`), the GitHub repo
+  (GitHub redirects the old URL), `README.md`, `AGENTS.md`. Still to
+  decide, not assumed: the GitHub repo name (a distinctive one, given
+  "brace" alone is hard to search); whether tracked projects' files stay
+  under `docs/project-tracker/` or move (and the migration path for
+  existing users); whether `~/.project-tracker/` config moves too; the
+  version bump this warrants (a renamed plugin = behaviour change → minor
+  at least). Needs its own spec → plan cycle.
 
 ## Completed
 

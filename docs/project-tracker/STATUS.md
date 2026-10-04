@@ -5,7 +5,7 @@ uses_git: true
 repo: https://github.com/doui445/project-tracker
 stack: [Bash, Python, Markdown]
 last_updated: 2026-10-04
-next_milestone: "Plugin naming decision (stay project-tracker vs. umbrella name), then resume the design skill"
+next_milestone: "Rename the plugin to BRACE (spec → plan), then resume the design skill"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -48,13 +48,13 @@ running natively on both Claude Code and Antigravity (AGY):
 ## Next 3 actions
 
 **v0.13.0 released** — dual-platform Antigravity support, validated in live
-Antigravity sessions; all three manifests at `0.13.0`, all test suites green.
+Antigravity sessions. **Naming settled (2026-10-04): the plugin becomes
+BRACE** — *Barely Remarkable, Admittedly Capable Engine* — see `DECISIONS.md`.
 
-1. **Resolve the plugin naming question** (paused since 2026-09-22): should the
-   plugin stay `project-tracker` or become an umbrella name (candidates:
-   **"Steward"** or **"BRACE"**)? More pressing now that the same name ships on
-   two platforms.
-2. **Resume the design-skill (DA) brainstorm** once the naming is settled —
-   it is blocked on that decision (see `BACKLOG.md`).
+1. **Spec the rename to BRACE**: settle the open questions listed in
+   `BACKLOG.md` (GitHub repo name, `docs/project-tracker/` path and
+   migration for existing users, config dir, version bump), then plan it.
+2. **Resume the design-skill (DA) brainstorm** — now unblocked; the BRACE
+   name and the `{ }` motif feed it.
 3. **Watch the first real Antigravity sessions** on other tracked projects for
    anything the local validation missed.
