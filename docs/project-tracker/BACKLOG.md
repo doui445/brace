@@ -169,6 +169,11 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   resuming DESIGN.md and before v0.13.0 ships the design skill under
   whatever name is settled on.
 
+  **Added 2026-10-03 — second candidate:** **"BRACE"** (*Barely
+  Remarkable, Admittedly Capable Engine*), surfaced from a Jarvis-flavoured
+  naming exercise, alongside "Steward" above. Nothing decided — both names
+  are on the table for the same fresh-session naming decision.
+
 - [ ] **Public website** (L, ⭐⭐) — surfaced 2026-09-02, **depends on the
   brand / visual identity item above.** A marketing + docs site for the
   plugin. Firm constraints from the user: visually striking, at least as
@@ -237,6 +242,14 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   design work is wanted; no dependency on the DA.
 
 ## Completed
+
+- [x] **Dual-platform support: Google Antigravity (AGY)** (2026-10-04) — native
+  Antigravity plugin support matching Claude Code. Symmetric architecture:
+  `platforms/antigravity/` hooks (`session_start.sh`, `portfolio_regen.sh`,
+  `reminders_sync_trigger.sh`), `install-antigravity.sh` installer,
+  `~/.project-tracker/` unified configuration directory with bidirectional symlinks,
+  `AGENTS.md` open-standard instructions pivot (`CLAUDE.md -> AGENTS.md`),
+  platform-specific reference files, and test coverage across both platforms.
 
 - [-] **Obsidian integration (optional)** (2026-09-19) — abandoned
   entirely, not even a README line. The user has never used Obsidian; the

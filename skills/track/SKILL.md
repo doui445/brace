@@ -1,6 +1,6 @@
 ---
 name: track
-description: Use at the start of a session in a project under the scopes listed in ~/.claude/project-tracker/scopes.txt, after a significant change to such a project, or when the user explicitly asks to track a project, update its tracking files, or manage its GitHub repo or portfolio.
+description: Use at the start of a session in a project under the scopes listed in ~/.project-tracker/scopes.txt (or ~/.claude/project-tracker/scopes.txt), after a significant change to such a project, or when the user explicitly asks to track a project, update its tracking files, or manage its GitHub repo or portfolio.
 ---
 
 # project-tracker
@@ -11,7 +11,7 @@ Whenever a needed piece of information (the project's goal, its stack, the ratio
 
 ## Asking questions
 
-Assume the person answering is not a Claude Code power user. Every question you put to them (this section's phrasings are the intent, not a script — adapt to the conversation and its language):
+Assume the person answering is not a power user. Every question you put to them (adapt to the conversation, its language, and the host platform — see `references/platform-claude.md` for Claude Code and `references/platform-antigravity.md` for Antigravity):
 
 - **Plain language.** No unexplained jargon. If a term is unavoidable (`frontmatter`, `remote`, `scope`), gloss it in the same sentence.
 - **Say what each choice changes.** When the options have real consequences, give one short clause per option describing the effect — not just the label. The person should be able to choose without knowing the tool.
@@ -52,10 +52,10 @@ Any future retroactive key — including ones a skill built on `track` adds late
 
 ## Scope
 
-The file `~/.claude/project-tracker/scopes.txt` lists the covered roots. The `SessionStart` hook already only fires within that scope — but if the user invokes you explicitly in a folder outside any scope:
+The file `~/.project-tracker/scopes.txt` (mirrored at `~/.claude/project-tracker/scopes.txt` and `~/.gemini/project-tracker/scopes.txt`) lists the covered roots. The startup hook already only fires within that scope — but if the user invokes you explicitly in a folder outside any scope:
 1. Warn them: "this folder is not in your automatic tracking scopes (`<list of scopes.txt entries>`)".
 2. Carry on normally anyway — never act by refusing.
-3. Offer to add a path to `scopes.txt` for the future: *"I'll add it to your scopes — this exact folder, or a parent path you'd rather specify?"*. If accepted, add the exact requested line to `~/.claude/project-tracker/scopes.txt`. If declined, add nothing and carry on.
+3. Offer to add a path to `scopes.txt` for the future: *"I'll add it to your scopes — this exact folder, or a parent path you'd rather specify?"*. If accepted, add the exact requested line to `~/.project-tracker/scopes.txt`. If declined, add nothing and carry on.
 
 ## Detecting a project's root
 
@@ -119,7 +119,7 @@ A sequence of questions, one at a time (see `## Asking questions`), never an ass
      gh repo create <name> --private --source=. --remote=origin
      ```
      After the standard files are created, ask *"Push this first commit to GitHub now?"* *(recommended: yes)* before any `git push`.
-   - **No version control** *(recommended if there's no `.git` and you don't want one)* → skip the whole GitHub part; record `uses_git: false` in `CLAUDE.md` so it's never asked again; staleness is then judged from file dates instead of `git log`.
+   - **No version control** *(recommended if there's no `.git` and you don't want one)* → skip the whole GitHub part; record `uses_git: false` in `AGENTS.md` so it's never asked again; staleness is then judged from file dates instead of `git log`.
 5. *"Do you want your next actions to also show up in the macOS Reminders app, so you see them outside your editor?"* — optional.
    - **Yes** *(recommended only if this machine already has the Reminders integration and your other tracked projects use it)* → a Reminders list is created or linked, and its tasks stay in sync with the "next actions" here.
    - **No** *(the low-friction default)* → the next actions live in the tracking files only.
@@ -128,24 +128,24 @@ A sequence of questions, one at a time (see `## Asking questions`), never an ass
    - Yes + no list fits → ask *"Name for the Reminders list? (default: the project's name)"*, then create it flat (`reminders_lists` action `create`) — the tool can't file it into a Reminders folder, the user does that themselves.
    - Either way, write the answer to the `reminders_list` frontmatter (the list name, or `"non"` if declined — never an empty string). Never asked again. See `references/reminders-sync.md`.
 6. *"A category for this project? It groups it with your other projects on the portfolio page (e.g. Work, Personal, a client name)."* — read the `category` values already used by the other tracked projects (walk the `scopes.txt` roots) and offer them for reuse, plus "a new one" and "no category". *(Recommend an existing category if the project's nature clearly matches one; otherwise no strong default.)* Write the label to the `category` frontmatter (or `"non"` for none). Never asked again for this project.
-7. *"Is this project big or intricate enough to want a separate architecture document, or is a short orientation paragraph in `CLAUDE.md` enough?"*
-   - **`CLAUDE.md` is enough** *(recommended for most projects)* → a one-paragraph orientation, no extra file.
+7. *"Is this project big or intricate enough to want a separate architecture document, or is a short orientation paragraph in `AGENTS.md` enough?"*
+   - **`AGENTS.md` is enough** *(recommended for most projects)* → a one-paragraph orientation, no extra file.
    - **A separate `ARCHITECTURE.md`** *(recommended only for a genuinely large system — many modules or services)* → a full doc: components, boundaries, data flow.
    (`GLOSSARY.md` is **not** asked here — it appears later, on first need; see `## Detecting a project's root` and `## Continuous updates`.)
 
-First run `mkdir -p docs/project-tracker/` at the project root, then create the standard files (next section) filled in with the answers obtained — never invented content for anything that wasn't answered. `README.md` and `CLAUDE.md` go at the project root; the 7 other standard files in `docs/project-tracker/` (see the next section for the per-file detail). `project:` in the frontmatter is always the folder's own name — never asked. The frontmatter of the `STATUS.md` thus created immediately includes `backlog_model: "adopté"`, written automatically along with the other fields — never asked as a question at this stage, since `BACKLOG.md` is one of the standard files created unconditionally (see next section).
+First run `mkdir -p docs/project-tracker/` at the project root, then create the standard files (next section) filled in with the answers obtained — never invented content for anything that wasn't answered. `README.md` and `AGENTS.md` go at the project root (with symlink `ln -s AGENTS.md CLAUDE.md`); the 7 other standard files in `docs/project-tracker/` (see the next section for the per-file detail). `project:` in the frontmatter is always the folder's own name — never asked. The frontmatter of the `STATUS.md` thus created immediately includes `backlog_model: "adopté"`, written automatically along with the other fields — never asked as a question at this stage, since `BACKLOG.md` is one of the standard files created unconditionally (see next section).
 
-If `~/.claude/project-tracker/portfolio.txt` does not exist yet (first tracked project on this machine), ask where the unified portfolio should go — `~/Desktop`, `~/Documents`, or another folder — and write the chosen folder path to `portfolio.txt`, so `PORTFOLIO.html` is generated from this first project. See the `portfolio.txt` bullet under `## Detecting a project's root`.
+If `~/.project-tracker/portfolio.txt` does not exist yet (first tracked project on this machine), ask where the unified portfolio should go — `~/Desktop`, `~/Documents`, or another folder — and write the chosen folder path to `portfolio.txt`, so `PORTFOLIO.html` is generated from this first project. See the `portfolio.txt` bullet under `## Detecting a project's root`.
 
-Likewise, if `~/.claude/project-tracker/language.txt` does not exist, ask once which language the tracking files and portfolio should use (English / French) and write the code to `language.txt`. The bootstrap then creates every file in that language (consult `references/i18n/<code>.md` when it is not `en`). No per-project `language:` key is written at bootstrap — it exists only as an explicit override set later via `/project-tracker:config`.
+Likewise, if `~/.project-tracker/language.txt` does not exist, ask once which language the tracking files and portfolio should use (English / French) and write the code to `language.txt`. The bootstrap then creates every file in that language (consult `references/i18n/<code>.md` when it is not `en`). No per-project `language:` key is written at bootstrap — it exists only as an explicit override set later via `/project-tracker:config`.
 
-And if `~/.claude/project-tracker/prefs.txt` does not exist, ask the console-view question once (see `## Console view preference`) and write `prefs.txt`.
+And if `~/.project-tracker/prefs.txt` does not exist, ask the console-view question once (see `## Console view preference`) and write `prefs.txt`.
 
 Once `README.md` (and `ARCHITECTURE.md` / `GLOSSARY.md` if you created them) are written, run the fresh-eyes readability pass on each — see `references/writing-tracking-files.md` (`## The fresh-eyes readability pass`).
 
 ## The standard files
 
-Nine files for each tracked project. `README.md` and `CLAUDE.md` at the project root (GitHub/Claude Code auto-discovery); the 7 others in `docs/project-tracker/`:
+Nine files for each tracked project. `README.md` and `AGENTS.md` at the project root (with `CLAUDE.md -> AGENTS.md` symlink for Anthropic auto-discovery); the 7 others in `docs/project-tracker/`:
 
 | File | Content | Cadence |
 |---|---|---|
@@ -154,7 +154,7 @@ Nine files for each tracked project. `README.md` and `CLAUDE.md` at the project 
 | `docs/project-tracker/STATUS.md` | Snapshot of the current state (what works/breaks, 3 next actions) + machine-readable frontmatter (see below). **Fully rewritten**, does not accumulate | Every session / significant change |
 | `docs/project-tracker/JOURNAL.md` | Dated chronological log of sessions: what was done, why | **Append-only**, every significant session |
 | `docs/project-tracker/CHANGELOG.md` | Keep a Changelog format (Added/Changed/Fixed) per version | Every shippable change |
-| `CLAUDE.md` (root) | Instructions for you: code conventions, build/test commands, known pitfalls, architecture summary, the project's git/GitHub choices | When conventions change |
+| `AGENTS.md` (root) | Instructions for you: code conventions, build/test commands, known pitfalls, architecture summary, the project's git/GitHub choices (symlinked from `CLAUDE.md`) | When conventions change |
 | `docs/project-tracker/DECISIONS.md` | Why one technical choice over another, alternatives rejected | **Append-only**, one entry per structural decision |
 | `docs/project-tracker/ERRORS.md` | Bug encountered → cause → fix, searchable | **Append-only**, every significant resolved bug |
 | `docs/project-tracker/BACKLOG.md` | Raw, complete reservoir of every envisaged idea/feature (effort, perceived value). Never purged, enriched and archived. See `references/backlog-phases.md` | **Append-only** (archiving, never purging) |
@@ -293,11 +293,11 @@ This trigger (judging a change to be "significant") is your own judgment, not a 
 - a project-specific term keeps coming up undefined while you work.
 Format and what to include/exclude: `references/writing-tracking-files.md` (`## GLOSSARY.md`).
 
-**Onboarding files — fresh-eyes readability pass.** If this session substantially rewrote or restructured an onboarding file (`README.md` / `CLAUDE.md` / `ARCHITECTURE.md` / `GLOSSARY.md` — not a targeted edit), run the fresh-eyes readability pass on it before finishing: `references/writing-tracking-files.md` (`## The fresh-eyes readability pass`). Advisory, never a gate.
+**Onboarding files — fresh-eyes readability pass.** If this session substantially rewrote or restructured an onboarding file (`README.md` / `AGENTS.md` / `ARCHITECTURE.md` / `GLOSSARY.md` — not a targeted edit), run the fresh-eyes readability pass on it before finishing: `references/writing-tracking-files.md` (`## The fresh-eyes readability pass`). Advisory, never a gate.
 
 ### Collisions between concurrent sessions
 
-The user often works with several Claude Code sessions open in parallel on the same project. Before rewriting `STATUS.md` (or any file rewritten in full rather than accumulated):
+The user often works with several AI assistant sessions (Claude Code, Antigravity) open in parallel on the same project. Before rewriting `STATUS.md` (or any file rewritten in full rather than accumulated):
 - If `uses_git: true`: just before writing, check whether there is an uncommitted diff on this file that does not come from this session (`git diff -- docs/project-tracker/STATUS.md`). If so, do not overwrite: show the diff to the user and ask how to merge the two updates rather than deciding it yourself.
 - Without git: compare the file's modification date with the one seen at your last read; if it has changed in the meantime, same handling (show, ask).
 
@@ -309,7 +309,7 @@ If `reminders_list` (in the `STATUS.md` frontmatter) is linked (present, differe
 
 ## Portfolio
 
-A `PostToolUse` hook (`hooks/portfolio_regen.sh`) regenerates `PORTFOLIO.html` automatically on every `STATUS.md` write, into the folder configured by `~/.claude/project-tracker/portfolio.txt` (a single file, all scopes aggregated). Each project also gets its own detail page under `portfolio/<project>.html`, linked from its card — the hook regenerates only the one sub-page for the project whose `STATUS.md` just changed (`PORTFOLIO.html` itself is always rebuilt in full). **Never run `generate_portfolio.py` yourself** — except once, with the user's approval, right after they change the portfolio folder, title or language via `/project-tracker:config`: that run has no single "changed project", so it regenerates every sub-page too. If `portfolio.txt` does not exist yet, see the `portfolio.txt` bullet under `## Detecting a project's root`.
+A `PostToolUse` hook regenerates `PORTFOLIO.html` automatically on every `STATUS.md` write, into the folder configured by `~/.project-tracker/portfolio.txt` (a single file, all scopes aggregated). Each project also gets its own detail page under `portfolio/<project>.html`, linked from its card — the hook regenerates only the one sub-page for the project whose `STATUS.md` just changed (`PORTFOLIO.html` itself is always rebuilt in full). **Never run `generate_portfolio.py` yourself** — except once, with the user's approval, right after they change the portfolio folder, title or language via `/project-tracker:config`: that run has no single "changed project", so it regenerates every sub-page too. If `portfolio.txt` does not exist yet, see the `portfolio.txt` bullet under `## Detecting a project's root`.
 
 `portfolio.txt` holds the output **folder** on its first line that is neither a `title:` nor a `language:` line (a line ending in `.html` is taken as an explicit file path instead); `~`/`$VAR` are expanded. An optional `title:` line anywhere in the file sets the portfolio heading (default, locale-dependent: "My projects" / "Mes projets"); an optional `language:` line (`en`/`fr`) overrides the portfolio's output language. All three are edited via `/project-tracker:config`, never written by this skill directly.
 
@@ -321,7 +321,7 @@ To change the portfolio location, title or language, or any config (scopes, igno
 
 ## Retrofitting an existing project
 
-When the project already has non-standard tracking files (e.g. `.pages` files, a `CLAUDE.md`/`JOURNAL.md` already present): treat it as a bootstrap, but reuse what already exists rather than asking the questions from scratch. If a source doc is not readable as plain text (Apple `.pages`, a zip): say so plainly and offer — *"I can't read `<file>` directly. Export it to text/Markdown/PDF for me, or should I just start fresh from the setup questions?"* *(recommend exporting if the file clearly holds real history worth keeping; otherwise starting fresh)*.
+When the project already has non-standard tracking files (e.g. `.pages` files, an `AGENTS.md` / `CLAUDE.md` / `JOURNAL.md` already present): treat it as a bootstrap, but reuse what already exists rather than asking the questions from scratch. If a source doc is not readable as plain text (Apple `.pages`, a zip): say so plainly and offer — *"I can't read `<file>` directly. Export it to text/Markdown/PDF for me, or should I just start fresh from the setup questions?"* *(recommend exporting if the file clearly holds real history worth keeping; otherwise starting fresh)*.
 
 ### Retrofitting the Backlog/Roadmap/Phases model
 

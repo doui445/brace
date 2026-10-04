@@ -302,3 +302,32 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   and a migration mechanism).
 - `0.x` minor bumps are cheap; the single-migration-pass benefit is soft (N1
   `IDENTITY.md` fills passively, the N2 opt-in can be lazy).
+
+## 2026-10-04 — `AGENTS.md` is the canonical instructions file; `CLAUDE.md` is a symlink
+
+- **Context**: Porting `project-tracker` to Antigravity (and preparing for other
+  agents like OpenAI Codex, Copilot, Cursor).
+- **Chosen**: `AGENTS.md` at project root is the source of truth for agent
+  instructions across all tracked projects. `CLAUDE.md` becomes a git-tracked
+  symlink pointing to `AGENTS.md` (`CLAUDE.md -> AGENTS.md`).
+- **Rejected**: Maintaining separate `CLAUDE.md` and `GEMINI.md` / `AGENTS.md`
+  files — causes immediate drift and doubles maintenance overhead.
+- **Rejected**: Keeping `CLAUDE.md` as primary with `AGENTS.md` as symlink —
+  `AGENTS.md` is the cross-platform open standard, while `CLAUDE.md` is
+  Anthropic-proprietary. Making the open standard primary establishes proper
+  ecosystem neutrality.
+- **Backwards compatibility**: Claude Code follows symlinks without issue, so
+  Anthropic tooling continues to work seamlessly.
+
+## 2026-10-04 — Unified `~/.project-tracker` configuration root
+
+- **Context**: Claude plugin placed config in `~/.claude/project-tracker/`.
+  Antigravity would naturally use `~/.gemini/project-tracker/`.
+- **Chosen**: Canonical directory is `~/.project-tracker/`. Both
+  `~/.claude/project-tracker` and `~/.gemini/project-tracker` become symlinks
+  pointing to `~/.project-tracker/`.
+- **Migration**: Automated via `skills/track/scripts/migrate_config.sh`,
+  run during installation. Idempotent and non-destructive.
+- **Benefits**: Both platforms share the exact same scopes, portfolio location,
+  and trackignore rules transparently without needing synchronization logic
+  or background reconciliation.

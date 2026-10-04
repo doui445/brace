@@ -2,6 +2,43 @@
 
 Dated chronological log. Append-only.
 
+## 2026-10-04 — Dual-platform port to Antigravity (AGY)
+
+### Design decisions settled
+- **`~/.project-tracker/` as canonical config dir** with transparent symlinks from
+  `~/.claude/project-tracker` and `~/.gemini/project-tracker`. Both platforms write
+  and read the same files without knowing they are using a shared location.
+- **`AGENTS.md` replaces `CLAUDE.md` as the root instructions file** for all tracked
+  projects. `CLAUDE.md` becomes a symlink to `AGENTS.md` for Anthropic tooling
+  compatibility. `AGENTS.md` is natively read by Antigravity, Codex, Cursor,
+  Copilot and other agents — the open standard.
+- **Symmetric platform structure**: `platforms/antigravity/` mirrors the Claude
+  plugin path; no "adapter" layer — each platform gets a clean, native
+  implementation. Platform-specific rules extracted to
+  `references/platform-claude.md` and `references/platform-antigravity.md`.
+- **`PostToolUse` hooks are silent (`{}`)**: the Antigravity hook format does not
+  support `injectSteps` for `PostToolUse` (only `PreInvocation` can inject
+  steps). Reminders and portfolio-regen context is surfaced by the skill itself
+  when it reads the frontmatter, not by the hook.
+
+### Work done
+- `AGENTS.md` created (`git mv CLAUDE.md AGENTS.md`); `CLAUDE.md` symlinked back.
+- `AGENTS.md` header updated to list Antigravity, Claude Code, Codex as audience.
+- `skills/track/SKILL.md` updated throughout: `~/.project-tracker/`, `AGENTS.md`
+  canonical, Asking-questions section references platform files, concurrent-session
+  wording neutral.
+- `generate_portfolio.py` `_config_dir()` updated: checks `~/.project-tracker`
+  first, then `~/.claude/project-tracker`, then `~/.gemini/project-tracker`.
+- `references/platform-claude.md` + `references/platform-antigravity.md` created.
+- `platforms/antigravity/hooks/`: `session_start.sh`, `portfolio_regen.sh`,
+  `reminders_sync_trigger.sh` + their `test_*.sh` suites (all green).
+- `platforms/antigravity/plugin.json` + `hooks.json` plugin manifests.
+- `install-antigravity.sh` one-shot installer at repo root.
+- `skills/track/scripts/migrate_config.sh` + `test_migrate_config.sh`.
+- `superpowers` suite installed globally for AGY (15 skills).
+- Full non-regression: 8 manifest + 151 portfolio + all Claude shell tests +
+  5 Antigravity session_start + 5 portfolio_regen — all green.
+
 ## 2026-08-30 — Self-tracking bootstrap
 
 - Removed this repo's own path from
@@ -697,3 +734,16 @@ Closed out the portfolio sub-pages work and cut the release:
   colour/typography picks are provisional, to revalidate once the naming
   question is resolved, not assumed. See `BACKLOG.md` (DA item, marked
   blocking) for the full framing; resume in a fresh session, naming first.
+
+## 2026-10-03 — Second naming candidate for the blocking rename question
+
+- While exploring a Jarvis-flavoured name/acronym for the persona, landed
+  on **"BRACE" — Barely Remarkable, Admittedly Capable Engine**. The
+  comma before "Admittedly" was deliberately kept (a no-comma variant was
+  tried and rejected): "Admittedly" carries the self-deprecating,
+  confession-like tone that makes the Jarvis reference land ("rather very
+  intelligent," not just "intelligent"); "Always Capable" read smoother
+  but flattened into a generic marketing line and lost that wink.
+- Recorded as a second candidate alongside **"Steward"** for the blocking
+  naming decision in `BACKLOG.md` (DA item) — nothing decided yet, still
+  to resolve in the dedicated naming session per that item.

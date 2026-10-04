@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .DS_Store
+.env
 
 # Local dev artefacts: specs, plans and research notes.
 # Kept out of the repo (French, unpolished); the shipped tracking files

@@ -8,9 +8,29 @@ stable. `minor` (`0.N.0`) = a new command, hook, config knob or standard file,
 or any change to how the skill behaves. `patch` (`0.x.N`) = fixes, docs and
 guidance, no-behaviour-change refactors. The version lives in
 `plugin.json` / `marketplace.json` (kept equal); the release routine is in
-`CLAUDE.md` § Releasing.
+`AGENTS.md` § Releasing.
 
 ## [Unreleased]
+
+### Added
+- **Native Antigravity (AGY) support:**
+  - `platforms/antigravity/plugin.json` and `platforms/antigravity/hooks.json` manifests.
+  - `platforms/antigravity/hooks/session_start.sh` (`PreInvocation` hook for scope & tracking detection).
+  - `platforms/antigravity/hooks/portfolio_regen.sh` (`PostToolUse` hook on file edit/write).
+  - `platforms/antigravity/hooks/reminders_sync_trigger.sh` (`PostToolUse` hook).
+  - Complete test suites for Antigravity hooks (`test_agy_session_start.sh`, `test_agy_portfolio_regen.sh`).
+  - `install-antigravity.sh` one-shot installer for Antigravity plugin.
+- **Unified config directory:**
+  - Canonical config moved to `~/.project-tracker/` with symlinks from `~/.claude/project-tracker` and `~/.gemini/project-tracker`.
+  - Migration script `skills/track/scripts/migrate_config.sh` and its test suite `test_migrate_config.sh`.
+- **Platform reference guides:**
+  - `skills/track/references/platform-claude.md` (Claude-specific tooling: `AskUserQuestion`, hooks format, console views).
+  - `skills/track/references/platform-antigravity.md` (Antigravity-specific tooling: `ask_question`, hooks protocol, silent `PostToolUse`).
+
+### Changed
+- **`AGENTS.md` pivot:** `AGENTS.md` is now the canonical root instructions file for all tracked projects (compatible with Antigravity, OpenAI Codex, Copilot, Cursor). `CLAUDE.md` is preserved as a symlink pointing to `AGENTS.md` for Anthropic tooling compatibility.
+- **`generate_portfolio.py` config resolution:** looks up `~/.project-tracker` first, then falls back to `~/.claude/project-tracker` or `~/.gemini/project-tracker`.
+- **`SKILL.md` neutralisation:** platform-agnostic wording, references `AGENTS.md` and links to platform-specific references for tool invocation details.
 
 ## [0.12.2] — 2026-09-19
 

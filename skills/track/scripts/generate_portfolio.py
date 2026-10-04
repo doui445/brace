@@ -35,7 +35,14 @@ REQUIRED_FIELDS = ["project", "status", "last_updated"]
 
 
 def _config_dir():
-    return Path.home() / ".claude" / "project-tracker"
+    for d in (
+        Path.home() / ".project-tracker",
+        Path.home() / ".claude" / "project-tracker",
+        Path.home() / ".gemini" / "project-tracker",
+    ):
+        if d.exists():
+            return d
+    return Path.home() / ".project-tracker"
 
 
 def _config_lines(name):
