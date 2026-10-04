@@ -12,6 +12,8 @@ guidance, no-behaviour-change refactors. The version lives in
 
 ## [Unreleased]
 
+## [0.13.0] — 2026-10-04
+
 ### Added
 - **Native Antigravity (AGY) support:**
   - `platforms/antigravity/plugin.json` and `platforms/antigravity/hooks.json` manifests.

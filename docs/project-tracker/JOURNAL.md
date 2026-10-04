@@ -763,3 +763,13 @@ Closed out the portfolio sub-pages work and cut the release:
   first), then fixed the two message-building calls.
 - The user then ran live Antigravity sessions and validated the integration.
   Next: the v0.13.0 release routine.
+
+## 2026-10-04 — Release v0.13.0
+
+- Cut v0.13.0 (dual-platform Antigravity support): versions bumped to
+  `0.13.0` in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`
+  and `platforms/antigravity/plugin.json`; installer regenerated;
+  `[Unreleased]` turned into `[0.13.0] — 2026-10-04` in `CHANGELOG.md`.
+  DECISIONS (AGENTS.md pivot, unified config root) and BACKLOG were already
+  up to date. All suites green (8 manifest, 151 portfolio, Claude hooks,
+  Antigravity hooks, config migration).

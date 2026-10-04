@@ -5,7 +5,7 @@ uses_git: true
 repo: https://github.com/doui445/project-tracker
 stack: [Bash, Python, Markdown]
 last_updated: 2026-10-04
-next_milestone: "v0.13.0 — Antigravity dual-platform support release (bump versions, regenerate installer, update CHANGELOG/DECISIONS/BACKLOG)"
+next_milestone: "Plugin naming decision (stay project-tracker vs. umbrella name), then resume the design skill"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -18,8 +18,8 @@ nested_model: "non"
 
 ## Where it stands
 
-`project-tracker` is a published Claude Code plugin at **v0.12.2**, now in active
-development toward **v0.13.0** which adds native Antigravity (AGY) support:
+`project-tracker` is a published plugin at **v0.13.0** (released 2026-10-04),
+running natively on both Claude Code and Antigravity (AGY):
 
 - **Antigravity plugin** built and installed (`platforms/antigravity/`):
   `PreInvocation` hook for session detection, `PostToolUse` hooks for portfolio
@@ -44,26 +44,17 @@ development toward **v0.13.0** which adds native Antigravity (AGY) support:
 - The `reminders_sync_trigger.sh` Antigravity hook is intentionally silent
   (`{}`): `PostToolUse` does not support `injectSteps`, so the Reminders nudge
   is handled by the skill itself when it reads the frontmatter. Works correctly.
-- Version numbers in `platforms/antigravity/plugin.json` and the two
-  `.claude-plugin/` manifests are still at 0.12.2 — pending the formal release
-  bump to 0.13.0 (local testing done).
 
 ## Next 3 actions
 
-**Dual-platform Antigravity support** committed to `main` (commit `2d4d3be`)
-and **validated in live Antigravity sessions** (2026-10-04): session-start
-detection, untracked-project prompt and portfolio regeneration all behave as
-expected. One fix found along the way: the `session_start.sh` message carried
-literal `\n` instead of real newlines (now fixed, with a test).
+**v0.13.0 released** — dual-platform Antigravity support, validated in live
+Antigravity sessions; all three manifests at `0.13.0`, all test suites green.
 
-1. **Version bump and release routine** (`v0.13.0`): bump `version` in
-   `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and
-   `platforms/antigravity/plugin.json`; regenerate `install-project-tracker.sh`;
-   convert `[Unreleased]` in `CHANGELOG.md` to `[0.13.0] — <release date>`;
-   commit, tag `v0.13.0`, and push with `--follow-tags`.
-2. **Resolve the plugin naming question** (paused since 2026-09-22): should the
+1. **Resolve the plugin naming question** (paused since 2026-09-22): should the
    plugin stay `project-tracker` or become an umbrella name (candidates:
-   **"Steward"** or **"BRACE"**)? Now more pressing because the Antigravity
-   plugin ships under the same name — consistency across two platforms.
-3. **Resume the design-skill (DA) brainstorm** once the naming is settled —
+   **"Steward"** or **"BRACE"**)? More pressing now that the same name ships on
+   two platforms.
+2. **Resume the design-skill (DA) brainstorm** once the naming is settled —
    it is blocked on that decision (see `BACKLOG.md`).
+3. **Watch the first real Antigravity sessions** on other tracked projects for
+   anything the local validation missed.
