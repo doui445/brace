@@ -38,6 +38,8 @@ Dated chronological log. Append-only.
 - `superpowers` suite installed globally for AGY (15 skills).
 - Full non-regression: 8 manifest + 151 portfolio + all Claude shell tests +
   5 Antigravity session_start + 5 portfolio_regen — all green.
+- Committed to `main` (`2d4d3be`). Local testing in progress before formal
+  `v0.13.0` release.
 
 ## 2026-08-30 — Self-tracking bootstrap
 
