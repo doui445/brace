@@ -126,7 +126,7 @@ if [ -n "$STATUS_FILE" ]; then
 
   python3 -c '
 import json, sys
-msg = sys.argv[1]
+msg = sys.argv[1].replace("\\n", "\n")
 print(json.dumps({"injectSteps": [{"ephemeralMessage": msg}]}))
 ' "$MSG"
   exit 0
@@ -136,7 +136,7 @@ MSG="[project-tracker] UNTRACKED project in this folder ($CWD) — scope $SCOPE_
 
 python3 -c '
 import json, sys
-msg = sys.argv[1]
+msg = sys.argv[1].replace("\\n", "\n")
 print(json.dumps({"injectSteps": [{"ephemeralMessage": msg}]}))
 ' "$MSG"
 exit 0

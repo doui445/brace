@@ -50,6 +50,7 @@ assert "injectSteps" in data, "missing injectSteps"
 msg = data["injectSteps"][0]["ephemeralMessage"]
 assert "[project-tracker] Session opened in a tracked project" in msg, "missing project banner"
 assert "project: tracked" in msg, "missing frontmatter content"
+assert "\\n" not in msg, "literal backslash-n in message"
 '
 echo "PASS: tracked project -> injectSteps ephemeralMessage"
 

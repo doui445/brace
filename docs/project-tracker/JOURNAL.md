@@ -749,3 +749,17 @@ Closed out the portfolio sub-pages work and cut the release:
 - Recorded as a second candidate alongside **"Steward"** for the blocking
   naming decision in `BACKLOG.md` (DA item) — nothing decided yet, still
   to resolve in the dedicated naming session per that item.
+
+## 2026-10-04 — Antigravity integration validated locally
+
+- Checked the installed Antigravity plugin (symlinked from this repo into
+  `~/.gemini/config/plugins/project-tracker`): AGY loads both named hooks.
+  Replayed the hooks by hand against the real config — session-start context
+  on the first invocation only, silence outside scope, portfolio and
+  per-project sub-page regenerated.
+- Found and fixed a bug in `platforms/antigravity/hooks/session_start.sh`:
+  the injected `ephemeralMessage` contained literal `\n` sequences instead of
+  newlines. Added an assertion to `test_agy_session_start.sh` (seen failing
+  first), then fixed the two message-building calls.
+- The user then ran live Antigravity sessions and validated the integration.
+  Next: the v0.13.0 release routine.

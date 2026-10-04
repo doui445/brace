@@ -46,23 +46,24 @@ development toward **v0.13.0** which adds native Antigravity (AGY) support:
   is handled by the skill itself when it reads the frontmatter. Works correctly.
 - Version numbers in `platforms/antigravity/plugin.json` and the two
   `.claude-plugin/` manifests are still at 0.12.2 — pending the formal release
-  bump to 0.13.0 after local testing.
+  bump to 0.13.0 (local testing done).
 
 ## Next 3 actions
 
-**Dual-platform Antigravity support** committed to `main` (commit `2d4d3be`):
-`AGENTS.md` pivot, `~/.project-tracker` unified config, platform references,
-Antigravity hooks + installer, `generate_portfolio.py` config fallback.
-All test suites green. Testing locally prior to formal release.
+**Dual-platform Antigravity support** committed to `main` (commit `2d4d3be`)
+and **validated in live Antigravity sessions** (2026-10-04): session-start
+detection, untracked-project prompt and portfolio regeneration all behave as
+expected. One fix found along the way: the `session_start.sh` message carried
+literal `\n` instead of real newlines (now fixed, with a test).
 
-1. **Local testing**: test the Antigravity integration on local sessions
-   (session start detection, portfolio regeneration, reminders check).
-2. **Version bump and release routine** (`v0.13.0`): bump `version` in
+1. **Version bump and release routine** (`v0.13.0`): bump `version` in
    `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and
    `platforms/antigravity/plugin.json`; regenerate `install-project-tracker.sh`;
-   convert `[Unreleased]` in `CHANGELOG.md` to `[0.13.0] — 2026-10-04`;
+   convert `[Unreleased]` in `CHANGELOG.md` to `[0.13.0] — <release date>`;
    commit, tag `v0.13.0`, and push with `--follow-tags`.
-3. **Resolve the plugin naming question** (paused since 2026-09-22): should the
+2. **Resolve the plugin naming question** (paused since 2026-09-22): should the
    plugin stay `project-tracker` or become an umbrella name (candidates:
    **"Steward"** or **"BRACE"**)? Now more pressing because the Antigravity
    plugin ships under the same name — consistency across two platforms.
+3. **Resume the design-skill (DA) brainstorm** once the naming is settled —
+   it is blocked on that decision (see `BACKLOG.md`).
