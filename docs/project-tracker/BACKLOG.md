@@ -7,7 +7,9 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 ## Open
 
 - [ ] **Design as a tracked dimension (new `project-tracker:design` skill)**
-  (L, ⭐⭐⭐) — surfaced 2026-09-02. Give the plugin the ability to own a
+  (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE
+  1.1, `brace:design`; paths below move from `docs/project-tracker/` to
+  `docs/brace/` (see the BRACE 1.0 item).** Give the plugin the ability to own a
   project's design / brand direction, the way it owns state and progress.
   Two tiers:
   - **N1 — always-on, in `track`.** One light file
@@ -247,18 +249,23 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   `docs/superpowers/`, not shipped. No date — take it up when a break from
   design work is wanted; no dependency on the DA.
 
-- [ ] **Rename the plugin `project-tracker` → BRACE** (M, ⭐⭐) — decided
-  2026-10-04 (see `DECISIONS.md`). Touches: both `.claude-plugin/`
-  manifests, `platforms/antigravity/plugin.json`, the marketplace listing,
-  the generated installers, the `/project-tracker:*` commands (→
-  `/brace:*`, e.g. `brace:track`, `brace:design`), the GitHub repo
-  (GitHub redirects the old URL), `README.md`, `AGENTS.md`. Still to
-  decide, not assumed: the GitHub repo name (a distinctive one, given
-  "brace" alone is hard to search); whether tracked projects' files stay
-  under `docs/project-tracker/` or move (and the migration path for
-  existing users); whether `~/.project-tracker/` config moves too; the
-  version bump this warrants (a renamed plugin = behaviour change → minor
-  at least). Needs its own spec → plan cycle.
+- [~] **BRACE 1.0 — launch + multi-skill foundation** (L, ⭐⭐⭐) — the
+  rename decided 2026-10-04, scoped 2026-10-05 (see `DECISIONS.md`,
+  2026-10-05). Spec in progress, brainstorm paused:
+  `docs/superpowers/specs/2026-10-05-brace-1.0-design.md` (gitignored).
+  Settled: plugin `brace` (`brace:<skill>`), repo `doui445/brace`,
+  `docs/brace/` (track at root, a sub-folder per skill), `~/.brace/`,
+  migration **imposed**, zero breakage (old paths recognised for good),
+  product-style versioning. Scope to detail, in order: (1) how the imposed
+  migration runs (when, who commits, what is shown); (2) layout rule;
+  (3) per-skill config rule; (4) `brace:<skill>` naming, `brace:config`
+  covering every skill; (5) how a skill adds frontmatter keys without
+  collisions; (6) how a skill plugs in (retroactive questions, hooks,
+  portfolio rendering); (7) permanent fallbacks + written zero-breakage
+  rule; (8) a sketch of 1.1 (design) to check the foundation fits it.
+  Open: the `/project-tracker:*` commands necessarily disappear with the
+  plugin name — idea, undecided: a stub `project-tracker` plugin in the
+  marketplace announcing the rename.
 
 ## Completed
 

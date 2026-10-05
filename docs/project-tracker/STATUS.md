@@ -4,8 +4,8 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/project-tracker
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-04
-next_milestone: "Rename the plugin to BRACE (spec → plan), then resume the design skill"
+last_updated: 2026-10-05
+next_milestone: "BRACE 1.0 — launch + multi-skill foundation (spec in progress)"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -47,14 +47,17 @@ running natively on both Claude Code and Antigravity (AGY):
 
 ## Next 3 actions
 
-**v0.13.0 released** — dual-platform Antigravity support, validated in live
-Antigravity sessions. **Naming settled (2026-10-04): the plugin becomes
-BRACE** — *Barely Remarkable, Admittedly Capable Engine* — see `DECISIONS.md`.
+**v0.13.0 released** (dual-platform Antigravity support). **BRACE 1.0
+scoped (2026-10-05)**: the rename becomes a product launch laying a
+multi-skill foundation — `docs/brace/`, `~/.brace/`, repo `doui445/brace`,
+imposed migration, zero breakage, product-style versioning (see
+`DECISIONS.md`). Brainstorm paused by the user; spec in progress in the
+gitignored `docs/superpowers/specs/2026-10-05-brace-1.0-design.md`.
 
-1. **Spec the rename to BRACE**: settle the open questions listed in
-   `BACKLOG.md` (GitHub repo name, `docs/project-tracker/` path and
-   migration for existing users, config dir, version bump), then plan it.
-2. **Resume the design-skill (DA) brainstorm** — now unblocked; the BRACE
-   name and the `{ }` motif feed it.
+1. **Resume the BRACE 1.0 spec**: detail the 8 scope points listed in
+   `BACKLOG.md`, starting with how the imposed migration runs; then write
+   the final spec, review, plan.
+2. **Resume the DA brainstorm** (BRACE's own visual identity) — unblocked,
+   can run in parallel; the `{ }` motif feeds it.
 3. **Watch the first real Antigravity sessions** on other tracked projects for
    anything the local validation missed.

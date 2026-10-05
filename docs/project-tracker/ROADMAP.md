@@ -53,27 +53,33 @@ Refinement from real dogfooding (v0.8.0 – v0.11.0):
 - **v0.11.x housekeeping**: names-sweep convention + a git-history scrub of a
   leaked folder name; `_dev-history/` moved to a gitignored `docs/superpowers/`.
 
+Nested tracking and dual platform (v0.12.0 – v0.13.0):
+
+- **v0.12.x — Nested tracking**: umbrella projects with sub-projects,
+  reusable re-prompt infra, portfolio detail sub-pages, discussions logged.
+- **v0.13.0 — Native Antigravity support**: Antigravity hooks and installer,
+  unified `~/.project-tracker/` config, `AGENTS.md` as the canonical
+  instructions file.
+
 Detail for each: [`CHANGELOG.md`](CHANGELOG.md), [`DECISIONS.md`](DECISIONS.md).
 
 ## Current focus
 
-No phase started yet. `BACKLOG.md` has filled from dogfooding and design
-research; the release plan is set (see `DECISIONS.md`, 2026-09-03):
+**BRACE 1.0 — launch + multi-skill foundation** (spec in progress, see
+`DECISIONS.md` 2026-10-05). The plugin is renamed BRACE and versioning
+becomes product-style (major = an announced generation; `0.x` was the
+`project-tracker` pre-history). 1.0 renames brand, config (`~/.brace/`)
+and per-project folder (`docs/brace/`, migration imposed, old paths
+recognised for good), and fixes the foundation later skills plug into.
 
-- **v0.12.0** — the nested-tracking model (umbrella project + micro-tracked
-  git sub-repos) + a **reusable re-prompt infra** for existing tracked
-  projects + the portfolio detail sub-pages + "skill logs every discussion".
-  The migration-bearing release. Its own spec → plan phase.
-- **v0.13.0** — a new `project-tracker:design` skill: track a project's
-  design / brand direction (`docs/project-tracker/design/{FOUNDATIONS,
-  STRATEGY,DESIGN}.md` + a `design/DECISIONS.md`), N1 `IDENTITY.md` in
-  `track`, tool integration with installed design skills. File model frozen;
-  workflow to spec. Reuses the v0.12 infra.
-- **v1.0.0** — later; a deliberate small release that only declares stability.
+## Next
 
-In parallel, no plugin release: project-tracker's **own brand/visual identity
-(DA)** — apply the frozen file model to this repo, re-skin `PORTFOLIO.html` —
-then a **public website** (Astro on Cloudflare Pages).
+- **BRACE 1.1 — `brace:design`**: track a project's design / brand
+  direction under `docs/brace/design/`. File model already frozen in
+  `BACKLOG.md`; workflow to spec.
+- In parallel, no plugin release: **BRACE's own visual identity** (DA,
+  unblocked by the naming), then the **public website**.
+- Later, undated: portfolio graph view; pressure-testing three skill rules.
 
 ## Unprioritised ideas
 

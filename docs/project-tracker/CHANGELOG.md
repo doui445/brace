@@ -3,10 +3,12 @@
 All notable changes to this project. Format based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-**Versioning.** A `0.x` project — `major` stays `0` until the skill is declared
-stable. `minor` (`0.N.0`) = a new command, hook, config knob or standard file,
-or any change to how the skill behaves. `patch` (`0.x.N`) = fixes, docs and
-guidance, no-behaviour-change refactors. The version lives in
+**Versioning.** Product-style from the BRACE 1.0 launch (decided
+2026-10-05; `0.x` = the `project-tracker` pre-history). `major` = a new
+generation, launched and announced. `minor` = a new skill, command, hook,
+config knob or standard file, or any change to how the plugin behaves.
+`patch` = fixes, docs and guidance, no-behaviour-change refactors. Whatever
+the bump, a release never breaks an existing project. The version lives in
 `plugin.json` / `marketplace.json` (kept equal); the release routine is in
 `AGENTS.md` § Releasing.
 

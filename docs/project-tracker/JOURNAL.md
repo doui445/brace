@@ -791,3 +791,22 @@ Closed out the portfolio sub-pages work and cut the release:
   unblocked; a rename item was added to `BACKLOG.md` with its open
   questions (repo name, `docs/project-tracker/` path, config dir, version
   bump). Nothing renamed yet.
+
+## 2026-10-05 — BRACE 1.0 scoping (brainstorm paused)
+
+- Started the spec for the rename. Measured the name's footprint (~50
+  brand occurrences, 104 references to `docs/project-tracker`, ~100 to the
+  config path), then settled, one question at a time: rename brand **and**
+  config **and** per-project folder (`docs/brace/`, chosen once it was clear
+  the design skill's files must fit the same logic), repo `doui445/brace`.
+- Versioning discussion: semver vs. CalVer vs. Apple-style product numbers.
+  The user preferred product-style; combined with a **zero-breakage** rule
+  (old paths recognised forever) it has no downside. The rename becomes
+  **BRACE 1.0**, a launch that lays a multi-skill foundation designed ahead
+  for 1.1 (`brace:design`) — "like Apple, several versions ahead".
+- The user ruled that the folder migration is **imposed, not proposed**,
+  and asked to record the general principle: *propose or impose — think
+  twice, depending on context*. Recorded in `DECISIONS.md` and `AGENTS.md`;
+  versioning rule updated in `AGENTS.md` and the CHANGELOG header.
+- Paused here by the user. Next: detail the 8 scope points, starting with
+  how the imposed migration runs. Nothing implemented.

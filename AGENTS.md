@@ -61,6 +61,11 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
 - **Never guess.** If a needed fact is missing, ask — a section stays marked
   "to fill in" rather than filled by assumption. This is the skill's own first
   principle; hold to it when editing the skill too.
+- **Propose or impose — think twice.** Too much choice kills choice. Whenever
+  a design asks "offer the user a choice, or just do it?", weigh it against
+  the context: impose when the choice brings the user nothing (e.g. the
+  BRACE folder migration); offer only when the options genuinely differ for
+  them. See `DECISIONS.md` (2026-10-05).
 - Version lives in **both** `.claude-plugin/plugin.json` and
   `.claude-plugin/marketplace.json` — keep them in sync (a test enforces it).
   Bump on every release.
@@ -86,13 +91,18 @@ bash skills/track/scripts/build_installer.sh   # regenerate the installer after 
 
 ## Releasing
 
-**Version scheme** (this is a `0.x` project — major stays `0` until the skill
-is declared stable):
+**Version scheme** — *product-style* (decided 2026-10-05, applies from the
+BRACE 1.0 launch; `0.x` was the `project-tracker` pre-history):
 
-- **minor** (`0.N.0`) — a new command, hook, config knob, or standard file, or
-  any change to how the skill behaves.
-- **patch** (`0.x.N`) — fixes, doc and guidance changes, refactors with no
+- **major** (`N.0.0`) — a new generation, launched and announced (BRACE 1.0 =
+  the launch).
+- **minor** (`N.M.0`) — a new skill, command, hook, config knob or standard
+  file, or any change to how the plugin behaves.
+- **patch** (`N.M.P`) — fixes, doc and guidance changes, refactors with no
   behaviour change.
+- **Zero breakage, whatever the bump**: a release never breaks an existing
+  project. Old locations (`docs/project-tracker/`, `~/.project-tracker/`)
+  stay recognised for good.
 
 **Routine** (every release):
 

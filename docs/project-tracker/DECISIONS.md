@@ -364,3 +364,43 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   better story and the user preferred it.
 - **Supersedes**: the 2026-09-03 "keep `project-tracker`" name decision
   (recorded in `BACKLOG.md`, DA item).
+
+## 2026-10-05 — BRACE 1.0: product-style versioning, zero breakage, layout and imposed migration
+
+- **Context**: Specifying the rename to BRACE (decided 2026-10-04) raised
+  where everything lives under an umbrella that will host several skills,
+  and what the version number should mean.
+- **Chosen — release model**: the rename ships as **BRACE 1.0**, a product
+  launch, with **product-style versioning** (as Apple does for its apps and
+  OSes): major = a new generation, launched and announced; minor = new
+  skills/features/behaviour; patch = fixes. `0.x` becomes the
+  `project-tracker` pre-history. 1.0 is not just a rename: it lays the
+  **multi-skill foundation** (layout, config, naming, frontmatter
+  extension, how a skill plugs in) designed ahead so that 1.1
+  (`brace:design`) and later releases need no restructuring.
+- **Chosen — zero breakage**: a release never breaks an existing project.
+  Old locations (`docs/project-tracker/`, `~/.project-tracker/`) stay
+  recognised permanently (fallbacks in hooks and portfolio). This is what
+  makes product-style numbering safe: there is never a breaking change to
+  signal.
+- **Chosen — layout**: per-project files move from `docs/project-tracker/`
+  to **`docs/brace/`** (track's files at its root, one sub-folder per
+  further skill: `docs/brace/design/…`); machine config moves from
+  `~/.project-tracker/` to **`~/.brace/`**; GitHub repo becomes
+  **`doui445/brace`** (GitHub redirects the old URL).
+- **Chosen — migration is imposed, not proposed**: too much choice kills
+  choice; moving the folder brings the user no decision worth making.
+  Exactly how it runs (when, who commits, what is shown) is still to spec.
+- **New design principle — propose or impose, think twice**: whenever a
+  design asks "offer the user a choice, or just do it?", weigh it against
+  the context; impose when the choice brings the user nothing, offer only
+  when the options genuinely differ for them. Recorded in `AGENTS.md`.
+- **Rejected**: strict semver with 0.14.0 for the rename (correct but no
+  launch, and its breaking-change signal is moot under zero breakage);
+  keeping `docs/project-tracker/` and adding `docs/design/` (non-parallel
+  names, collides with projects' own `docs/design/` folders); nesting
+  design under `docs/project-tracker/design/` (illogical under BRACE);
+  renaming only the brand (the next skill's config would land in a
+  `~/.project-tracker/` folder, wrong from day one).
+- **Supersedes**: the `0.x` version scheme, and the ROADMAP's earlier
+  plan (v0.13.0 = design skill; v1.0.0 = a stability-only release).
