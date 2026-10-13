@@ -4,8 +4,8 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/project-tracker
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-05
-next_milestone: "BRACE 1.0 — launch + multi-skill foundation (spec in progress)"
+last_updated: 2026-10-14
+next_milestone: "BRACE 1.0 — launch + multi-skill foundation (spec in review)"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -47,17 +47,17 @@ running natively on both Claude Code and Antigravity (AGY):
 
 ## Next 3 actions
 
-**v0.13.0 released** (dual-platform Antigravity support). **BRACE 1.0
-scoped (2026-10-05)**: the rename becomes a product launch laying a
-multi-skill foundation — `docs/brace/`, `~/.brace/`, repo `doui445/brace`,
-imposed migration, zero breakage, product-style versioning (see
-`DECISIONS.md`). Brainstorm paused by the user; spec in progress in the
-gitignored `docs/superpowers/specs/2026-10-05-brace-1.0-design.md`.
+**v0.13.0 released** (dual-platform Antigravity support). **Antigravity is
+on standby** (2026-10-13, token budget too tight there). **BRACE 1.0 spec
+completed (2026-10-14)**: skills on demand, one hook dispatcher per event,
+prefixed frontmatter keys, migration logic living in BRACE for good plus a
+minimal `project-tracker` 0.14.0 bridge (see `DECISIONS.md`, 2026-10-14).
+Spec in the gitignored `docs/superpowers/specs/2026-10-05-brace-1.0-design.md`.
 
-1. **Resume the BRACE 1.0 spec**: detail the 8 scope points listed in
-   `BACKLOG.md`, starting with how the imposed migration runs; then write
-   the final spec, review, plan.
+1. **Review the BRACE 1.0 spec** (user), then write the implementation plan
+   — checking scripted plugin install per tool and whether the marketplace
+   can be renamed.
 2. **Resume the DA brainstorm** (BRACE's own visual identity) — unblocked,
    can run in parallel; the `{ }` motif feeds it.
-3. **Watch the first real Antigravity sessions** on other tracked projects for
-   anything the local validation missed.
+3. **Before the 1.1 spec**: settle whether `design` and `brand` are one
+   skill or two (open, see `BACKLOG.md`).

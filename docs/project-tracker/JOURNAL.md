@@ -810,3 +810,21 @@ Closed out the portfolio sub-pages work and cut the release:
   versioning rule updated in `AGENTS.md` and the CHANGELOG header.
 - Paused here by the user. Next: detail the 8 scope points, starting with
   how the imposed migration runs. Nothing implemented.
+
+## 2026-10-13/14 — BRACE 1.0 spec completed
+
+- Antigravity put **on standby** by the user (token budget there is too
+  tight); watching its first real sessions is dropped from next actions.
+- Resumed the paused brainstorm and settled every scope point, one question
+  at a time: how the imposed migration runs, per-skill config, frontmatter
+  keys, how a skill plugs in (on demand, hook dispatcher, portfolio detail
+  section), and how installs switch from `project-tracker` to `brace`
+  (logic in BRACE for good + a minimal 0.14.0 bridge). Detail in
+  `DECISIONS.md` (2026-10-14).
+- The user raised the multi-tool requirement (whichever tool migrates, all
+  follow) and the on-demand skill model; both shaped the design.
+- Open for the 1.1 spec, nothing decided: are `design` and `brand` one
+  skill (the ladder frozen 2026-09-02) or two? The user notes they are not
+  the same thing; the foundation accommodates either.
+- Final spec written (gitignored), awaiting the user's review; then the
+  implementation plan. Nothing implemented.

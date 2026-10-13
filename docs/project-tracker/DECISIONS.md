@@ -404,3 +404,42 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   `~/.project-tracker/` folder, wrong from day one).
 - **Supersedes**: the `0.x` version scheme, and the ROADMAP's earlier
   plan (v0.13.0 = design skill; v1.0.0 = a stability-only release).
+
+## 2026-10-14 — BRACE 1.0: how a skill plugs in, and how the switch happens
+
+- **Chosen — skills are on demand**: a skill other than `track` triggers
+  from its description when the conversation touches its topic (the
+  impeccable / superpowers model). No per-project activation question.
+  Its folder `docs/brace/<skill>/` is created on first use (like
+  `GLOSSARY.md`), and that folder's presence is the "this skill is used
+  here" signal for its hooks and retroactive questions. A project that
+  doesn't use a skill pays nothing. (The user's idea.)
+- **Chosen — one hook per event, acting as a dispatcher**: declared once per
+  tool, it calls each skill's `skills/<skill>/hooks/<event>.sh` by
+  convention and merges the outputs into one message. Adding a skill
+  touches no declaration file. Rejected: per-skill hook declarations.
+- **Chosen — frontmatter**: flat keys prefixed with the skill name
+  (`design_stage:`); `track` keys stay unprefixed. Rule: *the header is an
+  index, never content* — 3–4 short keys per skill at most, because the
+  session-start hook pastes it into every session. Rejected: nested blocks
+  (the stdlib reader and bash hooks would need to parse them); a separate
+  `STATUS.md` per skill.
+- **Chosen — per-skill config in `~/.brace/<skill>/`**; per-skill section on
+  a project's portfolio detail page, cards unchanged.
+- **Chosen — the migration logic lives in BRACE, permanently**: at every
+  start BRACE replaces any old `project-tracker` plugin it finds in any tool
+  on the machine (Claude Code, Antigravity), migrates the config, then the
+  current project's folder — the latter only once no old plugin is active.
+  Requirement from the user: whichever tool migrates, all tools follow.
+  A minimal **bridge, `project-tracker` 0.14.0**, only installs `brace`
+  (the one way to reach users who only have the old plugin); it ships with
+  or after 1.0 and stays in the marketplace indefinitely.
+- **Chosen — project folder move**: at the first session in each project, a
+  script moves the folder and rewrites mentions in the *living* files
+  (`AGENTS.md`, `README.md`, `STATUS.md`) only; history files keep the old
+  path. The commit is offered, never automatic. Both folders present →
+  show both, ask.
+- **Rejected**: automatic commit; migrating every project at once on update;
+  a "please install brace" message only; putting all the logic in the
+  bridge (misses users who install `brace` directly); removing the bridge
+  or the migration code at v2.
