@@ -443,3 +443,20 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   a "please install brace" message only; putting all the logic in the
   bridge (misses users who install `brace` directly); removing the bridge
   or the migration code at v2.
+
+## 2026-10-14 — One official install path, everywhere
+
+- **Chosen**: no difference between a "dev" and a "normal" install, on the
+  author's machine as on users'. Claude Code: the marketplace added from
+  GitHub, `brace` installed from it. Antigravity: `agy plugin install` of
+  the self-contained `platforms/antigravity/` folder (verified: installing
+  from the repo root picks up Claude-format hooks that never fire).
+- **Chosen**: the home-made installers are removed in 1.0 —
+  `install-project-tracker.sh`, its generator `build_installer.sh`, and
+  `install-antigravity.sh`. The old symlinked Antigravity setup is migrated
+  like any old install.
+- **Accepted cost**: repo changes are no longer live on the author's
+  machine; test before release (`claude --plugin-dir`, a local `agy`
+  install), publish to receive them.
+- **Rejected**: keeping a symlinked "dev mode" install (two install paths
+  to maintain and migrate, for a convenience the user doesn't want).

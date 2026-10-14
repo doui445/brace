@@ -828,3 +828,20 @@ Closed out the portfolio sub-pages work and cut the release:
   the same thing; the foundation accommodates either.
 - Final spec written (gitignored), awaiting the user's review; then the
   implementation plan. Nothing implemented.
+
+## 2026-10-14 — BRACE 1.0: install paths verified
+
+- Claude Code (sandboxed config, local test marketplace): scripted
+  `claude plugin install brace` / `uninstall` work, bare name included.
+  Native `renames` works locally but is ruled out (per the docs, GitHub-added
+  marketplaces need a manual reinstall); a bridge via `dependencies` fails
+  (the update doesn't install the new dependency and the old plugin stops
+  loading). Renaming the marketplace is safe if scripts use the bare name.
+- Antigravity (dummy plugins, config backed up and restored): installing
+  from the repo root picks up Claude-format hooks that never fire; a
+  self-contained `platforms/antigravity/` folder (skills symlinked) installs
+  and its hooks fire. Detail in the spec's section 9.
+- The user ruled out any dev/normal install distinction: one clean,
+  official install everywhere (GitHub marketplace for Claude Code,
+  `agy plugin install` for Antigravity), including the author's machine.
+  The home-made installers go in 1.0. See `DECISIONS.md` (2026-10-14).
