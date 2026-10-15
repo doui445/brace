@@ -69,4 +69,62 @@ B="$SCOPE/both"; status "$B/docs/project-tracker"; status "$B/docs/brace"
 OUT="$(run "$B")"
 has "$OUT" "Both docs/brace/ and docs/project-tracker/ exist" "both -> ask the user"
 [ -d "$B/docs/project-tracker" ] && echo "PASS: both untouched" || { echo "FAIL: both touched"; FAIL=1; }
+
+# Trailing slash in cwd behaves exactly like no slash
+has "$(run "$T/")" "Session opened in a tracked project ($T)" "trailing slash -> same project root"
+[ "$(run "$T/")" = "$(run "$T")" ] && echo "PASS: trailing slash output identical" || { echo "FAIL: trailing slash output differs"; FAIL=1; }
+
+# Ignored folder that has its own docs/brace/STATUS.md -> silence (exclusion wins)
+IG="$SCOPE/ignored-tracked"; status "$IG/docs/brace"
+echo "$IG" > "$HOME/.brace/trackignore.txt"
+empty "$(run "$IG")" "ignored folder with its own STATUS.md -> silence"
+: > "$HOME/.brace/trackignore.txt"
+
+# Huge frontmatter: output capped, body never leaks
+BIG="$SCOPE/big-frontmatter"; mkdir -p "$BIG/docs/brace"
+{
+  echo "---"
+  echo "project: big"
+  echo "status: active"
+  echo "last_updated: 2026-01-01"
+  for i in $(seq 1 400); do echo "note_$i: a fairly long filler value to inflate the frontmatter block"; done
+  echo "---"
+  echo "BODY_LEAK_MARKER"
+  for i in $(seq 1 300); do echo "Body line $i"; done
+} > "$BIG/docs/brace/STATUS.md"
+OUT="$(run "$BIG")"
+has "$OUT" "project: big" "huge frontmatter -> frontmatter present"
+[ "${#OUT}" -lt 6000 ] && echo "PASS: huge frontmatter -> output bounded (${#OUT} chars)" || { echo "FAIL: huge frontmatter -> output unbounded (${#OUT} chars)"; FAIL=1; }
+hasnt "$OUT" "BODY_LEAK_MARKER" "STATUS.md body never leaks"
+
+# docs/ folder without any tracking folder stays UNTRACKED
+DD="$SCOPE/docs-only"; mkdir -p "$DD/docs"; echo notes > "$DD/docs/notes.md"
+has "$(run "$DD")" "UNTRACKED project" "docs/ without tracking folder -> still untracked"
+
+# trackignore entry equal to the scope root: only that exact folder is ignored
+echo "$SCOPE" > "$HOME/.brace/trackignore.txt"
+empty "$(run "$SCOPE")" "entry = scope root -> the exact root is silent"
+has "$(run "$T")" "Session opened in a tracked project ($T)" "entry = scope root -> project inside still detected"
+: > "$HOME/.brace/trackignore.txt"
+
+# "~"-prefixed scope entry resolves against HOME
+mkdir -p "$HOME/relscope/proj"
+cp "$HOME/.brace/scopes.txt" "$TMP/scopes.bak"
+echo "~/relscope" > "$HOME/.brace/scopes.txt"
+has "$(run "$HOME/relscope/proj")" "UNTRACKED project" "~ scope entry -> resolved against HOME"
+mv "$TMP/scopes.bak" "$HOME/.brace/scopes.txt"
+
+# Antigravity wording on a tracked project
+OUT="$(run "$T" antigravity)"
+has "$(printf '%s' "$OUT" | tr 'A-Z' 'a-z')" "invoke the track skill" "antigravity tracked -> 'invoke the track skill' (case-insensitive)"
+hasnt "$OUT" "brace:track" "antigravity tracked -> no 'brace:track'"
+
+# Source guard: missing plugin root -> exit 0, empty stdout, no crash
+RC=0
+ERR_FILE="$TMP/guard.err"
+OUT="$(BRACE_CWD="$T" BRACE_TOOL=claude BRACE_PLUGIN_ROOT="$TMP/no-such-root" bash "$HOOK" 2>"$ERR_FILE")" || RC=$?
+[ "$RC" -eq 0 ] && echo "PASS: missing BRACE_PLUGIN_ROOT -> exit 0" || { echo "FAIL: missing BRACE_PLUGIN_ROOT -> exit $RC"; FAIL=1; }
+empty "$OUT" "missing BRACE_PLUGIN_ROOT -> empty stdout"
+empty "$(cat "$ERR_FILE")" "missing BRACE_PLUGIN_ROOT -> no stderr noise"
+
 exit $FAIL

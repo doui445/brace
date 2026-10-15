@@ -6,6 +6,7 @@
 # plain text for the agent. All business logic lives in SKILL.md.
 # Bash 3.2 compatible.
 set -uo pipefail
+[ -f "${BRACE_PLUGIN_ROOT:-}/dispatch/lib.sh" ] || exit 0
 . "$BRACE_PLUGIN_ROOT/dispatch/lib.sh"
 
 CWD="${BRACE_CWD:-}"
