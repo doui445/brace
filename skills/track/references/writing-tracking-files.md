@@ -81,7 +81,7 @@ budget.
 > evolved a lot since then…"* — history, belongs in `DECISIONS.md`.
 >
 > **Better:** *"Build: `make build`. Test: `python -m pytest -q`. Never
-> hand-edit `install.sh` — regenerate it with `scripts/build_installer.sh`.
+> hand-edit generated files — regenerate them with `make build`.
 > Commits: conventional style, present tense."*
 
 ## `STATUS.md`

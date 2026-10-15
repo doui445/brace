@@ -1,8 +1,8 @@
-# AGENTS.md — project-tracker
+# AGENTS.md — BRACE
 
 Instructions for AI coding agents (Antigravity, Claude Code, Codex) working in this repo.
 `CLAUDE.md` is a symlink to this file for Anthropic tooling compatibility.
-This repo **is** the `project-tracker` plugin; it also tracks itself (see `docs/project-tracker/`).
+This repo **is** the BRACE plugin (formerly project-tracker); it also tracks itself (see `docs/brace/`).
 
 ## What this is
 
@@ -13,22 +13,26 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
 
 ## Layout
 
-- `skills/track/SKILL.md` — the full behaviour specification (source
-  of truth for how the skill acts).
-- `skills/track/references/` — `backlog-phases.md`,
-  `reminders-sync.md`, `subprojects.md`, `writing-tracking-files.md`, and `i18n/{en,fr}.md`
-  (the output-language catalogue).
-- `skills/track/hooks/` — `session_start.sh`, `reminders_sync_trigger.sh`,
-  `portfolio_regen.sh` (+ their `test_*.sh`). **Self-relative** — never
-  hardcode `~/.claude/...` paths in them.
-- `skills/track/scripts/` — `generate_portfolio.py` (stdlib only,
-  no deps) + `test_generate_portfolio.py`, `build_installer.sh`.
-- `.claude-plugin/{plugin,marketplace.json}`, `hooks/hooks.json` — plugin
-  manifests. `test_plugin_manifest.py` at the root validates them.
-- `commands/config.md` — the `/project-tracker:config` command.
-- `install-project-tracker.sh` — generated installer for the no-marketplace
-  path. Regenerate with `skills/track/scripts/build_installer.sh`,
-  never hand-edit.
+- `skills/track/` — `SKILL.md` (the full behaviour specification, source of
+  truth for how the skill acts); `references/` (`backlog-phases.md`,
+  `reminders-sync.md`, `subprojects.md`, `writing-tracking-files.md`,
+  `skills-contract.md`, platform notes, and `i18n/{en,fr}.md`, the
+  output-language catalogue); `hooks/session_start.sh` and
+  `hooks/post_tool_use.sh` (neutral skill scripts, + their `test_*.sh`;
+  **self-relative**, never hardcode `~/.claude/...` paths);
+  `scripts/generate_portfolio.py` (stdlib only, no deps) and
+  `scripts/migrate_project.sh` (+ their tests).
+- `dispatch/` — the dispatcher `run.sh`, `lib.sh`, `machine.sh`,
+  `migrate_plugins.sh`, `migrate_config.sh`, and the per-tool adapters
+  `claude/` and `antigravity/` (+ tests).
+- Manifests: `.claude-plugin/{plugin,marketplace}.json` and
+  `claude-hooks.json` (Claude Code); `plugin.json` + `hooks.json` at the repo
+  root (Antigravity). **Never recreate `hooks/hooks.json`** — Antigravity
+  would merge it and no hook would fire any more.
+  `test_plugin_manifest.py` at the root validates them.
+- `bridge/` — the `project-tracker` 0.14.0 bridge plugin that installs
+  BRACE; do not touch it any more.
+- `commands/config.md` — the `/brace:config` command.
 - `docs/superpowers/` — gitignored local specs, plans and research notes;
   keep French, do not ship.
 
@@ -38,7 +42,7 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   Keep test fixtures ASCII/English. This is a review discipline (a "French
   sweep" you run by eye), not an automated in-repo gate.
 - **No real names or personal data anywhere in the repo** — including the
-  self-tracking files under `docs/project-tracker/`, which are committed and
+  self-tracking files under `docs/brace/`, which are committed and
   public. When a note needs to refer to one of the user's other projects,
   use a generic placeholder ("a dogfood project", "an external project", "a
   git sub-repo"), never the actual name, folder path, or Reminders-list name.
@@ -66,24 +70,22 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   the context: impose when the choice brings the user nothing (e.g. the
   BRACE folder migration); offer only when the options genuinely differ for
   them. See `DECISIONS.md` (2026-10-05).
-- Version lives in **both** `.claude-plugin/plugin.json` and
-  `.claude-plugin/marketplace.json` — keep them in sync (a test enforces it).
-  Bump on every release.
+- Version lives in `.claude-plugin/plugin.json`, the `brace` entry of
+  `.claude-plugin/marketplace.json` and the root `plugin.json` — keep them
+  equal (a test enforces it). Bump on every release.
 
 ## Build / test
 
 ```bash
-python3 -m unittest test_plugin_manifest
-python3 -m unittest discover -s skills/track/scripts -p 'test_*.py'
-bash skills/track/hooks/test_session_start.sh
-bash skills/track/hooks/test_reminders_sync_trigger.sh
-bash skills/track/hooks/test_portfolio_regen.sh
-bash skills/track/scripts/build_installer.sh   # regenerate the installer after skill changes
+bash run_tests.sh
 ```
+
+Before a release, also test locally in a throwaway config:
+`claude --plugin-dir .` and `agy plugin install "$PWD"`.
 
 ## Git / GitHub
 
-- `uses_git: true`, remote `origin` → `github.com/doui445/project-tracker`,
+- `uses_git: true`, remote `origin` → `github.com/doui445/brace`,
   default branch `main`.
 - Never commit or push without explicit confirmation. Conventional-commit
   style messages (`skill:`, `hooks:`, `portfolio:`, `plugin:`, `docs:`,
@@ -101,22 +103,22 @@ BRACE 1.0 launch; `0.x` was the `project-tracker` pre-history):
 - **patch** (`N.M.P`) — fixes, doc and guidance changes, refactors with no
   behaviour change.
 - **Zero breakage, whatever the bump**: a release never breaks an existing
-  project. Old locations (`docs/project-tracker/`, `~/.project-tracker/`)
-  stay recognised for good.
+  project. The old project folder `docs/project-tracker/`
+  stays recognised for good; the old config paths are symlinks to
+  `~/.brace/`.
 
 **Routine** (every release):
 
-1. Bump `version` in **both** `.claude-plugin/plugin.json` and
-   `.claude-plugin/marketplace.json` — kept equal, `test_plugin_manifest.py`
-   enforces it.
-2. Regenerate the installer: `bash skills/track/scripts/build_installer.sh`.
-3. In `docs/project-tracker/CHANGELOG.md`: rename `[Unreleased]` to
+1. Bump `version` in `.claude-plugin/plugin.json`, the `brace` entry of
+   `.claude-plugin/marketplace.json` and the root `plugin.json` — kept equal,
+   `test_plugin_manifest.py` enforces it.
+2. In `docs/brace/CHANGELOG.md`: rename `[Unreleased]` to
    `[X.Y.Z] — YYYY-MM-DD`, add a fresh empty `[Unreleased]` above it.
    Update `STATUS.md` (version, next actions), append to `JOURNAL.md`, move
    any completed `BACKLOG.md` items, add a `DECISIONS.md` entry if the
    release settled a structural choice.
-4. Run the tests (see Build / test).
-5. Commit `release: vX.Y.Z — <summary>`, then
+3. Run the tests (see Build / test).
+4. Commit `release: vX.Y.Z — <summary>`, then
    `git tag -a vX.Y.Z -m "<summary>"`, then
    `git push origin main --follow-tags`.
 
@@ -126,10 +128,10 @@ BRACE 1.0 launch; `0.x` was the `project-tracker` pre-history):
 plans live in `docs/superpowers/{specs,plans}/` (the skill's default path),
 kept **gitignored** and in French; research notes sit alongside in
 `docs/superpowers/research/`. Only the shipped tracking files under
-`docs/project-tracker/` are committed.
+`docs/brace/` are committed.
 
 ## Dogfooding note
 
 This repo tracks itself. After a significant change, update
-`docs/project-tracker/STATUS.md` (+ `JOURNAL.md`, and `CHANGELOG.md` /
+`docs/brace/STATUS.md` (+ `JOURNAL.md`, and `CHANGELOG.md` /
 `DECISIONS.md` / `ERRORS.md` where relevant) like any other tracked project.

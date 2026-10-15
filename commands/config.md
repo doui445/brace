@@ -8,7 +8,7 @@ Show the user the current BRACE configuration, then help them change it in plain
    - `~/.brace/scopes.txt` — the tracked roots (one absolute path per line)
    - `~/.brace/trackignore.txt` — excluded paths
    - `~/.brace/portfolio.txt` — the portfolio output folder, and its title if a `title:` line is present
-   - If the current folder is a tracked project, that project's `category` from `docs/brace/STATUS.md`
+   - If the current folder is a tracked project, that project's `category` from `docs/brace/STATUS.md` (or `docs/project-tracker/STATUS.md` for a project not yet moved)
    - `~/.brace/language.txt` — the output language for the tracking files and portfolio; note the `language:` line of `portfolio.txt` (portfolio override) and, if the current folder is a tracked project, its `language:` frontmatter (project override)
    - `~/.brace/prefs.txt` — machine preferences; today just `console_view:` (`chat-global` / `chat-local` / `full`)
    - For every other installed skill (each folder under `${CLAUDE_PLUGIN_ROOT}/skills/` other than `track`): its own settings in `~/.brace/<skill>/`, shown as a section of its own. Today only `track` exists, so there is nothing else to show.

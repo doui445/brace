@@ -1,6 +1,6 @@
 ---
 name: track
-description: Use at the start of a session in a project under the scopes listed in ~/.brace/scopes.txt , after a significant change to such a project, or when the user explicitly asks to track a project, update its tracking files, or manage its GitHub repo or portfolio.
+description: Use at the start of a session in a project under the scopes listed in ~/.brace/scopes.txt, after a significant change to such a project, or when the user explicitly asks to track a project, update its tracking files, or manage its GitHub repo or portfolio.
 ---
 
 # BRACE — track
@@ -52,14 +52,14 @@ Any future retroactive key — including ones a skill built on `track` adds late
 
 ## Scope
 
-The file `~/.brace/scopes.txt` lists the covered roots (the old `~/.project-tracker/`, `~/.claude/project-tracker/` and `~/.gemini/project-tracker/` are symlinks to `~/.brace/`). The startup hook already only fires within that scope — but if the user invokes you explicitly in a folder outside any scope:
+The file `~/.brace/scopes.txt` lists the covered roots (the old `~/.project-tracker/`, `~/.claude/project-tracker/` and `~/.gemini/project-tracker/` become symlinks to `~/.brace/` where present). The startup hook already only fires within that scope — but if the user invokes you explicitly in a folder outside any scope:
 1. Warn them: "this folder is not in your automatic tracking scopes (`<list of scopes.txt entries>`)".
 2. Carry on normally anyway — never act by refusing.
 3. Offer to add a path to `scopes.txt` for the future: *"I'll add it to your scopes — this exact folder, or a parent path you'd rather specify?"*. If accepted, add the exact requested line to `~/.brace/scopes.txt`. If declined, add nothing and carry on.
 
 ## Detecting a project's root
 
-The candidate root is the folder where the session was opened (`cwd`). Exception: if an ancestor of `cwd`, up to the scope root, already has a `docs/brace/STATUS.md`, that ancestor is the tracked project's root (this avoids a false "new project" when a session is opened in a deep subfolder of an already-tracked project).
+The candidate root is the folder where the session was opened (`cwd`). Exception: if an ancestor of `cwd`, up to the scope root, already has a `docs/brace/STATUS.md` (or the legacy `docs/project-tracker/STATUS.md`), that ancestor is the tracked project's root (this avoids a false "new project" when a session is opened in a deep subfolder of an already-tracked project).
 
 Three possible states:
 - **Tracked**: `docs/brace/STATUS.md` present at the root found. A project still on the legacy `docs/project-tracker/` is tracked too; the session-start hook moves it to `docs/brace/` (see `## Moving from project-tracker`).
@@ -337,6 +337,9 @@ permanent — nothing for you to start:
   never in `JOURNAL.md`, `DECISIONS.md`, `ERRORS.md`, `CHANGELOG.md` or
   `BACKLOG.md` (they were true at their date). Announce it in one line and
   offer a commit under the usual rule; never commit on your own.
+- **Same session as a plugin swap**: in a session where a plugin was just
+  replaced, the project stays on `docs/project-tracker/` until the next
+  session — keep reading and writing that folder meanwhile.
 - **Both folders present**: never merge them yourself — show the user what
   each holds and ask, as for a collision between sessions.
 

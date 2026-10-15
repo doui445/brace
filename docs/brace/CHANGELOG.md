@@ -14,6 +14,27 @@ the bump, a release never breaks an existing project. The version lives in
 
 ## [Unreleased]
 
+### Added
+- BRACE 1.0 foundation: one hook per event acting as a dispatcher
+  (`dispatch/run.sh`) with per-tool adapters; skills plug in by dropping
+  `skills/<skill>/hooks/<event>.sh`; per-skill sections on a project's
+  portfolio detail page; `references/skills-contract.md`.
+- Automatic, permanent move from project-tracker: old plugin replaced in
+  Claude Code and Antigravity, config moved to `~/.brace/`, each project's
+  `docs/project-tracker/` moved to `docs/brace/` at its first session.
+- `project-tracker` 0.14.0 bridge that installs brace.
+
+### Changed
+- Renamed to **BRACE**: plugin `brace`, skill `brace:track`, command
+  `/brace:config`, repo `doui445/brace`.
+- The repo root installs as-is in Antigravity (`agy plugin install
+  https://github.com/doui445/brace`).
+
+### Removed
+- Home-made installers (`install-project-tracker.sh`,
+  `install-antigravity.sh`, `build_installer.sh`): official installs only.
+- `platforms/antigravity/` (merged into the repo root).
+
 ## [0.13.0] — 2026-10-04
 
 ### Added

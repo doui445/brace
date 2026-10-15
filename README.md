@@ -1,4 +1,6 @@
-# project-tracker
+# BRACE
+
+*Barely Remarkable, Admittedly Capable Engine* — formerly project-tracker.
 
 Open a Claude Code session in one of your projects and it keeps a small set of
 Markdown files — `STATUS.md`, `ROADMAP.md`, `JOURNAL.md`, `CHANGELOG.md`,
@@ -6,24 +8,40 @@ Markdown files — `STATUS.md`, `ROADMAP.md`, `JOURNAL.md`, `CHANGELOG.md`,
 have the project's context in one predictable place. It also builds a single
 `PORTFOLIO.html` across every project you track.
 
-It's a Claude Code plugin (a skill + three hooks). It never guesses: anything it
+It's a plugin for Claude Code and Antigravity (a skill + a hook dispatcher). It never guesses: anything it
 doesn't know, it asks.
 
 ## Quick start
 
+**Claude Code**
+
 ```
-/plugin marketplace add doui445/project-tracker
-/plugin install project-tracker@project-tracker
+/plugin marketplace add doui445/brace
+/plugin install brace
 ```
 
-Restart Claude Code, then tell it which folders to watch — either run
-`/project-tracker:config`, or edit `~/.claude/project-tracker/scopes.txt`
-directly (one path per line, e.g. `~/code`).
+**Antigravity**
+
+```
+agy plugin install https://github.com/doui445/brace
+```
+
+Restart, then tell it which folders to watch — either run `/brace:config`, or
+edit `~/.brace/scopes.txt` directly (one path per line, e.g. `~/code`).
 
 Now open a session in any project under one of those folders. If it's new,
 Claude opens with a **yes / no / not-now** prompt to track it (then a handful of
 questions — goal, stack, git); if it's already tracked, Claude picks up where
 the files left off.
+
+### Coming from project-tracker
+
+Nothing to do. Update as usual: the last project-tracker release installs
+BRACE, and BRACE moves your config to `~/.brace/` and each project's
+`docs/project-tracker/` to `docs/brace/` the first time you open it (you
+confirm the commit). Restart and close your other sessions when asked. If you
+only use Antigravity with an older manual install, reinstall once with the
+command above — BRACE removes the old one.
 
 ## What you get
 
@@ -31,13 +49,13 @@ the files left off.
 |---|---|
 | `README.md` *(project root)* | What, why, stack, install/run, links |
 | `CLAUDE.md` *(project root)* | Instructions for Claude: conventions, build/test commands, pitfalls |
-| `docs/project-tracker/STATUS.md` | Snapshot of the current state + next actions. Rewritten every session |
-| `docs/project-tracker/ROADMAP.md` | Prioritised synthesis: what's done, the current focus, what's anticipated |
-| `docs/project-tracker/JOURNAL.md` | Dated log of what was done and why. Append-only |
-| `docs/project-tracker/CHANGELOG.md` | Keep a Changelog format |
-| `docs/project-tracker/DECISIONS.md` | Why each structural choice, alternatives rejected. Append-only |
-| `docs/project-tracker/ERRORS.md` | Bug → cause → fix, searchable. Append-only |
-| `docs/project-tracker/BACKLOG.md` | Raw reservoir of every envisaged idea. Append-only |
+| `docs/brace/STATUS.md` | Snapshot of the current state + next actions. Rewritten every session |
+| `docs/brace/ROADMAP.md` | Prioritised synthesis: what's done, the current focus, what's anticipated |
+| `docs/brace/JOURNAL.md` | Dated log of what was done and why. Append-only |
+| `docs/brace/CHANGELOG.md` | Keep a Changelog format |
+| `docs/brace/DECISIONS.md` | Why each structural choice, alternatives rejected. Append-only |
+| `docs/brace/ERRORS.md` | Bug → cause → fix, searchable. Append-only |
+| `docs/brace/BACKLOG.md` | Raw reservoir of every envisaged idea. Append-only |
 
 Plus, on top of the files:
 
@@ -57,7 +75,7 @@ Plus, on top of the files:
 
 ## Requirements
 
-- **Claude Code** — that's the only hard requirement.
+- **Claude Code** or **Antigravity** — that's the only hard requirement.
 - **Python 3** — standard library only, no dependencies (bundled, used by the
   portfolio generator).
 - **The `gh` CLI** — only for the optional GitHub repo automation.
@@ -69,32 +87,17 @@ Plus, on top of the files:
 
 ## Install
 
-### As a Claude Code plugin (recommended)
-
-The two commands from **Quick start**, then restart Claude Code. The plugin
-bundles the skill and its three hooks (`SessionStart` + two `PostToolUse`) —
-no manual `settings.json` edit.
+Use the commands from **Quick start**, then restart. The plugin bundles the
+skill and its hooks (`SessionStart` + `PostToolUse`) — no manual
+`settings.json` edit.
 
 Third-party marketplaces don't auto-update by default. To pick up a new
-version: `/plugin marketplace update project-tracker` then
-`/plugin update project-tracker` (or set `FORCE_AUTOUPDATE_PLUGINS=1`).
-
-### With the install script (no marketplace)
-
-```bash
-git clone https://github.com/doui445/project-tracker ~/src/project-tracker
-bash ~/src/project-tracker/install-project-tracker.sh
-```
-
-The installer copies the skill to `~/.claude/skills/track/`,
-registers the three hooks in `~/.claude/settings.json` with an idempotent
-merge, creates `scopes.txt` and `trackignore.txt`, and runs the test suites.
-The `/project-tracker:config` command is only available with the plugin
-install.
+version in Claude Code: `/plugin marketplace update brace` then
+`/plugin update brace` (or set `FORCE_AUTOUPDATE_PLUGINS=1`).
 
 ## Configuration
 
-Up to five files in `~/.claude/project-tracker/`. The plugin/installer creates
+Up to five files in `~/.brace/`. The plugin creates
 `scopes.txt` and `trackignore.txt`; `portfolio.txt`, `language.txt` and
 `prefs.txt` each appear the first time the matching question is asked. In all
 of them, `~` and `$VAR` are expanded and `#` comments are ignored.
@@ -115,7 +118,7 @@ of them, `~` and `$VAR` are expanded and `#` comments are ignored.
   Code's transcript to the condensed "chat" view (everywhere, only in tracked
   projects, or not at all).
 
-`/project-tracker:config` (plugin install only) views and changes all of this
+`/brace:config` views and changes all of this
 in plain language.
 
 ## Details
