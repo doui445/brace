@@ -30,8 +30,12 @@ eq "$(brace_find_project "$SCOPE/proj" "$SCOPE")" "$SCOPE/proj" "project root it
 eq "$(brace_find_project "$SCOPE/skipme/x" "$SCOPE")" "" "nothing up to the stop dir"
 eq "$(brace_find_project "$SCOPE/proj/docs/brace" /)" "$SCOPE/proj" "stop at / works"
 # Relative start paths must terminate (dirname of "." is "." forever).
-( cd "$TMP" && eq "$(brace_find_project "rel/path" /)" "" "relative start path terminates, empty" )
-( cd "$TMP" && eq "$(brace_find_project "" /)" "" "empty start path terminates, empty" )
+# cd happens in the parent shell so eq's FAIL=1 reaches the exit status.
+here="$PWD"
+cd "$TMP" || exit 1
+eq "$(brace_find_project "rel/path" /)" "" "relative start path terminates, empty"
+eq "$(brace_find_project "" /)" "" "empty start path terminates, empty"
+cd "$here" || exit 1
 
 rm "$HOME/.brace/scopes.txt"
 eq "$(brace_scope_root "$SCOPE/proj")" "" "no scopes.txt -> empty"
