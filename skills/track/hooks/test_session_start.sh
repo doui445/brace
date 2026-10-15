@@ -97,6 +97,14 @@ has "$OUT" "project: big" "huge frontmatter -> frontmatter present"
 [ "${#OUT}" -lt 6000 ] && echo "PASS: huge frontmatter -> output bounded (${#OUT} chars)" || { echo "FAIL: huge frontmatter -> output unbounded (${#OUT} chars)"; FAIL=1; }
 hasnt "$OUT" "BODY_LEAK_MARKER" "STATUS.md body never leaks"
 
+# Short fixture: a small frontmatter, then a body marker the 4000-byte cap
+# cannot hide. Catches a mutant that drops the awk frontmatter limit.
+SHORT="$SCOPE/short-body"; mkdir -p "$SHORT/docs/brace"
+printf -- '---\nproject: short\nstatus: active\nlast_updated: 2026-01-01\n---\nSHORT_BODY_MARKER only in the body\n' > "$SHORT/docs/brace/STATUS.md"
+OUT="$(run "$SHORT")"
+has "$OUT" "project: short" "short fixture -> frontmatter present"
+hasnt "$OUT" "SHORT_BODY_MARKER" "short fixture -> body marker absent"
+
 # docs/ folder without any tracking folder stays UNTRACKED
 DD="$SCOPE/docs-only"; mkdir -p "$DD/docs"; echo notes > "$DD/docs/notes.md"
 has "$(run "$DD")" "UNTRACKED project" "docs/ without tracking folder -> still untracked"
