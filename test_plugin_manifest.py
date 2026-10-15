@@ -73,6 +73,15 @@ class PluginManifestTests(unittest.TestCase):
             self.assertTrue(path.is_file(), f"missing: {c}")
             self.assertTrue(os.access(path, os.X_OK), f"not executable: {c}")
 
+    def test_bridge_manifest(self):
+        b = _load("bridge/.claude-plugin/plugin.json")
+        self.assertEqual(b["name"], "project-tracker")
+        entries = {e["name"]: e for e in _load(".claude-plugin/marketplace.json")["plugins"]}
+        self.assertEqual(entries["project-tracker"]["version"], b["version"])
+        cmd = _load("bridge/hooks/hooks.json")["hooks"]["SessionStart"][0]["hooks"][0]["command"]
+        path = REPO / "bridge" / cmd.strip('"').replace("${CLAUDE_PLUGIN_ROOT}/", "")
+        self.assertTrue(path.is_file() and os.access(path, os.X_OK), path)
+
     def test_config_command_exists(self):
         p = REPO / "commands" / "config.md"
         self.assertTrue(p.is_file())
