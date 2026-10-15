@@ -13,5 +13,5 @@ BRACE_TOOL=claude \
 BRACE_PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$DIR/../.." && pwd)}" \
 BRACE_CWD="$(printf '%s\n' "$PARSED" | sed -n '1p')" \
 BRACE_SESSION="$(printf '%s\n' "$PARSED" | sed -n '2p')" \
-bash "$DIR/../run.sh" session_start
+bash "$DIR/../run.sh" session_start 2>/dev/null
 exit 0

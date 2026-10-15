@@ -15,7 +15,7 @@ OUT="$(BRACE_TOOL=claude \
   BRACE_PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$DIR/../.." && pwd)}" \
   BRACE_FILE="$(printf '%s\n' "$PARSED" | sed -n '2p')" \
   BRACE_SESSION="$(printf '%s\n' "$PARSED" | sed -n '3p')" \
-  bash "$DIR/../run.sh" post_tool_use)"
+  bash "$DIR/../run.sh" post_tool_use 2>/dev/null)"
 [ -n "$OUT" ] || exit 0
 python3 -c '
 import json, sys
