@@ -54,4 +54,24 @@ ok '[ -f "$P/docs/project-tracker/STATUS.md" ] && grep -q project-tracker "$P/AG
 # E: nothing to migrate -> exit 1
 mkdir -p "$TMP/empty"; bash "$SCRIPT" "$TMP/empty" >/dev/null; RC=$?
 ok '[ $RC -eq 1 ]' "E: exit 1 when there is no docs/project-tracker"
+
+# F: CRLF living file keeps its CRLF line endings
+P="$TMP/crlf"; mkproj "$P" false; printf 'See docs/project-tracker/STATUS.md\r\nline two\r\n' > "$P/README.md"
+CR_BEFORE="$(grep -c $'\r' "$P/README.md")"
+bash "$SCRIPT" "$P" >/dev/null
+ok 'grep -q "docs/brace/STATUS.md" "$P/README.md" && [ "$(grep -c $'"'"'\r'"'"' "$P/README.md")" = "$CR_BEFORE" ] && [ "$CR_BEFORE" -gt 0 ]' "F: CRLF README rewritten, CRLF kept"
+
+# G: no argument, or filesystem root -> exit 1, nothing created
+G_CWD="$TMP/noarg"; mkdir -p "$G_CWD"
+(cd "$G_CWD" && bash "$SCRIPT" >/dev/null 2>&1); RC=$?
+ok '[ $RC -eq 1 ] && [ -z "$(ls -A "$G_CWD")" ]' "G: no argument -> exit 1, nothing created"
+bash "$SCRIPT" "/" >/dev/null 2>&1; RC=$?
+ok '[ $RC -eq 1 ]' "G: root path '/' -> exit 1"
+
+# H: a read-only living file -> summary reports the failure, still exit 0 (move done)
+P="$TMP/ro"; mkproj "$P" false; chmod 444 "$P/AGENTS.md"
+OUT="$(bash "$SCRIPT" "$P" 2>/dev/null)"; RC=$?
+chmod 644 "$P/AGENTS.md"
+ok '[ $RC -eq 0 ] && [ -f "$P/docs/brace/STATUS.md" ]' "H: move done, exit 0 despite rewrite failure"
+case "$OUT" in *"rewrite failed"*AGENTS.md*) echo "PASS: H: summary reports failed rewrite" ;; *) echo "FAIL: H: summary [$OUT]"; FAIL=1 ;; esac
 exit $FAIL

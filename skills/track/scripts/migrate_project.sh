@@ -9,7 +9,10 @@
 # Bash 3.2 compatible.
 set -euo pipefail
 
+[ -n "${1:-}" ] || exit 1
 ROOT="${1%/}"
+# Refuse an empty or filesystem-root project path.
+[ -n "$ROOT" ] || exit 1
 OLD="$ROOT/docs/project-tracker"
 NEW="$ROOT/docs/brace"
 
@@ -29,7 +32,7 @@ if [ "$USES_GIT" = "true" ] \
     [ -d "$OLD" ] && [ ! -e "$NEW" ] && mv "$OLD" "$NEW"
   fi
   # Anything git left behind (untracked files) follows the folder.
-  # mv -n never overwrites: a clashing leftover stays in the old folder,
+  # An explicit [ -e ] check never overwrites: a clashing leftover stays in the old folder,
   # which then keeps the project in the "both" state instead of losing it.
   if [ -d "$OLD" ]; then
     for item in "$OLD"/* "$OLD"/.[!.]*; do
@@ -47,20 +50,25 @@ else
 fi
 
 CHANGED=""
+FAILED=""
 for f in "$ROOT/AGENTS.md" "$ROOT/CLAUDE.md" "$ROOT/README.md" "$NEW/STATUS.md"; do
   [ -f "$f" ] || continue
   [ -L "$f" ] && continue
   grep -q 'docs/project-tracker' "$f" || continue
+  # Byte-level replace: keeps CRLF / lone CR line endings intact.
   if python3 -c '
 import sys, pathlib
 p = pathlib.Path(sys.argv[1])
-p.write_text(p.read_text(encoding="utf-8").replace("docs/project-tracker", "docs/brace"), encoding="utf-8")
+p.write_bytes(p.read_bytes().replace(b"docs/project-tracker", b"docs/brace"))
 ' "$f" 2>/dev/null; then
     CHANGED="$CHANGED ${f#$ROOT/}"
   else
     echo "warning: could not rewrite ${f#$ROOT/}" >&2
+    FAILED="$FAILED ${f#$ROOT/}"
   fi
 done
 
-echo "moved docs/project-tracker/ -> docs/brace/; living files updated:${CHANGED:- none}"
+SUMMARY="moved docs/project-tracker/ -> docs/brace/; living files updated:${CHANGED:- none}"
+[ -z "$FAILED" ] || SUMMARY="$SUMMARY; rewrite failed:$FAILED"
+echo "$SUMMARY"
 exit 0
