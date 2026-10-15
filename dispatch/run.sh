@@ -34,11 +34,16 @@ $1"
 
 if [ "$EVENT" = "session_start" ]; then
   MACHINE="${BRACE_MACHINE_SCRIPT:-$DISPATCH_DIR/machine.sh}"
-  M_OUT="$(bash "$MACHINE" 2>/dev/null)"
+  M_OUT="$(bash "$MACHINE" 2>/dev/null </dev/null)"
   M_RC=$?
-  [ "$M_RC" -eq 10 ] && BRACE_SWAPPED=1
+  if [ "$M_RC" -eq 10 ]; then
+    BRACE_SWAPPED=1
+  fi
   export BRACE_SWAPPED
-  append "$M_OUT"
+  # Keep the machine output only on rc 0 (nothing swapped) or 10 (swapped).
+  if [ "$M_RC" -eq 0 ] || [ "$M_RC" -eq 10 ]; then
+    append "$M_OUT"
+  fi
 fi
 
 PROJECT=""
@@ -50,7 +55,10 @@ case "$EVENT" in
     fi
     ;;
   post_tool_use)
-    [ -n "$BRACE_FILE" ] && PROJECT="$(brace_find_project "$(dirname "$BRACE_FILE")" /)"
+    if [ -n "$BRACE_FILE" ]; then
+      SCOPE="$(brace_scope_root "$BRACE_FILE")"
+      [ -n "$SCOPE" ] && PROJECT="$(brace_find_project "$(dirname "$BRACE_FILE")" "$SCOPE")"
+    fi
     ;;
 esac
 BRACE_PROJECT_ROOT="$PROJECT"
@@ -62,7 +70,7 @@ for script in "$BRACE_PLUGIN_ROOT"/skills/*/hooks/"$EVENT".sh; do
   if [ "$skill" != "track" ]; then
     [ -n "$PROJECT" ] && [ -d "$PROJECT/docs/brace/$skill" ] || continue
   fi
-  S_OUT="$(bash "$script" 2>/dev/null)" || S_OUT=""
+  S_OUT="$(bash "$script" 2>/dev/null </dev/null)" || S_OUT=""
   append "$S_OUT"
 done
 

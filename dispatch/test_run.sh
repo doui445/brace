@@ -13,7 +13,7 @@ mk() { mkdir -p "$ROOT/skills/$1/hooks"; printf '#!/usr/bin/env bash\n%s\n' "$3"
 mk track session_start 'echo "TRACK swapped=$BRACE_SWAPPED project=$BRACE_PROJECT_ROOT event=$BRACE_EVENT"'
 mk design session_start 'echo "DESIGN"'
 mk broken session_start 'echo "PARTIAL"; exit 1'
-mk track post_tool_use 'echo "TRACK-POST $BRACE_FILE"'
+mk track post_tool_use 'echo "TRACK-POST $BRACE_FILE project=[$BRACE_PROJECT_ROOT]"'
 mk design post_tool_use 'echo "DESIGN-POST"'
 MACHINE="$TMP/machine.sh"
 
@@ -42,11 +42,26 @@ printf '#!/usr/bin/env bash\nexit 0\n' > "$MACHINE"
 OUT="$(BRACE_CWD="/outside" run session_start)"
 has "$OUT" "TRACK swapped=0 project= event" "outside scopes -> empty project root"
 
+printf '#!/usr/bin/env bash\necho "MACHINE"\nexit 0\n' > "$MACHINE"
 mkdir -p "$P/docs/brace/design"
 OUT="$(BRACE_FILE="$P/docs/brace/design/DESIGN.md" run post_tool_use)"
 has "$OUT" "TRACK-POST $P/docs/brace/design/DESIGN.md" "post_tool_use passes the file"
 has "$OUT" "DESIGN-POST" "post_tool_use finds the project from the file"
+has "$OUT" "project=[$P]" "post_tool_use exports the in-scope project root"
 hasnt "$OUT" "MACHINE" "machine checks only at session start"
+
+OUTSIDE="$TMP/outside/q"
+mkdir -p "$OUTSIDE/docs/brace/design"; touch "$OUTSIDE/docs/brace/STATUS.md"
+OUT="$(BRACE_FILE="$OUTSIDE/docs/brace/design/DESIGN.md" run post_tool_use)"
+has "$OUT" "TRACK-POST $OUTSIDE/docs/brace/design/DESIGN.md project=[]" "post_tool_use outside scopes -> track runs, empty project root"
+hasnt "$OUT" "DESIGN-POST" "post_tool_use outside scopes -> project skill not run"
+
+printf '#!/usr/bin/env bash\necho "BROKEN"\nexit 1\n' > "$MACHINE"
+OUT="$(BRACE_CWD="$P" run session_start)"; RC=$?
+hasnt "$OUT" "BROKEN" "machine exit 1 -> its output discarded"
+has "$OUT" "TRACK swapped=0" "machine exit 1 -> track still runs"
+[ "$RC" -eq 0 ] && echo "PASS: machine exit 1 -> run.sh exits 0" || { echo "FAIL: run.sh exit $RC"; FAIL=1; }
+printf '#!/usr/bin/env bash\nexit 0\n' > "$MACHINE"
 
 rm -rf "$ROOT/skills"; mkdir -p "$ROOT/skills"
 OUT="$(BRACE_CWD="$P" run session_start)"
