@@ -845,3 +845,16 @@ Closed out the portfolio sub-pages work and cut the release:
   official install everywhere (GitHub marketplace for Claude Code,
   `agy plugin install` for Antigravity), including the author's machine.
   The home-made installers go in 1.0. See `DECISIONS.md` (2026-10-14).
+
+## 2026-10-15 — BRACE 1.0 spec: review fixes
+
+- From the user's review: skills also callable as `/brace:<skill>`; after a
+  plugin swap BRACE tells the user to restart and close other sessions; a
+  one-time "you're on BRACE, commands changed" notice; no read fallback for
+  the old config paths (migrated first, old paths become links) — the old
+  project folder stays recognised (portfolio + migration detection).
+- Antigravity-only users had no official install path (installing the repo
+  root picked up Claude-format hooks). Fixed and tested: Claude hooks
+  declared via `"hooks": "./claude-hooks.json"` in the Claude manifest, the
+  repo root carrying Antigravity's `hooks.json` / `plugin.json` — both tools
+  install the same root and both fire their hooks.
