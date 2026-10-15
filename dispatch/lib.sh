@@ -72,7 +72,7 @@ brace_tracking_dir() {
 # Walks up from $1 to $2 (inclusive, or /) and prints the first folder
 # that has a tracking folder, or nothing.
 brace_find_project() {
-  local dir stop
+  local dir stop parent
   dir="$(brace__expand "$1")"
   stop="$(brace__expand "$2")"
   [ -n "$dir" ] || return 0
@@ -82,7 +82,9 @@ brace_find_project() {
       return 0
     fi
     [ "$dir" = "$stop" ] && return 0
-    [ "$dir" = "/" ] && return 0
-    dir="$(dirname "$dir")"
+    parent="$(dirname "$dir")"
+    # dirname stops changing at "/" and at "." (relative paths): stop there.
+    [ "$parent" = "$dir" ] && return 0
+    dir="$parent"
   done
 }
