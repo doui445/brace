@@ -14,10 +14,16 @@ bash "$DIR/migrate_config.sh" >/dev/null 2>&1 || true
 
 [ -n "$P_OUT" ] && printf '%s\n' "$P_OUT"
 
-FLAG="$HOME/.brace/.from-project-tracker"
-if [ -f "$FLAG" ]; then
-  echo "[BRACE] Tell the user once, in one line: project-tracker is now BRACE, and its commands changed — /project-tracker:config is now /brace:config, and the skill is brace:track."
-  rm -f "$FLAG"
+# The notice is skipped when HOME is unset (never touch "/.brace").
+if [ -n "${HOME:-}" ]; then
+  FLAG="$HOME/.brace/.from-project-tracker"
+  if [ -f "$FLAG" ]; then
+    # A plugin just swapped: the new commands only work after the restart.
+    SUFFIX=""
+    [ "$P_RC" -eq 10 ] && SUFFIX=" (after the restart)"
+    echo "[BRACE] Tell the user once, in one line: project-tracker is now BRACE, and its commands changed — /project-tracker:config is now /brace:config, and the skill is brace:track${SUFFIX}."
+    rm -f "$FLAG"
+  fi
 fi
 
 [ "$P_RC" -eq 10 ] && exit 10
