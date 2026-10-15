@@ -20,7 +20,7 @@ class ConfigLoaderTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.home = Path(self.tmp.name)
-        self.cfg = self.home / ".claude" / "project-tracker"
+        self.cfg = self.home / ".brace"
         self.cfg.mkdir(parents=True)
         self._env = unittest.mock.patch.dict("os.environ", {"HOME": str(self.home)})
         self._env.start()
@@ -619,7 +619,7 @@ class BuildPageTests(unittest.TestCase):
         self.assertIn("Aucun projet suivi pour l'instant.", html)
         self.assertIn("Rechercher un projet", html)
         self.assertIn("Réinitialiser les filtres", html)
-        self.assertIn("Régénéré automatiquement par project-tracker.", html)
+        self.assertIn("Régénéré automatiquement par BRACE.", html)
 
     def test_build_page_localized_default_title(self):
         html = gp.build_page([], generated_at="x", title=None, lang="fr")
@@ -730,7 +730,7 @@ class MainTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.home = Path(self.tmp.name)
-        self.cfg = self.home / ".claude" / "project-tracker"
+        self.cfg = self.home / ".brace"
         self.cfg.mkdir(parents=True)
         self._env = unittest.mock.patch.dict("os.environ", {"HOME": str(self.home)})
         self._env.start()
@@ -1053,7 +1053,7 @@ subprojects:
 
 class TestBuildSubpage(unittest.TestCase):
     def _make_project_files(self, root):
-        docs = root / "docs" / "project-tracker"
+        docs = root / "docs" / "brace"
         docs.mkdir(parents=True)
         (docs / "STATUS.md").write_text(
             "---\nproject: demo\nstatus: active\nlast_updated: 2026-09-01\n---\n\n"
@@ -1215,6 +1215,97 @@ class TestWriteSubpagesAndCleanup(unittest.TestCase):
             target = out_dir / "PORTFOLIO.html"
             gp.clean_orphan_subpages(target, [{"project": "alpha"}])
             self.assertFalse((sub_dir / "renamed-project.html").is_file())
+
+
+class BraceLayoutTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.home = Path(self.tmp.name)
+        self._env = unittest.mock.patch.dict("os.environ", {"HOME": str(self.home)})
+        self._env.start()
+        self.addCleanup(self._env.stop)
+
+    def _status(self, project, sub, extra=""):
+        d = project / "docs" / sub
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "STATUS.md").write_text(
+            f"---\nproject: {project.name}\nstatus: active\nlast_updated: 2026-01-01\n{extra}---\n\n## Where it stands\n\nOk.\n",
+            encoding="utf-8")
+
+    def test_config_is_read_from_dot_brace_only(self):
+        (self.home / ".project-tracker").mkdir()
+        (self.home / ".project-tracker" / "scopes.txt").write_text("/legacy\n", encoding="utf-8")
+        self.assertEqual(gp.load_scopes(), [])
+        (self.home / ".brace").mkdir()
+        (self.home / ".brace" / "scopes.txt").write_text("/new\n", encoding="utf-8")
+        self.assertEqual(gp.load_scopes(), [Path("/new")])
+
+    def test_collect_finds_both_layouts_once_each(self):
+        scope = self.home / "scope"
+        self._status(scope / "newp", "brace")
+        self._status(scope / "oldp", "project-tracker")
+        self._status(scope / "both", "brace", "category: new\n")
+        self._status(scope / "both", "project-tracker", "category: old\n")
+        projects, _ = gp.collect_projects(scope, [], [str(scope)])
+        names = sorted(p["project"] for p in projects)
+        self.assertEqual(names, ["both", "newp", "oldp"])
+        both = next(p for p in projects if p["project"] == "both")
+        self.assertEqual(both["category"], "new")
+
+    def test_tracking_dir(self):
+        p = self.home / "p"
+        self.assertIsNone(gp.tracking_dir(p))
+        self._status(p, "project-tracker")
+        self.assertEqual(gp.tracking_dir(p), p / "docs" / "project-tracker")
+        self._status(p, "brace")
+        self.assertEqual(gp.tracking_dir(p), p / "docs" / "brace")
+
+    def test_subpage_reads_legacy_layout(self):
+        p = self.home / "old"
+        self._status(p, "project-tracker")
+        html = gp.build_subpage(p, {"project": "old"}, "en")
+        self.assertIn("Ok.", html)
+
+    def test_skill_section_on_detail_page(self):
+        p = self.home / "app"
+        self._status(p, "brace", "design_stage: moodboard\ndesign_tool: impeccable\n")
+        (p / "docs" / "brace" / "design").mkdir()
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        html = gp.build_subpage(p, data, "en")
+        self.assertIn('class="subpage-skill"', html)
+        self.assertIn("<h2>Design</h2>", html)
+        self.assertIn("stage", html)
+        self.assertIn("moodboard", html)
+        self.assertIn((p / "docs" / "brace" / "design").as_uri(), html)
+        self.assertIn("Open folder", html)
+
+    def test_no_skill_section_without_skill_folder(self):
+        p = self.home / "plain"
+        self._status(p, "brace", "design_stage: x\n")
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        self.assertNotIn('class="subpage-skill"', gp.build_subpage(p, data, "en"))
+
+    def test_skill_section_french(self):
+        p = self.home / "fr"
+        self._status(p, "brace")
+        (p / "docs" / "brace" / "design").mkdir()
+        self.assertIn("Ouvrir le dossier", gp.build_subpage(p, {"project": "fr"}, "fr"))
+
+    def test_cards_unchanged_by_skill_keys(self):
+        base = {"project": "x", "status": "active", "last_updated": "2026-01-01", "_path": "~/x", "_dir": "/x", "category": ""}
+        self.assertEqual(gp.render_card(dict(base), gp._strings("en")),
+                         gp.render_card(dict(base, design_stage="moodboard"), gp._strings("en")))
+
+    def test_orphan_cleanup_recognises_legacy_marker(self):
+        target = self.home / "out" / "PORTFOLIO.html"
+        sub = gp._subpage_dir(target)
+        sub.mkdir(parents=True)
+        (sub / "gone.html").write_text("<!-- generated by project-tracker -->", encoding="utf-8")
+        (sub / "mine.html").write_text("my own page", encoding="utf-8")
+        gp.clean_orphan_subpages(target, [])
+        self.assertFalse((sub / "gone.html").exists())
+        self.assertTrue((sub / "mine.html").exists())
 
 
 if __name__ == "__main__":
