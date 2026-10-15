@@ -121,6 +121,20 @@ fresh; STUB_RC=1; mkdir -p "$HOME/.gemini/config/plugins/project-tracker"
 OUT="$(run)"; RC=$?
 ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && [ -d "$HOME/.gemini/config/plugins/brace" ] && ! grep -q "uninstall" "$LOG"' "I2: partial brace folder -> old kept, no uninstall"
 
+# I3: after I2 (partial folder + backoff): (a) next run in backoff leaves the old plugin alone
+STUB_RC=0
+OUT="$(run)"; RC=$?
+ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && ! grep -q "uninstall" "$LOG"' "I3a: partial folder + backoff -> old kept"
+ok '[ "$(grep -c "agy plugin install" "$LOG")" = 1 ]' "I3a: no new install call during backoff"
+# (b) backoff expired + succeeding install -> brace complete, old removed
+OUT="$(BRACE_BACKOFF_SECS=0 run)"; RC=$?
+ok '[ $RC -eq 10 ] && [ -f "$HOME/.gemini/config/plugins/brace/plugin.json" ] && [ ! -e "$HOME/.gemini/config/plugins/project-tracker" ]' "I3b: backoff expired -> installed, old removed"
+
+# I4: partial brace folder present before the run, no backoff, install succeeds -> proceeds
+fresh; mkdir -p "$HOME/.gemini/config/plugins/project-tracker" "$HOME/.gemini/config/plugins/brace"
+OUT="$(run)"; RC=$?
+ok '[ $RC -eq 10 ] && grep -q "agy plugin install" "$LOG" && [ -f "$HOME/.gemini/config/plugins/brace/plugin.json" ] && [ ! -e "$HOME/.gemini/config/plugins/project-tracker" ]' "I4: pre-existing partial folder -> install, then old removed"
+
 # J: install hangs -> bounded, old kept, silent; then backoff blocks a retry
 fresh; STUB_SLEEP=6; export BRACE_CLI_TIMEOUT=1; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
 S=$SECONDS; OUT="$(run)"; RC=$?; EL=$((SECONDS - S))

@@ -96,12 +96,12 @@ AGY_PLUGINS="$HOME_DIR/.gemini/config/plugins"
 OLD_AGY="$AGY_PLUGINS/project-tracker"
 if [ -n "$HOME_DIR" ] && { [ -d "$OLD_AGY" ] || [ -L "$OLD_AGY" ]; } && command -v agy >/dev/null 2>&1; then
   AGY_READY=0
-  if [ -d "$AGY_PLUGINS/brace" ]; then
-    AGY_READY=1   # already there before this run
+  if [ -f "$AGY_PLUGINS/brace/plugin.json" ]; then
+    AGY_READY=1   # complete install already there before this run
   elif ! in_backoff; then
     # A partial folder left by a failed install is never trusted.
     if bounded agy plugin install "$ROOT" \
-       && [ -n "$(find "$AGY_PLUGINS/brace" -maxdepth 2 -name plugin.json 2>/dev/null | head -1)" ]; then
+       && [ -f "$AGY_PLUGINS/brace/plugin.json" ]; then
       AGY_READY=1
       clear_backoff
     else
