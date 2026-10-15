@@ -1,12 +1,18 @@
 {
-  "name": "project-tracker",
+  "name": "brace",
   "owner": { "name": "doui445" },
   "plugins": [
     {
-      "name": "project-tracker",
+      "name": "brace",
       "source": ".",
-      "description": "Standard markdown project-tracking files, kept current automatically via hooks.",
-      "version": "0.13.0"
+      "description": "Project memory for AI coding assistants: tracking files kept current, a unified portfolio, skills that share one memory.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "project-tracker",
+      "source": "./bridge",
+      "description": "project-tracker is now BRACE. This final release installs brace for you.",
+      "version": "0.14.0"
     }
   ]
 }

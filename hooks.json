@@ -1,0 +1,15 @@
+{
+  "brace-session": {
+    "PreInvocation": [
+      { "type": "command", "command": "./dispatch/antigravity/session_start.sh", "timeout": 60 }
+    ]
+  },
+  "brace-post-tool-use": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [ { "type": "command", "command": "./dispatch/antigravity/post_tool_use.sh", "timeout": 30 } ]
+      }
+    ]
+  }
+}

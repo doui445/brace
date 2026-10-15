@@ -1,8 +1,9 @@
 {
-  "name": "project-tracker",
-  "description": "Bootstraps and keeps up to date a standard set of markdown tracking files (README, ROADMAP, STATUS, JOURNAL, CHANGELOG, CLAUDE, DECISIONS, ERRORS, BACKLOG) for projects under the scopes defined in ~/.claude/project-tracker/scopes.txt, manages GitHub repo creation, and regenerates PORTFOLIO.html.",
-  "version": "0.13.0",
+  "name": "brace",
+  "description": "BRACE — project memory for AI coding assistants: tracking files kept current, a unified portfolio, skills that share one memory.",
+  "version": "1.0.0",
   "author": { "name": "doui445" },
   "license": "MIT",
-  "homepage": "https://github.com/doui445/project-tracker"
+  "homepage": "https://github.com/doui445/brace",
+  "hooks": "./claude-hooks.json"
 }
