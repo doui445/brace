@@ -32,7 +32,7 @@ cat > "$BIN/agy" <<'EOS'
 #!/usr/bin/env bash
 echo "agy $*" >> "$STUB_LOG"
 case "$*" in
-  "plugin install"*) sleep "$STUB_SLEEP"; [ "$STUB_RC" -eq 0 ] && mkdir -p "$HOME/.gemini/config/plugins/brace"; exit "$STUB_RC" ;;
+  "plugin install"*) sleep "$STUB_SLEEP"; mkdir -p "$HOME/.gemini/config/plugins/brace"; [ "$STUB_RC" -eq 0 ] && : > "$HOME/.gemini/config/plugins/brace/plugin.json"; exit "$STUB_RC" ;;
   "plugin uninstall project-tracker") rm -rf "$HOME/.gemini/config/plugins/project-tracker" ;;
 esac
 exit 0
@@ -115,6 +115,11 @@ ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && ! grep -q "uninstall" "$LOG"' "H: unverifi
 fresh; STUB_RC=1; mkdir -p "$HOME/.gemini/config/plugins/project-tracker"
 OUT="$(run)"; RC=$?
 ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && ! grep -q "uninstall" "$LOG"' "I: agy install fails -> old kept"
+
+# I2: agy install creates a partial brace folder then fails -> old kept, folder left
+fresh; STUB_RC=1; mkdir -p "$HOME/.gemini/config/plugins/project-tracker"
+OUT="$(run)"; RC=$?
+ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && [ -d "$HOME/.gemini/config/plugins/brace" ] && ! grep -q "uninstall" "$LOG"' "I2: partial brace folder -> old kept, no uninstall"
 
 # J: install hangs -> bounded, old kept, silent; then backoff blocks a retry
 fresh; STUB_SLEEP=6; export BRACE_CLI_TIMEOUT=1; installed "$HOME/.claude" '"project-tracker@project-tracker": []'

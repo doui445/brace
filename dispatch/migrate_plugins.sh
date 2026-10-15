@@ -95,14 +95,20 @@ fi
 AGY_PLUGINS="$HOME_DIR/.gemini/config/plugins"
 OLD_AGY="$AGY_PLUGINS/project-tracker"
 if [ -n "$HOME_DIR" ] && { [ -d "$OLD_AGY" ] || [ -L "$OLD_AGY" ]; } && command -v agy >/dev/null 2>&1; then
-  if [ ! -d "$AGY_PLUGINS/brace" ] && ! in_backoff; then
-    if bounded agy plugin install "$ROOT" && [ -d "$AGY_PLUGINS/brace" ]; then
+  AGY_READY=0
+  if [ -d "$AGY_PLUGINS/brace" ]; then
+    AGY_READY=1   # already there before this run
+  elif ! in_backoff; then
+    # A partial folder left by a failed install is never trusted.
+    if bounded agy plugin install "$ROOT" \
+       && [ -n "$(find "$AGY_PLUGINS/brace" -maxdepth 2 -name plugin.json 2>/dev/null | head -1)" ]; then
+      AGY_READY=1
       clear_backoff
     else
       set_backoff
     fi
   fi
-  if [ -d "$AGY_PLUGINS/brace" ]; then
+  if [ "$AGY_READY" = "1" ]; then
     # Never let agy uninstall walk into symlinks pointing at a repo.
     if [ ! -L "$OLD_AGY" ] && [ -z "$(find "$OLD_AGY" -type l 2>/dev/null | head -1)" ]; then
       bounded agy plugin uninstall project-tracker || true
