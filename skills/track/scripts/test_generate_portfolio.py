@@ -3,6 +3,7 @@
 Run with: python3 -m unittest test_generate_portfolio -v
 (from the scripts/ folder)
 """
+import os
 import sys
 import tempfile
 import unittest
@@ -1279,6 +1280,26 @@ class BraceLayoutTests(unittest.TestCase):
         self.assertIn("moodboard", html)
         self.assertIn((p / "docs" / "brace" / "design").as_uri(), html)
         self.assertIn("Open folder", html)
+
+    def test_skill_sections_never_raise(self):
+        p = self.home / "guarded"
+        self._status(p, "brace")
+        (p / "docs" / "brace" / "design").mkdir()
+        s = gp.STRINGS["en"]
+        with unittest.mock.patch.object(Path, "iterdir", side_effect=PermissionError("denied")):
+            self.assertEqual(gp.render_skill_sections(p, {}, s), "")
+        with unittest.mock.patch.object(Path, "as_uri", side_effect=ValueError("relative")):
+            html = gp.render_skill_sections(p, {"design_stage": "x"}, s)
+        self.assertIn("<h2>Design</h2>", html)
+        self.assertNotIn("<a href", html)
+        # A relative project path still gets an absolute folder link.
+        cwd = os.getcwd()
+        os.chdir(self.home)
+        try:
+            html = gp.render_skill_sections(Path("guarded"), {}, s)
+        finally:
+            os.chdir(cwd)
+        self.assertIn((p / "docs" / "brace" / "design").resolve().as_uri(), html)
 
     def test_no_skill_section_without_skill_folder(self):
         p = self.home / "plain"

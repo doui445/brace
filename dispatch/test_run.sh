@@ -38,6 +38,26 @@ printf '#!/usr/bin/env bash\necho "SWAP"\nexit 10\n' > "$MACHINE"
 OUT="$(BRACE_CWD="$P" run session_start)"
 has "$OUT" "TRACK swapped=1" "exit 10 from machine -> BRACE_SWAPPED=1"
 
+printf '#!/usr/bin/env bash\nexit 11\n' > "$MACHINE"
+OUT="$(BRACE_CWD="$P" run session_start)"
+has "$OUT" "TRACK swapped=1" "exit 11 from machine -> BRACE_SWAPPED=1"
+
+mk track session_start 'echo "TRACK swapped=$BRACE_SWAPPED project=$BRACE_PROJECT_ROOT event=$BRACE_EVENT source=[$BRACE_SOURCE]"'
+printf '#!/usr/bin/env bash\necho "M-SRC=[$BRACE_SOURCE]"\nexit 0\n' > "$MACHINE"
+OUT="$(BRACE_CWD="$P" BRACE_SOURCE=compact run session_start)"
+has "$OUT" "M-SRC=[compact]" "BRACE_SOURCE reaches machine.sh"
+has "$OUT" "source=[compact]" "BRACE_SOURCE exported to skills"
+
+# Ignored project: track still runs (it decides), other skills are skipped.
+mkdir -p "$P/docs/brace/design"
+echo "$P" > "$HOME/.brace/trackignore.txt"
+OUT="$(BRACE_CWD="$P" run session_start)"
+hasnt "$OUT" "DESIGN" "ignored project -> design skill skipped at session start"
+has "$OUT" "TRACK" "ignored project -> track still runs"
+OUT="$(BRACE_FILE="$P/docs/brace/design/DESIGN.md" run post_tool_use)"
+hasnt "$OUT" "DESIGN-POST" "ignored project -> design skill skipped after a write"
+rm -f "$HOME/.brace/trackignore.txt"; rm -rf "$P/docs/brace/design"
+
 printf '#!/usr/bin/env bash\nexit 0\n' > "$MACHINE"
 OUT="$(BRACE_CWD="/outside" run session_start)"
 has "$OUT" "TRACK swapped=0 project= event" "outside scopes -> empty project root"

@@ -82,6 +82,24 @@ class PluginManifestTests(unittest.TestCase):
         path = REPO / "bridge" / cmd.strip('"').replace("${CLAUDE_PLUGIN_ROOT}/", "")
         self.assertTrue(path.is_file() and os.access(path, os.X_OK), path)
 
+    def test_session_start_hooks_have_a_90s_timeout(self):
+        # The plugin swap may spend up to 35 s in CLI calls: the host's
+        # default hook timeout must not cut it short.
+        for g in _load("claude-hooks.json")["hooks"]["SessionStart"]:
+            for hk in g["hooks"]:
+                self.assertEqual(hk.get("timeout"), 90)
+        for g in _load("bridge/hooks/hooks.json")["hooks"]["SessionStart"]:
+            for hk in g["hooks"]:
+                self.assertEqual(hk.get("timeout"), 90)
+        for e in _load("hooks.json")["brace-session"]["PreInvocation"]:
+            self.assertEqual(e.get("timeout"), 90)
+
+    def test_bridge_hook_command_is_quoted(self):
+        for g in _load("bridge/hooks/hooks.json")["hooks"]["SessionStart"]:
+            for hk in g["hooks"]:
+                c = hk["command"]
+                self.assertTrue(c.startswith('"${CLAUDE_PLUGIN_ROOT}/') and c.endswith('"'), c)
+
     def test_config_command_exists(self):
         p = REPO / "commands" / "config.md"
         self.assertTrue(p.is_file())

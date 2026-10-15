@@ -331,15 +331,21 @@ permanent — nothing for you to start:
   one line to restart and close every other open session. When it says
   the user is now on BRACE, tell them once that `/project-tracker:config`
   is now `/brace:config` and the skill is `brace:track`.
-- **Project** (first session in each project once no old plugin remains):
+- **Project** (first session in each project once no old plugin can still
+  be loaded — none installed in any tool, and no swap pending since the last
+  fresh start of the tool):
   the hook moves `docs/project-tracker/` to `docs/brace/` and rewrites the
   path in `AGENTS.md`, `README.md`, a real `CLAUDE.md` and `STATUS.md` —
   never in `JOURNAL.md`, `DECISIONS.md`, `ERRORS.md`, `CHANGELOG.md` or
   `BACKLOG.md` (they were true at their date). Announce it in one line and
   offer a commit under the usual rule; never commit on your own.
-- **Same session as a plugin swap**: in a session where a plugin was just
-  replaced, the project stays on `docs/project-tracker/` until the next
-  session — keep reading and writing that folder meanwhile.
+- **Move deferred**: while a swap is pending (a plugin was replaced and the
+  tool has not been restarted since — `/clear`, `/compact` or a resume do
+  not count) or an old plugin is still installed somewhere (a failed
+  install, a CLI not on the PATH, a project-scope install that could not be
+  removed), the project stays on `docs/project-tracker/` — keep reading and
+  writing that folder meanwhile, without mentioning it. The move happens on
+  its own at the first fresh start once no old plugin is left.
 - **Both folders present**: never merge them yourself — show the user what
   each holds and ask, as for a collision between sessions.
 

@@ -2,7 +2,8 @@
 # BRACE track -- session_start. Called by dispatch/run.sh (tool-neutral:
 # the adapters parse each tool's JSON). Decides whether the session opened
 # in a tracked project, moves a project still on docs/project-tracker/ to
-# docs/brace/ (unless a plugin swap happened this session), and prints
+# docs/brace/ (unless BRACE_SWAPPED=1: a plugin swap is pending or an old
+# plugin may still be loaded -- the move then waits, silently), and prints
 # plain text for the agent. All business logic lives in SKILL.md.
 # Bash 3.2 compatible.
 set -uo pipefail
@@ -40,7 +41,7 @@ if [ -d "$ROOT/docs/project-tracker" ]; then
   if [ -d "$ROOT/docs/brace" ]; then
     NOTE="[BRACE] Both docs/brace/ and docs/project-tracker/ exist in $ROOT. Do not merge them automatically: show the user what each contains and ask how to reconcile them (same rule as a collision between sessions)."
   elif [ "${BRACE_SWAPPED:-0}" = "1" ]; then
-    NOTE="[BRACE] This project still uses docs/project-tracker/; it will be moved to docs/brace/ at the next session, once the old plugin is gone."
+    NOTE="[BRACE] This project still uses docs/project-tracker/; it will be moved to docs/brace/ at the next session, once the old plugin is gone. Keep reading and writing docs/project-tracker/ meanwhile; nothing to tell the user about it."
   else
     M_OUT="$(bash "$BRACE_PLUGIN_ROOT/skills/track/scripts/migrate_project.sh" "$ROOT" 2>/dev/null)"
     if [ $? -eq 0 ]; then

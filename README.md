@@ -36,11 +36,15 @@ the files left off.
 
 ### Coming from project-tracker
 
-Nothing to do. Update as usual: the last project-tracker release installs
-BRACE, and BRACE moves your config to `~/.brace/` and each project's
-`docs/project-tracker/` to `docs/brace/` the first time you open it (you
-confirm the commit). Restart and close your other sessions when asked. If you
-only use Antigravity with an older manual install, reinstall once with the
+Update the marketplace and the plugin once — third-party marketplaces may not
+update on their own: `claude plugin marketplace update`, then
+`claude plugin update project-tracker` (or the same from `/plugin`). That last
+project-tracker release installs BRACE, and BRACE moves your config to
+`~/.brace/` and each project's `docs/project-tracker/` to `docs/brace/` the
+first time you open it after a restart (you confirm the commit). Restart and
+close your other sessions when asked. If BRACE could not be installed
+automatically, you'll be told: run `/plugin install brace`. If you only use
+Antigravity with an older manual install, reinstall once with the
 command above — BRACE removes the old one.
 
 ## What you get

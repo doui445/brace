@@ -1,7 +1,7 @@
 {
   "brace-session": {
     "PreInvocation": [
-      { "type": "command", "command": "./dispatch/antigravity/session_start.sh", "timeout": 60 }
+      { "type": "command", "command": "./dispatch/antigravity/session_start.sh", "timeout": 90 }
     ]
   },
   "brace-post-tool-use": {

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # BRACE adapter -- Antigravity PreInvocation. Only the first invocation of a
-# conversation counts. Prints {"injectSteps": [...]} or {}.
+# conversation counts, and is passed on as BRACE_SOURCE=startup (a new
+# conversation). Prints {"injectSteps": [...]} or {}.
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INPUT="$(cat)"
@@ -15,7 +16,8 @@ OUT="$(BRACE_TOOL=antigravity \
   BRACE_PLUGIN_ROOT="$(cd "$DIR/../.." && pwd)" \
   BRACE_CWD="$(printf '%s\n' "$PARSED" | sed -n '2p')" \
   BRACE_SESSION="$(printf '%s\n' "$PARSED" | sed -n '3p')" \
-  bash "$DIR/../run.sh" session_start)"
+  BRACE_SOURCE=startup \
+  bash "$DIR/../run.sh" session_start 2>/dev/null)"
 if [ -z "$OUT" ]; then echo "{}"; exit 0; fi
 python3 -c '
 import json, sys

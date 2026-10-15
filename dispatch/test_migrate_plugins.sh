@@ -15,7 +15,7 @@ P_NOCLI="$PYBIN:/usr/bin:/bin"
 # Stub claude: install writes a brace@ key when STUB_WRITE=1; uninstall drops the key.
 cat > "$BIN/claude" <<'EOS'
 #!/usr/bin/env bash
-echo "claude $*" >> "$STUB_LOG"
+echo "claude $* [cwd=$PWD]" >> "$STUB_LOG"
 F="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plugins/installed_plugins.json"
 case "$*" in
   "plugin marketplace update"*) sleep "$STUB_MSLEEP" ;;
@@ -24,7 +24,17 @@ case "$*" in
     [ "$STUB_RC" -eq 0 ] && [ "$STUB_WRITE" = 1 ] && python3 -c 'import json,sys;p=sys.argv[1];d=json.load(open(p));d["plugins"]["brace@x"]=[];json.dump(d,open(p,"w"))' "$F"
     exit "$STUB_RC" ;;
   "plugin uninstall "*)
-    python3 -c 'import json,sys;p=sys.argv[1];d=json.load(open(p));d["plugins"].pop(sys.argv[2],None);json.dump(d,open(p,"w"))' "$F" "$3" ;;
+    # Drops the entries of the given scope (default user); the key goes when none is left.
+    S=user; [ "${4:-}" = "--scope" ] && S="$5"
+    python3 -c '
+import json, sys
+p, k, s = sys.argv[1:4]
+d = json.load(open(p)); v = d["plugins"].get(k)
+if v is not None:
+    v = [e for e in v if (e.get("scope") or "user") != s]
+    if v: d["plugins"][k] = v
+    else: d["plugins"].pop(k)
+json.dump(d, open(p, "w"))' "$F" "$3" "$S" ;;
 esac
 exit 0
 EOS
@@ -65,13 +75,14 @@ case "$OUT" in *"Restart"*|*"restart"*) echo "PASS: A: restart message" ;; *) ec
 # B: install fails -> old kept, no message, exit 0
 fresh; STUB_RC=1; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
 OUT="$(run)"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ]' "B: failed install -> exit 0, silent"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ]' "B: failed install -> exit 11 (old still there), silent"
 ok '! grep -q "uninstall" "$LOG"' "B: old plugin NOT uninstalled"
 
 # C: brace already installed next to the old one -> only uninstall
 fresh; installed "$HOME/.claude" '"project-tracker@pt": [], "brace@pt": []'
 run >/dev/null; RC=$?
 ok '[ $RC -eq 10 ] && ! grep -q "plugin install" "$LOG" && grep -q "uninstall project-tracker@pt" "$LOG"' "C: only uninstall"
+ok 'grep -q "uninstall project-tracker@pt --scope user" "$LOG"' "C: user-scope entry uninstalled with --scope user"
 
 # D: custom CLAUDE_CONFIG_DIR is honoured
 fresh; installed "$TMP/h/custom" '"project-tracker@m": []'
@@ -104,27 +115,27 @@ ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ ! -s "$LOG" ]' "F: nothing to do"
 # G: CLIs missing -> nothing attempted, exit 0
 fresh; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
 OUT="$(PATH="$P_NOCLI" BRACE_PLUGIN_ROOT="$TMP/brace-root" bash "$DIR/migrate_plugins.sh")"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ]' "G: no CLI -> silent"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ]' "G: no CLI -> exit 11, silent"
 
 # H: install exits 0 but brace never shows up -> old NOT uninstalled
 fresh; STUB_WRITE=0; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
 OUT="$(run)"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && ! grep -q "uninstall" "$LOG"' "H: unverified install -> old kept, silent"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && ! grep -q "uninstall" "$LOG"' "H: unverified install -> old kept, exit 11, silent"
 
 # I: agy install fails -> old folder kept, no uninstall
 fresh; STUB_RC=1; mkdir -p "$HOME/.gemini/config/plugins/project-tracker"
 OUT="$(run)"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && ! grep -q "uninstall" "$LOG"' "I: agy install fails -> old kept"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && ! grep -q "uninstall" "$LOG"' "I: agy install fails -> old kept, exit 11"
 
 # I2: agy install creates a partial brace folder then fails -> old kept, folder left
 fresh; STUB_RC=1; mkdir -p "$HOME/.gemini/config/plugins/project-tracker"
 OUT="$(run)"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && [ -d "$HOME/.gemini/config/plugins/brace" ] && ! grep -q "uninstall" "$LOG"' "I2: partial brace folder -> old kept, no uninstall"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && [ -d "$HOME/.gemini/config/plugins/brace" ] && ! grep -q "uninstall" "$LOG"' "I2: partial brace folder -> old kept, no uninstall"
 
 # I3: after I2 (partial folder + backoff): (a) next run in backoff leaves the old plugin alone
 STUB_RC=0
 OUT="$(run)"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && ! grep -q "uninstall" "$LOG"' "I3a: partial folder + backoff -> old kept"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ] && ! grep -q "uninstall" "$LOG"' "I3a: partial folder + backoff -> old kept"
 ok '[ "$(grep -c "agy plugin install" "$LOG")" = 1 ]' "I3a: no new install call during backoff"
 # (b) backoff expired + succeeding install -> brace complete, old removed
 OUT="$(BRACE_BACKOFF_SECS=0 run)"; RC=$?
@@ -138,14 +149,52 @@ ok '[ $RC -eq 10 ] && grep -q "agy plugin install" "$LOG" && [ -f "$HOME/.gemini
 # J: install hangs -> bounded, old kept, silent; then backoff blocks a retry
 fresh; STUB_SLEEP=6; export BRACE_CLI_TIMEOUT=1; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
 S=$SECONDS; OUT="$(run)"; RC=$?; EL=$((SECONDS - S))
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ $EL -le 4 ] && ! grep -q "uninstall" "$LOG"' "J: hung install bounded (${EL}s), old kept"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && [ $EL -le 4 ] && ! grep -q "uninstall" "$LOG"' "J: hung install bounded (${EL}s), old kept"
 : > "$LOG"; STUB_SLEEP=0
 OUT="$(run)"; RC=$?
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && ! grep -q "plugin install" "$LOG"' "J: backoff -> no new install call"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && ! grep -q "plugin install" "$LOG"' "J: backoff -> no new install call"
 
 # K: total budget shared by all calls: slow marketplace update + slow install
 fresh; STUB_MSLEEP=6; STUB_SLEEP=6; export BRACE_CLI_TIMEOUT=2; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
 S=$SECONDS; OUT="$(run)"; RC=$?; EL=$((SECONDS - S))
-ok '[ $RC -eq 0 ] && [ -z "$OUT" ] && [ $EL -le 4 ] && ! grep -q "uninstall" "$LOG"' "K: total budget respected (${EL}s)"
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && [ $EL -le 4 ] && ! grep -q "uninstall" "$LOG"' "K: total budget respected (${EL}s)"
 ok '! grep -q "plugin install" "$LOG"' "K: no call started past the deadline"
+
+# L: entries in several scopes -> each uninstalled with its scope, project
+# scopes from their project folder
+fresh; PP="$TMP/h/my proj"; mkdir -p "$PP"
+installed "$HOME/.claude" '"project-tracker@pt": [{"scope": "user"}, {"scope": "project", "projectPath": "'"$PP"'"}, {"scope": "local", "projectPath": "'"$PP"'"}], "brace@pt": [{"scope": "user"}]'
+OUT="$(run)"; RC=$?
+ok '[ $RC -eq 10 ]' "L: all scopes removed -> exit 10"
+ok 'grep -q "uninstall project-tracker@pt --scope user" "$LOG"' "L: --scope user"
+ok 'grep -q "uninstall project-tracker@pt --scope project \[cwd=$PP\]" "$LOG"' "L: --scope project run from the project folder"
+ok 'grep -q "uninstall project-tracker@pt --scope local \[cwd=$PP\]" "$LOG"' "L: --scope local run from the project folder"
+
+# M: a project-scope entry whose folder is gone cannot be removed -> the
+# user scope is swapped (exit 10, message), then later runs exit 11, silent
+fresh
+installed "$HOME/.claude" '"project-tracker@pt": [{"scope": "user"}, {"scope": "project", "projectPath": "'"$TMP/gone"'"}], "brace@pt": [{"scope": "user"}]'
+OUT="$(run)"; RC=$?
+ok '[ $RC -eq 10 ] && [ -n "$OUT" ]' "M: partial removal -> exit 10 with the restart message"
+OUT="$(run)"; RC=$?
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ]' "M: entry left -> next run exit 11, silent"
+
+# N: Antigravity without agy on PATH, brace already complete -> old removed
+fresh; mkdir -p "$HOME/.gemini/config/plugins/project-tracker" "$HOME/.gemini/config/plugins/brace"
+: > "$HOME/.gemini/config/plugins/brace/plugin.json"
+OUT="$(PATH="$P_NOCLI" BRACE_PLUGIN_ROOT="$TMP/brace-root" bash "$DIR/migrate_plugins.sh")"; RC=$?
+ok '[ $RC -eq 10 ] && [ ! -e "$HOME/.gemini/config/plugins/project-tracker" ] && [ -f "$HOME/.gemini/config/plugins/brace/plugin.json" ]' "N: no agy, brace complete -> old folder removed"
+
+# O: Antigravity without agy and without brace -> nothing touched, exit 11
+fresh; mkdir -p "$HOME/.gemini/config/plugins/project-tracker"
+OUT="$(PATH="$P_NOCLI" BRACE_PLUGIN_ROOT="$TMP/brace-root" bash "$DIR/migrate_plugins.sh")"; RC=$?
+ok '[ $RC -eq 11 ] && [ -z "$OUT" ] && [ -d "$HOME/.gemini/config/plugins/project-tracker" ]' "O: no agy, no brace -> old kept, exit 11"
+
+# P: the budget is wall-clock, not a count of polls: a slow `sleep 0.2`
+# (1 s each) must not stretch it
+SLOWBIN="$TMP/slowbin"; mkdir -p "$SLOWBIN"
+printf '#!/bin/sh\n[ "$1" = 0.2 ] && exec /bin/sleep 1\nexec /bin/sleep "$@"\n' > "$SLOWBIN/sleep"; chmod +x "$SLOWBIN/sleep"
+fresh; STUB_SLEEP=20; installed "$HOME/.claude" '"project-tracker@project-tracker": []'
+S=$SECONDS; OUT="$(PATH="$SLOWBIN:$P_RUN" BRACE_CLI_TIMEOUT=2 BRACE_PLUGIN_ROOT="$TMP/brace-root" bash "$DIR/migrate_plugins.sh")"; RC=$?; EL=$((SECONDS - S))
+ok '[ $RC -eq 11 ] && [ $EL -le 6 ]' "P: wall-clock budget with slow polling (${EL}s)"
 exit $FAIL

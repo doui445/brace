@@ -7,7 +7,7 @@ FAIL=0
 has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3 — missing [$2] in [$1]"; FAIL=1 ;; esac; }
 PY="$(command -v python3)" || { echo "FAIL: python3 not found"; exit 1; }
 PROJ=adapterproj
-TMP="$(mktemp -d)"; trap 'rm -rf "$TMP" "${TMP2:-}"' EXIT
+TMP="$(mktemp -d)"; trap 'rm -rf "$TMP" "${TMP2:-}" "${TMP3:-}"' EXIT
 # Build a sandbox (temp HOME, python3-only PATH) rooted at $1.
 # Safety: the adapters run the real machine.sh -> migrate_plugins.sh.
 setup_env() {
@@ -55,6 +55,24 @@ TMP2="$(mktemp -d)"; setup_env "$TMP2"
 OUT="$(printf '{"toolCall": {"name": "write_to_file", "args": {"TargetFile": "%s"}}, "conversationId": "c2"}' "$P/docs/brace/STATUS.md" | bash "$DIR/antigravity/post_tool_use.sh")"
 [ "$OUT" = "{}" ] && echo "PASS: Antigravity PostToolUse -> {}" || { echo "FAIL: got [$OUT]"; FAIL=1; }
 grep -q "$PROJ" "$TMP2/out/PORTFOLIO.html" 2>/dev/null && echo "PASS: portfolio regenerated via Antigravity adapter" || { echo "FAIL: portfolio missing $PROJ (AGY; known red until Task 11)"; FAIL=1; }
+
+# Swap pending: Claude's `source` and Antigravity's first invocation reach
+# machine.sh. A /clear keeps the legacy project folder where it is; a fresh
+# start clears the marker and moves it.
+TMP3="$(mktemp -d)"; setup_env "$TMP3"
+L="$SCOPE/legacy"; mkdir -p "$L/docs/project-tracker"
+printf -- '---\nproject: legacy\nstatus: active\nlast_updated: 2026-01-01\n---\n' > "$L/docs/project-tracker/STATUS.md"
+: > "$HOME/.brace/.swap-pending"
+OUT="$(printf '{"cwd": "%s", "session_id": "s3", "source": "clear"}' "$L" | bash "$DIR/claude/session_start.sh")"
+[ -f "$HOME/.brace/.swap-pending" ] && [ -d "$L/docs/project-tracker" ] && [ ! -e "$L/docs/brace" ] \
+  && echo "PASS: Claude source=clear with a pending swap -> project not moved" || { echo "FAIL: clear moved or cleared [$OUT]"; FAIL=1; }
+has "$OUT" "Keep reading and writing docs/project-tracker/" "deferred project keeps using the legacy folder"
+OUT="$(printf '{"cwd": "%s", "session_id": "s3", "source": "startup"}' "$L" | bash "$DIR/claude/session_start.sh")"
+[ ! -e "$HOME/.brace/.swap-pending" ] && [ -f "$L/docs/brace/STATUS.md" ] \
+  && echo "PASS: Claude source=startup -> pending cleared, project moved" || { echo "FAIL: startup [$OUT]"; FAIL=1; }
+: > "$HOME/.brace/.swap-pending"
+OUT="$(printf '{"invocationNum": 1, "workspacePaths": ["%s"], "conversationId": "c3"}' "$L" | bash "$DIR/antigravity/session_start.sh")"
+[ ! -e "$HOME/.brace/.swap-pending" ] && echo "PASS: Antigravity first invocation counts as a fresh start" || { echo "FAIL: AGY pending kept"; FAIL=1; }
 
 # Garbage input never fails a tool.
 for A in claude/session_start claude/post_tool_use antigravity/session_start antigravity/post_tool_use; do

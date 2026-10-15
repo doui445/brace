@@ -33,7 +33,14 @@ adding a skill never requires changing the base.
   projects where `docs/brace/<skill>/` exists — with these variables:
   `BRACE_TOOL` (`claude` | `antigravity`), `BRACE_PLUGIN_ROOT`,
   `BRACE_EVENT`, `BRACE_CWD`, `BRACE_FILE`, `BRACE_SESSION`,
-  `BRACE_PROJECT_ROOT`.
+  `BRACE_PROJECT_ROOT`, `BRACE_SWAPPED` (`1` when an old project-tracker
+  plugin may still be loaded this session — swapped this run, swap pending,
+  or still installed: never move or rewrite project folders then) and
+  `BRACE_SOURCE` (how the session started: Claude's `startup` | `resume` |
+  `clear` | `compact`; `startup` for a new Antigravity conversation; empty
+  after a write).
+- A project excluded by `~/.brace/trackignore.txt` gets no hook from any
+  skill other than `track`.
 - Print plain text for the agent (or nothing). Never print tool-specific
   JSON: the adapters do that. A failing script is ignored.
 - No declaration file to edit.
@@ -43,5 +50,5 @@ adding a skill never requires changing the base.
   keys and a link to its folder. Cards on `PORTFOLIO.html` never change.
 
 ## Settings
-- `/brace:config` shows one section per installed skill, read from and
-  written to `~/.brace/<skill>/`.
+- `/brace:config` shows one section per installed skill: it reads that
+  skill's settings from `~/.brace/<skill>/` and writes changes back there.

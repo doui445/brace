@@ -854,12 +854,26 @@ GITHUB_MARK_SVG = (
 def render_skill_sections(project_dir, data, s):
     """One section per skill folder under docs/brace/ (a skill other than
     track keeps its files there): its prefixed frontmatter keys
-    (<skill>_*) and a link to the folder. "" when there is none."""
+    (<skill>_*) and a link to the folder. "" when there is none. Never
+    raises: an unreadable folder yields no section, an unusable path no
+    link -- the portfolio run must not abort over it."""
     root = Path(project_dir) / "docs" / "brace"
-    if not root.is_dir():
+    try:
+        if not root.is_dir():
+            return ""
+        dirs = sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith("."))
+    except (OSError, ValueError):
         return ""
     out = []
-    for d in sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith(".")):
+    for d in dirs:
+        try:
+            href = d.absolute().as_uri()
+        except (OSError, ValueError, RuntimeError):
+            href = ""
+        link = (
+            f'  <p><a href="{_attr(href)}">{_txt(s["subpage_skill_folder"])}</a></p>\n'
+            if href else ""
+        )
         prefix = d.name + "_"
         items = "".join(
             f"<li><strong>{_txt(k[len(prefix):].replace('_', ' '))}</strong> — {_txt(str(v))}</li>"
@@ -870,8 +884,8 @@ def render_skill_sections(project_dir, data, s):
             f'<section class="subpage-skill">\n'
             f"  <h2>{_txt(d.name.capitalize())}</h2>\n"
             + (f"  <ul>{items}</ul>\n" if items else "")
-            + f'  <p><a href="{_attr(d.as_uri())}">{_txt(s["subpage_skill_folder"])}</a></p>\n'
-            f"</section>"
+            + link
+            + "</section>"
         )
     return "\n".join(out)
 

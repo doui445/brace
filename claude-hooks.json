@@ -1,7 +1,7 @@
 {
   "hooks": {
     "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/dispatch/claude/session_start.sh\"" } ] }
+      { "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/dispatch/claude/session_start.sh\"", "timeout": 90 } ] }
     ],
     "PostToolUse": [
       { "matcher": "Edit|Write", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/dispatch/claude/post_tool_use.sh\"" } ] }

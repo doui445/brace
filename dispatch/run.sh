@@ -3,7 +3,8 @@
 # adapters (dispatch/claude/, dispatch/antigravity/). At session start it
 # first runs the machine-level checks, then every skill's
 # hooks/<event>.sh — a skill other than track only in projects where
-# docs/brace/<skill>/ exists — and prints their merged plain-text output.
+# docs/brace/<skill>/ exists and that trackignore.txt does not exclude —
+# and prints their merged plain-text output.
 # Never fails: a broken skill script is skipped. Bash 3.2 compatible.
 set -uo pipefail
 
@@ -16,9 +17,10 @@ DISPATCH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 : "${BRACE_CWD:=}"
 : "${BRACE_FILE:=}"
 : "${BRACE_SESSION:=}"
+: "${BRACE_SOURCE:=}"
 BRACE_EVENT="$EVENT"
 BRACE_SWAPPED=0
-export BRACE_PLUGIN_ROOT BRACE_TOOL BRACE_CWD BRACE_FILE BRACE_SESSION BRACE_EVENT BRACE_SWAPPED
+export BRACE_PLUGIN_ROOT BRACE_TOOL BRACE_CWD BRACE_FILE BRACE_SESSION BRACE_SOURCE BRACE_EVENT BRACE_SWAPPED
 
 OUT=""
 append() {
@@ -36,14 +38,12 @@ if [ "$EVENT" = "session_start" ]; then
   MACHINE="${BRACE_MACHINE_SCRIPT:-$DISPATCH_DIR/machine.sh}"
   M_OUT="$(bash "$MACHINE" 2>/dev/null </dev/null)"
   M_RC=$?
-  if [ "$M_RC" -eq 10 ]; then
-    BRACE_SWAPPED=1
-  fi
+  # 10: swapped this run; 11: an old plugin may still be loaded. Either
+  # way project folders are not moved this session.
+  case "$M_RC" in 10|11) BRACE_SWAPPED=1 ;; esac
   export BRACE_SWAPPED
-  # Keep the machine output only on rc 0 (nothing swapped) or 10 (swapped).
-  if [ "$M_RC" -eq 0 ] || [ "$M_RC" -eq 10 ]; then
-    append "$M_OUT"
-  fi
+  # Keep the machine output only on its known exit codes (0, 10, 11).
+  case "$M_RC" in 0|10|11) append "$M_OUT" ;; esac
 fi
 
 PROJECT=""
@@ -69,6 +69,7 @@ for script in "$BRACE_PLUGIN_ROOT"/skills/*/hooks/"$EVENT".sh; do
   skill="$(basename "$(dirname "$(dirname "$script")")")"
   if [ "$skill" != "track" ]; then
     [ -n "$PROJECT" ] && [ -d "$PROJECT/docs/brace/$skill" ] || continue
+    brace_is_ignored "$PROJECT" && continue
   fi
   S_OUT="$(bash "$script" 2>/dev/null </dev/null)" || S_OUT=""
   append "$S_OUT"
