@@ -1,95 +1,66 @@
 #!/usr/bin/env bash
-# project-tracker SessionStart hook.
-# Purely deterministic: reads scopes.txt, decides whether cwd is within
-# a scope, finds the nearest tracked project (STATUS.md) or flags a new
-# folder, and prints raw text that Claude Code injects into the context.
-# All the business logic lives in the project-tracker skill, not here.
-# Bash 3.2 compatible (macOS default).
-set -euo pipefail
+# BRACE track -- session_start. Called by dispatch/run.sh (tool-neutral:
+# the adapters parse each tool's JSON). Decides whether the session opened
+# in a tracked project, moves a project still on docs/project-tracker/ to
+# docs/brace/ (unless a plugin swap happened this session), and prints
+# plain text for the agent. All business logic lives in SKILL.md.
+# Bash 3.2 compatible.
+set -uo pipefail
+. "$BRACE_PLUGIN_ROOT/dispatch/lib.sh"
 
-INPUT="$(cat)"
-CWD="$(printf '%s' "$INPUT" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("cwd",""))' 2>/dev/null)" || exit 0
-CWD="${CWD%/}"
-
-SCOPES_FILE="$HOME/.claude/project-tracker/scopes.txt"
+CWD="${BRACE_CWD:-}"
+[ "$CWD" = "/" ] || CWD="${CWD%/}"
 [ -n "$CWD" ] || exit 0
-[ -f "$SCOPES_FILE" ] || exit 0
-
-SCOPE_ROOT=""
-while IFS= read -r line || [ -n "$line" ]; do
-  line="${line%/}"
-  case "$line" in
-    ""|"#"*) continue ;;
-    "~"|"~/"*) line="${HOME}${line#\~}" ;;
-  esac
-  case "$CWD" in
-    "$line"|"$line"/*) SCOPE_ROOT="$line"; break ;;
-  esac
-done < "$SCOPES_FILE"
-
+SCOPE_ROOT="$(brace_scope_root "$CWD")"
 [ -n "$SCOPE_ROOT" ] || exit 0
+brace_is_ignored "$CWD" && exit 0
 
-IGNORE_FILE="$HOME/.claude/project-tracker/trackignore.txt"
-if [ -f "$IGNORE_FILE" ]; then
-  while IFS= read -r entry || [ -n "$entry" ]; do
-    entry="${entry%/}"
-    case "$entry" in
-      ""|"#"*) continue ;;
-      "~"|"~/"*) entry="${HOME}${entry#\~}" ;;
-    esac
-    entry_is_scope_root=0
-    while IFS= read -r scope || [ -n "$scope" ]; do
-      scope="${scope%/}"
-      case "$scope" in
-        ""|"#"*) continue ;;
-        "~"|"~/"*) scope="${HOME}${scope#\~}" ;;
-      esac
-      if [ "$scope" = "$entry" ]; then
-        entry_is_scope_root=1
-        break
-      fi
-    done < "$SCOPES_FILE"
-    if [ "$entry_is_scope_root" -eq 1 ]; then
-      [ "$CWD" = "$entry" ] && exit 0
-    else
-      case "$CWD" in
-        "$entry"|"$entry"/*) exit 0 ;;
-      esac
-    fi
-  done < "$IGNORE_FILE"
+CFG="$(brace_config_dir)"
+if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then
+  SKILL="track"; ASK="the ask_question tool"
+else
+  SKILL="brace:track"; ASK="AskUserQuestion"
 fi
 
-ROOT="$CWD"
-STATUS_FILE=""
-while :; do
-  if [ -f "$ROOT/docs/project-tracker/STATUS.md" ]; then
-    STATUS_FILE="$ROOT/docs/project-tracker/STATUS.md"
-    break
-  fi
-  [ "$ROOT" = "$SCOPE_ROOT" ] && break
-  ROOT="$(dirname "$ROOT")"
-done
+ROOT="$(brace_find_project "$CWD" "$SCOPE_ROOT")"
 
-if [ -n "$STATUS_FILE" ]; then
-  FM="$(awk '/^---$/{count++} {print} count==2{exit}' "$STATUS_FILE" 2>/dev/null || true)"
-  MISSING=""
-  printf '%s\n' "$FM" | grep -q '^reminders_list:' || MISSING="$MISSING reminders_list"
-  printf '%s\n' "$FM" | grep -q '^backlog_model:'  || MISSING="$MISSING backlog_model"
-  printf '%s\n' "$FM" | grep -q '^category:'       || MISSING="$MISSING category"
-  [ -f "$HOME/.claude/project-tracker/portfolio.txt" ] || MISSING="$MISSING portfolio.txt(global)"
-  echo "[project-tracker] Session opened in a tracked project ($ROOT)."
-  [ -n "$MISSING" ] && echo "Not yet configured -> invoke the project-tracker:track skill and ask about:$MISSING"
-  echo "Automatic, not optional: do this now, alongside whatever the user asked for, without asking permission and without waiting for them to bring it up. Invoke the project-tracker:track skill and compare last_updated (frontmatter below) with the last real activity (latest git commit if uses_git=true, otherwise file modification dates). If the files are current, stay silent. If they are stale, make the update proposal in your first reply. Do not write anything without checking the current state of the files first."
-  echo "--- STATUS.md frontmatter ---"
-  printf '%s\n' "$FM" | head -c 4000
-  echo
+if [ -z "$ROOT" ]; then
+  echo "[BRACE] UNTRACKED project in this folder ($CWD) — scope $SCOPE_ROOT."
+  echo "This is the session's opening move. Before anything else, invoke the $SKILL skill and ask the user — as a selectable multiple-choice question ($ASK), not prose — whether to track this project:"
+  echo "  - \"Yes, set it up\"      -> run the bootstrap questions, then create the standard files."
+  echo "  - \"No, don't ask again\" -> add \"$CWD\" as a line in $CFG/trackignore.txt (create the file if needed). Stop."
+  echo "  - \"Not now\"             -> do nothing; this prompt returns next session in this folder."
+  echo "Do not wait for the user to bring it up — the question is asked automatically."
   exit 0
 fi
 
-echo "[project-tracker] UNTRACKED project in this folder ($CWD) — scope $SCOPE_ROOT."
-echo "This is the session's opening move. Before anything else, invoke the project-tracker:track skill and ask the user — as a selectable multiple-choice question (AskUserQuestion), not prose — whether to track this project:"
-echo "  - \"Yes, set it up\"      -> run the bootstrap questions, then create the standard files."
-echo "  - \"No, don't ask again\" -> add \"$CWD\" as a line in $IGNORE_FILE (create the file if needed). Stop."
-echo "  - \"Not now\"             -> do nothing; this prompt returns next session in this folder."
-echo "Do not wait for the user to bring it up — the question is asked automatically."
+NOTE=""
+if [ -d "$ROOT/docs/project-tracker" ]; then
+  if [ -d "$ROOT/docs/brace" ]; then
+    NOTE="[BRACE] Both docs/brace/ and docs/project-tracker/ exist in $ROOT. Do not merge them automatically: show the user what each contains and ask how to reconcile them (same rule as a collision between sessions)."
+  elif [ "${BRACE_SWAPPED:-0}" = "1" ]; then
+    NOTE="[BRACE] This project still uses docs/project-tracker/; it will be moved to docs/brace/ at the next session, once the old plugin is gone."
+  else
+    M_OUT="$(bash "$BRACE_PLUGIN_ROOT/skills/track/scripts/migrate_project.sh" "$ROOT" 2>/dev/null)"
+    if [ $? -eq 0 ]; then
+      NOTE="[BRACE] Tracking files moved for this project: $M_OUT. Tell the user in one line, then offer a commit (e.g. \"chore: move tracking files to docs/brace (BRACE 1.0)\") under the usual rule — never commit without confirmation."
+    fi
+  fi
+fi
+
+STATUS_FILE="$ROOT/$(brace_tracking_dir "$ROOT")/STATUS.md"
+FM="$(awk '/^---$/{count++} {print} count==2{exit}' "$STATUS_FILE" 2>/dev/null || true)"
+MISSING=""
+printf '%s\n' "$FM" | grep -q '^reminders_list:' || MISSING="$MISSING reminders_list"
+printf '%s\n' "$FM" | grep -q '^backlog_model:'  || MISSING="$MISSING backlog_model"
+printf '%s\n' "$FM" | grep -q '^category:'       || MISSING="$MISSING category"
+[ -f "$CFG/portfolio.txt" ] || MISSING="$MISSING portfolio.txt(global)"
+
+[ -n "$NOTE" ] && echo "$NOTE"
+echo "[BRACE] Session opened in a tracked project ($ROOT)."
+[ -n "$MISSING" ] && echo "Not yet configured -> invoke the $SKILL skill and ask about:$MISSING"
+echo "Automatic, not optional: do this now, alongside whatever the user asked for, without asking permission and without waiting for them to bring it up. Invoke the $SKILL skill and compare last_updated (frontmatter below) with the last real activity (latest git commit if uses_git=true, otherwise file modification dates). If the files are current, stay silent. If they are stale, make the update proposal in your first reply. Do not write anything without checking the current state of the files first."
+echo "--- STATUS.md frontmatter ---"
+printf '%s\n' "$FM" | head -c 4000
+echo
 exit 0
