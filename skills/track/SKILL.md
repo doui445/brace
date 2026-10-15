@@ -1,9 +1,9 @@
 ---
 name: track
-description: Use at the start of a session in a project under the scopes listed in ~/.project-tracker/scopes.txt (or ~/.claude/project-tracker/scopes.txt), after a significant change to such a project, or when the user explicitly asks to track a project, update its tracking files, or manage its GitHub repo or portfolio.
+description: Use at the start of a session in a project under the scopes listed in ~/.brace/scopes.txt , after a significant change to such a project, or when the user explicitly asks to track a project, update its tracking files, or manage its GitHub repo or portfolio.
 ---
 
-# project-tracker
+# BRACE — track
 
 ## Overarching principle: never guess
 
@@ -52,31 +52,31 @@ Any future retroactive key — including ones a skill built on `track` adds late
 
 ## Scope
 
-The file `~/.project-tracker/scopes.txt` (mirrored at `~/.claude/project-tracker/scopes.txt` and `~/.gemini/project-tracker/scopes.txt`) lists the covered roots. The startup hook already only fires within that scope — but if the user invokes you explicitly in a folder outside any scope:
+The file `~/.brace/scopes.txt` lists the covered roots (the old `~/.project-tracker/`, `~/.claude/project-tracker/` and `~/.gemini/project-tracker/` are symlinks to `~/.brace/`). The startup hook already only fires within that scope — but if the user invokes you explicitly in a folder outside any scope:
 1. Warn them: "this folder is not in your automatic tracking scopes (`<list of scopes.txt entries>`)".
 2. Carry on normally anyway — never act by refusing.
-3. Offer to add a path to `scopes.txt` for the future: *"I'll add it to your scopes — this exact folder, or a parent path you'd rather specify?"*. If accepted, add the exact requested line to `~/.project-tracker/scopes.txt`. If declined, add nothing and carry on.
+3. Offer to add a path to `scopes.txt` for the future: *"I'll add it to your scopes — this exact folder, or a parent path you'd rather specify?"*. If accepted, add the exact requested line to `~/.brace/scopes.txt`. If declined, add nothing and carry on.
 
 ## Detecting a project's root
 
-The candidate root is the folder where the session was opened (`cwd`). Exception: if an ancestor of `cwd`, up to the scope root, already has a `docs/project-tracker/STATUS.md`, that ancestor is the tracked project's root (this avoids a false "new project" when a session is opened in a deep subfolder of an already-tracked project).
+The candidate root is the folder where the session was opened (`cwd`). Exception: if an ancestor of `cwd`, up to the scope root, already has a `docs/brace/STATUS.md`, that ancestor is the tracked project's root (this avoids a false "new project" when a session is opened in a deep subfolder of an already-tracked project).
 
 Three possible states:
-- **Tracked**: `docs/project-tracker/STATUS.md` present at the root found.
+- **Tracked**: `docs/brace/STATUS.md` present at the root found. A project still on the legacy `docs/project-tracker/` is tracked too; the session-start hook moves it to `docs/brace/` (see `## Moving from project-tracker`).
   - If its frontmatter has **no** `reminders_list` key at all (never asked — distinct from a key present with the value `"non"`, which means declined): ask the Reminders linking question right away, before anything else, regardless of whether a significant change happens in this session (see `references/reminders-sync.md`) — this question must never wait for a "Continuous updates" trigger.
-  - If its frontmatter has no `backlog_model` key at all (see `## Retroactive frontmatter questions`): first check whether `ROADMAP.md` explicitly mentions/references a file named `BACKLOG.md` (at its standard location `docs/project-tracker/BACKLOG.md`, or at a non-standard path elsewhere in the project — e.g. nested in a subfolder; do not require it to be at the standard location, look instead for the explicit mention) — if so, the project has already adopted the model without going through the `project-tracker` bootstrap: write `backlog_model: "adopté"` directly, without asking; to decide whether to consolidate that file into `docs/project-tracker/` or leave it where it is, see `## Retrofitting an existing project` (two cases depending on whether a `STATUS.md` of its own exists at that path). Otherwise, ask the Backlog/Roadmap model adoption question (see `references/backlog-phases.md`), once, never asked again afterwards.
+  - If its frontmatter has no `backlog_model` key at all (see `## Retroactive frontmatter questions`): first check whether `ROADMAP.md` explicitly mentions/references a file named `BACKLOG.md` (at its standard location `docs/brace/BACKLOG.md`, or at a non-standard path elsewhere in the project — e.g. nested in a subfolder; do not require it to be at the standard location, look instead for the explicit mention) — if so, the project has already adopted the model without going through the BRACE bootstrap: write `backlog_model: "adopté"` directly, without asking; to decide whether to consolidate that file into `docs/brace/` or leave it where it is, see `## Retrofitting an existing project` (two cases depending on whether a `STATUS.md` of its own exists at that path). Otherwise, ask the Backlog/Roadmap model adoption question (see `references/backlog-phases.md`), once, never asked again afterwards.
   - If `backlog_model` is `"adopté"` (or was just auto-recognized above) and the frontmatter has no `phase_model` key at all (see `## Retroactive frontmatter questions`): check whether files matching `PHASE_N_SPEC.md` already exist in the project — if so, auto-recognize `phase_model: "leger"` without asking (same logic as above). Otherwise, do **not** ask a question here: `phase_model` stays absent until a phase is actually proposed (see `references/backlog-phases.md`, "How phases work").
   - If its frontmatter has **no** `category` key at all (see `## Retroactive frontmatter questions`): ask for a category the same way as bootstrap step 6 (*"A category, to group this with your other projects on the portfolio page"*, offering the ones already in use + "a new one" + "no category", recommending an existing one only on a clear match). Write the label to `category` (or `"non"`). Once written, never asked again.
-  - If `docs/project-tracker/GLOSSARY.md` does **not** exist and the frontmatter has no `glossary` key (see `## Retroactive frontmatter questions`): glance at the code and `README.md`; if the project carries a clear domain vocabulary of its own (coined terms, business jargon, common words used with a specific local meaning — not standard industry terms), propose starting `docs/project-tracker/GLOSSARY.md` with the terms you spotted. If accepted, create it (leave `glossary` absent — the file's existence is the signal). If declined, write `glossary: "non"`. Once `GLOSSARY.md` exists **or** `glossary` is `"non"`, this proactive check never runs again — but the in-session triggers (`## Continuous updates`) still add terms, creating the file if needed.
-  - If its frontmatter has **no** `nested_model` key at all (see `## Retroactive frontmatter questions`): run the one-time migration check (see `references/subprojects.md`, `### Detecting and attaching a sub-project`) — scan for sub-folders with their own `.git`, not already in `~/.claude/project-tracker/trackignore.txt` and not already in `subprojects:`, skipping the same dependency and build directories `generate_portfolio.py` prunes (never descend into `node_modules`, nor into any folder whose name starts with a dot). Once the check has been presented and answered (whatever the outcome — zero candidates found, some adopted, all declined), write `nested_model: "non"`. Never re-run automatically once written.
-  - If `~/.claude/project-tracker/portfolio.txt` does not exist: ask where to save the portfolio page (*"`PORTFOLIO.html` is a single page listing all your tracked projects — where should it live?"*) — offer `~/Documents` **(recommended — tidy and permanent)**, `~/Desktop` (always in view), another folder, or "don't make one". Write the chosen folder path to `portfolio.txt`; for "don't make one" write a comments-only `portfolio.txt` (the hook stays silent). Machine-global, never asked again.
-  - If `~/.claude/project-tracker/language.txt` does not exist: ask which language the tracking files and portfolio should be written in — **English** / **French**, recommending whichever the project's `README` is in (or, failing that, the language the user is writing to you in). Write the code (`en` / `fr`) to `language.txt`. Machine-global, never asked again.
+  - If `docs/brace/GLOSSARY.md` does **not** exist and the frontmatter has no `glossary` key (see `## Retroactive frontmatter questions`): glance at the code and `README.md`; if the project carries a clear domain vocabulary of its own (coined terms, business jargon, common words used with a specific local meaning — not standard industry terms), propose starting `docs/brace/GLOSSARY.md` with the terms you spotted. If accepted, create it (leave `glossary` absent — the file's existence is the signal). If declined, write `glossary: "non"`. Once `GLOSSARY.md` exists **or** `glossary` is `"non"`, this proactive check never runs again — but the in-session triggers (`## Continuous updates`) still add terms, creating the file if needed.
+  - If its frontmatter has **no** `nested_model` key at all (see `## Retroactive frontmatter questions`): run the one-time migration check (see `references/subprojects.md`, `### Detecting and attaching a sub-project`) — scan for sub-folders with their own `.git`, not already in `~/.brace/trackignore.txt` and not already in `subprojects:`, skipping the same dependency and build directories `generate_portfolio.py` prunes (never descend into `node_modules`, nor into any folder whose name starts with a dot). Once the check has been presented and answered (whatever the outcome — zero candidates found, some adopted, all declined), write `nested_model: "non"`. Never re-run automatically once written.
+  - If `~/.brace/portfolio.txt` does not exist: ask where to save the portfolio page (*"`PORTFOLIO.html` is a single page listing all your tracked projects — where should it live?"*) — offer `~/Documents` **(recommended — tidy and permanent)**, `~/Desktop` (always in view), another folder, or "don't make one". Write the chosen folder path to `portfolio.txt`; for "don't make one" write a comments-only `portfolio.txt` (the hook stays silent). Machine-global, never asked again.
+  - If `~/.brace/language.txt` does not exist: ask which language the tracking files and portfolio should be written in — **English** / **French**, recommending whichever the project's `README` is in (or, failing that, the language the user is writing to you in). Write the code (`en` / `fr`) to `language.txt`. Machine-global, never asked again.
   - Otherwise: resolve the effective language and glance at `STATUS.md`. If it is visibly in the other language, offer the full retranslation (see `references/writing-tracking-files.md`, `## Retranslating on a language change`).
-  - If `~/.claude/project-tracker/prefs.txt` does not exist: ask once about the console view — see `## Console view preference` below — and write `prefs.txt`. Machine-global, never asked again. If `prefs.txt` says `console_view: chat-local` and the current project has no `.claude/settings.local.json` setting `defaultView`, apply it now (see that section).
+  - If `~/.brace/prefs.txt` does not exist: ask once about the console view — see `## Console view preference` below — and write `prefs.txt`. Machine-global, never asked again. If `prefs.txt` says `console_view: chat-local` and the current project has no `.claude/settings.local.json` setting `defaultView`, apply it now (see that section).
   - These checks are independent of one another — ask them one after another rather than all at once in the same message.
   - If `cwd` matches (or is inside) a `path` listed in `subprojects:` with `tracked: true`: load that sub-project's own files (`## Sub-projects`) as immediate working context, in addition to the parent's own state — the session still opens on the parent's root (per the exception above), but the sub-project's `README.md`/`CHANGELOG.md`/`DECISIONS.md`/`ERRORS.md` (and its `ARCHITECTURE.md` if it has one) are read too, since that is very likely where the actual work will happen.
   - Then go to "Continuous updates".
-- **Excluded**: the folder is ignored via `~/.claude/project-tracker/trackignore.txt` — either its own absolute path is a line there (an entry equal to a scope root ignores only that exact folder, not the projects inside it), or a non-scope-root ancestor is. → do nothing, unless the user brings it up explicitly.
+- **Excluded**: the folder is ignored via `~/.brace/trackignore.txt` — either its own absolute path is a line there (an entry equal to a scope root ignores only that exact folder, not the projects inside it), or a non-scope-root ancestor is. → do nothing, unless the user brings it up explicitly.
   - If the user brings it up **to ask for it to be tracked** ("track this", "let's track this one"):
     - If the folder's **own path** is the `trackignore.txt` line: offer to remove that line, then go to "Bootstrapping a new project". (Symmetric with bootstrap step 1, which adds the line on a declined setup.)
     - If it is an **ancestor** that is ignored (the folder's own path is not a line): explain plainly that a parent folder is on the skip list, so there's no way to track just this one without also un-skipping everything else under that parent. Offer: **remove the parent from the skip list** (then bootstrap this folder — but every project under that parent becomes eligible for tracking too), or **leave it as is** *(recommended unless you do want the whole subtree tracked)*.
@@ -133,33 +133,33 @@ A sequence of questions, one at a time (see `## Asking questions`), never an ass
    - **A separate `ARCHITECTURE.md`** *(recommended only for a genuinely large system — many modules or services)* → a full doc: components, boundaries, data flow.
    (`GLOSSARY.md` is **not** asked here — it appears later, on first need; see `## Detecting a project's root` and `## Continuous updates`.)
 
-First run `mkdir -p docs/project-tracker/` at the project root, then create the standard files (next section) filled in with the answers obtained — never invented content for anything that wasn't answered. `README.md` and `AGENTS.md` go at the project root (with symlink `ln -s AGENTS.md CLAUDE.md`); the 7 other standard files in `docs/project-tracker/` (see the next section for the per-file detail). `project:` in the frontmatter is always the folder's own name — never asked. The frontmatter of the `STATUS.md` thus created immediately includes `backlog_model: "adopté"`, written automatically along with the other fields — never asked as a question at this stage, since `BACKLOG.md` is one of the standard files created unconditionally (see next section).
+First run `mkdir -p docs/brace/` at the project root, then create the standard files (next section) filled in with the answers obtained — never invented content for anything that wasn't answered. `README.md` and `AGENTS.md` go at the project root (with symlink `ln -s AGENTS.md CLAUDE.md`); the 7 other standard files in `docs/brace/` (see the next section for the per-file detail). `project:` in the frontmatter is always the folder's own name — never asked. The frontmatter of the `STATUS.md` thus created immediately includes `backlog_model: "adopté"`, written automatically along with the other fields — never asked as a question at this stage, since `BACKLOG.md` is one of the standard files created unconditionally (see next section).
 
-If `~/.project-tracker/portfolio.txt` does not exist yet (first tracked project on this machine), ask where the unified portfolio should go — `~/Desktop`, `~/Documents`, or another folder — and write the chosen folder path to `portfolio.txt`, so `PORTFOLIO.html` is generated from this first project. See the `portfolio.txt` bullet under `## Detecting a project's root`.
+If `~/.brace/portfolio.txt` does not exist yet (first tracked project on this machine), ask where the unified portfolio should go — `~/Desktop`, `~/Documents`, or another folder — and write the chosen folder path to `portfolio.txt`, so `PORTFOLIO.html` is generated from this first project. See the `portfolio.txt` bullet under `## Detecting a project's root`.
 
-Likewise, if `~/.project-tracker/language.txt` does not exist, ask once which language the tracking files and portfolio should use (English / French) and write the code to `language.txt`. The bootstrap then creates every file in that language (consult `references/i18n/<code>.md` when it is not `en`). No per-project `language:` key is written at bootstrap — it exists only as an explicit override set later via `/project-tracker:config`.
+Likewise, if `~/.brace/language.txt` does not exist, ask once which language the tracking files and portfolio should use (English / French) and write the code to `language.txt`. The bootstrap then creates every file in that language (consult `references/i18n/<code>.md` when it is not `en`). No per-project `language:` key is written at bootstrap — it exists only as an explicit override set later via `/brace:config`.
 
-And if `~/.project-tracker/prefs.txt` does not exist, ask the console-view question once (see `## Console view preference`) and write `prefs.txt`.
+And if `~/.brace/prefs.txt` does not exist, ask the console-view question once (see `## Console view preference`) and write `prefs.txt`.
 
 Once `README.md` (and `ARCHITECTURE.md` / `GLOSSARY.md` if you created them) are written, run the fresh-eyes readability pass on each — see `references/writing-tracking-files.md` (`## The fresh-eyes readability pass`).
 
 ## The standard files
 
-Nine files for each tracked project. `README.md` and `AGENTS.md` at the project root (with `CLAUDE.md -> AGENTS.md` symlink for Anthropic auto-discovery); the 7 others in `docs/project-tracker/`:
+Nine files for each tracked project. `README.md` and `AGENTS.md` at the project root (with `CLAUDE.md -> AGENTS.md` symlink for Anthropic auto-discovery); the 7 others in `docs/brace/`:
 
 | File | Content | Cadence |
 |---|---|---|
 | `README.md` (root) | What, why, stack, install/run, links (repo, docs) | Rare |
-| `docs/project-tracker/ROADMAP.md` | Prioritised synthesis derived from `BACKLOG.md`: past phases, current phase, anticipated phases — never the raw detail. See `references/backlog-phases.md` | Occasional |
-| `docs/project-tracker/STATUS.md` | Snapshot of the current state (what works/breaks, 3 next actions) + machine-readable frontmatter (see below). **Fully rewritten**, does not accumulate | Every session / significant change |
-| `docs/project-tracker/JOURNAL.md` | Dated chronological log of sessions: what was done, why | **Append-only**, every significant session |
-| `docs/project-tracker/CHANGELOG.md` | Keep a Changelog format (Added/Changed/Fixed) per version | Every shippable change |
+| `docs/brace/ROADMAP.md` | Prioritised synthesis derived from `BACKLOG.md`: past phases, current phase, anticipated phases — never the raw detail. See `references/backlog-phases.md` | Occasional |
+| `docs/brace/STATUS.md` | Snapshot of the current state (what works/breaks, 3 next actions) + machine-readable frontmatter (see below). **Fully rewritten**, does not accumulate | Every session / significant change |
+| `docs/brace/JOURNAL.md` | Dated chronological log of sessions: what was done, why | **Append-only**, every significant session |
+| `docs/brace/CHANGELOG.md` | Keep a Changelog format (Added/Changed/Fixed) per version | Every shippable change |
 | `AGENTS.md` (root) | Instructions for you: code conventions, build/test commands, known pitfalls, architecture summary, the project's git/GitHub choices (symlinked from `CLAUDE.md`) | When conventions change |
-| `docs/project-tracker/DECISIONS.md` | Why one technical choice over another, alternatives rejected | **Append-only**, one entry per structural decision |
-| `docs/project-tracker/ERRORS.md` | Bug encountered → cause → fix, searchable | **Append-only**, every significant resolved bug |
-| `docs/project-tracker/BACKLOG.md` | Raw, complete reservoir of every envisaged idea/feature (effort, perceived value). Never purged, enriched and archived. See `references/backlog-phases.md` | **Append-only** (archiving, never purging) |
+| `docs/brace/DECISIONS.md` | Why one technical choice over another, alternatives rejected | **Append-only**, one entry per structural decision |
+| `docs/brace/ERRORS.md` | Bug encountered → cause → fix, searchable | **Append-only**, every significant resolved bug |
+| `docs/brace/BACKLOG.md` | Raw, complete reservoir of every envisaged idea/feature (effort, perceived value). Never purged, enriched and archived. See `references/backlog-phases.md` | **Append-only** (archiving, never purging) |
 
-Three optional files, all in `docs/project-tracker/`:
+Three optional files, all in `docs/brace/`:
 - `ARCHITECTURE.md` — created at bootstrap (step 7) if the project is complex enough.
 - `GLOSSARY.md` — **created on first need**, not at bootstrap (see `## Detecting a project's root` for the proactive check, `## Continuous updates` for the in-session triggers).
 - `SUBPROJECTS.md` — **created on first need**, the moment a first sub-project is attached (see `## Sub-projects`).
@@ -197,7 +197,7 @@ nested_model: "non"         # "non" = the one-time migration check has run for t
 
 This is the only strictly structured part of any of these files — the rest is free narrative. This frontmatter is what `generate_portfolio.py` consumes for the portfolio (see below): `project`, `status` and `last_updated` are mandatory, without them the project is simply omitted from the portfolio.
 
-`language` is an optional per-project override for the tracking files' language (not the portfolio, not reminders); absent means follow `~/.claude/project-tracker/language.txt`.
+`language` is an optional per-project override for the tracking files' language (not the portfolio, not reminders); absent means follow `~/.brace/language.txt`.
 
 `subprojects` and `nested_model` are documented in full in `## Sub-projects` (and `references/subprojects.md`) and `## Detecting a project's root` — `generate_portfolio.py` reads the `subprojects` key to render each project's detail sub-page (see `## Portfolio`); the aggregate `PORTFOLIO.html` card grid does not use it.
 
@@ -213,7 +213,7 @@ Everything the skill *writes into a project's tracking files* follows a
 resolved **effective language**:
 
 1. `language:` in that project's `STATUS.md` frontmatter, if present;
-2. else `~/.claude/project-tracker/language.txt` (machine-global);
+2. else `~/.brace/language.txt` (machine-global);
 3. else `en`.
 
 `PORTFOLIO.html` follows the `language:` line of `portfolio.txt` if present,
@@ -243,7 +243,7 @@ This skill rewrites several Markdown files per session, which fills the
 transcript with edit diffs. Asked once per machine (when `prefs.txt` is
 absent — see `## Detecting a project's root`), never again:
 
-> *"project-tracker updates several tracking files each session — that fills
+> *"BRACE updates several tracking files each session — that fills
 > the transcript with edit diffs. Fold Claude Code's view to the condensed
 > 'chat' mode? It hides tool activity (reversible in `/config`, and `Ctrl+O`
 > toggles it live)."*
@@ -266,7 +266,7 @@ Offer three choices, via `AskUserQuestion`:
 `prefs.txt` is machine-global config (same family as `scopes.txt` /
 `portfolio.txt` / `language.txt`): `key: value` per line, `#` comments. Its
 existence is the "already asked" signal. Changed later via
-`/project-tracker:config`.
+`/brace:config`.
 
 ## Continuous updates
 
@@ -280,7 +280,7 @@ When you judge that you have made a significant change in a session (new feature
    - Without its own git (`git: false`): no commit offer (nothing to commit), but still compare its `CHANGELOG.md`'s latest dated entry to the sub-project's own file modification dates — the same fallback already used when the parent itself is `uses_git: false`.
    - `tracked: false` or `archived` sub-projects: no check at all.
    The parent's own `uses_git` plays no role in any of this — a parent with `uses_git: false` chaperoning sub-projects that each have their own git repo is the expected shape, not a special case.
-6. The Reminders sync itself is no longer triggered here (see `references/reminders-sync.md` — a `PostToolUse` hook handles it on the first change to `docs/project-tracker/STATUS.md`/`docs/project-tracker/ROADMAP.md` of each session (one reminder per session and per project)); the linking question, for a project that has never had it, is asked earlier — see `## Detecting a project's root` — not here.
+6. The Reminders sync itself is no longer triggered here (see `references/reminders-sync.md` — a `PostToolUse` hook handles it on the first change to `docs/brace/STATUS.md`/`docs/brace/ROADMAP.md` of each session (one reminder per session and per project)); the linking question, for a project that has never had it, is asked earlier — see `## Detecting a project's root` — not here.
 
 This trigger (judging a change to be "significant") is your own judgment, not a mechanical rule. Safety net: the user can ask you for an update explicitly at any time — in that case, check the real state before writing anything (do not rewrite if nothing has actually changed since the last `last_updated`).
 
@@ -288,7 +288,7 @@ This trigger (judging a change to be "significant") is your own judgment, not a 
 
 **Anti-duplication with sub-projects.** When a project has any entry in `subprojects:`, `STATUS.md`/`JOURNAL.md`/`ROADMAP.md` on the parent stay about the *global* picture only: at most a one-line-per-sub-project summary plus a pointer to `SUBPROJECTS.md` or the sub-project's own `CHANGELOG.md` — never the sub-project's own detail copied in. `DECISIONS.md`/`ERRORS.md` on the parent likewise cover only genuinely transverse/global decisions and bugs once a sub-project is `tracked: true` — that sub-project's own `DECISIONS.md`/`ERRORS.md` (`## Sub-projects`) is where its own history belongs.
 
-**`GLOSSARY.md` — in-session triggers.** Independent of the "significant change" judgment above. When either happens, add the term to `docs/project-tracker/GLOSSARY.md` — **create the file if it does not exist, with that first entry, and say so** (no separate question for a single term); if `glossary` was `"non"`, drop the key, the file now exists:
+**`GLOSSARY.md` — in-session triggers.** Independent of the "significant change" judgment above. When either happens, add the term to `docs/brace/GLOSSARY.md` — **create the file if it does not exist, with that first entry, and say so** (no separate question for a single term); if `glossary` was `"non"`, drop the key, the file now exists:
 - the user asks what a **project-specific** term means (coined term, jargon, a common word used with a specific local meaning — not a standard industry term): answer, then add it, with the project meaning + where it shows up + a short usage example;
 - a project-specific term keeps coming up undefined while you work.
 Format and what to include/exclude: `references/writing-tracking-files.md` (`## GLOSSARY.md`).
@@ -298,7 +298,7 @@ Format and what to include/exclude: `references/writing-tracking-files.md` (`## 
 ### Collisions between concurrent sessions
 
 The user often works with several AI assistant sessions (Claude Code, Antigravity) open in parallel on the same project. Before rewriting `STATUS.md` (or any file rewritten in full rather than accumulated):
-- If `uses_git: true`: just before writing, check whether there is an uncommitted diff on this file that does not come from this session (`git diff -- docs/project-tracker/STATUS.md`). If so, do not overwrite: show the diff to the user and ask how to merge the two updates rather than deciding it yourself.
+- If `uses_git: true`: just before writing, check whether there is an uncommitted diff on this file that does not come from this session (`git diff -- docs/brace/STATUS.md`). If so, do not overwrite: show the diff to the user and ask how to merge the two updates rather than deciding it yourself.
 - Without git: compare the file's modification date with the one seen at your last read; if it has changed in the meantime, same handling (show, ask).
 
 For `JOURNAL.md`, `CHANGELOG.md`, `DECISIONS.md`, `ERRORS.md`, `BACKLOG.md`: the write must always be a genuine append at the end of the file (or a targeted update of an existing item, e.g. ticking `[x]`) — never a "re-read everything / rewrite everything" cycle — so that two sessions each appending an entry in parallel do not overwrite one another.
@@ -309,15 +309,43 @@ If `reminders_list` (in the `STATUS.md` frontmatter) is linked (present, differe
 
 ## Portfolio
 
-A `PostToolUse` hook regenerates `PORTFOLIO.html` automatically on every `STATUS.md` write, into the folder configured by `~/.project-tracker/portfolio.txt` (a single file, all scopes aggregated). Each project also gets its own detail page under `portfolio/<project>.html`, linked from its card — the hook regenerates only the one sub-page for the project whose `STATUS.md` just changed (`PORTFOLIO.html` itself is always rebuilt in full). **Never run `generate_portfolio.py` yourself** — except once, with the user's approval, right after they change the portfolio folder, title or language via `/project-tracker:config`: that run has no single "changed project", so it regenerates every sub-page too. If `portfolio.txt` does not exist yet, see the `portfolio.txt` bullet under `## Detecting a project's root`.
+A `PostToolUse` hook (`skills/track/hooks/post_tool_use.sh`, called by the dispatcher `dispatch/run.sh`) regenerates `PORTFOLIO.html` automatically on every `STATUS.md` write, into the folder configured by `~/.brace/portfolio.txt` (a single file, all scopes aggregated). Each project also gets its own detail page under `portfolio/<project>.html`, linked from its card — the hook regenerates only the one sub-page for the project whose `STATUS.md` just changed (`PORTFOLIO.html` itself is always rebuilt in full). **Never run `generate_portfolio.py` yourself** — except once, with the user's approval, right after they change the portfolio folder, title or language via `/brace:config`: that run has no single "changed project", so it regenerates every sub-page too. If `portfolio.txt` does not exist yet, see the `portfolio.txt` bullet under `## Detecting a project's root`.
 
-`portfolio.txt` holds the output **folder** on its first line that is neither a `title:` nor a `language:` line (a line ending in `.html` is taken as an explicit file path instead); `~`/`$VAR` are expanded. An optional `title:` line anywhere in the file sets the portfolio heading (default, locale-dependent: "My projects" / "Mes projets"); an optional `language:` line (`en`/`fr`) overrides the portfolio's output language. All three are edited via `/project-tracker:config`, never written by this skill directly.
+`portfolio.txt` holds the output **folder** on its first line that is neither a `title:` nor a `language:` line (a line ending in `.html` is taken as an explicit file path instead); `~`/`$VAR` are expanded. An optional `title:` line anywhere in the file sets the portfolio heading (default, locale-dependent: "My projects" / "Mes projets"); an optional `language:` line (`en`/`fr`) overrides the portfolio's output language. All three are edited via `/brace:config`, never written by this skill directly.
 
 Projects are grouped into sections by the `category` frontmatter field — uncategorized first, then categories ordered by most recent activity.
 
 The `subprojects:` frontmatter key (`## Sub-projects`) is rendered on a project's own detail sub-page (`portfolio/<project>.html`): each **active** sub-project is listed by name, whether it is `tracked` (plus its own latest `CHANGELOG.md` date, when available) or just `listed`; archived sub-projects are excluded in v1. The aggregate `PORTFOLIO.html` card grid itself still doesn't surface sub-project info — that remains a separate, still-open piece of work.
 
-To change the portfolio location, title or language, or any config (scopes, ignored paths, output language, a project's category), the user runs `/project-tracker:config`.
+To change the portfolio location, title or language, or any config (scopes, ignored paths, output language, a project's category), the user runs `/brace:config`.
+
+## Moving from project-tracker
+
+BRACE was called project-tracker before 1.0. The move is automatic and
+permanent — nothing for you to start:
+
+- **Machine** (session-start hook, every session, silent when done): the old
+  `project-tracker` plugin is replaced by `brace` in every tool on the
+  machine (Claude Code, Antigravity), and `~/.project-tracker/` becomes
+  `~/.brace/`. When the hook says a plugin was replaced, tell the user in
+  one line to restart and close every other open session. When it says
+  the user is now on BRACE, tell them once that `/project-tracker:config`
+  is now `/brace:config` and the skill is `brace:track`.
+- **Project** (first session in each project once no old plugin remains):
+  the hook moves `docs/project-tracker/` to `docs/brace/` and rewrites the
+  path in `AGENTS.md`, `README.md`, a real `CLAUDE.md` and `STATUS.md` —
+  never in `JOURNAL.md`, `DECISIONS.md`, `ERRORS.md`, `CHANGELOG.md` or
+  `BACKLOG.md` (they were true at their date). Announce it in one line and
+  offer a commit under the usual rule; never commit on your own.
+- **Both folders present**: never merge them yourself — show the user what
+  each holds and ask, as for a collision between sessions.
+
+## Skills built on BRACE
+
+`track` is the base layer. Other skills (the first planned: `design`)
+plug into it without touching it — see `references/skills-contract.md`.
+They start on demand, from their description or as `/brace:<skill>`,
+never with an activation question.
 
 ## Retrofitting an existing project
 
@@ -325,9 +353,9 @@ When the project already has non-standard tracking files (e.g. `.pages` files, a
 
 ### Retrofitting the Backlog/Roadmap/Phases model
 
-An already-tracked project may have its own `BACKLOG.md` (and sometimes `PHASE_N_SPEC.md` files) at a non-standard path, set up before this feature existed in `project-tracker`. Two cases to tell apart by whether or not a `STATUS.md` of its own exists in that subfolder:
-- **A `STATUS.md` of its own exists in that subfolder**: it is a separately tracked project (its own root, its own `docs/project-tracker/`) — never merge its content into the enclosing project.
-- **No `STATUS.md` of its own**: these are orphan detail files (not a tracking identity of their own) — consolidate them into the enclosing project's `docs/project-tracker/` rather than leaving them where they are.
+An already-tracked project may have its own `BACKLOG.md` (and sometimes `PHASE_N_SPEC.md` files) at a non-standard path, set up before this feature existed in BRACE. Two cases to tell apart by whether or not a `STATUS.md` of its own exists in that subfolder:
+- **A `STATUS.md` of its own exists in that subfolder**: it is a separately tracked project (its own root, its own `docs/brace/`) — never merge its content into the enclosing project.
+- **No `STATUS.md` of its own**: these are orphan detail files (not a tracking identity of their own) — consolidate them into the enclosing project's `docs/brace/` rather than leaving them where they are.
 
 The auto-recognition (see `## Detecting a project's root`) only fires if `ROADMAP.md` explicitly references that `BACKLOG.md` (whatever its path) — otherwise, ask the question normally, even if a `BACKLOG.md` exists somewhere in the project with no explicit link from `ROADMAP.md` (do not guess that it plays that role).
 

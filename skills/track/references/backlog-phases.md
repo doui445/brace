@@ -35,8 +35,8 @@ When enough coherent backlog items accumulate (Claude's judgment — no fixed nu
    - Otherwise (absent, or present but disabled): ask — *"Phase plans come out better with the `superpowers` plugin (it writes a structured spec then an implementation plan). Install it (needs a session restart after), or use a lighter built-in format?"* **(recommended: install it — I can do it for you)**. On yes: run the install yourself (`claude plugin marketplace list` → `claude plugin marketplace add anthropics/claude-plugins-official` if needed → `claude plugin install superpowers@claude-plugins-official` → `claude plugin enable superpowers`), warn a restart is required, then `phase_model: "superpowers"`. On no: `phase_model: "leger"` (a simple `PHASE_N_SPEC.md`, no extra plugin).
    - Once determined, never asked again for this project — even if `superpowers` becomes available later on the machine (consistency across all phases of a single project). Changing the format stays possible on the user's explicit request, but is never re-proposed automatically.
 2. Produce the phase document according to `phase_model`:
-   - `"superpowers"`: invoke the `writing-plans` skill to produce a plan in `docs/superpowers/plans/YYYY-MM-DD-<topic>.md`, in the tracked project's repo (not `project-tracker`'s).
-   - `"leger"`: write `docs/project-tracker/phases/PHASE_N_SPEC.md` yourself (goal, scope, rules to follow) — no SDD ceremony, direct implementation.
+   - `"superpowers"`: invoke the `writing-plans` skill to produce a plan in `docs/superpowers/plans/YYYY-MM-DD-<topic>.md`, in the tracked project's repo (not BRACE's).
+   - `"leger"`: write `docs/brace/phases/PHASE_N_SPEC.md` yourself (goal, scope, rules to follow) — no SDD ceremony, direct implementation.
 3. `ROADMAP.md` gains/updates its "Phase N — 🎯 in progress" section referencing that document.
 4. The items concerned move to `[~]` in `BACKLOG.md`.
 

@@ -1,16 +1,17 @@
 ---
-description: View and change project-tracker configuration (scopes, ignored paths, portfolio location/title, output language, console view, a project's category).
+description: View and change BRACE configuration (scopes, ignored paths, portfolio location/title, output language, console view, a project's category).
 ---
 
-Show the user the current project-tracker configuration, then help them change it in plain language.
+Show the user the current BRACE configuration, then help them change it in plain language.
 
 1. Read and display:
-   - `~/.claude/project-tracker/scopes.txt` — the tracked roots (one absolute path per line)
-   - `~/.claude/project-tracker/trackignore.txt` — excluded paths
-   - `~/.claude/project-tracker/portfolio.txt` — the portfolio output folder, and its title if a `title:` line is present
-   - If the current folder is a tracked project, that project's `category` from `docs/project-tracker/STATUS.md`
-   - `~/.claude/project-tracker/language.txt` — the output language for the tracking files and portfolio; note the `language:` line of `portfolio.txt` (portfolio override) and, if the current folder is a tracked project, its `language:` frontmatter (project override)
-   - `~/.claude/project-tracker/prefs.txt` — machine preferences; today just `console_view:` (`chat-global` / `chat-local` / `full`)
+   - `~/.brace/scopes.txt` — the tracked roots (one absolute path per line)
+   - `~/.brace/trackignore.txt` — excluded paths
+   - `~/.brace/portfolio.txt` — the portfolio output folder, and its title if a `title:` line is present
+   - If the current folder is a tracked project, that project's `category` from `docs/brace/STATUS.md`
+   - `~/.brace/language.txt` — the output language for the tracking files and portfolio; note the `language:` line of `portfolio.txt` (portfolio override) and, if the current folder is a tracked project, its `language:` frontmatter (project override)
+   - `~/.brace/prefs.txt` — machine preferences; today just `console_view:` (`chat-global` / `chat-local` / `full`)
+   - For every other installed skill (each folder under `${CLAUDE_PLUGIN_ROOT}/skills/` other than `track`): its own settings in `~/.brace/<skill>/`, shown as a section of its own. Today only `track` exists, so there is nothing else to show.
 2. Ask what they want to change. Handle:
    - **Add / remove a scope** → edit `scopes.txt`
    - **Ignore / un-ignore a path** → edit `trackignore.txt` (absolute path; an entry equal to a scope root ignores only that exact folder, not the projects inside it)

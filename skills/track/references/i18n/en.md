@@ -1,7 +1,7 @@
 # i18n catalogue — English (`en`)
 
 Canonical key list for the tracking-file headings and template phrases the
-`project-tracker` skill writes. `fr.md` (and any future `<code>.md`) mirrors
+`brace:track` skill writes. `fr.md` (and any future `<code>.md`) mirrors
 this file: **same keys, same order**. A guard test enforces it.
 
 **This file is the source of truth for the wording.** `SKILL.md`,

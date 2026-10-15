@@ -21,12 +21,12 @@ When asking bootstrap or tracking choices with options:
 ## 3. Console View Preference (`prefs.txt`)
 
 Claude Code displays edit diffs in full by default.
-- Machine setting in `~/.project-tracker/prefs.txt`: `console_view: chat` or `chat-local`.
+- Machine setting in `~/.brace/prefs.txt`: `console_view: chat` or `chat-local`.
 - If `chat-local`: configure `{"defaultView": "chat"}` in `.claude/settings.local.json` at the project root.
 - If `everywhere`: configure `{"defaultView": "chat"}` in `~/.claude/settings.json`.
 
 ## 4. Lifecycle Hooks
 
-Claude Code hooks are registered via `.claude-plugin/` or `~/.claude/settings.json`:
+Claude Code hooks are declared in `claude-hooks.json` at the plugin root and all call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/claude/`, which runs the scripts of each skill:
 - `SessionStart`: runs `skills/track/hooks/session_start.sh`.
-- `PostToolUse` with matcher `Edit|Write`: runs `skills/track/hooks/portfolio_regen.sh` and `reminders_sync_trigger.sh`.
+- `PostToolUse` with matcher `Edit|Write`: runs `skills/track/hooks/post_tool_use.sh` (portfolio regeneration and Reminders sync trigger).

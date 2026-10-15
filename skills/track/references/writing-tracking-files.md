@@ -45,7 +45,7 @@ stays the single source of truth — only the prose notes below are added here.
   edge case belongs lower or in another doc.
 - Link out to the deeper specification instead of inlining all of it.
 
-> **Poor:** *"project-tracker is a Claude Code skill that bootstraps and
+> **Poor:** *"BRACE is a Claude Code skill that bootstraps and
 > maintains a standard set of Markdown tracking files for every project under
 > configured scope roots, with SessionStart auto-detection, PostToolUse hooks,
 > and a deterministic portfolio regenerator."* — jargon-first, no "why", no
@@ -262,7 +262,7 @@ Created on first need (`## Sub-projects`), never at bootstrap. Grows by one sect
 ## Retranslating on a language change
 
 When a project's effective output language changes (via
-`/project-tracker:config`, project or global level) and its tracking files
+`/brace:config`, project or global level) and its tracking files
 still hold content in the old language:
 
 1. **List** the affected files and **propose** a full retranslation, in plain

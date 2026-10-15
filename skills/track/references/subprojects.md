@@ -32,18 +32,18 @@ If the sub-project already has some of these files before being attached, reuse 
 
 ### GLOSSARY.md stays single
 
-A term specific to a sub-project still goes in the parent's own `docs/project-tracker/GLOSSARY.md` — there is no per-sub-project glossary.
+A term specific to a sub-project still goes in the parent's own `docs/brace/GLOSSARY.md` — there is no per-sub-project glossary.
 
 ### SUBPROJECTS.md
 
-`docs/project-tracker/SUBPROJECTS.md`, on the **parent** — created on first need, like `GLOSSARY.md`: not asked at bootstrap, created (with a short note that it was) the moment the first sub-project is attached. One prose section per sub-project: why it exists, a current one-line status, a pointer to its own files. This is where sub-project *detail* lives — `STATUS.md`, `JOURNAL.md` and `ROADMAP.md` on the parent never duplicate it (see `## Continuous updates` in `SKILL.md`).
+`docs/brace/SUBPROJECTS.md`, on the **parent** — created on first need, like `GLOSSARY.md`: not asked at bootstrap, created (with a short note that it was) the moment the first sub-project is attached. One prose section per sub-project: why it exists, a current one-line status, a pointer to its own files. This is where sub-project *detail* lives — `STATUS.md`, `JOURNAL.md` and `ROADMAP.md` on the parent never duplicate it (see `## Continuous updates` in `SKILL.md`).
 
 ### Detecting and attaching a sub-project
 
 A signal (typically a nested `.git`) triggers a **proposal**, never a silent decision. Dependency and build directories are never candidates and are never descended into — skip `node_modules` and any folder whose name starts with a dot (`.venv`, `.git` itself, …), the same pruning `generate_portfolio.py` already applies when it walks a scope. Reuse the exact 3-way choice from bootstrap step 1 (`## Bootstrapping a new project` in `SKILL.md`), per candidate:
 
 - **Yes, attach it** *(recommended when the folder clearly holds its own project — its own git history, its own README)* → ask whether to track it in detail (`### File set for a tracked sub-project`) or just list it (`tracked: false`); write the entry to `subprojects:`; create/update `SUBPROJECTS.md`.
-- **No, don't ask again** → add the folder's path to `~/.claude/project-tracker/trackignore.txt` — this also suppresses it from any future sub-project scan, not just from top-level tracking (`trackignore.txt`'s scope is shared between the two purposes).
+- **No, don't ask again** → add the folder's path to `~/.brace/trackignore.txt` — this also suppresses it from any future sub-project scan, not just from top-level tracking (`trackignore.txt`'s scope is shared between the two purposes).
 - **Not now** → ask again next session; nothing is written.
 
 When several candidates surface at once (typically during the one-time migration check below), present them **together in one grouped question** — never one question per candidate: *"I found these folders with their own git repo — attach as sub-projects? `<name>` (`<path>`), `<name>` (`<path>`)..."*, then apply the same 3-way choice per item inside that one exchange.
