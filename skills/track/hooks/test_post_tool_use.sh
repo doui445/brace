@@ -83,13 +83,25 @@ empty "$OUT" "scope-root entry -> project inside silent (no note, portfolio conf
 [ -e "$THR/last" ] && echo "PASS: scope-root entry -> project inside still handled (regeneration attempted)" || { echo "FAIL: scope-root entry -> project inside skipped"; FAIL=1; }
 rm -f "$HOME/.brace/trackignore.txt"
 
-# portfolio.txt with comments only: no "not configured" note, no output file.
-CMT_OUT="$TMP/cmt-out"; rm -rf "$CMT_OUT"; mkdir -p "$CMT_OUT"
+# portfolio.txt with comments only: the hook treats the file as configured (no note),
+# runs the generation path (throttle marker `last` is written), and the generator
+# itself must write nothing. The no-output observation is NOT asserted here: until
+# Task 11 the generator never reads ~/.brace, so it is trivially silent; Task 11
+# owns that check (test_generate_portfolio.py covers comment-only configs).
 printf '# not set\n' > "$HOME/.brace/portfolio.txt"
 rm -rf "$THR"
 OUT="$(run "$P/docs/brace/STATUS.md" cm1)"
 empty "$OUT" "comment-only portfolio.txt -> no 'not configured' note"
-[ -z "$(ls -A "$CMT_OUT")" ] && echo "PASS: comment-only portfolio.txt -> no output file" || { echo "FAIL: comment-only portfolio.txt wrote output"; FAIL=1; }
+[ -e "$THR/last" ] && echo "PASS: comment-only portfolio.txt -> configured path taken (throttle marker written)" || { echo "FAIL: comment-only portfolio.txt -> configured path not taken"; FAIL=1; }
+echo "$OUTDIR" > "$HOME/.brace/portfolio.txt"
+
+# Session id "last" in a not-configured run: the note marker is s-last, and the
+# throttle file `last` is neither created nor touched by it.
+rm -f "$HOME/.brace/portfolio.txt"; rm -rf "$THR"
+OUT="$(run "$P/docs/brace/STATUS.md" last)"
+has "$OUT" "portfolio output location not configured" "session 'last' not-configured -> note emitted"
+[ -e "$THR/s-last" ] && echo "PASS: session 'last' -> s-last marker created" || { echo "FAIL: session 'last' -> s-last marker missing"; FAIL=1; }
+[ ! -e "$THR/last" ] && echo "PASS: session 'last' -> throttle file 'last' not created" || { echo "FAIL: session 'last' -> throttle file 'last' created"; FAIL=1; }
 echo "$OUTDIR" > "$HOME/.brace/portfolio.txt"
 
 # reminders_list absent -> no nudge.
@@ -117,6 +129,7 @@ SL="$SCOPE/slash"; proj "$SL/docs/brace" 'reminders_list: "L"
 rm -rf "$TMPDIR/brace-reminders-sync" "$TMPDIR/brace-portfolio-regen"
 OUT="$(run "$SL/docs/brace/ROADMAP.md" "a/b")"
 has "$OUT" "Reminders" "session id a/b -> nudge emitted"
+ls "$TMPDIR/brace-reminders-sync"/s-a_b__* >/dev/null 2>&1 && echo "PASS: session id a/b -> sanitised marker s-a_b__* exists" || { echo "FAIL: session id a/b -> s-a_b__* marker missing"; FAIL=1; }
 [ ! -e "$TMPDIR/brace-reminders-sync/a" ] && [ ! -e "$TMPDIR/brace-portfolio-regen/a" ] && echo "PASS: session id a/b -> no stray directory" || { echo "FAIL: session id a/b created a stray directory"; FAIL=1; }
 empty "$(run "$SL/docs/brace/ROADMAP.md" "a/b")" "session id a/b -> nudge once per session"
 
