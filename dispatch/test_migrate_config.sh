@@ -4,8 +4,8 @@ set -uo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 FAIL=0
 ok() { if eval "$1"; then echo "PASS: $2"; else echo "FAIL: $2"; FAIL=1; fi; }
-TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
-fresh() { rm -rf "$TMP/h"; mkdir -p "$TMP/h"; export HOME="$TMP/h"; }
+TMP="$(mktemp -d)"; trap 'chmod -R u+rwx "$TMP" 2>/dev/null; rm -rf "$TMP"' EXIT
+fresh() { chmod -R u+rwx "$TMP/h" 2>/dev/null; rm -rf "$TMP/h"; mkdir -p "$TMP/h"; export HOME="$TMP/h"; }
 run() { bash "$DIR/migrate_config.sh"; }
 
 # A: v0.13 layout — real ~/.project-tracker, links from .claude and .gemini
@@ -47,6 +47,8 @@ run
 ok '[ "$(cat "$HOME/.brace/scopes.txt")" = "new" ]' "E: existing ~/.brace file not overwritten"
 ok '[ "$(cat "$HOME/.brace/language.txt")" = "en" ]' "E: missing file merged in"
 ok '[ -L "$HOME/.project-tracker" ]' "E: legacy folder replaced by a link"
+ok '[ "$(cat "$HOME/.brace/.legacy-conflicts/project-tracker/scopes.txt")" = "old" ]' "E: clashing legacy file kept under .legacy-conflicts"
+ok '[ ! -e "$HOME/.brace/.legacy-conflicts/project-tracker/language.txt" ]' "E: non-clashing file not put in .legacy-conflicts"
 
 # F: a legacy file that cannot be copied keeps its legacy folder (no data loss)
 fresh; mkdir -p "$HOME/.brace" "$HOME/.project-tracker"
@@ -54,7 +56,39 @@ echo "secret" > "$HOME/.project-tracker/locked.txt"; chmod 000 "$HOME/.project-t
 if [ -r "$HOME/.project-tracker/locked.txt" ]; then
   echo "SKIP: F (running as root, chmod 000 is not enforced)"
 else
-  run
+  run; rc=$?
+  ok '[ "$rc" -eq 0 ]' "F: exit 0 when a legacy file is kept"
   ok '[ -f "$HOME/.project-tracker/locked.txt" ] && [ ! -L "$HOME/.project-tracker" ]' "F: uncopied file keeps the legacy folder"
+  ok '[ ! -f "$HOME/.brace/.from-project-tracker" ]' "F: no flag when the legacy folder was kept"
+  run; rc=$?
+  ok '[ "$rc" -eq 0 ]' "F: second run exits 0"
+  ok '[ ! -f "$HOME/.brace/.from-project-tracker" ]' "F: second run still sets no flag"
 fi
+
+# G: an unlistable subfolder in a legacy folder keeps that folder, never fatal
+fresh; mkdir -p "$HOME/.brace/sub" "$HOME/.project-tracker/sub" "$HOME/.claude" "$HOME/.gemini"
+echo "a" > "$HOME/.brace/sub/a"; echo "b" > "$HOME/.project-tracker/sub/b"
+chmod 000 "$HOME/.project-tracker/sub"
+if [ -r "$HOME/.project-tracker/sub" ]; then
+  echo "SKIP: G (running as root, chmod 000 is not enforced)"
+else
+  run; rc=$?
+  ok '[ "$rc" -eq 0 ]' "G: exit 0 with an unlistable subfolder"
+  ok '[ -d "$HOME/.brace" ] && [ ! -L "$HOME/.brace" ]' "G: ~/.brace exists"
+  ok '[ -d "$HOME/.project-tracker" ] && [ ! -L "$HOME/.project-tracker" ] && [ -e "$HOME/.project-tracker/sub" ]' "G: legacy folder kept"
+  ok '[ -L "$HOME/.claude/project-tracker" ] && [ "$(readlink "$HOME/.claude/project-tracker")" = "$HOME/.brace" ]' "G: other old path still linked"
+  ok '[ -L "$HOME/.gemini/project-tracker" ]' "G: gemini path still linked"
+  ok '[ ! -f "$HOME/.brace/.from-project-tracker" ]' "G: no flag when the legacy folder was kept"
+  run; rc=$?
+  ok '[ "$rc" -eq 0 ]' "G: second run exits 0"
+fi
+
+# H: HOME containing a space works like any other HOME
+rm -rf "$TMP/sp"; mkdir -p "$TMP/sp/my home"; export HOME="$TMP/sp/my home"
+mkdir -p "$HOME/.project-tracker" "$HOME/.claude"
+echo "/sp" > "$HOME/.project-tracker/scopes.txt"
+ln -s "$HOME/.project-tracker" "$HOME/.claude/project-tracker"
+run
+ok '[ -d "$HOME/.brace" ] && [ ! -L "$HOME/.brace" ] && [ "$(cat "$HOME/.brace/scopes.txt")" = "/sp" ]' "H: HOME with a space: content moved"
+ok '[ -L "$HOME/.project-tracker" ] && [ "$(readlink "$HOME/.project-tracker")" = "$HOME/.brace" ] && [ -L "$HOME/.claude/project-tracker" ]' "H: HOME with a space: links created"
 exit $FAIL
