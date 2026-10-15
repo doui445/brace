@@ -13,6 +13,8 @@ set -uo pipefail
 FILE="${BRACE_FILE:-}"
 SESSION="${BRACE_SESSION:-}"
 [ -n "$FILE" ] && [ -n "$SESSION" ] || exit 0
+# Session ids are used in marker file names: keep them flat (no "/", no spaces).
+SAFE_SESSION="$(printf '%s' "$SESSION" | tr '/ .' '___')"
 
 case "$FILE" in
   */docs/brace/STATUS.md|*/docs/project-tracker/STATUS.md) KIND=status ;;
@@ -36,8 +38,8 @@ if [ "$KIND" = "status" ]; then
   MARKER_DIR="$TMPROOT/brace-portfolio-regen"
   mkdir -p "$MARKER_DIR" 2>/dev/null || true
   if [ ! -f "$CFG/portfolio.txt" ]; then
-    if [ ! -f "$MARKER_DIR/$SESSION" ]; then
-      touch "$MARKER_DIR/$SESSION" 2>/dev/null || true
+    if [ ! -f "$MARKER_DIR/s-$SAFE_SESSION" ]; then
+      touch "$MARKER_DIR/s-$SAFE_SESSION" 2>/dev/null || true
       say "BRACE: portfolio output location not configured - invoke the $SKILL skill and propose an output folder to the user (see SKILL.md ## Portfolio)."
     fi
   else
@@ -63,7 +65,7 @@ case "$LIST_LINE" in
     R_DIR="$TMPROOT/brace-reminders-sync"
     mkdir -p "$R_DIR" 2>/dev/null || true
     SAFE_ROOT="$(printf '%s' "$ROOT" | tr '/ ' '__')"
-    R_MARK="$R_DIR/${SESSION}__${SAFE_ROOT}"
+    R_MARK="$R_DIR/s-${SAFE_SESSION}__${SAFE_ROOT}"
     if [ ! -f "$R_MARK" ]; then
       touch "$R_MARK" 2>/dev/null || true
       say "STATUS.md/ROADMAP.md for $(basename "$ROOT") was just modified - invoke the $SKILL skill (if not already done this session) then check the Reminders sync (full diff, see $SKILL_DIR/references/reminders-sync.md) before ending this turn."
