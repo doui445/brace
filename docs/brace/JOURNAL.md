@@ -884,3 +884,6 @@ Closed out the portfolio sub-pages work and cut the release:
   pushed. Before that, an update from a local stand-in for GitHub was run end
   to end in an isolated config (bridge install, swap, deferred then completed
   project move).
+- This machine now runs the published plugin: Claude Code from the GitHub
+  marketplace `doui445/brace` (auto-update on), Antigravity reinstalled from
+  GitHub. The repo folder is no longer live here.

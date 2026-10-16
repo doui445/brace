@@ -41,20 +41,16 @@ both manifests).
 
 ### Known gaps
 
-- This machine still installs the plugin from the repo folder (a
-  directory marketplace that auto-updates): switch it to the GitHub
-  marketplace once released, so the repo stops being live here.
 - A tool session left open since before the swap keeps the old plugin
   loaded; the restart message asks to close them, and the "both folders"
   guard covers a miss.
 
 ## Next 3 actions
 
-1. **Switch this machine to the published plugin** (1.0.0 is out on
-   `github.com/doui445/brace`): GitHub marketplace in Claude Code,
-   reinstall Antigravity from GitHub; test branches with
-   `claude --plugin-dir .` from then on.
-2. **Before the 1.1 spec**: settle whether `design` and `brand` are one
+1. **Before the 1.1 spec**: settle whether `design` and `brand` are one
    skill or two (open, see `BACKLOG.md`).
-3. **Resume the DA brainstorm** (BRACE's own visual identity), in
+2. **Resume the DA brainstorm** (BRACE's own visual identity), in
    parallel, no plugin release needed.
+3. **Write the `brace:design` spec** (BRACE 1.1). This machine now runs
+   the published plugin from GitHub: test branches with
+   `claude --plugin-dir .`.
