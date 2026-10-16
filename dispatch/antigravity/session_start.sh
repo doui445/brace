@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # BRACE adapter -- Antigravity PreInvocation. Only the first invocation of a
 # conversation counts, and is passed on as BRACE_SOURCE=startup (a new
-# conversation). Prints {"injectSteps": [...]} or {}.
+# conversation; machine.sh only falls back on it when it cannot read when
+# Antigravity itself started). Prints {"injectSteps": [...]} or {}.
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INPUT="$(cat)"

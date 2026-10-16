@@ -110,4 +110,11 @@ START=$SECONDS
 OUT="$(echo '{}' | PATH="$SLOWBIN:$BIN:$SAFE" BRACE_CLI_TIMEOUT=2 STUB_MODE=slow bash "$HOOK")"; RC=$?
 ELAPSED=$((SECONDS - START))
 ok '[ $RC -eq 0 ] && [ "$ELAPSED" -le 6 ]' "wall-clock budget with slow polling (${ELAPSED}s)"
+
+# The bridge plugin ships only bridge/: it must run from a copy of that
+# folder alone (swap_lib.sh sits next to the hook).
+ALONE="$TMP/alone"; mkdir -p "$ALONE"; cp -R "$(dirname "$HOOK")" "$ALONE/hooks"
+setup '"project-tracker@project-tracker": []'
+OUT="$(echo '{}' | PATH="$BIN:$SAFE" STUB_MODE=good bash "$ALONE/hooks/install_brace.sh")"
+case "$OUT" in *"BRACE has just been installed"*) echo "PASS: runs from a copy of bridge/ alone" ;; *) echo "FAIL: standalone bridge [$OUT]"; FAIL=1 ;; esac
 exit $FAIL

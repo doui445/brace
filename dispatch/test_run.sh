@@ -3,8 +3,8 @@
 set -uo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 FAIL=0
-has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3 — missing [$2] in [$1]"; FAIL=1 ;; esac; }
-hasnt() { case "$1" in *"$2"*) echo "FAIL: $3 — unexpected [$2]"; FAIL=1 ;; *) echo "PASS: $3" ;; esac; }
+has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3: missing [$2] in [$1]"; FAIL=1 ;; esac; }
+hasnt() { case "$1" in *"$2"*) echo "FAIL: $3: unexpected [$2]"; FAIL=1 ;; *) echo "PASS: $3" ;; esac; }
 
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 export HOME="$TMP/home"; mkdir -p "$HOME/.brace"

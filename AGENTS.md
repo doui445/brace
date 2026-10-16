@@ -31,9 +31,10 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   would merge it and no hook would fire any more.
   `test_plugin_manifest.py` at the root validates them.
 - `bridge/` — the `project-tracker` 0.14.0 bridge plugin that installs
-  BRACE; do not touch it once released. It shares the backoff marker name
-  (`$TMPDIR/brace-swap-backoff`) and the `installed_plugins.json` key format
-  with `dispatch/migrate_plugins.sh` — never rename either.
+  BRACE; do not touch it once released. Its `hooks/swap_lib.sh` (CLI time
+  budget, backoff marker, `installed_plugins.json` key format) is sourced
+  by `dispatch/migrate_plugins.sh` too: BRACE may stop sourcing it, never
+  edit it.
 - `commands/config.md` — the `/brace:config` command.
 - `docs/superpowers/` — gitignored local specs, plans and research notes;
   keep French, do not ship.

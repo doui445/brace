@@ -16,9 +16,11 @@ doesn't know, it asks.
 **Claude Code**
 
 ```
-/plugin marketplace add doui445/brace
-/plugin install brace
+/plugin install brace --marketplace doui445/brace
 ```
+
+(On Claude Code older than 2.1.275, run `/plugin marketplace add
+doui445/brace` first, then `/plugin install brace`.)
 
 **Antigravity**
 

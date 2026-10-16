@@ -27,12 +27,12 @@ fi
 ROOT="$(brace_find_project "$CWD" "$SCOPE_ROOT")"
 
 if [ -z "$ROOT" ]; then
-  echo "[BRACE] UNTRACKED project in this folder ($CWD) — scope $SCOPE_ROOT."
-  echo "This is the session's opening move. Before anything else, invoke the $SKILL skill and ask the user — as a selectable multiple-choice question ($ASK), not prose — whether to track this project:"
+  echo "[BRACE] UNTRACKED project in this folder ($CWD), scope $SCOPE_ROOT."
+  echo "This is the session's opening move. Before anything else, invoke the $SKILL skill and ask the user whether to track this project, as a selectable multiple-choice question ($ASK), not prose:"
   echo "  - \"Yes, set it up\"      -> run the bootstrap questions, then create the standard files."
   echo "  - \"No, don't ask again\" -> add \"$CWD\" as a line in $CFG/trackignore.txt (create the file if needed). Stop."
   echo "  - \"Not now\"             -> do nothing; this prompt returns next session in this folder."
-  echo "Do not wait for the user to bring it up — the question is asked automatically."
+  echo "Do not wait for the user to bring it up: the question is asked automatically."
   exit 0
 fi
 
@@ -45,7 +45,7 @@ if [ -d "$ROOT/docs/project-tracker" ]; then
   else
     M_OUT="$(bash "$BRACE_PLUGIN_ROOT/skills/track/scripts/migrate_project.sh" "$ROOT" 2>/dev/null)"
     if [ $? -eq 0 ]; then
-      NOTE="[BRACE] Tracking files moved for this project: $M_OUT. Tell the user in one line, then offer a commit (e.g. \"chore: move tracking files to docs/brace (BRACE 1.0)\") under the usual rule — never commit without confirmation."
+      NOTE="[BRACE] Tracking files moved for this project: $M_OUT. Tell the user in one line, then offer a commit (e.g. \"chore: move tracking files to docs/brace (BRACE 1.0)\") under the usual rule: never commit without confirmation."
     fi
   fi
 fi

@@ -3,7 +3,7 @@
 set -uo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 FAIL=0
-eq() { if [ "$1" = "$2" ]; then echo "PASS: $3"; else echo "FAIL: $3 — expected [$2], got [$1]"; FAIL=1; fi; }
+eq() { if [ "$1" = "$2" ]; then echo "PASS: $3"; else echo "FAIL: $3: expected [$2], got [$1]"; FAIL=1; fi; }
 
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 export HOME="$TMP/home"; mkdir -p "$HOME/.brace"

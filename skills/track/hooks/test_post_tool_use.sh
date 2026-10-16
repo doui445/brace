@@ -4,8 +4,8 @@ set -uo pipefail
 HOOK="$(cd "$(dirname "$0")" && pwd)/post_tool_use.sh"
 PLUGIN_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 FAIL=0
-has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3 — missing [$2] in [$1]"; FAIL=1 ;; esac; }
-empty() { [ -z "$1" ] && echo "PASS: $2" || { echo "FAIL: $2 — got [$1]"; FAIL=1; }; }
+has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3: missing [$2] in [$1]"; FAIL=1 ;; esac; }
+empty() { [ -z "$1" ] && echo "PASS: $2" || { echo "FAIL: $2: got [$1]"; FAIL=1; }; }
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 export HOME="$TMP/home" TMPDIR="$TMP/tmp"; mkdir -p "$HOME/.brace" "$TMPDIR"
 SCOPE="$TMP/scope"; SCOPE_FILE_PATH="$HOME/.brace/scopes.txt"; echo "$SCOPE" > "$SCOPE_FILE_PATH"

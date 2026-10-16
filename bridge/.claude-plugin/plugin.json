@@ -2,5 +2,8 @@
   "name": "project-tracker",
   "version": "0.14.0",
   "description": "project-tracker is now BRACE. This final release installs brace for you.",
-  "repository": "https://github.com/doui445/brace"
+  "repository": "https://github.com/doui445/brace",
+  "author": {
+    "name": "doui445"
+  }
 }

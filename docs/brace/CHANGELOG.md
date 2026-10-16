@@ -21,8 +21,16 @@ the bump, a release never breaks an existing project. The version lives in
   portfolio detail page; `references/skills-contract.md`.
 - Automatic, permanent move from project-tracker: old plugin replaced in
   Claude Code and Antigravity, config moved to `~/.brace/`, each project's
-  `docs/project-tracker/` moved to `docs/brace/` at its first session.
-- `project-tracker` 0.14.0 bridge that installs brace.
+  `docs/project-tracker/` moved to `docs/brace/` at its first session after
+  a real restart of the tool (detected from when the tool's process
+  started, so a `/clear` or a new Antigravity conversation in a running app
+  does not count).
+- A plugin installed for one project is replaced in place: that project's
+  shared `.claude/settings.json` switches to brace, and a commit is offered.
+- When the old plugin cannot be removed automatically, the user is told how
+  to do it by hand (at most once a day).
+- `project-tracker` 0.14.0 bridge that installs brace; it shares its swap
+  helpers (`bridge/hooks/swap_lib.sh`) with BRACE's own migration.
 
 ### Changed
 - Renamed to **BRACE**: plugin `brace`, skill `brace:track`, command

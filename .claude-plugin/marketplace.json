@@ -1,6 +1,9 @@
 {
   "name": "brace",
-  "owner": { "name": "doui445" },
+  "owner": {
+    "name": "doui445"
+  },
+  "description": "BRACE, project memory for AI coding assistants, and the project-tracker bridge that installs it.",
   "plugins": [
     {
       "name": "brace",
