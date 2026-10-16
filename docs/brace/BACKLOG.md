@@ -1,4 +1,4 @@
-# BACKLOG — project-tracker
+# BACKLOG — BRACE
 
 Raw reservoir of every idea/feature envisaged. Never purged — enriched and
 archived. Statuses: `[ ]` to do · `[~]` in progress · `[x]` done · `[-]`
@@ -253,20 +253,16 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   `docs/superpowers/`, not shipped. No date — take it up when a break from
   design work is wanted; no dependency on the DA.
 
-- [~] **BRACE 1.0 — launch + multi-skill foundation** (L, ⭐⭐⭐) — the
-  rename decided 2026-10-04, scoped 2026-10-05 (see `DECISIONS.md`,
-  2026-10-05). **Spec completed 2026-10-14, awaiting user review**:
-  `docs/superpowers/specs/2026-10-05-brace-1.0-design.md` (gitignored).
-  Settled: plugin `brace` (`brace:<skill>`), repo `doui445/brace`,
-  `docs/brace/` (track at root, a sub-folder per skill), `~/.brace/`
-  (a sub-folder per skill), migration **imposed**, zero breakage,
-  product-style versioning; skills on demand, hook dispatcher, prefixed
-  frontmatter keys, migration logic in BRACE for good + a minimal
-  `project-tracker` 0.14.0 bridge (see `DECISIONS.md`, 2026-10-14).
-  To check at plan time: scripted plugin install per tool; whether the
-  marketplace (named `project-tracker`) can be renamed safely.
-
 ## Completed
+
+- [x] **BRACE 1.0 — launch + multi-skill foundation** (2026-10-16, 1.0.0)
+  (L, ⭐⭐⭐). Renamed BRACE: plugin `brace` (`brace:<skill>`), repo
+  `doui445/brace`, `docs/brace/`, `~/.brace/`; one hook dispatcher per
+  event, skills on demand, prefixed frontmatter keys; automatic move from
+  project-tracker (0.14.0 bridge + migration in BRACE for good, imposed,
+  zero breakage); official installs only. Spec and plan in the gitignored
+  `docs/superpowers/`. Detail in `DECISIONS.md` (2026-10-05, 2026-10-14,
+  2026-10-16).
 
 - [x] **Dual-platform support: Google Antigravity (AGY)** (2026-10-04) — native
   Antigravity plugin support matching Claude Code. Symmetric architecture:

@@ -1,4 +1,4 @@
-# Changelog — project-tracker
+# Changelog — BRACE
 
 All notable changes to this project. Format based on
 [Keep a Changelog](https://keepachangelog.com/).
@@ -13,6 +13,8 @@ the bump, a release never breaks an existing project. The version lives in
 `AGENTS.md` § Releasing.
 
 ## [Unreleased]
+
+## [1.0.0] — 2026-10-16
 
 ### Added
 - BRACE 1.0 foundation: one hook per event acting as a dispatcher
@@ -31,6 +33,11 @@ the bump, a release never breaks an existing project. The version lives in
   to do it by hand (at most once a day).
 - `project-tracker` 0.14.0 bridge that installs brace; it shares its swap
   helpers (`bridge/hooks/swap_lib.sh`) with BRACE's own migration.
+
+### Fixed
+- Antigravity: the session start now runs on the first model call of each
+  conversation (Antigravity 1.3 numbers calls from 0, so it used to wait
+  for the second call, or never ran in a one-turn conversation).
 
 ### Changed
 - Renamed to **BRACE**: plugin `brace`, skill `brace:track`, command

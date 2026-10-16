@@ -1,4 +1,4 @@
-# ROADMAP — project-tracker
+# ROADMAP — BRACE
 
 Prioritised synthesis. Raw detail (effort, value, technical notes) lives in
 [`BACKLOG.md`](BACKLOG.md).
@@ -61,22 +61,25 @@ Nested tracking and dual platform (v0.12.0 – v0.13.0):
   unified `~/.project-tracker/` config, `AGENTS.md` as the canonical
   instructions file.
 
+BRACE (1.0.0):
+
+- **1.0.0 — Launch + multi-skill foundation** (2026-10-16): renamed BRACE
+  (plugin `brace`, skill `brace:track`, repo `doui445/brace`), config in
+  `~/.brace/`, projects in `docs/brace/`, one hook dispatcher per event
+  with per-tool adapters, skills that plug in by dropping a hook script,
+  automatic move from project-tracker (0.14.0 bridge + migration in BRACE),
+  official installs only.
+
 Detail for each: [`CHANGELOG.md`](CHANGELOG.md), [`DECISIONS.md`](DECISIONS.md).
 
 ## Current focus
 
-**BRACE 1.0 — launch + multi-skill foundation** (spec in progress, see
-`DECISIONS.md` 2026-10-05). The plugin is renamed BRACE and versioning
-becomes product-style (major = an announced generation; `0.x` was the
-`project-tracker` pre-history). 1.0 renames brand, config (`~/.brace/`)
-and per-project folder (`docs/brace/`, migration imposed, old paths
-recognised for good), and fixes the foundation later skills plug into.
+**BRACE 1.1: `brace:design`**: track a project's design / brand direction
+under `docs/brace/design/`. File model already frozen in `BACKLOG.md`;
+first question for the spec: `design` and `brand`, one skill or two.
 
 ## Next
 
-- **BRACE 1.1 — `brace:design`**: track a project's design / brand
-  direction under `docs/brace/design/`. File model already frozen in
-  `BACKLOG.md`; workflow to spec.
 - In parallel, no plugin release: **BRACE's own visual identity** (DA,
   unblocked by the naming), then the **public website**.
 - Later, undated: portfolio graph view; pressure-testing three skill rules.

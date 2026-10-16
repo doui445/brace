@@ -460,3 +460,23 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   install), publish to receive them.
 - **Rejected**: keeping a symlinked "dev mode" install (two install paths
   to maintain and migrate, for a convenience the user doesn't want).
+
+## 2026-10-16 — When a plugin swap counts as done
+
+- **Chosen**: a swap stays pending until the process running the hook
+  started after it (read from the process list), for both tools and any
+  kind of session; project folders move only then. Fallbacks: the tool's
+  own "fresh start" signal when the process list cannot be read, and a
+  week-old swap counts as done anyway.
+- **Chosen**: an old plugin installed for one project (or locally) is
+  replaced in place: brace is installed with the same scope in that
+  project first, so a team's shared `.claude/settings.json` moves to brace;
+  the user is offered the commit. If brace cannot be installed there, the
+  old entry stays.
+- **Chosen**: an old plugin BRACE cannot remove is reported with the manual
+  steps, at most once a day; entries whose project folder is gone are
+  ignored.
+- **Rejected**: trusting the session kind alone (Antigravity starts a "new
+  conversation" inside a running app, which may still hold the old
+  plugin).
+

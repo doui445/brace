@@ -858,3 +858,25 @@ Closed out the portfolio sub-pages work and cut the release:
   declared via `"hooks": "./claude-hooks.json"` in the Claude manifest, the
   repo root carrying Antigravity's `hooks.json` / `plugin.json` — both tools
   install the same root and both fire their hooks.
+
+## 2026-10-15/16 — BRACE 1.0: built, verified for real, released
+
+- Implemented from the plan, one task at a time with a review after each,
+  then a whole-branch review and a final fix wave; full suite green.
+- The author's machine switched to BRACE before the release: its Claude
+  Code installs the plugin from the repo folder (a directory marketplace
+  that auto-updates), and the branch was checked out there. The bridge
+  installed brace, then BRACE replaced the old plugin in both tools and
+  moved the config. Nothing broke, and it served as a first real run.
+- The user asked to fix the three limits left after the review rather than
+  ship them: a pending swap is now settled by the tool's real restart (its
+  process start time), not by the kind of session; a plugin installed for
+  one project is replaced in place, its shared settings switching to brace
+  with a commit offered; an old plugin BRACE cannot remove brings manual
+  steps once a day, and dead project entries are ignored. The swap helpers
+  now live once, in the bridge, sourced by both.
+- Real checks (isolated Claude Code config, then Antigravity on this
+  machine) found an Antigravity bug that dates back to 0.13.0: calls are
+  numbered from 0, so the session start waited for the second call. Fixed
+  (once per conversation id).
+- The user wants no long dashes in any message (hooks, tests, commits).

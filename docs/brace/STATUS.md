@@ -2,10 +2,10 @@
 project: project-tracker
 status: active
 uses_git: true
-repo: https://github.com/doui445/project-tracker
+repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-14
-next_milestone: "BRACE 1.0 — launch + multi-skill foundation (spec in review)"
+last_updated: 2026-10-16
+next_milestone: "BRACE 1.1: brace:design"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -14,50 +14,49 @@ language: en
 nested_model: "non"
 ---
 
-# STATUS — project-tracker
+# STATUS — BRACE
 
 ## Where it stands
 
-`project-tracker` is a published plugin at **v0.13.0** (released 2026-10-04),
-running natively on both Claude Code and Antigravity (AGY):
+**BRACE 1.0.0** (2026-10-16): `project-tracker` renamed BRACE, with the
+foundation later skills plug into. One plugin for Claude Code and
+Antigravity, installed the official way in both (the repo root carries
+both manifests).
 
-- **Antigravity plugin** built and installed (`platforms/antigravity/`):
-  `PreInvocation` hook for session detection, `PostToolUse` hooks for portfolio
-  regen and Reminders sync — all producing valid Antigravity JSON.
-- **Unified configuration** in `~/.project-tracker/` with transparent symlinks
-  from `~/.claude/project-tracker` and `~/.gemini/project-tracker`.
-- **`AGENTS.md` as the canonical root instructions file** across all tracked
-  projects; `CLAUDE.md` becomes a symlink for Anthropic tooling compatibility.
-  `AGENTS.md` is natively read by Antigravity, Codex, Cursor, Copilot and others.
-- **`generate_portfolio.py` updated** to find `~/.project-tracker` first, then
-  fall back to `~/.claude` and `~/.gemini`.
-- **Platform references** added: `references/platform-claude.md` and
-  `references/platform-antigravity.md` isolate tool-specific conventions so
-  `SKILL.md` stays universally neutral.
-- **`superpowers` suite installed for AGY**: 15 skills symlinked into
-  `~/.gemini/config/skills/` via `skills.json`.
-- Full non-regression: 8 manifest tests + 151 portfolio tests + all Claude hook
-  shell tests + 5 Antigravity session_start tests + 5 portfolio_regen tests.
+- **Hooks**: one dispatcher per event (`dispatch/run.sh`) behind a thin
+  adapter per tool; each skill drops `skills/<skill>/hooks/<event>.sh`.
+- **Config** in `~/.brace/`; projects in `docs/brace/` (the old
+  `docs/project-tracker/` stays recognised for good).
+- **Automatic move from project-tracker**: the 0.14.0 bridge installs
+  brace; BRACE then replaces the old plugin in every tool, moves the
+  config, and moves each project's folder at its first session after a
+  real restart of the tool (detected from the tool process's start time).
+  A plugin installed for one project is replaced in place (commit offered);
+  an old plugin that cannot be removed brings manual steps, once a day.
+- **Verified for real**: install from the repo in an isolated Claude Code
+  config; the hook firing in a real Claude Code session; the bridge end to
+  end (install, swap, deferred then completed project move); a
+  project-scope swap with the real CLI; Antigravity 1.3 on this machine.
+- Full suite green (`bash run_tests.sh`).
 
 ### Known gaps
 
-- The `reminders_sync_trigger.sh` Antigravity hook is intentionally silent
-  (`{}`): `PostToolUse` does not support `injectSteps`, so the Reminders nudge
-  is handled by the skill itself when it reads the frontmatter. Works correctly.
+- The release itself (merge, repo rename to `doui445/brace`, tag, push) is
+  pending the user's go.
+- This machine still installs the plugin from the repo folder (a
+  directory marketplace that auto-updates): switch it to the GitHub
+  marketplace once released, so the repo stops being live here.
+- A tool session left open since before the swap keeps the old plugin
+  loaded; the restart message asks to close them, and the "both folders"
+  guard covers a miss.
 
 ## Next 3 actions
 
-**v0.13.0 released** (dual-platform Antigravity support). **Antigravity is
-on standby** (2026-10-13, token budget too tight there). **BRACE 1.0 spec
-completed (2026-10-14)**: skills on demand, one hook dispatcher per event,
-prefixed frontmatter keys, migration logic living in BRACE for good plus a
-minimal `project-tracker` 0.14.0 bridge (see `DECISIONS.md`, 2026-10-14).
-Spec in the gitignored `docs/superpowers/specs/2026-10-05-brace-1.0-design.md`.
-
-1. **Review the BRACE 1.0 spec** (user), then write the implementation plan
-   — checking scripted plugin install per tool and whether the marketplace
-   can be renamed.
-2. **Resume the DA brainstorm** (BRACE's own visual identity) — unblocked,
-   can run in parallel; the `{ }` motif feeds it.
-3. **Before the 1.1 spec**: settle whether `design` and `brand` are one
+1. **Publish 1.0.0** (each public step confirmed): merge into `main`,
+   rename the GitHub repo, tag `v1.0.0`, push; then switch this machine
+   to the GitHub marketplace in Claude Code and reinstall Antigravity
+   from GitHub.
+2. **Before the 1.1 spec**: settle whether `design` and `brand` are one
    skill or two (open, see `BACKLOG.md`).
+3. **Resume the DA brainstorm** (BRACE's own visual identity), in
+   parallel, no plugin release needed.
