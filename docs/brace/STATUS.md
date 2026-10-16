@@ -18,7 +18,7 @@ nested_model: "non"
 
 ## Where it stands
 
-**BRACE 1.0.0** (2026-10-16): `project-tracker` renamed BRACE, with the
+**BRACE 1.0.0** (2026-10-16, published): `project-tracker` renamed BRACE, with the
 foundation later skills plug into. One plugin for Claude Code and
 Antigravity, installed the official way in both (the repo root carries
 both manifests).
@@ -41,8 +41,6 @@ both manifests).
 
 ### Known gaps
 
-- The release itself (merge, repo rename to `doui445/brace`, tag, push) is
-  pending the user's go.
 - This machine still installs the plugin from the repo folder (a
   directory marketplace that auto-updates): switch it to the GitHub
   marketplace once released, so the repo stops being live here.
@@ -52,10 +50,10 @@ both manifests).
 
 ## Next 3 actions
 
-1. **Publish 1.0.0** (each public step confirmed): merge into `main`,
-   rename the GitHub repo, tag `v1.0.0`, push; then switch this machine
-   to the GitHub marketplace in Claude Code and reinstall Antigravity
-   from GitHub.
+1. **Switch this machine to the published plugin** (1.0.0 is out on
+   `github.com/doui445/brace`): GitHub marketplace in Claude Code,
+   reinstall Antigravity from GitHub; test branches with
+   `claude --plugin-dir .` from then on.
 2. **Before the 1.1 spec**: settle whether `design` and `brand` are one
    skill or two (open, see `BACKLOG.md`).
 3. **Resume the DA brainstorm** (BRACE's own visual identity), in

@@ -880,3 +880,7 @@ Closed out the portfolio sub-pages work and cut the release:
   numbered from 0, so the session start waited for the second call. Fixed
   (once per conversation id).
 - The user wants no long dashes in any message (hooks, tests, commits).
+- Published: the GitHub repo is renamed `doui445/brace`, `v1.0.0` tagged and
+  pushed. Before that, an update from a local stand-in for GitHub was run end
+  to end in an isolated config (bridge install, swap, deferred then completed
+  project move).
