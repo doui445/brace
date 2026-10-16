@@ -25,8 +25,8 @@ When asking bootstrap or tracking choices with options:
 
 Installed with `agy plugin install https://github.com/doui445/brace` (the repo root carries the Antigravity `plugin.json` and `hooks.json`). The hooks declared in the root `hooks.json` call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/antigravity/`, which runs the scripts of each skill (`skills/track/hooks/session_start.sh`, `post_tool_use.sh`):
 - `PreInvocation`: runs the `session_start` event.
-  - Only executes on initial turn (`invocationNum == 1`).
+  - Only executes on the first model call of each conversation (remembered by `conversationId`; Antigravity 1.3 numbers calls from `invocationNum` 0).
   - Outputs an ephemeral message in `injectSteps` when opening a tracked or untracked project under scope.
-  - Outputs `{}` for subsequent turns (`invocationNum > 1`).
+  - Outputs `{}` for every later call of the same conversation.
 - `PostToolUse` with matcher `write_to_file|replace_file_content`:
   - Runs the `post_tool_use` event (`skills/track/hooks/post_tool_use.sh`): regenerates the portfolio whenever `STATUS.md` is updated, and triggers the Reminders sync if Apple Reminders is configured.

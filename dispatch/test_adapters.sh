@@ -35,14 +35,23 @@ grep -q "$PROJ" "$TMP/out/PORTFOLIO.html" 2>/dev/null && echo "PASS: portfolio r
 OUT="$(printf '{"tool_name": "Read", "tool_input": {"file_path": "%s"}, "session_id": "s1"}' "$P/docs/brace/STATUS.md" | bash "$DIR/claude/post_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: non-write tool ignored" || { echo "FAIL: Read produced [$OUT]"; FAIL=1; }
 
-OUT="$(printf '{"invocationNum": 2, "workspacePaths": ["%s"], "conversationId": "c1"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
-[ "$OUT" = "{}" ] && echo "PASS: Antigravity later invocation -> {}" || { echo "FAIL: got [$OUT]"; FAIL=1; }
-
-OUT="$(printf '{"invocationNum": 1, "workspacePaths": ["%s"], "conversationId": "c1"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
+# Antigravity 1.3 numbers model calls from 0: the first call of each
+# conversation runs, whatever its number; later calls get {}.
+OUT="$(printf '{"invocationNum": 0, "workspacePaths": ["%s"], "conversationId": "c1"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
 printf '%s' "$OUT" | python3 -c 'import json,sys; m=json.load(sys.stdin)["injectSteps"][0]["ephemeralMessage"]; sys.exit(0 if "Session opened in a tracked project" in m else 1)' \
-  && echo "PASS: Antigravity first invocation -> injectSteps JSON with expected text" || { echo "FAIL: bad injectSteps [$OUT]"; FAIL=1; }
+  && echo "PASS: Antigravity first invocation (0) -> injectSteps JSON with expected text" || { echo "FAIL: bad injectSteps [$OUT]"; FAIL=1; }
+for NUM in 1 2; do
+  OUT="$(printf '{"invocationNum": %s, "workspacePaths": ["%s"], "conversationId": "c1"}' "$NUM" "$P" | bash "$DIR/antigravity/session_start.sh")"
+  [ "$OUT" = "{}" ] && echo "PASS: Antigravity later invocation ($NUM) -> {}" || { echo "FAIL: later invocation $NUM got [$OUT]"; FAIL=1; }
+done
+OUT="$(printf '{"invocationNum": 1, "workspacePaths": ["%s"], "conversationId": "c-old"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
+has "$OUT" "Session opened in a tracked project" "Antigravity numbering from 1 -> its first call runs too"
+OUT="$(printf '{"invocationNum": 0, "workspacePaths": ["%s"]}' "$P" | bash "$DIR/antigravity/session_start.sh")"
+has "$OUT" "Session opened in a tracked project" "no conversation id, call 0 -> runs"
+OUT="$(printf '{"invocationNum": 2, "workspacePaths": ["%s"], "conversationId": "../x"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
+[ "$OUT" = "{}" ] && [ ! -e "$TMPDIR/x" ] && echo "PASS: unsafe conversation id -> number fallback, no file written outside" || { echo "FAIL: unsafe id got [$OUT]"; FAIL=1; }
 N="$SCOPE/new"; mkdir -p "$N"
-OUT="$(printf '{"invocationNum": 1, "workspacePaths": ["%s"], "conversationId": "c1"}' "$N" | bash "$DIR/antigravity/session_start.sh")"
+OUT="$(printf '{"invocationNum": 0, "workspacePaths": ["%s"], "conversationId": "c2"}' "$N" | bash "$DIR/antigravity/session_start.sh")"
 has "$OUT" "ask_question" "Antigravity wording for an untracked folder"
 
 # Non-write Antigravity tool: {} and no regeneration.
