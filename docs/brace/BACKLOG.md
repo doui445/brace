@@ -253,6 +253,20 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   `docs/superpowers/`, not shipped. No date — take it up when a break from
   design work is wanted; no dependency on the DA.
 
+- [ ] **Keep the Antigravity copy up to date** (S, ⭐⭐) — surfaced
+  2026-10-16, after the 1.0 release. Claude Code updates BRACE on its own
+  (GitHub marketplace with auto-update), but `agy` has no update command:
+  the Antigravity copy stays on the version it was installed with until
+  the user reinstalls it (`agy plugin install https://github.com/doui445/brace`).
+  Idea: when a Claude Code session starts on a newer BRACE than the copy
+  in `~/.gemini/config/plugins/brace` (compare the `version` of both
+  `plugin.json`), reinstall it, the same way `migrate_plugins.sh` already
+  installs brace into Antigravity during the swap. Impose, not propose:
+  the choice brings the user nothing. To settle: bounded by the same CLI
+  time budget and backoff; a user who never uses Antigravity has no copy,
+  so nothing happens; a newer Antigravity copy than Claude Code's is left
+  alone (never downgrade). Lands in 1.1 (a minor: behaviour change).
+
 ## Completed
 
 - [x] **BRACE 1.0 — launch + multi-skill foundation** (2026-10-16, 1.0.0)
