@@ -9,9 +9,13 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 - [ ] **Design as a tracked dimension (new `project-tracker:design` skill)**
   (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE
   1.1, `brace:design`; paths below move from `docs/project-tracker/` to
-  `docs/brace/` (see the BRACE 1.0 item).** **Open for the 1.1 spec
-  (2026-10-14):** `design` and `brand` as one skill (the ladder below) or
-  two? The user notes they are not the same thing. Also, per the 1.0
+  `docs/brace/` (see the BRACE 1.0 item).** **Settled 2026-10-16: two
+  skills, not the ladder below** (see `DECISIONS.md`): `brace:design` (1.1)
+  owns everything visual, logo included (`DESIGN`, `logo.md`,
+  `applications.md`, `assets.md`, its own `DECISIONS`, the `kind:` key, the
+  design-skill delegation); `brace:brand` (1.2, item below) owns the
+  substance. `design` reads `docs/brace/brand/` when present, else
+  `IDENTITY.md` (stays in `track`). `kind:` drops its `brand` value. Also, per the 1.0
   rules: machine prefs go to `~/.brace/design/`, per-project favourites to a
   file under `docs/brace/design/` (not the frontmatter). Give the plugin the ability to own a
   project's design / brand direction, the way it owns state and progress.
@@ -266,6 +270,31 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   time budget and backoff; a user who never uses Antigravity has no copy,
   so nothing happens; a newer Antigravity copy than Claude Code's is left
   alone (never downgrade). Lands in 1.1 (a minor: behaviour change).
+
+- [ ] **`brace:brand` skill (the substance)** (L, ⭐⭐⭐) — split out of the
+  design item on 2026-10-16 (see `DECISIONS.md`); ships as BRACE 1.2, after
+  `brace:design`. Only for projects that are brands (a product to launch, a
+  personal brand). Owns `docs/brace/brand/`: `FOUNDATIONS`, `STRATEGY`,
+  `VOICE`, its own `DECISIONS`, and the name. Takes the frozen content
+  model of those files from the design item, plus the personal-brand
+  profile (2026-09-21) and the research → strategy steps of the workflow
+  (SYNTHESE § 1 steps 1-4). Never visual: it is the brief `design` reads.
+  Its own spec → plan cycle.
+
+- [ ] **Tidy a bloated `AGENTS.md`** (S, ⭐⭐) — a user capture from
+  2026-10-10, scoped 2026-10-16; lands in 1.1 alongside `brace:design`
+  (a minor: behaviour change). A `track` capability, not a new skill: it
+  applies the existing `AGENTS.md` rules (`writing-tracking-files.md`) to a
+  file that has grown, moving what does not belong (history, rationale,
+  decisions) to `JOURNAL.md` / `DECISIONS.md` / `ARCHITECTURE.md` rather
+  than deleting it. Two triggers: on request, and proposed once when the
+  file crosses a size threshold (not re-proposed until it grows well past
+  it again; the file is read every session, so every extra line costs
+  everywhere). Tracked projects' `AGENTS.md` only: the global
+  `~/.claude/CLAUDE.md` and `~/.claude/rules/` stay out of BRACE. To settle
+  in the spec: the threshold, the proposal's wording, how the "already
+  proposed" state is kept. First test case: this repo's own `AGENTS.md`
+  (140 lines).
 
 ## Completed
 

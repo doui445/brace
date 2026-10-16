@@ -480,3 +480,34 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   conversation" inside a running app, which may still hold the old
   plugin).
 
+
+## 2026-10-16 — `design` and `brand` are two skills
+
+- **Context**: the file model frozen 2026-09-02 was one ladder under
+  `design/` (product tier, then a brand superset). The user holds that
+  design and brand are not the same thing: brand is the substance (why,
+  who, against whom, voice) and only concerns projects that are brands;
+  design is the visual form and concerns any project with something to
+  show.
+- **Chosen**: two skills. `brace:brand` (`docs/brace/brand/`):
+  `FOUNDATIONS`, `STRATEGY`, `VOICE`, its own `DECISIONS`, the name.
+  `brace:design` (`docs/brace/design/`): everything visual, logo included
+  (concept/universe first in `DESIGN.md`, the two art directions, `logo.md`,
+  `applications.md`, `assets.md`, its own `DECISIONS`), plus the
+  design-skill delegation. `design` reads `brand/` when present, else
+  `IDENTITY.md`, which stays in `track` as the seed both read. The brand
+  substance is the logo's brief; no separate logo brief.
+- **Why the logo goes to design**: it is form; a project with no brand
+  still needs a favicon or a descriptive mark; colour and type keep a
+  single home (`DESIGN.md`); the delegated tools are all visual.
+- **Revises 2026-09-03 (`kind:`)**: the `brand` value goes, since the
+  presence of `docs/brace/brand/` already says it; `kind: tool | app |
+  library` stays, owned by `design`, for the logo strategy.
+- **Order**: `design` ships as 1.1 (useful to most projects, works alone),
+  `brand` as 1.2.
+- **Rejected**: the single ladder (forces the substance before any visual
+  work, and a brand with no interface still drags the visual tiers); the
+  logo in `brand` (two homes for the visual, a full brand opened for a
+  favicon); a shared logo (brand writes the brief, design draws it: the
+  brief already is `FOUNDATIONS` + `STRATEGY`); both in 1.1 (bigger bug
+  surface, as for the 0.x releases).

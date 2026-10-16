@@ -47,10 +47,11 @@ both manifests).
 
 ## Next 3 actions
 
-1. **Before the 1.1 spec**: settle whether `design` and `brand` are one
-   skill or two (open, see `BACKLOG.md`).
+1. **Write the `brace:design` spec** (BRACE 1.1): everything visual, logo
+   included; reads `docs/brace/brand/` when present, else `IDENTITY.md`.
+   `brace:brand` (the substance) follows in 1.2 (split settled 2026-10-16,
+   see `DECISIONS.md`). This machine now runs the published plugin from
+   GitHub: test branches with `claude --plugin-dir .`.
 2. **Resume the DA brainstorm** (BRACE's own visual identity), in
    parallel, no plugin release needed.
-3. **Write the `brace:design` spec** (BRACE 1.1). This machine now runs
-   the published plugin from GitHub: test branches with
-   `claude --plugin-dir .`.
+3. **Keep the Antigravity copy up to date** (1.1 rider, see `BACKLOG.md`).

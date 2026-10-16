@@ -887,3 +887,21 @@ Closed out the portfolio sub-pages work and cut the release:
 - This machine now runs the published plugin: Claude Code from the GitHub
   marketplace `doui445/brace` (auto-update on), Antigravity reinstalled from
   GitHub. The repo folder is no longer live here.
+
+## 2026-10-16 — `design` and `brand` split settled
+
+- Brainstorm on the one-skill-or-two question left open for the 1.1 spec.
+  The user drew the line on two axes at once: substance vs form, and brand
+  projects vs any project with an interface.
+- Settled: two skills; `design` owns everything visual, logo included,
+  and reads `brand/` when it exists; `IDENTITY.md` stays in `track`;
+  `kind:` loses its `brand` value; `design` is 1.1, `brand` 1.2. Detail in
+  `DECISIONS.md`. Nothing built; the `brace:design` spec comes next.
+- Also scoped a user capture from Reminders (2026-10-10): tidying a bloated
+  `AGENTS.md` becomes a `track` capability for 1.1 (on request, plus a
+  one-time proposal past a size threshold), not a separate skill; the global
+  `~/.claude/CLAUDE.md` stays out of BRACE. Backlogged.
+- The Reminders writes (tick the naming decision, retitle the design spec
+  reminder, add the Antigravity-copy one) were refused: the server needs a
+  confirmation form this session cannot show. Left to the user or the next
+  session.
