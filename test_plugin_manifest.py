@@ -9,6 +9,28 @@ from pathlib import Path
 
 REPO = Path(__file__).parent
 CLAUDE_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
+CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep"}
+# Antigravity hangs on an unknown tool name: only names verified in its docs.
+ANTIGRAVITY_AGENT_TOOLS = {"search_web", "read_url_content", "view_file", "grep_search",
+                           "write_to_file", "replace_file_content"}
+
+
+def _split_agent(rel):
+    """(frontmatter dict, body) of an agent file. Values: str, or list for
+    YAML block lists ('  - x'). Enough for these hand-written files."""
+    text = (REPO / rel).read_text(encoding="utf-8")
+    assert text.startswith("---\n"), rel
+    head, body = text[4:].split("\n---\n", 1)
+    fm, key = {}, None
+    for line in head.splitlines():
+        if line.startswith("  - ") and key:
+            fm.setdefault(key, [])
+            fm[key].append(line[4:].strip())
+        elif ":" in line:
+            key, val = line.split(":", 1)
+            key, val = key.strip(), val.strip()
+            fm[key] = val if val else []
+    return fm, body
 
 
 def _load(rel):
@@ -115,6 +137,32 @@ class PluginManifestTests(unittest.TestCase):
         for code in ("en", "fr"):
             text = (i18n / f"{code}.md").read_text(encoding="utf-8")
             self.assertRegex(text, r"(?m)^- brand\.strategy\.heading\.touchpoints: \S")
+
+    def test_claude_manifest_points_at_the_claude_agent(self):
+        self.assertEqual(_load(".claude-plugin/plugin.json").get("agents"),
+                         ["./agents/claude/analyst.md"])
+
+    def test_analyst_agent_files(self):
+        claude, c_body = _split_agent("agents/claude/analyst.md")
+        agy, a_body = _split_agent("agents/analyst.md")
+        for fm in (claude, agy):
+            self.assertEqual(fm.get("name"), "analyst")
+            self.assertTrue(fm.get("description"))
+        self.assertTrue(set(t.strip() for t in claude["tools"].split(",")) <= CLAUDE_AGENT_TOOLS)
+        self.assertEqual(claude.get("model"), "sonnet")
+        self.assertEqual(claude.get("background"), "true")
+        self.assertTrue(set(agy["tools"]) <= ANTIGRAVITY_AGENT_TOOLS)
+        self.assertEqual(agy.get("subagent"), "true")
+        self.assertEqual(agy.get("mainAgent"), "false")
+        self.assertEqual(agy.get("model"), "flash")
+        # Frontmatter values are plain YAML scalars: a ": " inside one breaks
+        # the parser of the host tool.
+        for fm in (claude, agy):
+            self.assertNotIn(": ", fm.get("description", ""))
+        # One trade, one text: the two bodies must never drift apart.
+        self.assertEqual(c_body, a_body)
+        self.assertIn("docs/brace/agents/analyst/", c_body)
+        self.assertNotIn("—", c_body)
 
     def test_i18n_catalogues_have_matching_keys(self):
         import re
