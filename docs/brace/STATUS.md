@@ -4,8 +4,8 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-16
-next_milestone: "BRACE 1.1: brace:design"
+last_updated: 2026-10-17
+next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -47,11 +47,13 @@ both manifests).
 
 ## Next 3 actions
 
-1. **Write the `brace:design` spec** (BRACE 1.1): everything visual, logo
-   included; reads `docs/brace/brand/` when present, else `IDENTITY.md`.
-   `brace:brand` (the substance) follows in 1.2 (split settled 2026-10-16,
-   see `DECISIONS.md`). This machine now runs the published plugin from
-   GitHub: test branches with `claude --plugin-dir .`.
-2. **Resume the DA brainstorm** (BRACE's own visual identity), in
-   parallel, no plugin release needed.
-3. **Keep the Antigravity copy up to date** (1.1 rider, see `BACKLOG.md`).
+1. **Review the `brace:brand` spec** (BRACE 1.1, written 2026-10-19,
+   gitignored), then the implementation plan: the substance (`FOUNDATIONS`,
+   `STRATEGY`, `VOICE`, the name) and the `analyst` agent. 1.2 brings the
+   brand's face (logo, palette, type) in `brand` plus `brace:design` for
+   interfaces (see `DECISIONS.md`). This machine now runs the published
+   plugin from GitHub: test branches with `claude --plugin-dir .`.
+2. **Resume the DA brainstorm** (BRACE's own identity): its validated
+   foundations and strategy are `brace:brand`'s first real case.
+3. **1.1 riders**: keep the Antigravity copy up to date; tidy a bloated
+   `AGENTS.md` (both in `BACKLOG.md`).

@@ -905,3 +905,48 @@ Closed out the portfolio sub-pages work and cut the release:
   reminder, add the Antigravity-copy one) were refused: the server needs a
   confirmation form this session cannot show. Left to the user or the next
   session.
+
+## 2026-10-17 — First `brace:design` choices, then the order swapped
+
+- Started the `brace:design` spec brainstorm and settled its first
+  choices (detail in the `BACKLOG.md` design item): three roles in one
+  loop (guide, route, record); a creation path that depends on `kind:`;
+  one question at the first UI work; seeding `DESIGN.md` from existing
+  code for non-brand projects only; drift flagged and decided by the user.
+- The user's rule that a brand does its identity first raised the "brand
+  project without brand in 1.1" gap. Asked why design came first; the
+  answer showed the reasons no longer held, and the order was swapped:
+  `brand` is 1.1, `design` 1.2 (`DECISIONS.md`). Nothing built; the
+  `brace:brand` spec comes next.
+
+## 2026-10-18 — `brace:brand` scoping, and what a BRACE agent is
+
+- Brainstorm on the `brace:brand` spec: profiles, research, voice,
+  revision, rebrand and structure settled (detail in the `BACKLOG.md`
+  brand item).
+- The user wanted the research done by a real, fully specified agent
+  launched whenever competitive research comes up, then asked what
+  really separates a skill from an agent, compared with the per-trade
+  project agents of an external project (a main agent set in its
+  settings, plus specialists in `.claude/agents/`), and raised the
+  freelancer vs in-house hire question. Settled the rule for every future
+  agent (`DECISIONS.md`): BRACE agents in the plugin, each learning a
+  project from `docs/brace/agents/<agent>/`; project agents stay the
+  project's own. The folder layout is the user's call. Nothing built.
+
+## 2026-10-19 — `brace:brand` spec written
+
+- The user asked whether the brand method matched real practice. A web
+  check (agency process, roles, customer interviews, message testing,
+  brand architecture, brand health) and a pass over the video corpus
+  confirmed it and added seven points (`BACKLOG.md` brand item); customer
+  interviews are the corpus's real gap, brand architecture comes from the
+  web only.
+- Other trades reviewed for BRACE agents: `reader` (fresh eyes) and
+  `auditor` backlogged; `analyst` stays the only agent in 1.1.
+- Spec written in `docs/superpowers/specs/` (gitignored), awaiting the
+  user's review; then the implementation plan. Nothing built.
+- Before approving the spec, the user asked whether the logo belongs to
+  the brand rather than to design. It does (`DECISIONS.md`): a brand's
+  face moves to `brand`, shipped in 1.2 with `design`; the 1.1 spec only
+  gains that framing.

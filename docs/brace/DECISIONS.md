@@ -511,3 +511,74 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   favicon); a shared logo (brand writes the brief, design draws it: the
   brief already is `FOUNDATIONS` + `STRATEGY`); both in 1.1 (bigger bug
   surface, as for the 0.x releases).
+
+## 2026-10-17 — `brand` ships before `design` (revises 2026-10-16)
+
+- **Context**: the user added a rule while scoping `design`: a brand
+  project does its brand identity before any visual work. The 2026-10-16
+  order (`design` first) rested on three reasons: `design` serves any
+  project with an interface; it could work alone from `IDENTITY.md`; it
+  was the milestone already planned. The third was inertia (the milestone
+  predates the split) and the new rule removes the second for brands.
+- **Chosen**: `brand` is 1.1, `design` 1.2. `design` then reads a
+  `brand/` format that is fixed and shipped, there is no "brand project
+  without brand" gap to patch in 1.1, BRACE's own validated foundations
+  give `brand` a real first case, and `brand` is the smaller skill.
+- **Accepted cost**: non-brand projects wait one more release for `design`.
+- **Rejected**: keeping `design` in 1.1 and having it wait for brand
+  projects, or set a provisional direction to redo later.
+
+## 2026-10-18 — How BRACE agents work
+
+- **Context**: `brace:brand` needs a competitive-research worker, the
+  first agent BRACE ships. The user asked what really separates a skill
+  from an agent, and whether agents should know each project like an
+  in-house hire rather than a freelancer.
+- **Chosen**: a skill is know-how loaded into the current conversation
+  (named after a domain: `track`, `brand`); an agent is a separate worker
+  with its own instructions, a blank context and a brief, who reports a
+  result (named after a trade: `analyst`). Agents are never slash
+  commands.
+- **Chosen**: two families. *BRACE agents* (a trade any project can use
+  and a BRACE skill depends on) ship in the plugin and update with it;
+  they learn the project at every mission from
+  `docs/brace/agents/<agent>/`: a `BRIEF.md` (priorities, instructions,
+  sources, the user's past corrections; filled at the first mission, then
+  enriched) next to their past work. *Project agents* (a trade only one
+  project needs) stay in that project's `.claude/agents/`, owned by the
+  user; their instructions point to `docs/brace/` files rather than copying
+  facts. The method stays the same everywhere; priorities and instructions
+  vary per project; a project needing another method needs another trade.
+- **Chosen**: `agents` is a reserved name under `docs/brace/` (no skill may
+  take it); skills keep `docs/brace/<skill>/` (1.0 contract, zero
+  breakage).
+- **Chosen**: a BRACE agent is available in every session, tracked or not;
+  outside a tracked project it writes no file and reports in the
+  conversation only.
+- **Rejected**: a generated per-project copy of each BRACE agent (misses
+  plugin updates, breaks the agent-to-skill output contract when it
+  changes, copied facts go stale, one copy per tool); a separate
+  `docs/brace/research/` folder (not the same pattern as everything else).
+
+## 2026-10-19 — A brand's logo and visual identity belong to `brand` (revises 2026-10-16)
+
+- **Context**: the user questioned the logo sitting in `design`. Agency
+  practice treats identity as verbal **and** visual (logo, colour, type)
+  inside the brand work, with product design applying it; the video corpus
+  puts the logo right after the name and voice; the 2026-09-02 model had
+  `logo.md` in the brand tier; a rebrand (in `brand` from 1.1) nearly
+  always touches the logo.
+- **Chosen**: `brand` owns everything that makes the brand, its face
+  included (art directions, logo, brand palette and type, assets);
+  `design` applies it to interfaces and makes the style of non-brand
+  projects (their simple mark and favicon included). For a brand, base
+  colours and type live in `docs/brace/brand/`; `DESIGN.md` refers to
+  them and adds what is interface-specific, never copying them.
+- **Chosen**: shipped in two steps: 1.1 = the substance (unchanged spec);
+  1.2 = the brand's face in `brand`, together with `design`, since both
+  share the design-skill delegation, visual tests and A/B.
+- **Rejected**: keeping the logo in `design` (the 2026-10-16 reasons
+  confused a brand's identity with a non-brand project's style); the whole
+  visual identity in 1.1 (nearly all of the planned `design` work in one
+  release); the logo alone in `brand` with colour and type in `design`
+  (splits things that are made together).

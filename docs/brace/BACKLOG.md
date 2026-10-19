@@ -10,12 +10,29 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE
   1.1, `brace:design`; paths below move from `docs/project-tracker/` to
   `docs/brace/` (see the BRACE 1.0 item).** **Settled 2026-10-16: two
-  skills, not the ladder below** (see `DECISIONS.md`): `brace:design` (1.1)
+  skills, not the ladder below** (see `DECISIONS.md`): `brace:design`
   owns everything visual, logo included (`DESIGN`, `logo.md`,
   `applications.md`, `assets.md`, its own `DECISIONS`, the `kind:` key, the
-  design-skill delegation); `brace:brand` (1.2, item below) owns the
-  substance. `design` reads `docs/brace/brand/` when present, else
-  `IDENTITY.md` (stays in `track`). `kind:` drops its `brand` value. Also, per the 1.0
+  design-skill delegation); `brace:brand` (item below) owns the
+  substance. **Revised 2026-10-19:** a brand's face (art directions,
+  logo, brand palette and type, `assets.md`, `brand/` binaries) moves to
+  `brand`, shipped in 1.2 alongside `design`; `design` keeps applying it
+  to interfaces and the style of non-brand projects (their simple mark
+  and favicon included, still driven by `kind:`). `design` reads `docs/brace/brand/` when present, else
+  `IDENTITY.md` (stays in `track`). `kind:` drops its `brand` value.
+  **Order swapped 2026-10-17: `brand` is 1.1, `design` 1.2.** **Settled
+  2026-10-17 for the design spec:** it plays three roles in one loop
+  (guide the creation, route each step to an installed design skill,
+  record every choice and have UI work read it first); the creation path
+  depends on `kind:` (short for tool/library: one direction, palette, type,
+  a simple mark; full for app; full on request anywhere); the first UI work
+  in a project without `design/` brings one question (set a quick direction
+  first / just record what we build / no design tracking here; answer kept,
+  never re-asked); a non-brand project with an existing UI seeds `DESIGN.md`
+  from the code, rationale left "to fill in"; a brand project needs its
+  brand identity first (design asks for it if missing); code drifting from
+  `DESIGN.md` is flagged in one line and the user picks: back to the system,
+  or extend it (recorded). Also, per the 1.0
   rules: machine prefs go to `~/.brace/design/`, per-project favourites to a
   file under `docs/brace/design/` (not the frontmatter). Give the plugin the ability to own a
   project's design / brand direction, the way it owns state and progress.
@@ -272,17 +289,63 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   alone (never downgrade). Lands in 1.1 (a minor: behaviour change).
 
 - [ ] **`brace:brand` skill (the substance)** (L, ⭐⭐⭐) — split out of the
-  design item on 2026-10-16 (see `DECISIONS.md`); ships as BRACE 1.2, after
-  `brace:design`. Only for projects that are brands (a product to launch, a
+  design item on 2026-10-16 (see `DECISIONS.md`); ships as BRACE 1.1,
+  before `brace:design` (order swapped 2026-10-17). First real case:
+  BRACE's own foundations and strategy, already validated in the paused DA
+  spec (2026-09-22). Only for projects that are brands (a product to launch, a
   personal brand). Owns `docs/brace/brand/`: `FOUNDATIONS`, `STRATEGY`,
   `VOICE`, its own `DECISIONS`, and the name. Takes the frozen content
   model of those files from the design item, plus the personal-brand
   profile (2026-09-21) and the research → strategy steps of the workflow
-  (SYNTHESE § 1 steps 1-4). Never visual: it is the brief `design` reads.
+  (SYNTHESE § 1 steps 1-4). No visual in 1.1; the brand's face (logo,
+  palette, type, assets) joins in 1.2 (revised 2026-10-19).
   Its own spec → plan cycle.
 
+  **Settled 2026-10-17/18 for the spec:**
+  - Starts on demand only (contract); `design` (1.2) will ask for it.
+  - Two profiles, same files: product brand and personal brand (the
+    personal one adds packaging, one numeric goal, channels and cadence,
+    real name vs pseudonym).
+  - Structure: one skill, a short `SKILL.md` plus a reference per stage
+    (interview, strategy, voice, name, revision and rebrand, personal
+    profile).
+  - Competitive research goes to the `brace:analyst` agent (shipped in the
+    plugin, see the agent rule in `DECISIONS.md`): a mission framed by
+    subject (competitors, market, audience, name availability) and depth
+    (quick or full, **asked each time**); runs in the background while the
+    interview goes on; sourced table, written only after the user's check.
+  - Voice: written after the strategy and before the name, starting with
+    the voice-first exercise; public texts (README, release notes, site,
+    bio) drifting from it are flagged with a rewrite; it evolves through
+    accepted drifts and through a `FOUNDATIONS` / `STRATEGY` revision.
+  - Revision of the strategy: on events (major release, change of target
+    or ambition, an unknown competitor mentioned) and about every 6 months.
+  - Rebranding is in 1.1 (a deep revision: problem sprint, repositioning
+    first, soft continuity by default).
+  - **Added 2026-10-19** after checking against agency practice (web) and
+    the video corpus: real customers' voice (an "audience" mission for the
+    analyst, plus an interview guide for 3-5 real people: past stories,
+    the job the product is hired for); a test step before presenting
+    (tagline, positioning, name with real target people); competitors'
+    messaging and tone; proof points; brand architecture, only when the
+    project has sub-brands or sub-projects; a touchpoints list (also read
+    by the voice-drift hook); one indicator, reviewed at each revision.
+  - Spec written 2026-10-19 (gitignored), awaiting the user's review.
+
+- [ ] **`reader` agent (fresh eyes)** (M, ⭐⭐) — surfaced 2026-10-19. A
+  BRACE agent that reads a text as a newcomer: its blank context is the
+  point. Would run `track`'s fresh-eyes readability pass (done inline
+  today) and a pre-test for `brand` (what a tagline conveys in 5 seconds),
+  never in place of a real human test. After `analyst` has run for real.
+
+- [ ] **`auditor` agent (brand audit)** (M, ⭐⭐) — surfaced 2026-10-19. A
+  BRACE agent that reviews every touchpoint (README, site, public
+  profiles) against the brand at a revision and lists the drifts by
+  priority. Fits with `brace:design` (1.2), which would use it for the
+  visual too.
+
 - [ ] **Tidy a bloated `AGENTS.md`** (S, ⭐⭐) — a user capture from
-  2026-10-10, scoped 2026-10-16; lands in 1.1 alongside `brace:design`
+  2026-10-10, scoped 2026-10-16; lands in 1.1 alongside `brace:brand`
   (a minor: behaviour change). A `track` capability, not a new skill: it
   applies the existing `AGENTS.md` rules (`writing-tracking-files.md`) to a
   file that has grown, moving what does not belong (history, rationale,
