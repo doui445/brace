@@ -976,3 +976,9 @@ Closed out the portfolio sub-pages work and cut the release:
   is written and reuses a filed report; the analyst writes one report per
   subject; a guard test keeps the Claude agent copies invisible to
   Antigravity; the platform notes say every skill's hooks run.
+- Antigravity check (branch installed in place of the published copy,
+  backed up, then the published 1.0.0 reinstalled from GitHub): `agy plugin
+  validate` and the install both load exactly one agent (the Claude copy in
+  `agents/claude/` is ignored); the user started the analyst from the app
+  and it runs. The `agy` command line is not logged in on this machine, so
+  no headless mission was run there.

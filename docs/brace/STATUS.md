@@ -48,10 +48,9 @@ both manifests).
 ## Next 3 actions
 
 1. **Finish checking `feat/brand`** (`brace:brand` + the `analyst` agent,
-   built and reviewed 2026-10-19, suite green, not merged): an interactive
-   brand session on a test project, and the Antigravity install check
-   (agent frontmatter, tool names, the `agents/claude/` file not loaded).
-   Then merge. 1.2 brings the brand's face (logo, palette, type) in
+   built and reviewed 2026-10-19, suite green, not merged; Antigravity
+   check done: one agent loaded, it starts): an interactive brand session
+   on a test project. Then merge. 1.2 brings the brand's face (logo, palette, type) in
    `brand` plus `brace:design` (see `DECISIONS.md`). Test branches with
    `claude --plugin-dir .`.
 2. **1.1 riders**, each with a mini-spec: keep the Antigravity copy up to
