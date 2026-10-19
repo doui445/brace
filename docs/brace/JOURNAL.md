@@ -950,3 +950,22 @@ Closed out the portfolio sub-pages work and cut the release:
   the brand rather than to design. It does (`DECISIONS.md`): a brand's
   face moves to `brand`, shipped in 1.2 with `design`; the 1.1 spec only
   gains that framing.
+
+## 2026-10-19 — `brace:brand` and the `analyst` agent built (branch `feat/brand`)
+
+- Plan executed inline: the reserved `docs/brace/agents/` folder, brand
+  i18n headings, test discovery for every skill, the review reminder and
+  voice-drift hooks, the `analyst` agent (one file per tool, same body),
+  the brand skill and its seven references, the agents contract and docs.
+- Checked for real (headless Claude Code, `--plugin-dir`): `brace:analyst`
+  loads once and `brace:brand` is listed; a quick mission in a tracked
+  test project wrote only its brief and dated report, in the agreed
+  format; outside a tracked project it wrote nothing.
+- A fresh whole-branch review found no critical issue; fixed three: the
+  voice reminder never reached Antigravity (its adapter drops post-write
+  output; the touchpoints are now listed at session start), a project
+  still on the legacy folder could get a second one, and the Touchpoints
+  heading had to match exactly. Six minors deferred.
+- Not done yet: an interactive brand session and the Antigravity install
+  check (it would overwrite the published copy on this machine). Not
+  merged, nothing pushed.

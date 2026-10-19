@@ -47,13 +47,15 @@ both manifests).
 
 ## Next 3 actions
 
-1. **Review the `brace:brand` spec** (BRACE 1.1, written 2026-10-19,
-   gitignored), then the implementation plan: the substance (`FOUNDATIONS`,
-   `STRATEGY`, `VOICE`, the name) and the `analyst` agent. 1.2 brings the
-   brand's face (logo, palette, type) in `brand` plus `brace:design` for
-   interfaces (see `DECISIONS.md`). This machine now runs the published
-   plugin from GitHub: test branches with `claude --plugin-dir .`.
-2. **Resume the DA brainstorm** (BRACE's own identity): its validated
-   foundations and strategy are `brace:brand`'s first real case.
-3. **1.1 riders**: keep the Antigravity copy up to date; tidy a bloated
-   `AGENTS.md` (both in `BACKLOG.md`).
+1. **Finish checking `feat/brand`** (`brace:brand` + the `analyst` agent,
+   built and reviewed 2026-10-19, suite green, not merged): an interactive
+   brand session on a test project, and the Antigravity install check
+   (agent frontmatter, tool names, the `agents/claude/` file not loaded).
+   Then merge. 1.2 brings the brand's face (logo, palette, type) in
+   `brand` plus `brace:design` (see `DECISIONS.md`). Test branches with
+   `claude --plugin-dir .`.
+2. **1.1 riders**, each with a mini-spec: keep the Antigravity copy up to
+   date; tidy a bloated `AGENTS.md` (both in `BACKLOG.md`). Then release
+   1.1.0.
+3. **Run `/brace:brand` on BRACE itself**: the validated foundations and
+   strategy of the paused DA spec are its first real case.
