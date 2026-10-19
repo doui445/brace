@@ -1,8 +1,8 @@
 # i18n catalogue — English (`en`)
 
 Canonical key list for the tracking-file headings and template phrases the
-`brace:track` skill writes. `fr.md` (and any future `<code>.md`) mirrors
-this file: **same keys, same order**. A guard test enforces it.
+`brace:track` and `brace:brand` skills write. `fr.md` (and any future
+`<code>.md`) mirrors this file: **same keys, same order**. A guard test enforces it.
 
 **This file is the source of truth for the wording.** `SKILL.md`,
 `references/writing-tracking-files.md` and `references/backlog-phases.md`
@@ -100,6 +100,61 @@ headings beyond the sub-project names).
 
 - subprojects.title: SUBPROJECTS — {project}
 - subprojects.intro: The sub-projects attached to this project: why each one exists, where it stands, and where its own files live.
+
+## brand/FOUNDATIONS.md
+
+Written by `brace:brand` (see `skills/brand/references/`). `journey` only for
+a personal brand.
+
+- brand.foundations.title: FOUNDATIONS — {project}
+- brand.foundations.intro: Who we are and why. The durable base every other brand choice is judged against.
+- brand.foundations.heading.purpose: Purpose
+- brand.foundations.heading.personality: Personality
+- brand.foundations.heading.emotion: Core emotion
+- brand.foundations.heading.story: Brand story
+- brand.foundations.heading.journey: Journey
+- brand.foundations.heading.name: Name
+
+## brand/STRATEGY.md
+
+`architecture` only when the project has sub-brands or sub-projects;
+`packaging` and `channels` only for a personal brand. The `touchpoints`
+section lists repo files in backticks: a hook reads it.
+
+- brand.strategy.title: STRATEGY — {project}
+- brand.strategy.intro: Where we play and against whom. Revised over time.
+- brand.strategy.heading.objectives: Objectives
+- brand.strategy.heading.personas: Personas
+- brand.strategy.heading.landscape: Competitive landscape
+- brand.strategy.heading.differentiators: Differentiators
+- brand.strategy.heading.positioning: Positioning
+- brand.strategy.heading.mechanism: Mechanism
+- brand.strategy.heading.proof: Proof points
+- brand.strategy.heading.indicator: Indicator
+- brand.strategy.heading.touchpoints: Touchpoints
+- brand.strategy.heading.architecture: Brand architecture
+- brand.strategy.heading.packaging: Packaging
+- brand.strategy.heading.channels: Channels and cadence
+- brand.strategy.heading.non_goals: Non-goals
+
+## brand/VOICE.md
+
+- brand.voice.title: VOICE — {project}
+- brand.voice.intro: How the brand speaks. Public texts are checked against it.
+- brand.voice.heading.exercise: Voice first
+- brand.voice.heading.attributes: Voice attributes
+- brand.voice.heading.tone: Tone by context
+- brand.voice.heading.lexicon: Lexicon
+- brand.voice.heading.mechanics: Writing rules
+- brand.voice.heading.pillars: Message pillars
+- brand.voice.heading.tagline: Tagline and boilerplate
+
+## brand/DECISIONS.md
+
+Append-only, separate from the project's main `DECISIONS.md`.
+
+- brand.decisions.title: BRAND DECISIONS — {project}
+- brand.decisions.intro: Brand choices: what was tried, why it was set aside, what was kept.
 
 ## Shared
 

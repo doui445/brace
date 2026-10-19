@@ -109,6 +109,13 @@ class PluginManifestTests(unittest.TestCase):
         # docs/brace/agents/ holds BRACE agents' per-project folders, never a skill.
         self.assertFalse((REPO / "skills" / "agents").exists())
 
+    def test_i18n_has_brand_touchpoints_heading(self):
+        # The voice-drift hook finds the Touchpoints section by these values.
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        for code in ("en", "fr"):
+            text = (i18n / f"{code}.md").read_text(encoding="utf-8")
+            self.assertRegex(text, r"(?m)^- brand\.strategy\.heading\.touchpoints: \S")
+
     def test_i18n_catalogues_have_matching_keys(self):
         import re
         i18n = REPO / "skills" / "track" / "references" / "i18n"
