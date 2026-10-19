@@ -73,6 +73,19 @@ strategy "$S2" '## Touchpoints
 has "$(run "$S2" "$S2/README.md")" "touchpoint" "sub-heading inside the section keeps it open"
 empty "$(run "$S2" "$S2/LATER.md")" "next level-2 heading closes the section"
 
+# Session markers: two different files must never share one, and a deep path still works.
+C="$TMP/scope/collide"
+DEEP="d/$(printf 'very-long-folder-name-%s/' 1 2 3 4 5 6 7 8 9 10 11 12)page.md"
+strategy "$C" "## Touchpoints
+
+- \`a b.md\`
+- \`a_b.md\`
+- \`$DEEP\`"
+has "$(run "$C" "$C/a b.md" sx)" "touchpoint" "first of two similar names"
+has "$(run "$C" "$C/a_b.md" sx)" "touchpoint" "second similar name gets its own marker"
+has "$(run "$C" "$C/$DEEP" sx)" "touchpoint" "deep path -> reminder"
+empty "$(run "$C" "$C/$DEEP" sx)" "deep path -> once per session"
+
 N="$TMP/scope/n"; mkdir -p "$N/docs/brace/brand"
 empty "$(run "$N" "$N/README.md")" "no STRATEGY.md -> silent"
 strategy "$N" '## Positioning

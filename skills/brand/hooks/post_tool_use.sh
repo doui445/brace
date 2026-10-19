@@ -28,7 +28,9 @@ printf '%s\n' "$LISTED" | grep -qxF -- "$REL" || exit 0
 
 MARK_DIR="${TMPDIR:-/tmp}/brace-brand-voice"
 mkdir -p "$MARK_DIR" 2>/dev/null || true
-MARK="$MARK_DIR/$(printf '%s__%s' "$SESSION" "$FILE" | tr '/ .' '___')"
+# Session id kept flat, file path hashed: no collision between similar
+# names, and no name too long for a deep path.
+MARK="$MARK_DIR/$(printf '%s' "$SESSION" | tr '/ .' '___')__$(printf '%s' "$FILE" | cksum | awk '{print $1 "-" $2}')"
 [ -f "$MARK" ] && exit 0
 touch "$MARK" 2>/dev/null || true
 

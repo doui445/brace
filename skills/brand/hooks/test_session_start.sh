@@ -40,6 +40,9 @@ python3 -c 'import os,sys,time; t=time.time()-31*86400; os.utime(sys.argv[1],(t,
 has "$(run "$P")" "last reviewed on" "snooze older than 30 days -> line again"
 rm -f "$SNOOZE"
 
+proj "$P" "brand_reviewed: $(ago 200) # last full review
+"
+has "$(run "$P")" "last reviewed on $(ago 200)." "date followed by a comment is read"
 proj "$P" "brand_stage: voice
 "
 empty "$(run "$P")" "no brand_reviewed (brand in progress) -> silent"

@@ -26,7 +26,7 @@ REVIEWED="$(awk '
   { gsub(/\r/, "") }
   /^---$/ { c++; next }
   c == 1 && /^brand_reviewed:/ {
-    sub(/^brand_reviewed:[ \t]*/, ""); gsub(/["'\'' \t]/, ""); print; exit
+    sub(/^brand_reviewed:[ \t]*/, ""); sub(/[ \t]*#.*$/, ""); gsub(/["'\'' \t]/, ""); print; exit
   }
   c >= 2 { exit }
 ' "$STATUS" 2>/dev/null || true)"
