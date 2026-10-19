@@ -851,9 +851,15 @@ GITHUB_MARK_SVG = (
     "</path></svg>"
 )
 
+# Folders under docs/brace/ that are not skills: agents/ holds the BRACE
+# agents' per-project folders (see references/skills-contract.md).
+RESERVED_BRACE_DIRS = {"agents"}
+
+
 def render_skill_sections(project_dir, data, s):
     """One section per skill folder under docs/brace/ (a skill other than
-    track keeps its files there): its prefixed frontmatter keys
+    track keeps its files there; reserved folders such as agents/ are
+    skipped): its prefixed frontmatter keys
     (<skill>_*) and a link to the folder. "" when there is none. Never
     raises: an unreadable folder yields no section, an unusable path no
     link -- the portfolio run must not abort over it."""
@@ -861,7 +867,10 @@ def render_skill_sections(project_dir, data, s):
     try:
         if not root.is_dir():
             return ""
-        dirs = sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith("."))
+        dirs = sorted(
+            p for p in root.iterdir()
+            if p.is_dir() and not p.name.startswith(".") and p.name not in RESERVED_BRACE_DIRS
+        )
     except (OSError, ValueError):
         return ""
     out = []

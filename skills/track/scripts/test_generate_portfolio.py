@@ -1301,6 +1301,26 @@ class BraceLayoutTests(unittest.TestCase):
             os.chdir(cwd)
         self.assertIn((p / "docs" / "brace" / "design").resolve().as_uri(), html)
 
+    def test_agents_folder_is_not_a_skill_section(self):
+        p = self.home / "watched"
+        self._status(p, "brace", "agents_x: y\n")
+        (p / "docs" / "brace" / "agents" / "analyst").mkdir(parents=True)
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        html = gp.build_subpage(p, data, "en")
+        self.assertNotIn('class="subpage-skill"', html)
+        self.assertNotIn("<h2>Agents</h2>", html)
+
+    def test_brand_section_next_to_agents_folder(self):
+        p = self.home / "branded"
+        self._status(p, "brace", "brand_stage: voice\nbrand_profile: product\n")
+        (p / "docs" / "brace" / "brand").mkdir(parents=True)
+        (p / "docs" / "brace" / "agents" / "analyst").mkdir(parents=True)
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        html = gp.build_subpage(p, data, "en")
+        self.assertIn("<h2>Brand</h2>", html)
+        self.assertIn("voice", html)
+        self.assertNotIn("<h2>Agents</h2>", html)
+
     def test_no_skill_section_without_skill_folder(self):
         p = self.home / "plain"
         self._status(p, "brace", "design_stage: x\n")

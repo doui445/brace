@@ -83,6 +83,13 @@ has "$OUT" "TRACK swapped=0" "machine exit 1 -> track still runs"
 [ "$RC" -eq 0 ] && echo "PASS: machine exit 1 -> run.sh exits 0" || { echo "FAIL: run.sh exit $RC"; FAIL=1; }
 printf '#!/usr/bin/env bash\nexit 0\n' > "$MACHINE"
 
+# docs/brace/agents/ is a reserved folder, never a skill: nothing extra runs.
+mkdir -p "$P/docs/brace/agents/analyst"
+OUT="$(BRACE_CWD="$P" run session_start)"
+hasnt "$OUT" "AGENTS" "agents folder triggers no skill hook"
+has "$OUT" "TRACK" "track still runs next to an agents folder"
+rm -rf "$P/docs/brace/agents"
+
 rm -rf "$ROOT/skills"; mkdir -p "$ROOT/skills"
 OUT="$(BRACE_CWD="$P" run session_start)"
 [ -z "$OUT" ] && echo "PASS: nothing to say -> no output" || { echo "FAIL: expected silence, got [$OUT]"; FAIL=1; }

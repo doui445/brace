@@ -105,6 +105,10 @@ class PluginManifestTests(unittest.TestCase):
         self.assertTrue(p.is_file())
         self.assertIn("description:", p.read_text(encoding="utf-8"))
 
+    def test_agents_is_a_reserved_skill_name(self):
+        # docs/brace/agents/ holds BRACE agents' per-project folders, never a skill.
+        self.assertFalse((REPO / "skills" / "agents").exists())
+
     def test_i18n_catalogues_have_matching_keys(self):
         import re
         i18n = REPO / "skills" / "track" / "references" / "i18n"
