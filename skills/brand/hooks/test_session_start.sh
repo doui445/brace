@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Tests for skills/brand/hooks/session_start.sh. Run: bash skills/brand/hooks/test_session_start.sh
+set -uo pipefail
+HOOK="$(cd "$(dirname "$0")" && pwd)/session_start.sh"
+PLUGIN_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+FAIL=0
+has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3: missing [$2] in [$1]"; FAIL=1 ;; esac; }
+empty() { [ -z "$1" ] && echo "PASS: $2" || { echo "FAIL: $2: got [$1]"; FAIL=1; }; }
+TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
+export HOME="$TMP/home"; mkdir -p "$HOME/.brace"
+ago() { python3 -c 'import sys,datetime; print(datetime.date.today()-datetime.timedelta(days=int(sys.argv[1])))' "$1"; }
+proj() { mkdir -p "$1/docs/brace/brand"; printf -- '---\nproject: p\nstatus: active\nlast_updated: 2026-01-01\n%s---\n' "${2:-}" > "$1/docs/brace/STATUS.md"; }
+run() { BRACE_PROJECT_ROOT="$1" BRACE_TOOL="${2:-claude}" BRACE_SOURCE="${3:-startup}" BRACE_PLUGIN_ROOT="$PLUGIN_ROOT" bash "$HOOK"; }
+
+P="$TMP/scope/p"
+proj "$P" "brand_reviewed: $(ago 10)
+"
+empty "$(run "$P")" "recent review -> silent"
+
+proj "$P" "brand_reviewed: $(ago 200)
+"
+OUT="$(run "$P")"
+has "$OUT" "last reviewed on $(ago 200)" "old review -> one line with the date"
+has "$OUT" "brace:brand" "claude names brace:brand"
+has "$OUT" "touch" "line gives the snooze command"
+has "$(run "$P" antigravity)" "invoke the brand skill" "antigravity names brand"
+empty "$(run "$P" claude compact)" "compact -> silent"
+empty "$(run "$P" claude resume)" "resume -> silent"
+
+proj "$P" "brand_reviewed: \"$(ago 200)\"
+"
+has "$(run "$P")" "last reviewed on" "quoted date is read"
+printf -- '---\nproject: p\nbrand_reviewed: %s\r\n---\n' "$(ago 200)" > "$P/docs/brace/STATUS.md"
+has "$(run "$P")" "last reviewed on" "CRLF date is read"
+
+SNOOZE="$HOME/.brace/brand/snooze/$(printf '%s' "$P" | tr '/ ' '__')"
+mkdir -p "$(dirname "$SNOOZE")"; touch "$SNOOZE"
+empty "$(run "$P")" "snoozed less than 30 days ago -> silent"
+python3 -c 'import os,sys,time; t=time.time()-31*86400; os.utime(sys.argv[1],(t,t))' "$SNOOZE"
+has "$(run "$P")" "last reviewed on" "snooze older than 30 days -> line again"
+rm -f "$SNOOZE"
+
+proj "$P" "brand_stage: voice
+"
+empty "$(run "$P")" "no brand_reviewed (brand in progress) -> silent"
+proj "$P" "brand_reviewed: someday
+"
+empty "$(run "$P")" "unreadable date -> silent"
+proj "$P" "brand_reviewed: 2999-01-01
+"
+empty "$(run "$P")" "future date -> silent"
+rm -rf "$P/docs/brace/brand"
+proj_nobrand="$P"; printf -- '---\nbrand_reviewed: %s\n---\n' "$(ago 200)" > "$P/docs/brace/STATUS.md"
+empty "$(run "$proj_nobrand")" "no brand folder -> silent"
+empty "$(run "")" "no project root -> silent"
+
+[ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
+exit $FAIL
