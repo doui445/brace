@@ -29,8 +29,11 @@ When the voice is written, set `brand_stage: name` if a name is needed
 
 ## Voice drift
 
-Triggered by the hook line "… is a brand touchpoint", or when the user
-shows a public text from outside the repo (a bio, a post).
+Triggered by the hook line "… is a brand touchpoint" (Claude Code), or,
+on Antigravity, which cannot pass that line after a write, by the list of
+touchpoints given at session start: when you write one of them, check it
+yourself. Also when the user shows a public text from outside the repo (a
+bio, a post).
 
 - Compare the text with `VOICE.md`.
 - No drift: say nothing.

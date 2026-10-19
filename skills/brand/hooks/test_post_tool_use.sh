@@ -50,6 +50,29 @@ strategy "$F" '## Points de contact
 - `README.md`'
 has "$(run "$F" "$F/README.md")" "touchpoint" "French heading is found"
 
+# Heading variants an AI may write: numbered, level 3, extra words, extra spaces, other case.
+for H in "## 9. Touchpoints" "### Touchpoints" "## Touchpoints (where we speak)" "##  Touchpoints" "## touchpoints"; do
+  V="$TMP/scope/v$RANDOM"
+  strategy "$V" "$H
+
+- \`README.md\`
+
+## Next"
+  has "$(run "$V" "$V/README.md")" "touchpoint" "heading variant [$H] is found"
+done
+S2="$TMP/scope/sub"
+strategy "$S2" '## Touchpoints
+
+### In the repo
+
+- `README.md`
+
+## Non-goals
+
+- `LATER.md`'
+has "$(run "$S2" "$S2/README.md")" "touchpoint" "sub-heading inside the section keeps it open"
+empty "$(run "$S2" "$S2/LATER.md")" "next level-2 heading closes the section"
+
 N="$TMP/scope/n"; mkdir -p "$N/docs/brace/brand"
 empty "$(run "$N" "$N/README.md")" "no STRATEGY.md -> silent"
 strategy "$N" '## Positioning

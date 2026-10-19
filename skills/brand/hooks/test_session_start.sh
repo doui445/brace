@@ -54,5 +54,17 @@ proj_nobrand="$P"; printf -- '---\nbrand_reviewed: %s\n---\n' "$(ago 200)" > "$P
 empty "$(run "$proj_nobrand")" "no brand folder -> silent"
 empty "$(run "")" "no project root -> silent"
 
+# Antigravity cannot receive the post-write reminder: the session start lists the touchpoints.
+A="$TMP/scope/agy"
+proj "$A" "brand_reviewed: $(ago 10)
+"
+printf '## Touchpoints\n\n- `README.md`\n- `docs/site/index.html`\n' > "$A/docs/brace/brand/STRATEGY.md"
+OUT="$(run "$A" antigravity)"
+has "$OUT" "README.md, docs/site/index.html" "antigravity -> touchpoints listed at session start"
+has "$OUT" "VOICE.md" "antigravity touchpoint line points to VOICE.md"
+empty "$(run "$A" claude)" "claude -> no touchpoint line (the post-write hook covers it)"
+rm -f "$A/docs/brace/brand/STRATEGY.md"
+empty "$(run "$A" antigravity)" "antigravity without STRATEGY.md -> silent"
+
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
 exit $FAIL

@@ -99,6 +99,9 @@ who (a role, never a real name), the link, the date.
   `docs/brace/brand/` or any other skill's files. The skill that launched
   you integrates your result after the user checks it.
 - **Not tracked**: write no file. Your whole report is your final message.
+  Same when the project still has a `docs/project-tracker/` folder and no
+  `docs/brace/STATUS.md` (its move is pending): never create `docs/brace/`
+  there.
 
 Your final message is always the full report, so that whoever launched you
 can show it to the user.

@@ -52,6 +52,11 @@ backticks: a hook reads it.
   session.
 - Project not tracked: explain that brand's files live in `docs/brace/` and
   offer to track the project first (the `track` skill).
+- Project still on the old `docs/project-tracker/` folder (its move to
+  `docs/brace/` is pending until the tool restarts): never create
+  `docs/brace/` this session, or the move would find both folders and stop.
+  Say the brand work starts once the move is done; brief the analyst as
+  "not tracked".
 - `docs/brace/brand/` exists: resume at `brand_stage`. Otherwise ask one
   question: product brand or personal brand, with a recommendation drawn
   from the context.

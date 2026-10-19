@@ -177,6 +177,14 @@ class PluginManifestTests(unittest.TestCase):
             for ref in set(re.findall(r"`(references/[a-z0-9_/.-]+\.md)`", text)):
                 self.assertTrue((skill_md.parent / ref).is_file(), f"{skill_md}: missing {ref}")
 
+    def test_brand_and_analyst_hold_back_on_a_legacy_project(self):
+        # A project still on docs/project-tracker/ (move pending) must never
+        # get a docs/brace/ folder from brand or the analyst: the move would
+        # then find both folders and stop.
+        for rel in ("skills/brand/SKILL.md", "agents/claude/analyst.md"):
+            text = (REPO / rel).read_text(encoding="utf-8")
+            self.assertIn("docs/project-tracker/", text, rel)
+
     def test_brand_skill_exists(self):
         self.assertTrue((REPO / "skills" / "brand" / "SKILL.md").is_file())
 

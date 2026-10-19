@@ -36,3 +36,8 @@ Installed with `agy plugin install https://github.com/doui445/brace` (the repo r
 BRACE agents load from `agents/<agent>.md` at the plugin root. Launch one
 with `invoke_subagent`, type `<agent>` (for example `analyst`); it starts
 with a clean context, so pass a complete brief.
+
+A `PostToolUse` hook cannot pass text to the agent on Antigravity, so
+skills that react to a write say it at session start instead: `brand`
+lists the project's brand touchpoints there, and the agent checks them
+against the voice itself when it writes one.

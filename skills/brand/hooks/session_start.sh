@@ -11,6 +11,15 @@ set -uo pipefail
 ROOT="${BRACE_PROJECT_ROOT:-}"
 [ -n "$ROOT" ] && [ -d "$ROOT/docs/brace/brand" ] || exit 0
 case "${BRACE_SOURCE:-}" in compact|resume) exit 0 ;; esac
+if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then SKILL="brand"; else SKILL="brace:brand"; fi
+
+# Antigravity cannot receive the post-write voice reminder: list the
+# touchpoints once here so the agent checks them itself when it writes one.
+if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then
+  . "$BRACE_PLUGIN_ROOT/skills/brand/hooks/touchpoints.sh"
+  TP="$(brand_touchpoints "$ROOT/docs/brace/brand/STRATEGY.md" "$BRACE_PLUGIN_ROOT" | awk 'NF { printf "%s%s", (n++ ? ", " : ""), $0 }')"
+  [ -n "$TP" ] && echo "[BRACE] Brand touchpoints in this project: $TP. When you write one of them, check it against docs/brace/brand/VOICE.md (the $SKILL skill, references/voice.md): flag any drift in one line with a proposed rewrite."
+fi
 
 STATUS="$ROOT/docs/brace/STATUS.md"
 REVIEWED="$(awk '
@@ -35,6 +44,5 @@ if [ -f "$SNOOZE" ]; then
   [ $((NOW - THEN)) -lt 2592000 ] && exit 0
 fi
 
-if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then SKILL="brand"; else SKILL="brace:brand"; fi
 echo "[BRACE] The brand strategy of $(basename "$ROOT") was last reviewed on $REVIEWED. In your first reply, offer a review in one line (invoke the $SKILL skill, see references/revision.md). If the user says later, run: mkdir -p \"$(dirname "$SNOOZE")\" && touch \"$SNOOZE\" (silences this for 30 days)."
 exit 0
