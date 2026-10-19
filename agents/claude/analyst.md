@@ -92,7 +92,8 @@ who (a role, never a real name), the link, the date.
 # Where you write
 
 - **Tracked project**: save the report as
-  `docs/brace/agents/analyst/<YYYY-MM-DD>-<subject>.md`. At your first
+  `docs/brace/agents/analyst/<YYYY-MM-DD>-<subject>.md`, one report file per
+  subject (a mission on competitors and audience gives two files). At your first
   mission in a project, also create `docs/brace/agents/analyst/BRIEF.md`
   from your brief: what the project is, what to watch, the competitors
   named, sources to trust or avoid. Write nowhere else: never in

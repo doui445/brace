@@ -185,6 +185,40 @@ class PluginManifestTests(unittest.TestCase):
             text = (REPO / rel).read_text(encoding="utf-8")
             self.assertIn("docs/project-tracker/", text, rel)
 
+    def test_brand_stages_are_consistent(self):
+        # Every stage a reference sets must be one SKILL.md declares, and the
+        # foundations have their own stage so a pause there resumes there.
+        import re
+        brand = REPO / "skills" / "brand"
+        head = (brand / "SKILL.md").read_text(encoding="utf-8")
+        declared = re.search(r"`brand_stage: ([a-z |]+)`", head).group(1)
+        stages = {x.strip() for x in declared.split("|")}
+        self.assertIn("foundations", stages)
+        used = set()
+        for f in [brand / "SKILL.md"] + sorted((brand / "references").glob("*.md")):
+            used |= set(re.findall(r"brand_stage: ([a-z]+)`", f.read_text(encoding="utf-8")))
+        self.assertTrue(used <= stages, used - stages)
+        self.assertEqual(stages - {"done"}, used & stages - {"done"}, "a declared stage no reference sets")
+
+    def test_analyst_writes_one_report_per_subject(self):
+        _, body = _split_agent("agents/claude/analyst.md")
+        self.assertIn("one report file per subject", " ".join(body.split()))
+
+    def test_claude_agent_folder_is_invisible_to_antigravity(self):
+        # Antigravity loads agents/<name>.md and agents/<name>/agent.md: the
+        # Claude copies in agents/claude/ must match neither.
+        claude_dir = REPO / "agents" / "claude"
+        self.assertFalse((claude_dir / "agent.md").exists())
+        self.assertFalse((REPO / "agents" / "claude.md").exists())
+        for f in claude_dir.glob("*.md"):
+            self.assertTrue((REPO / "agents" / f.name).is_file(), f"no Antigravity twin for {f.name}")
+
+    def test_platform_notes_say_every_skill_hooks_run(self):
+        for name in ("platform-claude.md", "platform-antigravity.md"):
+            text = (REPO / "skills" / "track" / "references" / name).read_text(encoding="utf-8")
+            self.assertNotIn("runs `skills/track/hooks/session_start.sh`", text, name)
+            self.assertIn("each skill", text, name)
+
     def test_brand_skill_exists(self):
         self.assertTrue((REPO / "skills" / "brand" / "SKILL.md").is_file())
 

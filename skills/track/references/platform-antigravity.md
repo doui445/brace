@@ -23,13 +23,13 @@ When asking bootstrap or tracking choices with options:
 
 ## 4. Installation and Lifecycle Hooks
 
-Installed with `agy plugin install https://github.com/doui445/brace` (the repo root carries the Antigravity `plugin.json` and `hooks.json`). The hooks declared in the root `hooks.json` call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/antigravity/`, which runs the scripts of each skill (`skills/track/hooks/session_start.sh`, `post_tool_use.sh`):
+Installed with `agy plugin install https://github.com/doui445/brace` (the repo root carries the Antigravity `plugin.json` and `hooks.json`). The hooks declared in the root `hooks.json` call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/antigravity/`, which runs the scripts of each skill (`skills/<skill>/hooks/session_start.sh`, `post_tool_use.sh`; a skill other than `track` only where its `docs/brace/<skill>/` exists):
 - `PreInvocation`: runs the `session_start` event.
   - Only executes on the first model call of each conversation (remembered by `conversationId`; Antigravity 1.3 numbers calls from `invocationNum` 0).
   - Outputs an ephemeral message in `injectSteps` when opening a tracked or untracked project under scope.
   - Outputs `{}` for every later call of the same conversation.
 - `PostToolUse` with matcher `write_to_file|replace_file_content`:
-  - Runs the `post_tool_use` event (`skills/track/hooks/post_tool_use.sh`): regenerates the portfolio whenever `STATUS.md` is updated, and triggers the Reminders sync if Apple Reminders is configured.
+  - Runs the `post_tool_use` event (each skill's `hooks/post_tool_use.sh`; its output never reaches the agent, see below): for `track`, regenerates the portfolio whenever `STATUS.md` is updated, and triggers the Reminders sync if Apple Reminders is configured.
 
 ## 5. Agents
 

@@ -28,8 +28,8 @@ Claude Code displays edit diffs in full by default.
 ## 4. Lifecycle Hooks
 
 Claude Code hooks are declared in `claude-hooks.json` at the plugin root and all call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/claude/`, which runs the scripts of each skill:
-- `SessionStart`: runs `skills/track/hooks/session_start.sh`.
-- `PostToolUse` with matcher `Edit|Write`: runs `skills/track/hooks/post_tool_use.sh` (portfolio regeneration and Reminders sync trigger).
+- `SessionStart`: runs each skill's `hooks/session_start.sh` (`track` always; another skill only where its `docs/brace/<skill>/` exists).
+- `PostToolUse` with matcher `Edit|Write`: runs each skill's `hooks/post_tool_use.sh` (for `track`: portfolio regeneration and Reminders sync trigger; for `brand`: the voice reminder on touchpoint files).
 
 ## 5. Agents
 

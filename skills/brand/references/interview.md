@@ -25,7 +25,9 @@ Read by `SKILL.md` at the interview step, then for the foundations.
 For a personal brand, also run the entourage test from
 `references/personal.md`.
 
-## The foundations (`FOUNDATIONS.md`)
+Once the analyst is launched, set `brand_stage: foundations`.
+
+## The foundations (`FOUNDATIONS.md`, `brand_stage: foundations`)
 
 While the analyst works, in this order, one part at a time. Show each part,
 get a yes, then write it.

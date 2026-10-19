@@ -40,8 +40,8 @@ backticks: a hook reads it.
 `STATUS.md` frontmatter, three keys only:
 
 - `brand_profile: product | personal`: asked once, at the start.
-- `brand_stage: interview | strategy | voice | name | test | done`: where to
-  resume.
+- `brand_stage: interview | foundations | strategy | voice | name | test | done`:
+  where to resume.
 - `brand_reviewed: YYYY-MM-DD`: the last review (set when the first session
   ends, then at each review).
 
@@ -76,8 +76,8 @@ that part: show it, get a yes, then write it. Follow `track`'s
 
 1. **Interview** (`interview`): read `references/interview.md`. Ends by
    launching the analyst in the background (see below).
-2. **Foundations**: while the analyst works. `references/interview.md`,
-   second half. Writes `FOUNDATIONS.md`.
+2. **Foundations** (`foundations`): while the analyst works.
+   `references/interview.md`, second half. Writes `FOUNDATIONS.md`.
 3. **Strategy** (`strategy`): `references/strategy.md`. Writes
    `STRATEGY.md`.
 4. **Voice** (`voice`): `references/voice.md`. Writes `VOICE.md`.
@@ -95,7 +95,11 @@ steps 1 to 3.
 **Pausing.** The user may stop at any step: keep `brand_stage` where it is
 and add "finish the brand (<stage> step)" to the next actions in
 `STATUS.md`. No reminder at every session: resume when the topic returns or
-the user asks.
+the user asks. On resume, start at `brand_stage`, skip the parts already
+written in the brand files, and reuse a report already filed in
+`docs/brace/agents/analyst/` rather than launching the analyst again (if
+it was still running when the session ended and no report was filed, ask
+whether to launch it again).
 
 ## The analyst
 

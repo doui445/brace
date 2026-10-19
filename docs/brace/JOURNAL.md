@@ -969,3 +969,10 @@ Closed out the portfolio sub-pages work and cut the release:
 - Not done yet: an interactive brand session and the Antigravity install
   check (it would overwrite the published copy on this machine). Not
   merged, nothing pushed.
+- The user asked to fix the six deferred minors too, all done with tests:
+  the voice marker hashes the file path (no collision, no over-long
+  name); a review date followed by a comment is read; the foundations get
+  their own `brand_stage: foundations`, and a resumed session skips what
+  is written and reuses a filed report; the analyst writes one report per
+  subject; a guard test keeps the Claude agent copies invisible to
+  Antigravity; the platform notes say every skill's hooks run.
