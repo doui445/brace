@@ -68,6 +68,13 @@ Plus, on top of the files:
 - **A unified portfolio** — one `PORTFOLIO.html` aggregating every tracked
   project across all your scope roots, grouped by category, regenerated
   automatically whenever a `STATUS.md` changes.
+- **Brand work** (`/brace:brand`) — for a project that is a brand (a product
+  to launch or a personal brand): purpose, positioning, voice and name,
+  written in `docs/brace/brand/` and kept alive (reviews, rebrand, voice
+  checks on public texts).
+- **A research analyst** — a BRACE agent that researches competitors, the
+  market, what an audience says or a name's availability in the
+  background, with a source on every line.
 - **Optional GitHub automation** — creates a private repo or grafts onto an
   existing one, on request. Never commits or pushes without confirmation.
 - **Optional Apple Reminders sync** (macOS) — links a project to a Reminders

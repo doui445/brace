@@ -45,9 +45,34 @@ adding a skill never requires changing the base.
   JSON: the adapters do that. A failing script is ignored.
 - No declaration file to edit.
 
+## Agents
+- A **skill** is know-how loaded into the current conversation, named after
+  a domain (`track`, `brand`). An **agent** is a separate worker with its
+  own instructions, a blank context and a brief, who reports one result,
+  named after a trade (`analyst`). An agent is never a slash command: an
+  AI delegates to it, or the user asks for it in plain words.
+- **BRACE agents**: a trade any project can use and a BRACE skill depends
+  on. They ship in the plugin (`agents/<agent>.md` for Antigravity,
+  `agents/claude/<agent>.md` listed in `.claude-plugin/plugin.json` for
+  Claude Code, same body in both) and update with it.
+- They learn a project at every mission from `docs/brace/agents/<agent>/`:
+  a `BRIEF.md` (priorities, instructions, sources, the user's past
+  corrections; created at the first mission, enriched afterwards, the
+  calling skill adding what the user said) next to their past work. One
+  folder per project, whatever skill launched them.
+- An agent never assumes who it works for: the caller gives the mission.
+  One report format for every caller. It writes only in its own folder;
+  the skill integrates the result after the user checks it. Outside a
+  tracked project it writes no file and reports in its message.
+- **Project agents** (a trade only one project needs) stay in that
+  project's `.claude/agents/`, owned by the user; their instructions point
+  to `docs/brace/` files rather than copying facts.
+- `agents` is reserved under `docs/brace/`: no skill may take that name.
+
 ## Portfolio
 - A used skill gets a section on the project's detail page: its prefixed
-  keys and a link to its folder. Cards on `PORTFOLIO.html` never change.
+  keys and a link to its folder (reserved folders such as `agents/` get
+  none). Cards on `PORTFOLIO.html` never change.
 
 ## Settings
 - `/brace:config` shows one section per installed skill: it reads that

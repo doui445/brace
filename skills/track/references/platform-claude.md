@@ -30,3 +30,11 @@ Claude Code displays edit diffs in full by default.
 Claude Code hooks are declared in `claude-hooks.json` at the plugin root and all call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/claude/`, which runs the scripts of each skill:
 - `SessionStart`: runs `skills/track/hooks/session_start.sh`.
 - `PostToolUse` with matcher `Edit|Write`: runs `skills/track/hooks/post_tool_use.sh` (portfolio regeneration and Reminders sync trigger).
+
+## 5. Agents
+
+BRACE agents load from the file `.claude-plugin/plugin.json` lists under
+`agents` (`agents/claude/<agent>.md`). Launch one with the Agent tool,
+`subagent_type: "brace:<agent>"`, in the background; it does not see the
+conversation, so pass a complete brief. Its result arrives as a message
+when it finishes.

@@ -22,6 +22,12 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   **self-relative**, never hardcode `~/.claude/...` paths);
   `scripts/generate_portfolio.py` (stdlib only, no deps) and
   `scripts/migrate_project.sh` (+ their tests).
+- `skills/brand/` — `SKILL.md`, `references/` (one per stage), and
+  `hooks/session_start.sh` (review reminder) / `hooks/post_tool_use.sh`
+  (voice drift on touchpoints), + their `test_*.sh`.
+- `agents/` — BRACE agents: `agents/<agent>.md` for Antigravity,
+  `agents/claude/<agent>.md` for Claude Code (listed in
+  `.claude-plugin/plugin.json`); same body, a test enforces it.
 - `dispatch/` — the dispatcher `run.sh`, `lib.sh`, `machine.sh`,
   `migrate_plugins.sh`, `migrate_config.sh`, and the per-tool adapters
   `claude/` and `antigravity/` (+ tests).

@@ -30,3 +30,9 @@ Installed with `agy plugin install https://github.com/doui445/brace` (the repo r
   - Outputs `{}` for every later call of the same conversation.
 - `PostToolUse` with matcher `write_to_file|replace_file_content`:
   - Runs the `post_tool_use` event (`skills/track/hooks/post_tool_use.sh`): regenerates the portfolio whenever `STATUS.md` is updated, and triggers the Reminders sync if Apple Reminders is configured.
+
+## 5. Agents
+
+BRACE agents load from `agents/<agent>.md` at the plugin root. Launch one
+with `invoke_subagent`, type `<agent>` (for example `analyst`); it starts
+with a clean context, so pass a complete brief.

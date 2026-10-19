@@ -14,6 +14,20 @@ the bump, a release never breaks an existing project. The version lives in
 
 ## [Unreleased]
 
+### Added
+- `brace:brand`: builds and keeps alive a brand's substance in
+  `docs/brace/brand/` (`FOUNDATIONS`, `STRATEGY`, `VOICE`, `DECISIONS`), for
+  product and personal brands; review reminder after 6 months; voice checks
+  on the touchpoint files.
+- The `analyst` agent, BRACE's first agent: background research
+  (competitors, market, audience, name availability), sourced, learning
+  each project from `docs/brace/agents/analyst/`.
+- The agents rules in `references/skills-contract.md`.
+
+### Changed
+- The portfolio detail page ignores `docs/brace/agents/`.
+- `run_tests.sh` runs every skill's tests.
+
 ## [1.0.0] — 2026-10-16
 
 ### Added

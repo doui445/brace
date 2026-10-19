@@ -351,10 +351,15 @@ permanent — nothing for you to start:
 
 ## Skills built on BRACE
 
-`track` is the base layer. Other skills (the first planned: `design`)
-plug into it without touching it — see `references/skills-contract.md`.
-They start on demand, from their description or as `/brace:<skill>`,
-never with an activation question.
+`track` is the base layer. Other skills (the first: `brand`) plug into
+it without touching it — see `references/skills-contract.md`. They start
+on demand, from their description or as `/brace:<skill>`, never with an
+activation question.
+
+BRACE also ships **agents**: separate workers a skill or a conversation
+hands a mission to (the first: `analyst`, research). Each learns a project
+from `docs/brace/agents/<agent>/`; `docs/brace/agents/` is never a skill
+folder. Rules in `references/skills-contract.md`, `## Agents`.
 
 ## Retrofitting an existing project
 
