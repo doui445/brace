@@ -164,6 +164,22 @@ class PluginManifestTests(unittest.TestCase):
         self.assertIn("docs/brace/agents/analyst/", c_body)
         self.assertNotIn("—", c_body)
 
+    def test_skills_frontmatter_and_references_exist(self):
+        import re
+        for skill_md in sorted((REPO / "skills").glob("*/SKILL.md")):
+            text = skill_md.read_text(encoding="utf-8")
+            self.assertTrue(text.startswith("---\n"), skill_md)
+            head = text[4:].split("\n---\n", 1)[0]
+            self.assertRegex(head, r"(?m)^name: \S", skill_md)
+            self.assertRegex(head, r"(?m)^description: \S", skill_md)
+            desc = re.search(r"(?m)^description: (.*)$", head).group(1)
+            self.assertNotIn(": ", desc, f"{skill_md}: ': ' breaks the YAML frontmatter")
+            for ref in set(re.findall(r"`(references/[a-z0-9_/.-]+\.md)`", text)):
+                self.assertTrue((skill_md.parent / ref).is_file(), f"{skill_md}: missing {ref}")
+
+    def test_brand_skill_exists(self):
+        self.assertTrue((REPO / "skills" / "brand" / "SKILL.md").is_file())
+
     def test_i18n_catalogues_have_matching_keys(self):
         import re
         i18n = REPO / "skills" / "track" / "references" / "i18n"
