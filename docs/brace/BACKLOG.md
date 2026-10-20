@@ -6,6 +6,27 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 
 ## Open
 
+- [ ] **All BRACE session messages in one file** (M, ⭐⭐) — surfaced
+  2026-10-20 in the first brand session. The hook messages and fixed
+  questions are the brand's most heard voice but are scattered in the
+  scripts. Gather them in one catalogue the hooks read (Bash 3.2, stdlib,
+  self-relative, like the i18n catalogues), then list that one file as a
+  brand touchpoint so the voice check covers it. Hook tests that assert
+  message text move with it.
+
+- [ ] **Brand: fixes found by the first real brand session** (M, ⭐⭐⭐)
+  — surfaced 2026-10-19, blocks the `feat/brand` merge. (1) The analyst
+  runs in the background, and a background agent cannot ask for a
+  permission: its writes to `docs/brace/agents/analyst/` were all denied,
+  so it returned its reports as text and the brand skill saved them. Fix
+  so the reports land without a prompt (or the skill saves them by
+  design). (2) It cannot read pages its fetch tool is refused (Reddit,
+  some help pages): let it use a browser when one is available (Claude in
+  Chrome on Claude Code), and say so when none is. (3) The touchpoints
+  helper reads every backticked text in the section, so a file named in a
+  note there (say the voice file) becomes a touchpoint: read list items
+  only, or say so in `references/strategy.md`.
+
 - [ ] **Design as a tracked dimension (new `project-tracker:design` skill)**
   (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE
   1.1, `brace:design`; paths below move from `docs/project-tracker/` to

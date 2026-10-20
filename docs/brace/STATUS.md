@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-19
+last_updated: 2026-10-20
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -12,6 +12,8 @@ backlog_model: "adopté"
 phase_model: "superpowers"
 language: en
 nested_model: "non"
+brand_profile: product
+brand_stage: voice
 ---
 
 # STATUS — BRACE
@@ -49,12 +51,13 @@ both manifests).
 
 1. **Finish checking `feat/brand`** (`brace:brand` + the `analyst` agent,
    built and reviewed 2026-10-19, suite green, not merged; Antigravity
-   check done: one agent loaded, it starts): an interactive brand session
-   on a test project. Then merge. 1.2 brings the brand's face (logo, palette, type) in
+   check done: one agent loaded, it starts). The first real session (on
+   BRACE itself, 2026-10-20) found three defects to fix first (top of
+   `BACKLOG.md`). Then merge. 1.2 brings the brand's face (logo, palette, type) in
    `brand` plus `brace:design` (see `DECISIONS.md`). Test branches with
    `claude --plugin-dir .`.
 2. **1.1 riders**, each with a mini-spec: keep the Antigravity copy up to
    date; tidy a bloated `AGENTS.md` (both in `BACKLOG.md`). Then release
    1.1.0.
-3. **Run `/brace:brand` on BRACE itself**: the validated foundations and
-   strategy of the paused DA spec are its first real case.
+3. **Finish `/brace:brand` on BRACE itself**: foundations and strategy
+   written (`docs/brace/brand/`); voice and test left.

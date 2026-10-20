@@ -982,3 +982,29 @@ Closed out the portfolio sub-pages work and cut the release:
   `agents/claude/` is ignored); the user started the analyst from the app
   and it runs. The `agy` command line is not logged in on this machine, so
   no headless mission was run there.
+
+## 2026-10-20 — First real brand session, on BRACE itself
+
+- `/brace:brand` run on BRACE, following the branch's skill literally,
+  product profile. Foundations and strategy written in
+  `docs/brace/brand/`: purpose, Jarvis-like personality with Apple as the
+  second reference figure, six values (privacy among them, its limits to
+  discuss), the Sage with a touch of the Magician, serenity resting on
+  trust, friction as the enemy; objectives, two provisional personas,
+  landscape, six differentiators, positioning, mechanism, proof points,
+  spontaneous recommendations as the indicator, touchpoints, non-goals.
+  Voice and test still to do.
+- The real analyst ran four missions (competitors and audience full,
+  an Apple benchmark and a multi-agent memory check quick). Findings that
+  changed the strategy: "never forgets" alone is common now; ECC already
+  shares a memory across harnesses, so the differentiator is a readable
+  project record, not sharing itself.
+- A questionnaire page was shared with six people from the owner's
+  circle; their raw answers stay in the gitignored research folder, only
+  anonymised personas are committed. Token limits came up three times; 4
+  of 6 use AI in web apps, which BRACE does not reach today.
+- The session found three defects (in `BACKLOG.md`, blocking the merge):
+  the analyst's writes are denied because it runs in the background; it
+  cannot use a browser for pages its fetch tool is refused; the
+  touchpoints helper takes any backticked name in the section. Plus a new
+  idea: all session messages in one file.
