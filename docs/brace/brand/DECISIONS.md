@@ -19,4 +19,5 @@ Brand choices: what was tried, why it was set aside, what was kept.
   Engine", where the name is explained.
 - **Test**: a five-second test page (tagline and one-liner, then the
   positioning statement), shared with the questionnaire respondents who
-  agreed to be contacted again. Not tested yet: results to come.
+  agreed to be contacted again. Not tested yet: the owner chose to run
+  it later.

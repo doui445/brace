@@ -93,9 +93,8 @@ When something is truly required (a prerequisite, a risk), it says so
 plainly: that is frankness, not imposing.
 
 Note: the current one-liner in the README and manifests says "project
-memory for AI coding assistants", narrower than this lexicon. The new one
-is under Tagline and boilerplate; applying it is a change to those
-touchpoints, not done yet.
+memory for AI coding assistants", narrower than this lexicon. Replaced
+2026-10-22 by the one under Tagline and boilerplate.
 
 ## Writing rules
 

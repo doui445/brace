@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-20
+last_updated: 2026-10-22
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -13,7 +13,8 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: test
+brand_stage: done
+brand_reviewed: 2026-10-22
 ---
 
 # STATUS — BRACE
@@ -59,5 +60,8 @@ both manifests).
 2. **1.1 riders**, each with a mini-spec: keep the Antigravity copy up to
    date; tidy a bloated `AGENTS.md` (both in `BACKLOG.md`). Then release
    1.1.0.
-3. **Finish `/brace:brand` on BRACE itself**: foundations and strategy
-   written (`docs/brace/brand/`); voice and test left.
+3. **BRACE's brand is written** (`docs/brace/brand/`, 2026-10-22). Left:
+   run the five-second test with real people (page ready, results go to
+   `docs/brace/brand/DECISIONS.md`). Tagline and one-liner carried into
+   the README and manifests; the rest of the README still drifts from the
+   voice (long dashes, slashes).

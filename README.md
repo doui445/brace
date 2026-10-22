@@ -1,15 +1,23 @@
 # BRACE
 
-*Barely Remarkable, Admittedly Capable Engine* — formerly project-tracker.
+**Finally on the same page.**
 
-Open a Claude Code session in one of your projects and it keeps a small set of
-Markdown files — `STATUS.md`, `ROADMAP.md`, `JOURNAL.md`, `CHANGELOG.md`,
-`DECISIONS.md` and a few more — current as you work, so you and Claude always
-have the project's context in one predictable place. It also builds a single
-`PORTFOLIO.html` across every project you track.
+Your AI forgets your project between sessions, and you explain it again.
+Every time.
 
-It's a plugin for Claude Code and Antigravity (a skill + a hook dispatcher). It never guesses: anything it
-doesn't know, it asks.
+BRACE turns your AI into a real assistant for your projects. It's a free,
+open-source plugin for Claude Code and Antigravity. It keeps your project's
+memory in files you can read: where you stand, what was decided, what comes
+next. It keeps them up to date, suggests the right tools when they help, and
+tells you when it doesn't know.
+
+Its skills share that memory. Track follows your projects, brand gives them a
+voice and a strategy, and design is on its way.
+
+Pick up where you left off. Keep your project clean. Follow a summary of all
+your projects on a single page.
+
+Formerly project-tracker.
 
 ## Quick start
 
@@ -174,6 +182,11 @@ in plain language.
 
 The full behaviour specification lives in
 [`skills/track/SKILL.md`](skills/track/SKILL.md).
+
+## About the name
+
+Barely Remarkable, Admittedly Capable Engine. Braces hold a block together,
+the way BRACE holds your project's context.
 
 ## License
 

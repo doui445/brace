@@ -3,12 +3,12 @@
   "owner": {
     "name": "doui445"
   },
-  "description": "BRACE, project memory for AI coding assistants, and the project-tracker bridge that installs it.",
+  "description": "BRACE, a real assistant for your projects in Claude Code and Antigravity, and the project-tracker bridge that installs it.",
   "plugins": [
     {
       "name": "brace",
       "source": ".",
-      "description": "Project memory for AI coding assistants: tracking files kept current, a unified portfolio, skills that share one memory.",
+      "description": "BRACE turns your AI into a real assistant for your projects: it remembers, keeps them clean and professional, and follows them all. For Claude Code and Antigravity.",
       "version": "1.0.0"
     },
     {
