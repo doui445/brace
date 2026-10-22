@@ -32,7 +32,10 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   Chrome on Claude Code), and say so when none is. (3) The touchpoints
   helper reads every backticked text in the section, so a file named in a
   note there (say the voice file) becomes a touchpoint: read list items
-  only, or say so in `references/strategy.md`.
+  only, or say so in `references/strategy.md`. (4) The owner also noted
+  several small issues in how the skill runs during that session: to
+  collect from them at the next session, never reconstructed by guess.
+  Each fix needs a workable solution, discussed first.
 
 - [ ] **Design as a tracked dimension (new `project-tracker:design` skill)**
   (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE

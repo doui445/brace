@@ -53,8 +53,9 @@ both manifests).
 1. **Finish checking `feat/brand`** (`brace:brand` + the `analyst` agent,
    built and reviewed 2026-10-19, suite green, not merged; Antigravity
    check done: one agent loaded, it starts). The first real session (on
-   BRACE itself, 2026-10-20) found three defects to fix first (top of
-   `BACKLOG.md`). Then merge. 1.2 brings the brand's face (logo, palette, type) in
+   BRACE itself, 2026-10-20 to 22) found three defects to fix first, plus
+   the owner's own notes on small issues to collect (top of
+   `BACKLOG.md`). Find workable fixes, then merge. 1.2 brings the brand's face (logo, palette, type) in
    `brand` plus `brace:design` (see `DECISIONS.md`). Test branches with
    `claude --plugin-dir .`.
 2. **1.1 riders**, each with a mini-spec: keep the Antigravity copy up to
@@ -63,5 +64,6 @@ both manifests).
 3. **BRACE's brand is written** (`docs/brace/brand/`, 2026-10-22). Left:
    run the five-second test with real people (page ready, results go to
    `docs/brace/brand/DECISIONS.md`). Tagline and one-liner carried into
-   the README and manifests; the rest of the README still drifts from the
-   voice (long dashes, slashes).
+   the README and manifests. The rest of the README still drifts from the
+   voice (26 long dashes, slashes in prose): left as is for now by the
+   owner, to revisit.

@@ -1008,3 +1008,24 @@ Closed out the portfolio sub-pages work and cut the release:
   cannot use a browser for pages its fetch tool is refused; the
   touchpoints helper takes any backticked name in the section. Plus a new
   idea: all session messages in one file.
+
+## 2026-10-22 — BRACE brand finished (test deferred)
+
+- Voice written in `docs/brace/brand/VOICE.md`: the word lists, an
+  introduction post (French), four attributes, tone by context (its
+  plugin-message row is the rule for hook messages), lexicon, writing
+  rules (no long dash, no exclamation mark, no slash, semicolon or vertical
+  bar in prose), four message pillars, the tagline "Finally on the same
+  page.", the one-liner, the presentation text, the acronym as signature.
+  Choices and what was set aside in `docs/brace/brand/DECISIONS.md`.
+- The name stage was skipped (BRACE settled 2026-10-04). A five-second
+  test page is ready; the owner chose to run it later, recorded as not
+  tested yet. Brand set to `done`, reviewed 2026-10-22.
+- Tagline, one-liner and presentation carried into the README (with an
+  "About the name" section) and the three manifests; suite green. Fed the
+  README edit to the branch's post-write hook by hand: it flags the
+  touchpoint as expected. The voice check it asks for finds the rest of the
+  README drifting (26 long dashes, slashes in prose); left as is for now.
+- New ideas logged: a writing skill; all session messages in one file.
+  The owner also noted small issues in how the skill runs, to collect next
+  session. Not merged, nothing pushed.
