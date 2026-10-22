@@ -13,7 +13,7 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: voice
+brand_stage: test
 ---
 
 # STATUS — BRACE

@@ -6,6 +6,13 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 
 ## Open
 
+- [ ] **A writing skill (to think about)** (?, ⭐⭐) — surfaced 2026-10-22
+  in the first brand session. Rules that make writing more human and carry
+  the voice of whoever speaks: no slash, no semicolon, no vertical bar in
+  prose (tables and where truly needed excepted), no long dash, and more
+  to find. Would apply the project's `VOICE.md` when there is one. Scope,
+  and how it relates to `brand`, to discuss first.
+
 - [ ] **All BRACE session messages in one file** (M, ⭐⭐) — surfaced
   2026-10-20 in the first brand session. The hook messages and fixed
   questions are the brand's most heard voice but are scattered in the

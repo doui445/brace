@@ -169,8 +169,8 @@ In the repo (checked against the voice when written):
 - `.claude-plugin/marketplace.json`: the description in the marketplace
 
 Outside the repo: the GitHub repo description and topics; GitHub release
-notes; posts and messages presenting BRACE; the site (planned; add its
-files here once they exist).
+notes; posts and messages presenting BRACE; social networks, now and
+then; the site (planned; add its files here once they exist).
 
 Not listed: the messages BRACE shows during a session (hooks, questions).
 They are the voice too, but scattered in the code; the voice file gets a rule

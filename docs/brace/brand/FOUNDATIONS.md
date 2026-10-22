@@ -78,3 +78,9 @@ The user is the hero; BRACE is the guide (Jarvis, not Iron Man).
 - **Transformation**: they use AI at a whole other level. Their projects
   are clean, complete and professional, they follow all of them at a
   glance, and they are serene.
+
+## Name
+
+BRACE, settled 2026-10-04 (see `docs/brace/DECISIONS.md`): braces hold a
+block together, as BRACE holds a project's context; "brace" also means
+support. Signature: "Barely Remarkable, Admittedly Capable Engine".
