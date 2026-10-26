@@ -363,13 +363,13 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
     by the voice-drift hook); one indicator, reviewed at each revision.
   - Spec written 2026-10-19 (gitignored), awaiting the user's review.
 
-- [ ] **`reader` agent (fresh eyes)** (M, ⭐⭐) — surfaced 2026-10-19. A
+- [-] **`reader` agent (fresh eyes)** (replaced 2026-10-26 by `researcher`, see Agency agents) (M, ⭐⭐) — surfaced 2026-10-19. A
   BRACE agent that reads a text as a newcomer: its blank context is the
   point. Would run `track`'s fresh-eyes readability pass (done inline
   today) and a pre-test for `brand` (what a tagline conveys in 5 seconds),
   never in place of a real human test. After `analyst` has run for real.
 
-- [ ] **`auditor` agent (brand audit)** (M, ⭐⭐) — surfaced 2026-10-19. A
+- [-] **`auditor` agent (brand audit)** (replaced 2026-10-26 by `strategist`, see Agency agents) (M, ⭐⭐) — surfaced 2026-10-19. A
   BRACE agent that reviews every touchpoint (README, site, public
   profiles) against the brand at a revision and lists the drifts by
   priority. Fits with `brace:design` (1.2), which would use it for the
@@ -389,6 +389,38 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   in the spec: the threshold, the proposal's wording, how the "already
   proposed" state is kept. First test case: this repo's own `AGENTS.md`
   (140 lines).
+
+- [ ] **The BRACE agency** (L, ⭐⭐⭐) — surfaced 2026-10-26 (see
+  `JOURNAL.md`). A shared agency method for the domains that make
+  something to show or sell (`brand`, `design`, `market`), a mission file
+  kept by `track`, handoffs between domains, a one-time offer right after
+  a new project is described. Needs a written design before any build.
+
+- [ ] **`market` skill (taking it to market)** (L, ⭐⭐⭐) — surfaced
+  2026-10-26. Launch plan, launch page, content and calendar, pre-launch
+  during development. Prepares everything; publishes only on an explicit
+  yes, item by item, where a connector exists; never spends money.
+
+- [ ] **Agency agents** (L, ⭐⭐⭐) — surfaced 2026-10-26. Real trades,
+  hired as a domain needs them: `strategist` (reads the analyst's facts:
+  positioning, the creative brief, brand reviews; replaces `auditor`),
+  `art-director` (two or three visual routes), `designer` (the chosen
+  route, declined), `copywriter` (names, taglines, copy),
+  `creative-director` (internal review before the owner sees anything),
+  `researcher` (prepares tests with real people and reads the answers;
+  replaces `reader`).
+
+- [ ] **Agents write only in their own folder** (M, ⭐⭐⭐) — surfaced
+  2026-10-26, a fix for defect (1) of the brand session. A PreToolUse
+  hook allows a BRACE agent (`agent_type` `brace:<agent>`) to write in
+  `docs/brace/agents/<agent>/` only; elsewhere the normal prompt stays.
+  Fallback where no such hook exists: the agent reports as text and the
+  skill files it. Test it in a real background run first; check
+  Antigravity.
+
+- [ ] **Rename the repo folder to `brace`** (S, ⭐) — surfaced 2026-10-26.
+  Move the Claude Code memory folder with it, update the path in the
+  Antigravity settings; `project:` becomes `brace`. With every tool closed.
 
 ## Completed
 

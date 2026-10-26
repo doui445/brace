@@ -1029,3 +1029,35 @@ Closed out the portfolio sub-pages work and cut the release:
 - New ideas logged: a writing skill; all session messages in one file.
   The owner also noted small issues in how the skill runs, to collect next
   session. Not merged, nothing pushed.
+
+## 2026-10-26 — The BRACE agency: vision discussed (nothing built)
+
+- Started from the owner's "small issues" note on the brand session: the
+  real point is that `brand` should feel like a full agency taking over
+  whenever a project is meant to be shown or sold, not a list of brand
+  questions. Read an exported AI chat about how branding agencies work
+  (roles, phases, documents) and checked it on the web: strategy before
+  design, two or three routes then one refined, internal reviews before
+  the client sees anything all hold; its price range was low (a 2026
+  French barometer gives a 10,000 EUR median).
+- Agreed shape: skills are domains named by a short verb (`track`,
+  `brand`, `design`, `market`); agents are real agency trades
+  (`analyst`, `strategist`, `art-director`, `designer`, `copywriter`,
+  `creative-director`, `researcher`), hired only when a domain needs one,
+  each with its own margin. The agency is a shared method (one
+  interlocutor, examples and references, two or three routes, an explicit
+  call between the owner's taste and the audience, an internal review)
+  plus handoffs between domains, followed by `track`.
+- `brand` keeps the brand's face (logo, palette, goodies, ads); `design`
+  covers the product (an app, or an object up to the maker's brief, no
+  technical drawings); a person is a personal brand. `market` prepares
+  everything and publishes only on an explicit yes, item by item, and
+  never spends money. For an app: brand, design, development (outside the
+  agency), market, with pre-launch work during development.
+- The agency offers itself once per project, right after the owner
+  describes it, if it is meant to be shown or sold; the answer is kept.
+- Permission defect: proposed a BRACE hook letting each agent write only
+  in its own `docs/brace/agents/<agent>/` folder (plugin agents ignore
+  `permissionMode`, hooks do fire inside them). To test for real first.
+- Still open: the order of the work and how it maps to releases; renaming
+  the repo folder to `brace`. Nothing built, nothing committed.

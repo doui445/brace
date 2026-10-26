@@ -582,3 +582,17 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   visual identity in 1.1 (nearly all of the planned `design` work in one
   release); the logo alone in `brand` with colour and type in `design`
   (splits things that are made together).
+
+## 2026-10-26 — Skills are verbs, agents are real trades (extends 2026-10-18)
+
+- **Context**: the third agency domain needed a name, and the owner asked
+  for one naming rule for every skill.
+- **Chosen**: a skill is named by a short English verb, the action BRACE
+  takes on the project (`track`, `brand`, `design`, `market`, later
+  `write`). An agent is named by a trade that really exists in an agency
+  (`analyst`, `strategist`, `art-director`...).
+- **Rejected**: `-ing` nouns (`tracking`, `branding`: renames shipped
+  skills and breaks their commands; `designing` does not work);
+  `marketing` (fine alone, breaks the verb rule); invented roles as agents
+  (`critic`, `auditor`, `reader` become `creative-director`, `strategist`,
+  `researcher`).
