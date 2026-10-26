@@ -233,6 +233,21 @@ class PluginManifestTests(unittest.TestCase):
         self.assertFalse((REPO / "skills" / "brand" / "references" / "interview.md").exists())
         self.assertFalse((REPO / "skills" / "brand" / "references" / "test.md").exists())
 
+    def test_brand_resumes_a_1_0_project_without_redoing_it(self):
+        # The legacy stages land in adjustments: a 1.0 project has no route
+        # and no BRIEF.md, and its validated files must be kept.
+        text = " ".join((REPO / "skills" / "brand" / "references" / "adjustments.md")
+                        .read_text(encoding="utf-8").split())
+        self.assertIn("## Resumed from 1.0", (REPO / "skills" / "brand" / "references" / "adjustments.md").read_text(encoding="utf-8"))
+        self.assertIn("first missing document", text)
+        self.assertIn("never redrafted", text)
+
+    def test_presentation_proposes_rather_than_asks(self):
+        text = (REPO / "skills" / "brand" / "references" / "presentation.md").read_text(encoding="utf-8")
+        for q in ("What does this route promise?", "Which one feels like your product?",
+                  "Anything you would not want to see said?"):
+            self.assertNotIn(q, text)
+
     def test_i18n_has_brand_brief_and_sessions(self):
         i18n = REPO / "skills" / "track" / "references" / "i18n"
         for code in ("en", "fr"):

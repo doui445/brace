@@ -59,9 +59,12 @@ report, with its source.
    slides; it prints to PDF one slide per page).
 2. Walk through it one route at a time in the conversation, in a few lines
    each.
-3. Ask targeted questions, never "do you like it?": "What does this route
-   promise?", "Which one feels like your product?", "Anything you would
-   not want to see said?".
+3. Propose, never ask "do you like it?". Say what each route promises in
+   one line, give your recommendation and why ("Route 1 promises an exact
+   record, route 2 a calm partner; I would pick 1, because your target
+   gets asked to justify its hours"), then offer the choices: route 1,
+   route 2, a mix of both, or another round. Point at what the user said
+   they never wanted, and say how each route avoids it.
 4. The user picks one route, combines elements of several, or asks for
    another round (back to `references/backstage.md` with what they said).
 5. Write the routes set aside, and why, in `docs/brace/brand/DECISIONS.md`.

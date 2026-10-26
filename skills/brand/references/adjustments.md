@@ -29,6 +29,20 @@ For each document:
 
 A personal brand adds the parts listed in `references/personal.md`.
 
+## Resumed from 1.0
+
+A project started on BRACE 1.0 (an old stage mapped here by the
+`legacy:` line in `SKILL.md`) has no chosen route, no `BRIEF.md` and no
+`SESSIONS.md`. Then:
+
+- The brand files already written stand in for the chosen route. A
+  document the user already validated is kept and never redrafted;
+  propose a change only if they ask.
+- Start at the first missing document, in the order above.
+- Create `SESSIONS.md` with a first entry saying where the work resumed.
+- Offer to pre-fill `BRIEF.md` from the existing files; if the user
+  declines, leave it out. Never invent a route or a brief.
+
 ## Closing the adjustments
 
 1. Write the final version of the rendered documents as

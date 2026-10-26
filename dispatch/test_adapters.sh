@@ -43,6 +43,8 @@ OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}}' "$AW" 
 [ -z "$OUT" ] && echo "PASS: PreToolUse main conversation -> no decision" || { echo "FAIL: main conversation got [$OUT]"; FAIL=1; }
 OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "touch %s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: PreToolUse Bash -> no decision" || { echo "FAIL: Bash got [$OUT]"; FAIL=1; }
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s\\n/../../../../../escape.md"}, "agent_type": "brace:analyst"}' "$P/docs/brace/agents/analyst/x" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse newline in path -> no decision" || { echo "FAIL: newline in path got [$OUT]"; FAIL=1; }
 
 # Antigravity 1.3 numbers model calls from 0: the first call of each
 # conversation runs, whatever its number; later calls get {}.

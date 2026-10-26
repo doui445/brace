@@ -13,6 +13,7 @@ P="$TMP/my proj"                 # space on purpose
 mkdir -p "$P/docs/brace/agents/analyst" "$P/docs/brace/agents/strategist" "$P/docs/brace/brand" "$TMP/elsewhere"
 touch "$P/docs/brace/STATUS.md"
 ln -s "$TMP/elsewhere" "$P/docs/brace/agents/analyst/out"
+ln -s "$TMP/elsewhere/planted.plist" "$P/docs/brace/agents/analyst/dangling.md"
 U="$TMP/untracked"; mkdir -p "$U/docs/brace/agents/analyst"
 
 check() { bash "$DIR/agent_write.sh" "$1" "$2" >"$TMP/out" 2>&1 && r=0 || r=1; eq "$r" "$3" "$4"; }
@@ -24,6 +25,7 @@ check brace:analyst "$P/docs/brace/brand/STRATEGY.md" 1 "brand file -> not allow
 check brace:analyst "$P/docs/brace/agents/analyst/../../brand/x.md" 1 "dot-dot escape -> not allowed"
 check brace:analyst "$P/docs/brace/agents/analyst/out/x.md" 1 "symlink out of the folder -> not allowed"
 check brace:analyst "$P/docs/brace/agents/analyst" 1 "the folder itself -> not allowed"
+check brace:analyst "$P/docs/brace/agents/analyst/dangling.md" 1 "dangling symlink out of the folder -> not allowed"
 check brace:nobody "$P/docs/brace/agents/nobody/r.md" 1 "unknown BRACE agent -> not allowed"
 check analyst "$P/docs/brace/agents/analyst/r.md" 1 "no brace: prefix -> not allowed"
 check Explore "$P/docs/brace/agents/analyst/r.md" 1 "other agent type -> not allowed"

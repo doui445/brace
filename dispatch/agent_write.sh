@@ -20,14 +20,10 @@ case "$FILE" in /*) ;; *) exit 1 ;; esac
 python3 - "$NAME" "$FILE" <<'EOF' >/dev/null 2>&1
 import os, sys
 name, path = sys.argv[1], sys.argv[2]
-if any(part == ".." for part in path.split("/")):
+if any(c in path for c in "\n\r\0") or any(part == ".." for part in path.split("/")):
     sys.exit(1)
-# Resolve the deepest existing ancestor (follows symlinks), keep the rest.
-head, rest = path, []
-while not os.path.exists(head):
-    head, tail = os.path.split(head)
-    rest.insert(0, tail)
-real = os.path.join(os.path.realpath(head), *rest)
+# Follows every symlink, dangling ones included; missing parts are kept.
+real = os.path.realpath(path)
 marker = "/docs/brace/agents/" + name + "/"
 i = real.rfind(marker)
 if i <= 0 or real.endswith("/") or len(real) == i + len(marker):
