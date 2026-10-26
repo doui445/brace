@@ -1,14 +1,20 @@
 # Strategy
 
-Read by `SKILL.md` at the strategy step (`brand_stage: strategy`). Writes
-`STRATEGY.md`, one section at a time, each approved before it is written.
+Read by `references/adjustments.md`. Describes the content of
+`STRATEGY.md`, drafted from the chosen route, shown rendered, written once
+the user says yes.
 
-## The research first
+## Who brings what
 
-Wait for the analyst's report. Show its table and let the user correct it:
-a competitor to drop, one to add, a source not to trust. Append those
-corrections to `docs/brace/agents/analyst/BRIEF.md` (the analyst never sees
-the conversation). Only then does anything go into `STRATEGY.md`.
+- The **analyst** brought the facts: the landscape and the audience. The
+  user may correct them (a competitor to drop, one to add, a source not to
+  trust): append those corrections to `docs/brace/agents/analyst/BRIEF.md`
+  (the analyst never sees the conversation).
+- The **strategist** brought the chosen route: positioning, map,
+  differentiators, mechanism, proof, persona. Ask it again for a section
+  the user wants sharper.
+- `brand` drafts the rest with the user: objectives, indicator,
+  touchpoints, non-goals, each proposed with a recommendation.
 
 ## The sections
 
@@ -49,4 +55,3 @@ the conversation). Only then does anything go into `STRATEGY.md`.
 For a personal brand, add packaging, channels and cadence
 (`references/personal.md`).
 
-When the strategy is written, set `brand_stage: voice`.

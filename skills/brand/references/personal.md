@@ -1,9 +1,9 @@
 # Personal brand
 
-Read by `SKILL.md` when `brand_profile: personal`. Adds to the interview,
+Read by `SKILL.md` when `brand_profile: personal`. Adds to the workshop,
 the foundations and the strategy.
 
-## Interview and foundations
+## Workshop and foundations
 
 - **Entourage test**: ask a few people who know the person "describe me in
   five words", then cross the answers with how the person sees themselves.

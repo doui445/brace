@@ -1,17 +1,16 @@
 # Voice, and voice drift
 
-Read by `SKILL.md` at the voice step (`brand_stage: voice`), and whenever a
-public text is checked against the voice.
+Read by `references/adjustments.md` for the content of `VOICE.md`, and
+whenever a public text is checked against the voice.
 
 ## Writing the voice (`VOICE.md`)
 
-Start with the exercise, before any rule:
-
-1. Five words the brand would never say.
-2. Five words it would overuse.
-3. One short post that introduces the brand.
-
-Then, one section at a time, each approved before it is written:
+The **copywriter** brought the chosen route's words: its voice
+attributes, five words it never says, five it always says, its taglines,
+its one-liner and a launch post. Start the voice guide from them (the
+"Voice first" section), and ask the copywriter again for a part the user
+wants reworked. Then draft the guide, shown rendered, written once the
+user says yes:
 
 - **Voice attributes**: derived from the personality and the core emotion
   in `FOUNDATIONS.md`, never invented apart from them.
@@ -24,8 +23,6 @@ Then, one section at a time, each approved before it is written:
 - **Tagline and boilerplate**: the tagline gives life, the one-liner
   describes; keep them distinct. Add a short presentation text.
 
-When the voice is written, set `brand_stage: name` if a name is needed
-(`references/name.md`), otherwise `brand_stage: test`.
 
 ## Voice drift
 

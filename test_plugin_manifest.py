@@ -3,6 +3,7 @@
     python3 -m unittest test_plugin_manifest
 """
 import json
+import re
 import os
 import unittest
 from pathlib import Path
@@ -206,19 +207,42 @@ class PluginManifestTests(unittest.TestCase):
             self.assertIn("docs/project-tracker/", text, rel)
 
     def test_brand_stages_are_consistent(self):
-        # Every stage a reference sets must be one SKILL.md declares, and the
-        # foundations have their own stage so a pause there resumes there.
+        # Every stage a reference sets must be one SKILL.md declares, every
+        # declared stage but done is set somewhere, and the stages of 1.0
+        # still map onto the new ones (zero breakage on resume).
         import re
         brand = REPO / "skills" / "brand"
         head = (brand / "SKILL.md").read_text(encoding="utf-8")
         declared = re.search(r"`brand_stage: ([a-z |]+)`", head).group(1)
         stages = {x.strip() for x in declared.split("|")}
-        self.assertIn("foundations", stages)
+        self.assertEqual(stages, {"brief", "backstage", "presentation", "adjustments", "delivery", "done"})
         used = set()
         for f in [brand / "SKILL.md"] + sorted((brand / "references").glob("*.md")):
             used |= set(re.findall(r"brand_stage: ([a-z]+)`", f.read_text(encoding="utf-8")))
         self.assertTrue(used <= stages, used - stages)
         self.assertEqual(stages - {"done"}, used & stages - {"done"}, "a declared stage no reference sets")
+        legacy = re.search(r"(?m)^`?legacy: (.*?)`?$", head)
+        self.assertTrue(legacy, "no legacy: line in SKILL.md")
+        for old in ("interview", "foundations", "strategy", "voice", "name", "test"):
+            self.assertRegex(legacy.group(1), r"\b" + old + r"\b", old)
+
+    def test_brand_never_asks_the_depth(self):
+        for f in sorted((REPO / "skills" / "brand").rglob("*.md")):
+            text = " ".join(f.read_text(encoding="utf-8").split())
+            self.assertNotIn("sk the depth", text, f)
+        self.assertFalse((REPO / "skills" / "brand" / "references" / "interview.md").exists())
+        self.assertFalse((REPO / "skills" / "brand" / "references" / "test.md").exists())
+
+    def test_i18n_has_brand_brief_and_sessions(self):
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        for code in ("en", "fr"):
+            text = (i18n / f"{code}.md").read_text(encoding="utf-8")
+            for key in ("brief.title", "brief.intro", "brief.heading.project", "brief.heading.objectives",
+                        "brief.heading.audience", "brief.heading.competitors", "brief.heading.name",
+                        "brief.heading.taste", "brief.heading.emotion", "brief.heading.never",
+                        "brief.heading.assumptions", "sessions.title", "sessions.intro",
+                        "sessions.decided", "sessions.waiting", "sessions.next"):
+                self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
 
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")

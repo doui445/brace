@@ -101,6 +101,33 @@ headings beyond the sub-project names).
 - subprojects.title: SUBPROJECTS — {project}
 - subprojects.intro: The sub-projects attached to this project: why each one exists, where it stands, and where its own files live.
 
+## brand/BRIEF.md
+
+The client brief: pre-filled by `brace:brand` from what the project already
+says, validated with the user at the workshop.
+
+- brand.brief.title: BRAND BRIEF — {project}
+- brand.brief.intro: What the agency was asked for. Pre-filled from the project, checked with you at the workshop.
+- brand.brief.heading.project: The project
+- brand.brief.heading.objectives: What the brand must achieve
+- brand.brief.heading.audience: Who it is for
+- brand.brief.heading.competitors: Competitors you know
+- brand.brief.heading.name: Name
+- brand.brief.heading.taste: What you like
+- brand.brief.heading.emotion: The feeling to leave
+- brand.brief.heading.never: What you never want
+- brand.brief.heading.assumptions: Assumptions to check
+
+## brand/SESSIONS.md
+
+Append-only, one entry per session.
+
+- brand.sessions.title: BRAND SESSIONS — {project}
+- brand.sessions.intro: One entry per session with the agency: what was decided, what is waiting, what comes next.
+- brand.sessions.decided: Decided
+- brand.sessions.waiting: Waiting
+- brand.sessions.next: Next
+
 ## brand/FOUNDATIONS.md
 
 Written by `brace:brand` (see `skills/brand/references/`). `journey` only for

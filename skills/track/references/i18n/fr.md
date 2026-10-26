@@ -94,6 +94,33 @@ de titres fixes en dehors des noms des sous-projets).
 - subprojects.title: SUBPROJECTS — {project}
 - subprojects.intro: Les sous-projets rattachés à ce projet : pourquoi chacun existe, où il en est, et où trouver ses propres fichiers.
 
+## brand/BRIEF.md
+
+Le brief client : pré-rempli par `brace:brand` à partir de ce que le projet
+dit déjà, validé avec l'utilisateur à l'atelier.
+
+- brand.brief.title: BRIEF DE MARQUE — {project}
+- brand.brief.intro: Ce qui a été demandé à l'agence. Pré-rempli à partir du projet, vérifié avec toi à l'atelier.
+- brand.brief.heading.project: Le projet
+- brand.brief.heading.objectives: Ce que la marque doit obtenir
+- brand.brief.heading.audience: Pour qui
+- brand.brief.heading.competitors: Les concurrents que tu connais
+- brand.brief.heading.name: Le nom
+- brand.brief.heading.taste: Ce que tu aimes
+- brand.brief.heading.emotion: L'émotion à laisser
+- brand.brief.heading.never: Ce que tu ne veux surtout pas
+- brand.brief.heading.assumptions: Hypothèses à vérifier
+
+## brand/SESSIONS.md
+
+Append-only, une entrée par séance.
+
+- brand.sessions.title: SÉANCES DE MARQUE — {project}
+- brand.sessions.intro: Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce qui vient ensuite.
+- brand.sessions.decided: Décidé
+- brand.sessions.waiting: En attente
+- brand.sessions.next: Suite
+
 ## brand/FOUNDATIONS.md
 
 Écrit par `brace:brand` (voir `skills/brand/references/`). `journey`
@@ -150,9 +177,9 @@ Append-only, séparé du `DECISIONS.md` principal du projet.
 - brand.decisions.title: DÉCISIONS DE MARQUE — {project}
 - brand.decisions.intro: Les choix de marque : ce qui a été essayé, pourquoi c'est écarté, ce qui est retenu.
 
-## Brand notifications
+## Notifications de marque
 
-The macOS notification sent when a brand presentation is ready.
+La notification macOS envoyée quand une présentation de marque est prête.
 
 - brand.notify.title: BRACE
 - brand.notify.ready: Ta présentation de marque est prête.
