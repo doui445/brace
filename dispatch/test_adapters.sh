@@ -35,6 +35,15 @@ grep -q "$PROJ" "$TMP/out/PORTFOLIO.html" 2>/dev/null && echo "PASS: portfolio r
 OUT="$(printf '{"tool_name": "Read", "tool_input": {"file_path": "%s"}, "session_id": "s1"}' "$P/docs/brace/STATUS.md" | bash "$DIR/claude/post_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: non-write tool ignored" || { echo "FAIL: Read produced [$OUT]"; FAIL=1; }
 
+# PreToolUse: a BRACE agent writing in its own folder is allowed, nothing else.
+AW="$P/docs/brace/agents/analyst/r.md"
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
+has "$OUT" '"permissionDecision": "allow"' "Claude PreToolUse -> agent in its folder allowed"
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse main conversation -> no decision" || { echo "FAIL: main conversation got [$OUT]"; FAIL=1; }
+OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "touch %s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse Bash -> no decision" || { echo "FAIL: Bash got [$OUT]"; FAIL=1; }
+
 # Antigravity 1.3 numbers model calls from 0: the first call of each
 # conversation runs, whatever its number; later calls get {}.
 OUT="$(printf '{"invocationNum": 0, "workspacePaths": ["%s"], "conversationId": "c1"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
@@ -93,7 +102,7 @@ OUT="$(printf '{"cwd": "%s", "session_id": "s5", "source": "startup"}' "$L2" | B
   && echo "PASS: Claude restarted after the swap -> pending cleared, project moved" || { echo "FAIL: Claude restarted [$OUT]"; FAIL=1; }
 
 # Garbage input never fails a tool.
-for A in claude/session_start claude/post_tool_use antigravity/session_start antigravity/post_tool_use; do
+for A in claude/session_start claude/post_tool_use claude/pre_tool_use antigravity/session_start antigravity/post_tool_use; do
   OUT="$(echo 'not json' | bash "$DIR/$A.sh")"; RC=$?
   case "$A" in antigravity/*) WANT="{}" ;; *) WANT="" ;; esac
   [ $RC -eq 0 ] && [ "$OUT" = "$WANT" ] && echo "PASS: garbage input -> $A" || { echo "FAIL: $A rc=$RC out=[$OUT]"; FAIL=1; }

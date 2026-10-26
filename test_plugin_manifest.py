@@ -8,7 +8,8 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).parent
-CLAUDE_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
+CLAUDE_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh", "pre_tool_use.sh"}
+ANTIGRAVITY_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
 CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep"}
 # Antigravity hangs on an unknown tool name: only names verified in its docs.
 ANTIGRAVITY_AGENT_TOOLS = {"search_web", "read_url_content", "view_file", "grep_search",
@@ -82,6 +83,12 @@ class PluginManifestTests(unittest.TestCase):
         for group in _load("claude-hooks.json")["hooks"].get("PostToolUse", []):
             self.assertEqual(group.get("matcher"), "Edit|Write")
 
+    def test_claude_pre_tool_use_matches_edit_write(self):
+        groups = _load("claude-hooks.json")["hooks"].get("PreToolUse", [])
+        self.assertTrue(groups)
+        for group in groups:
+            self.assertEqual(group.get("matcher"), "Edit|Write")
+
     def test_antigravity_hooks_point_at_existing_executables(self):
         h = _load("hooks.json")
         cmds = []
@@ -89,7 +96,7 @@ class PluginManifestTests(unittest.TestCase):
             for event, entries in block.items():
                 for e in entries:
                     cmds += [x["command"] for x in e.get("hooks", [])] if "hooks" in e else [e["command"]]
-        self.assertEqual({c.rsplit("/", 1)[-1] for c in cmds}, CLAUDE_HOOK_SCRIPTS)
+        self.assertEqual({c.rsplit("/", 1)[-1] for c in cmds}, ANTIGRAVITY_HOOK_SCRIPTS)
         for c in cmds:
             path = REPO / c.lstrip("./")
             self.assertTrue(path.is_file(), f"missing: {c}")
