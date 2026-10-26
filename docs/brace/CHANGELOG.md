@@ -23,10 +23,34 @@ the bump, a release never breaks an existing project. The version lives in
   (competitors, market, audience, name availability), sourced, learning
   each project from `docs/brace/agents/analyst/`.
 - The agents rules in `references/skills-contract.md`.
+- `brace:brand` works as an agency: a workshop on a pre-filled brief, the
+  team working in the background, a strategic presentation with two or
+  three routes, adjustments validated one document at a time (shown
+  rendered), and a delivery page with a preference and comprehension test
+  to run with real people. New brand files `BRIEF.md` and `SESSIONS.md`.
+- Three new agents: `strategist` (positioning routes, creative brief),
+  `copywriter` (the words of each route), `creative-director` (internal
+  review of the routes and of the rendered presentation).
+- Brand presentations: local HTML pages that read as a deck and print to
+  PDF one slide per page, from a template shipped in
+  `skills/brand/assets/` with free fonts (Fraunces, Inter, OFL).
+- A macOS notification when a brand presentation is ready.
+- A `PreToolUse` hook on Claude Code: a BRACE agent writes in its own
+  `docs/brace/agents/<agent>/` folder without a permission prompt, and
+  only there.
 
 ### Changed
 - The portfolio detail page ignores `docs/brace/agents/`.
 - `run_tests.sh` runs every skill's tests.
+- The `analyst` takes its research depth from the caller (never asks the
+  user), can read refused pages with a browser when one is available, and
+  finds references (brands that made a comparable choice).
+
+### Fixed
+- Brand touchpoints are read from the list items of the section only: a
+  file named in a note there is no longer a touchpoint.
+- Background agents' writes to their own folder were denied; they now
+  land without a prompt.
 
 ## [1.0.0] — 2026-10-16
 

@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-22
+last_updated: 2026-10-26
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -42,6 +42,14 @@ both manifests).
   project-scope swap with the real CLI; Antigravity 1.3 on this machine.
 - Full suite green (`bash run_tests.sh`).
 
+**On `feat/brand`, not merged (BRACE 1.1)**: `brace:brand` runs as an
+agency. A workshop on a brief BRACE pre-fills, four agents working in the
+background (`analyst`, `strategist`, `copywriter`, `creative-director`),
+a strategic presentation as a local HTML deck, adjustments validated one
+rendered document at a time, a delivery page. Agents write in their own
+folder without a prompt (a hook, tested for real on Claude Code); a macOS
+notification says when a presentation is ready. Suite green.
+
 ### Known gaps
 
 - A tool session left open since before the swap keeps the old plugin
@@ -50,20 +58,20 @@ both manifests).
 
 ## Next 3 actions
 
-1. **Finish checking `feat/brand`** (`brace:brand` + the `analyst` agent,
-   built and reviewed 2026-10-19, suite green, not merged; Antigravity
-   check done: one agent loaded, it starts). The first real session (on
-   BRACE itself, 2026-10-20 to 22) found three defects to fix first, plus
-   the owner's own notes on small issues to collect (top of
-   `BACKLOG.md`). Find workable fixes, then merge. 1.2 brings the brand's face (logo, palette, type) in
-   `brand` plus `brace:design` (see `DECISIONS.md`). Test branches with
-   `claude --plugin-dir .`.
-2. **1.1 riders**, each with a mini-spec: keep the Antigravity copy up to
-   date; tidy a bloated `AGENTS.md` (both in `BACKLOG.md`). Then release
-   1.1.0.
-3. **BRACE's brand is written** (`docs/brace/brand/`, 2026-10-22). Left:
-   run the five-second test with real people (page ready, results go to
-   `docs/brace/brand/DECISIONS.md`). Tagline and one-liner carried into
-   the README and manifests. The rest of the README still drifts from the
-   voice (26 long dashes, slashes in prose): left as is for now by the
-   owner, to revisit.
+1. **Real trial of the brand agency** with the owner on `feat/brand`: a
+   throwaway project, `claude --plugin-dir .`, one mission up to the
+   strategic presentation. Check: no permission prompt during the
+   background work, the notification arrives, the presentation reads
+   well, how many questions the workshop asks. Then the same on
+   Antigravity (`agy plugin install "$PWD"` in a throwaway config). Gaps
+   become tasks before the release.
+2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
+   Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
+   `BACKLOG.md`). 1.2 brings the brand's face (logo, palette, type) in
+   `brand` plus `brace:design` (see `DECISIONS.md`).
+3. **BRACE's own brand** (`docs/brace/brand/`, written 2026-10-22, kept as
+   is): run the preference and comprehension test with real people, the
+   results go to `docs/brace/brand/DECISIONS.md`. The README still drifts
+   from the voice (long dashes, slashes in prose): left as is by the
+   owner, to revisit. Rename the repo folder to `brace` with every tool
+   closed (`BACKLOG.md`).

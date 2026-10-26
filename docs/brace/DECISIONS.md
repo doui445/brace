@@ -596,3 +596,26 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   `marketing` (fine alone, breaks the verb rule); invented roles as agents
   (`critic`, `auditor`, `reader` become `creative-director`, `strategist`,
   `researcher`).
+
+## 2026-10-26 — Brand works as an agency
+
+- **Context**: the first real brand session (on BRACE itself) asked too
+  many questions the owner could not answer, and was hard to digest. The
+  owner wants `brand` to feel like hiring an agency: it takes the project
+  in hand, proposes, shows examples and references, works on its own, and
+  comes back with progress.
+- **Chosen**: five sessions (workshop on a pre-filled brief, backstage,
+  strategic presentation, adjustments validated document by document,
+  delivery), a team of four agents with their own margin (`analyst`,
+  `strategist`, `copywriter`, `creative-director`), presentations as local
+  HTML decks in a house style with free embedded fonts, documents always
+  shown rendered, research depth chosen by `brand`, a preference and
+  comprehension test with real people in place of the five-second test,
+  agents writing in their own folder through a `PreToolUse` hook, a BRACE
+  macOS notification, no offer of the agency unprompted.
+- **Rejected**: a sequence of open questions (the 1.0 shape); PDF as the
+  source of a presentation (the HTML prints to PDF anyway, and the stdlib
+  cannot render one well); a cloud or third-party deck tool (offline and
+  free first); offering the agency on every new project (the owner prefers
+  to wait for the topic); the five-second test (thinly documented, not
+  convincing).

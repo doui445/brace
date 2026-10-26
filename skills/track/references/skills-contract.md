@@ -46,8 +46,8 @@ adding a skill never requires changing the base.
 - No declaration file to edit.
 
 ## Agents
-- A **skill** is know-how loaded into the current conversation, named after
-  a domain (`track`, `brand`). An **agent** is a separate worker with its
+- A **skill** is know-how loaded into the current conversation, named with
+  a short English verb for its domain (`track`, `brand`). An **agent** is a separate worker with its
   own instructions, a blank context and a brief, who reports one result,
   named after a trade (`analyst`). An agent is never a slash command: an
   AI delegates to it, or the user asks for it in plain words.
@@ -62,7 +62,10 @@ adding a skill never requires changing the base.
   folder per project, whatever skill launched them.
 - An agent never assumes who it works for: the caller gives the mission.
   One report format for every caller. It writes only in its own folder;
-  the skill integrates the result after the user checks it. Outside a
+  the skill integrates the result after the user checks it. On Claude
+  Code, a BRACE agent writes in its own folder without a prompt (a
+  `PreToolUse` hook); elsewhere, where it cannot write, it reports in its
+  message and the skill saves the report there. Outside a
   tracked project it writes no file and reports in its message.
 - **Project agents** (a trade only one project needs) stay in that
   project's `.claude/agents/`, owned by the user; their instructions point

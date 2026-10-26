@@ -21,8 +21,10 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   brand touchpoint so the voice check covers it. Hook tests that assert
   message text move with it.
 
-- [ ] **Brand: fixes found by the first real brand session** (M, ⭐⭐⭐)
-  — surfaced 2026-10-19, blocks the `feat/brand` merge. (1) The analyst
+- [x] **Brand: fixes found by the first real brand session** (M, ⭐⭐⭐)
+  — surfaced 2026-10-19, fixed on `feat/brand` 2026-10-26 (agents write
+  in their own folder through a hook, analyst browser, touchpoints from
+  list items, and the owner's notes answered by the agency rewrite). (1) The analyst
   runs in the background, and a background agent cannot ask for a
   permission: its writes to `docs/brace/agents/analyst/` were all denied,
   so it returned its reports as text and the brand skill saved them. Fix
@@ -393,8 +395,9 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 - [ ] **The BRACE agency** (L, ⭐⭐⭐) — surfaced 2026-10-26 (see
   `JOURNAL.md`). A shared agency method for the domains that make
   something to show or sell (`brand`, `design`, `market`), a mission file
-  kept by `track`, handoffs between domains, a one-time offer right after
-  a new project is described. Needs a written design before any build.
+  kept by `track`, handoffs between domains. `brand` runs as an agency
+  since 2026-10-26 (`feat/brand`); the shared method, the handoffs and the
+  other domains remain. No offer unprompted (decided 2026-10-26).
 
 - [ ] **`market` skill (taking it to market)** (L, ⭐⭐⭐) — surfaced
   2026-10-26. Launch plan, launch page, content and calendar, pre-launch
@@ -408,9 +411,13 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   route, declined), `copywriter` (names, taglines, copy),
   `creative-director` (internal review before the owner sees anything),
   `researcher` (prepares tests with real people and reads the answers;
-  replaces `reader`).
+  replaces `reader`). Built on `feat/brand` 2026-10-26: `strategist`,
+  `copywriter`, `creative-director`. Left: `art-director`, `designer`
+  (with the brand's face in 1.2), `researcher`.
 
-- [ ] **Agents write only in their own folder** (M, ⭐⭐⭐) — surfaced
+- [x] **Agents write only in their own folder** (M, ⭐⭐⭐) — built and
+  tested for real on Claude Code 2026-10-26; Antigravity to check in the
+  owner's trial. Surfaced
   2026-10-26, a fix for defect (1) of the brand session. A PreToolUse
   hook allows a BRACE agent (`agent_type` `brace:<agent>`) to write in
   `docs/brace/agents/<agent>/` only; elsewhere the normal prompt stays.

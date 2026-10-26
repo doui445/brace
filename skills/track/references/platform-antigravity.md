@@ -35,7 +35,14 @@ Installed with `agy plugin install https://github.com/doui445/brace` (the repo r
 
 BRACE agents load from `agents/<agent>.md` at the plugin root. Launch one
 with `invoke_subagent`, type `<agent>` (for example `analyst`); it starts
-with a clean context, so pass a complete brief.
+with a clean context, so pass a complete brief. Where an agent cannot run
+in the background, run the agents in the foreground one after the other,
+and say so before starting ("I'm on it, it takes a few minutes").
+
+There is no write hook for agents on Antigravity: where an agent cannot
+write its report in its folder, it returns the report in its message and
+the calling skill saves it in `docs/brace/agents/<agent>/`. That is the
+planned path, not an error.
 
 A `PostToolUse` hook cannot pass text to the agent on Antigravity, so
 skills that react to a write say it at session start instead: `brand`

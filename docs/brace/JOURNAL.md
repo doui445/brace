@@ -1061,3 +1061,17 @@ Closed out the portfolio sub-pages work and cut the release:
   `permissionMode`, hooks do fire inside them). To test for real first.
 - Still open: the order of the work and how it maps to releases; renaming
   the repo folder to `brace`. Nothing built, nothing committed.
+
+## 2026-10-26 — The brand agency built (feat/brand)
+
+- Wrote the design and the plan, then built it on `feat/brand`: the
+  agents' write hook, the touchpoints fix, the presentation notification,
+  the analyst's changes, three new agents, the presentation template, the
+  skill rewritten in sessions, and the docs.
+- Real test of the write hook in a non-interactive Claude Code run: the
+  `analyst` in the background wrote its file in its own folder; the same
+  run from a copy of the plugin without the hook was blocked. A write to
+  the brand folder was never attempted (the agent refused it by its own
+  rule); the hook gives no decision there, as its tests check.
+- Left: a real trial with the owner on Claude Code and Antigravity, then
+  the release.
