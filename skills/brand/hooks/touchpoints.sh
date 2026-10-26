@@ -3,8 +3,9 @@
 # directly. Bash 3.2 compatible.
 
 # brand_touchpoints <STRATEGY.md> <plugin root>
-# Prints the repo-relative paths written in backticks under the Touchpoints
-# section of STRATEGY.md, one per line ("./" stripped). The heading text is
+# Prints the repo-relative paths written in backticks on the list items
+# ("- ", "* ", "+ ", "1. ", "1) ") of the Touchpoints section of
+# STRATEGY.md, one per line ("./" stripped). Prose lines are ignored. The heading text is
 # read from the i18n catalogues (any language), and matched leniently: any
 # heading level from 2, an optional "9." number, extra spaces, any case,
 # and a trailing "(...)" are accepted. The section runs until the next
@@ -34,7 +35,7 @@ brand_touchpoints() {
       }
       next
     }
-    insec {
+    insec && /^[ \t]*([-*+]|[0-9]+[.)])[ \t]/ {
       s = $0
       while (match(s, /`[^`]+`/)) {
         p = substr(s, RSTART + 1, RLENGTH - 2); sub(/^\.\//, "", p); print p

@@ -20,6 +20,8 @@ Mentions `NOT_A_TOUCHPOINT.md` here.
 
 ## Touchpoints
 
+Checked against `docs/brace/brand/VOICE.md` at each review, and `NOTE_IN_SECTION.md` too.
+
 - `README.md`: first contact
 - `docs/site/index.html` and `./CHANGELOG.md`
 - `site/about us.md`
@@ -40,6 +42,7 @@ has "$(run "$P" "$P/site/about us.md")" "touchpoint" "path with a space"
 has "$(run "$P" "$P/README.md" s3 antigravity)" "invoke the brand skill" "antigravity names brand"
 empty "$(run "$P" "$P/NOT_A_TOUCHPOINT.md")" "backticks outside the section -> silent"
 empty "$(run "$P" "$P/LATER.md")" "next section not read"
+empty "$(run "$P" "$P/NOTE_IN_SECTION.md")" "prose in the section -> silent"
 empty "$(run "$P" "$P/src/main.py")" "unlisted file -> silent"
 empty "$(run "$P" "$P/docs/brace/brand/STRATEGY.md")" "brand files themselves -> silent"
 empty "$(run "$P" "/elsewhere/README.md")" "file outside the project -> silent"
