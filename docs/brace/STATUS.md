@@ -48,7 +48,8 @@ background (`analyst`, `strategist`, `copywriter`, `creative-director`),
 a strategic presentation as a local HTML deck, adjustments validated one
 rendered document at a time, a delivery page. Agents write in their own
 folder without a prompt (a hook, tested for real on Claude Code); a macOS
-notification says when a presentation is ready. Suite green.
+notification says when a presentation is ready. Whole-branch review
+done, its critical and important findings fixed; suite green.
 
 ### Known gaps
 
@@ -58,7 +59,7 @@ notification says when a presentation is ready. Suite green.
 
 ## Next 3 actions
 
-1. **Real trial of the brand agency** with the owner on `feat/brand`: a
+1. **Real trial of the brand agency** (postponed by the owner) on `feat/brand`: a
    throwaway project, `claude --plugin-dir .`, one mission up to the
    strategic presentation. Check: no permission prompt during the
    background work, the notification arrives, the presentation reads

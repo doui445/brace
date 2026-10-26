@@ -39,6 +39,17 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   collect from them at the next session, never reconstructed by guess.
   Each fix needs a workable solution, discussed first.
 
+- [ ] **Brand agency: minor findings from the final review** (S, ⭐) —
+  surfaced 2026-10-26 on `feat/brand`. (1) A fake project nested inside
+  another agent's folder lets an agent write there (the marker is found
+  with `rfind`): reject a path where the marker appears twice. (2) The
+  code in `~/.brace/language.txt` is used as a catalogue path unchecked
+  (falls back to English). (3) A `language:` line separated by a tab is
+  not matched by BSD sed. (4) The notification text only strips double
+  quotes, a backslash would break the AppleScript. (5) The creative
+  director's "rendering not checked" verdict is not handled in
+  `references/backstage.md`.
+
 - [ ] **Design as a tracked dimension (new `project-tracker:design` skill)**
   (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE
   1.1, `brace:design`; paths below move from `docs/project-tracker/` to

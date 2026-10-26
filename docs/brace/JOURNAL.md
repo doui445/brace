@@ -1075,3 +1075,11 @@ Closed out the portfolio sub-pages work and cut the release:
   rule); the hook gives no decision there, as its tests check.
 - Left: a real trial with the owner on Claude Code and Antigravity, then
   the release.
+- Final review of the whole branch: one critical finding (a newline in
+  the file path let the write hook allow a path outside the agent's
+  folder) and three important ones (a dangling symlink in the agent's
+  folder, no way to resume a brand started on 1.0, open questions left in
+  the presentation step). All fixed with a test that failed first; suite
+  green. Five minor findings kept for later (`BACKLOG.md`).
+- The real trial is postponed by the owner, still the next step before
+  the release.
