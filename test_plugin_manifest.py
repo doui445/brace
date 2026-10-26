@@ -10,7 +10,8 @@ from pathlib import Path
 REPO = Path(__file__).parent
 CLAUDE_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh", "pre_tool_use.sh"}
 ANTIGRAVITY_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
-CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep"}
+CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep",
+                      "mcp__claude-in-chrome__*"}
 # Antigravity hangs on an unknown tool name: only names verified in its docs.
 ANTIGRAVITY_AGENT_TOOLS = {"search_web", "read_url_content", "view_file", "grep_search",
                            "write_to_file", "replace_file_content"}
@@ -210,6 +211,17 @@ class PluginManifestTests(unittest.TestCase):
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")
         self.assertIn("one report file per subject", " ".join(body.split()))
+
+    def test_analyst_takes_depth_from_caller_and_finds_references(self):
+        for rel in ("agents/claude/analyst.md", "agents/analyst.md"):
+            fm, body = _split_agent(rel)
+            self.assertNotIn("ask the user for the depth", fm["description"], rel)
+            flat = " ".join(body.split())
+            self.assertIn("**references**", flat, rel)
+            self.assertIn("brands that made a comparable choice", flat, rel)
+            self.assertIn("when a browser is available", flat, rel)
+        claude, _ = _split_agent("agents/claude/analyst.md")
+        self.assertIn("mcp__claude-in-chrome__*", [t.strip() for t in claude["tools"].split(",")])
 
     def test_claude_agent_folder_is_invisible_to_antigravity(self):
         # Antigravity loads agents/<name>.md and agents/<name>/agent.md: the
