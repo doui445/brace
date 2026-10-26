@@ -6,5 +6,10 @@
   "license": "MIT",
   "homepage": "https://github.com/doui445/brace",
   "hooks": "./claude-hooks.json",
-  "agents": ["./agents/claude/analyst.md"]
+  "agents": [
+    "./agents/claude/analyst.md",
+    "./agents/claude/strategist.md",
+    "./agents/claude/copywriter.md",
+    "./agents/claude/creative-director.md"
+  ]
 }

@@ -13,6 +13,7 @@ ANTIGRAVITY_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
 CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep",
                       "mcp__claude-in-chrome__*"}
 # Antigravity hangs on an unknown tool name: only names verified in its docs.
+AGENTS = ("analyst", "strategist", "copywriter", "creative-director")
 ANTIGRAVITY_AGENT_TOOLS = {"search_web", "read_url_content", "view_file", "grep_search",
                            "write_to_file", "replace_file_content"}
 
@@ -148,29 +149,40 @@ class PluginManifestTests(unittest.TestCase):
 
     def test_claude_manifest_points_at_the_claude_agent(self):
         self.assertEqual(_load(".claude-plugin/plugin.json").get("agents"),
-                         ["./agents/claude/analyst.md"])
+                         [f"./agents/claude/{name}.md" for name in AGENTS])
 
-    def test_analyst_agent_files(self):
-        claude, c_body = _split_agent("agents/claude/analyst.md")
-        agy, a_body = _split_agent("agents/analyst.md")
-        for fm in (claude, agy):
-            self.assertEqual(fm.get("name"), "analyst")
-            self.assertTrue(fm.get("description"))
-        self.assertTrue(set(t.strip() for t in claude["tools"].split(",")) <= CLAUDE_AGENT_TOOLS)
-        self.assertEqual(claude.get("model"), "sonnet")
-        self.assertEqual(claude.get("background"), "true")
-        self.assertTrue(set(agy["tools"]) <= ANTIGRAVITY_AGENT_TOOLS)
-        self.assertEqual(agy.get("subagent"), "true")
-        self.assertEqual(agy.get("mainAgent"), "false")
-        self.assertEqual(agy.get("model"), "flash")
-        # Frontmatter values are plain YAML scalars: a ": " inside one breaks
-        # the parser of the host tool.
-        for fm in (claude, agy):
-            self.assertNotIn(": ", fm.get("description", ""))
-        # One trade, one text: the two bodies must never drift apart.
-        self.assertEqual(c_body, a_body)
-        self.assertIn("docs/brace/agents/analyst/", c_body)
-        self.assertNotIn("—", c_body)
+    def test_agent_files(self):
+        for name in AGENTS:
+            with self.subTest(agent=name):
+                claude, c_body = _split_agent(f"agents/claude/{name}.md")
+                agy, a_body = _split_agent(f"agents/{name}.md")
+                for fm in (claude, agy):
+                    self.assertEqual(fm.get("name"), name)
+                    self.assertTrue(fm.get("description"))
+                self.assertTrue(set(t.strip() for t in claude["tools"].split(",")) <= CLAUDE_AGENT_TOOLS)
+                self.assertEqual(claude.get("model"), "sonnet")
+                self.assertEqual(claude.get("background"), "true")
+                self.assertTrue(set(agy["tools"]) <= ANTIGRAVITY_AGENT_TOOLS)
+                self.assertEqual(agy.get("subagent"), "true")
+                self.assertEqual(agy.get("mainAgent"), "false")
+                self.assertEqual(agy.get("model"), "flash")
+                self.assertEqual(agy.get("commandExecutionPolicy"), "off")
+                # Frontmatter values are plain YAML scalars: a ": " inside one breaks
+                # the parser of the host tool.
+                for fm in (claude, agy):
+                    self.assertNotIn(": ", fm.get("description", ""))
+                # One trade, one text: the two bodies must never drift apart.
+                self.assertEqual(c_body, a_body)
+                self.assertIn(f"docs/brace/agents/{name}/", c_body)
+                self.assertNotIn("—", c_body)
+
+    def test_new_agents_report_formats(self):
+        for name, head in (("strategist", "# Routes: "), ("copywriter", "# Words: "),
+                           ("creative-director", "# Review: ")):
+            claude, body = _split_agent(f"agents/claude/{name}.md")
+            self.assertIn(head, body, name)
+            self.assertEqual([t.strip() for t in claude["tools"].split(",")],
+                             ["Read", "Write", "Edit", "Glob", "Grep"], name)
 
     def test_skills_frontmatter_and_references_exist(self):
         import re
@@ -189,7 +201,7 @@ class PluginManifestTests(unittest.TestCase):
         # A project still on docs/project-tracker/ (move pending) must never
         # get a docs/brace/ folder from brand or the analyst: the move would
         # then find both folders and stop.
-        for rel in ("skills/brand/SKILL.md", "agents/claude/analyst.md"):
+        for rel in ["skills/brand/SKILL.md"] + [f"agents/claude/{n}.md" for n in AGENTS]:
             text = (REPO / rel).read_text(encoding="utf-8")
             self.assertIn("docs/project-tracker/", text, rel)
 
