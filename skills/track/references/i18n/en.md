@@ -156,6 +156,13 @@ Append-only, separate from the project's main `DECISIONS.md`.
 - brand.decisions.title: BRAND DECISIONS — {project}
 - brand.decisions.intro: Brand choices: what was tried, why it was set aside, what was kept.
 
+## Brand notifications
+
+The macOS notification sent when a brand presentation is ready.
+
+- brand.notify.title: BRACE
+- brand.notify.ready: Your brand presentation is ready.
+
 ## Shared
 
 - shared.to_fill_in: to fill in

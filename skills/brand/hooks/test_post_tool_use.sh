@@ -98,5 +98,33 @@ empty "$(run "$N" "$N/README.md")" "no Touchpoints section -> silent"
 empty "$(run "" "$P/README.md")" "no project root -> silent"
 empty "$(BRACE_FILE="$P/README.md" BRACE_PROJECT_ROOT="$P" BRACE_PLUGIN_ROOT="$PLUGIN_ROOT" bash "$HOOK")" "no session id -> silent"
 
+# Presentation ready -> macOS notification (stubbed), once per file and session.
+NOTE="$TMP/notified"; STUB="$TMP/notify_stub.sh"
+printf '#!/usr/bin/env bash\nprintf "%%s|%%s\\n" "$1" "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$STUB"
+nrun() { BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME="${5:-Darwin}" run "$1" "$2" "${3:-n1}" "${4:-claude}"; }
+calls() { [ -f "$NOTE" ] && wc -l < "$NOTE" | tr -d ' ' || echo 0; }
+D="$TMP/scope/d"; mkdir -p "$D/docs/brace/brand/presentations"
+DECK="$D/docs/brace/brand/presentations/2026-10-26-strategy.html"
+empty "$(nrun "$D" "$DECK")" "presentation -> no text output"
+has "$(cat "$NOTE" 2>/dev/null)" "BRACE|Your brand presentation is ready." "presentation -> notification"
+nrun "$D" "$DECK" >/dev/null
+[ "$(calls)" = 1 ] && echo "PASS: same deck, same session -> once" || { echo "FAIL: same deck, same session -> once: $(calls) calls"; FAIL=1; }
+nrun "$D" "$DECK" n2 >/dev/null
+[ "$(calls)" = 2 ] && echo "PASS: new session -> notified again" || { echo "FAIL: new session -> notified again: $(calls) calls"; FAIL=1; }
+nrun "$D" "$D/docs/brace/brand/presentations/draft.html" n3 >/dev/null
+[ "$(calls)" = 2 ] && echo "PASS: draft.html -> never notified" || { echo "FAIL: draft.html -> never notified: $(calls) calls"; FAIL=1; }
+nrun "$D" "$D/docs/brace/brand/presentations/notes.md" n3 >/dev/null
+[ "$(calls)" = 2 ] && echo "PASS: non-html file -> not notified" || { echo "FAIL: non-html file -> not notified: $(calls) calls"; FAIL=1; }
+empty "$(nrun "$D" "$DECK" n4 claude Linux)" "not macOS -> no output"
+[ "$(calls)" = 2 ] && echo "PASS: not macOS -> not notified" || { echo "FAIL: not macOS -> not notified: $(calls) calls"; FAIL=1; }
+F="$TMP/scope/f"; mkdir -p "$F/docs/brace/brand/presentations"
+printf -- '---\nproject: f\nlanguage: fr\n---\n' > "$F/docs/brace/STATUS.md"
+nrun "$F" "$F/docs/brace/brand/presentations/a.html" >/dev/null
+has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Ta présentation de marque est prête." "language fr -> French message"
+G="$TMP/scope/g"; mkdir -p "$G/docs/brace/brand/presentations"; echo fr > "$HOME/.brace/language.txt"
+nrun "$G" "$G/docs/brace/brand/presentations/a.html" >/dev/null
+has "$(tail -1 "$NOTE" 2>/dev/null)" "prête" "language.txt fr -> French message"
+rm -f "$HOME/.brace/language.txt"
+
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
 exit $FAIL
