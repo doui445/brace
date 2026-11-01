@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-26
+last_updated: 2026-11-01
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -59,13 +59,12 @@ done, its critical and important findings fixed; suite green.
 
 ## Next 3 actions
 
-1. **Real trial of the brand agency** (postponed by the owner) on `feat/brand`: a
-   throwaway project, `claude --plugin-dir .`, one mission up to the
-   strategic presentation. Check: no permission prompt during the
-   background work, the notification arrives, the presentation reads
-   well, how many questions the workshop asks. Then the same on
-   Antigravity (`agy plugin install "$PWD"` in a throwaway config). Gaps
-   become tasks before the release.
+1. **Fix the gaps from the real trial** (done on Claude Code 2026-11-01,
+   see `BACKLOG.md`): the missing notification, the working and brand
+   languages asked at the workshop, a word up front on the steps, time
+   and measured token range, a lighter main conversation, the creative
+   director seeing the render. Then the same trial on Antigravity
+   (`agy plugin install "$PWD"` in a throwaway config).
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
    `BACKLOG.md`). 1.2 brings the brand's face (logo, palette, type) in

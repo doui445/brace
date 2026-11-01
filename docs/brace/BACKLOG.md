@@ -50,6 +50,42 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   director's "rendering not checked" verdict is not handled in
   `references/backstage.md`.
 
+- [ ] **Brand agency: fixes from the real trial on Claude Code** (M,
+  ⭐⭐⭐) — surfaced 2026-11-01, the first full mission (workshop to
+  delivery) on a throwaway project with `--plugin-dir`. Before the 1.1.0
+  release. (1) **No notification**: the final presentation was filed
+  with `cp draft.html <date>-strategy.html` in Bash, and the
+  `PostToolUse` hook only watches `Write` and `Edit`. Either file it with
+  `Write`, or watch `Bash` too. The notification itself works: the hook
+  run by hand on the trial deck showed it. (2) **Language**: the decks came
+  out in English (`language.txt` is `en`) while the owner spoke French,
+  and `brand` drifted into English in its progress messages. Ask at the
+  workshop, pre-filled, for two languages: the working language (workshop,
+  decks, documents) and the brand's language (tagline, public texts).
+  (3) **Say up front** what the mission is: the five steps, about an hour
+  of active time, what needs the owner and what runs alone, and a
+  measured token range. Measured on this trial: about 14 to 15 M tokens
+  read (98% from cache) and about 115 k written; the four agents are only
+  5% of it, the main conversation 95% (87 calls, context growing from 76 k
+  to 232 k). (4) **Token diet**, from that measure: move the deck
+  assembly and the rendering check (screenshots read one by one) to a
+  Sonnet agent, cut main-conversation round trips, avoid re-reading whole
+  references at each step; changing the agents' model barely matters.
+  (5) The creative director could not see the render (it asks for a PDF,
+  `pdftoppm` is missing on the machine): give it PNG screenshots from
+  headless Chrome, as `brand` did itself. (6) A new fact on a settled
+  choice (the name's package taken on PyPI) was asked again as a
+  question, and the owner rejected it: report it, do not reopen the
+  decision. Good: no permission prompt during the background work; the
+  presentation and the workshop questions were "straight to the point";
+  to check again on other kinds of projects.
+
+- [ ] **Redo the presentation frame with BRACE's visual identity** (M,
+  ⭐⭐) — surfaced 2026-11-01. `skills/brand/assets/deck.css` is a neutral
+  frame set while BRACE has no visual identity (cream paper, dark green,
+  Fraunces and Inter). Once BRACE's own identity exists (1.2, `design`),
+  rebuild the frame with it.
+
 - [ ] **Design as a tracked dimension (new `project-tracker:design` skill)**
   (L, ⭐⭐⭐) — surfaced 2026-09-02. **Retargeted 2026-10-05: ships as BRACE
   1.1, `brace:design`; paths below move from `docs/project-tracker/` to

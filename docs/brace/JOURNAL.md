@@ -1083,3 +1083,23 @@ Closed out the portfolio sub-pages work and cut the release:
   green. Five minor findings kept for later (`BACKLOG.md`).
 - The real trial is postponed by the owner, still the next step before
   the release.
+
+## 2026-11-01 — Real trial of the brand agency (Claude Code)
+
+- Full mission on a throwaway project with `claude --plugin-dir .`:
+  tracking, workshop, backstage, strategic presentation, adjustments,
+  delivery, `brand_stage: done`. About an hour of active time.
+- Held: no permission prompt during the background work (the agents'
+  write hook works); the owner found the presentation and the workshop
+  questions "straight to the point".
+- Measured from the transcript: about 14 to 15 M tokens read (98% from
+  cache) and 115 k written for the mission; the main conversation is 95%
+  of it, the four agents 5%. The lever is the main conversation, not the
+  agents' model.
+- Gaps, all in `BACKLOG.md`: no notification (the final deck was filed
+  with `cp` in Bash, the hook only sees `Write`/`Edit`), decks in English
+  for a French-speaking owner, no word up front on the steps and the
+  cost, the creative director blind to the render without `pdftoppm`, a
+  settled name reopened as a question. Also logged: redo the deck frame
+  once BRACE has its own visual identity.
+- Left before 1.1.0: fix these gaps, then the same trial on Antigravity.
