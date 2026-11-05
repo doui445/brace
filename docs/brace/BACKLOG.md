@@ -135,6 +135,12 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   confirmation. Spec `docs/superpowers/specs/2026-11-05-rebranding-design.md`.
   The trial: a rebrand of BRACE in the real repo.
 
+- [ ] **Pick up exactly where the last session stopped** (?, ⭐⭐) — a
+  user capture (Reminders, 2026-11-04), kept as an idea for BRACE: read
+  the end of the last session to resume at the exact point it left. Scope
+  to discuss first (what is read, when, how it relates to the session
+  start and to the agency's resume).
+
 - [ ] **BRACE's welcome in tracking** (M, ⭐⭐⭐) — surfaced 2026-11-05.
   (1) First use: BRACE introduces itself in the first question, asks for
   a nickname to address the user (else their name), says what the
