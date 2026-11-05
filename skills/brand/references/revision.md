@@ -2,6 +2,25 @@
 
 Read by `SKILL.md` after delivery.
 
+## Coming back to a delivered brand
+
+The client opens the brand again (`/brace:brand`, or the topic comes up)
+with `brand_stage: done` and no precise request. Do not start anything on
+your own: the account director greets them, recalls the brand in two
+lines, and asks "What brings you back?", with the options and a
+recommendation drawn from what you know of the project:
+
+1. **A review** (`## The review` below): nothing big has changed, the
+   brand needs a check. The usual recommendation.
+2. **A rebrand** (`references/rebrand.md`): the audience, the ambition,
+   the product or the name has changed. Say which signs you see (a brand
+   from BRACE 1.0 with no client documents, a folder or package still
+   under an old name, a new audience in the notes) and ask "why now?".
+3. **A one-off request** (`SKILL.md`, `## One-off requests`): a tagline,
+   a name, a text, a question about the competitors.
+
+The client picks, or says something else: follow it.
+
 ## When to offer a review
 
 - The hook line says the strategy was last reviewed more than six months

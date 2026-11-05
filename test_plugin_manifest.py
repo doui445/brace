@@ -330,6 +330,16 @@ class PluginManifestTests(unittest.TestCase):
         for name in ("audit", "transition", "announcement"):
             self.assertIn(f"| `{name}` |", docs, name)
 
+    def test_brand_coming_back_to_a_delivered_brand(self):
+        refs = REPO / "skills" / "brand" / "references"
+        rev = (refs / "revision.md").read_text(encoding="utf-8")
+        self.assertIn("## Coming back to a delivered brand", rev)
+        flat = " ".join(rev.split()).lower()
+        for needle in ("what brings you", "**a review**", "**a rebrand**", "**a one-off request**", "recommend"):
+            self.assertIn(needle, flat, needle)
+        skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
+        self.assertIn("delivered brand", skill)
+
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")
         self.assertIn("one report file per subject", " ".join(body.split()))

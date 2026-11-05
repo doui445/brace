@@ -114,7 +114,9 @@ through this line and resume at the new stage:
   "not tracked".
 - `docs/brace/brand/` exists: resume at `brand_stage` (through the
   `legacy:` line if needed); a hook reminds you at session start, and says
-  when the mission is a rebrand (`references/rebrand.md`). Otherwise
+  when the mission is a rebrand (`references/rebrand.md`). A delivered
+  brand (`done`) with no precise request: `references/revision.md`,
+  coming back to a delivered brand. Otherwise
   start with the first contact, `references/contact.md`.
 
 ## The meetings
