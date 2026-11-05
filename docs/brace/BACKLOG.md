@@ -39,8 +39,8 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   collect from them at the next session, never reconstructed by guess.
   Each fix needs a workable solution, discussed first.
 
-- [ ] **Brand agency: minor findings from the final review** (S, ⭐) —
-  surfaced 2026-10-26 on `feat/brand`. (1) A fake project nested inside
+- [x] **Brand agency: minor findings from the final review** (S, ⭐) —
+  surfaced 2026-10-26 on `feat/brand`, fixed 2026-11-02. (1) A fake project nested inside
   another agent's folder lets an agent write there (the marker is found
   with `rfind`): reject a path where the marker appears twice. (2) The
   code in `~/.brace/language.txt` is used as a catalogue path unchecked
@@ -50,8 +50,10 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   director's "rendering not checked" verdict is not handled in
   `references/backstage.md`.
 
-- [ ] **Brand agency: fixes from the real trial on Claude Code** (M,
-  ⭐⭐⭐) — surfaced 2026-11-01, the first full mission (workshop to
+- [x] **Brand agency: fixes from the real trial on Claude Code** (M,
+  ⭐⭐⭐) — surfaced 2026-11-01, fixed on `feat/brand` 2026-11-02 (spec
+  `docs/superpowers/specs/2026-11-02-brand-trial-fixes-design.md`; the
+  deck assembly by an agent is split out below). The first full mission (workshop to
   delivery) on a throwaway project with `--plugin-dir`. Before the 1.1.0
   release. (1) **No notification**: the final presentation was filed
   with `cp draft.html <date>-strategy.html` in Bash, and the
@@ -79,6 +81,14 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   decision. Good: no permission prompt during the background work; the
   presentation and the workshop questions were "straight to the point";
   to check again on other kinds of projects.
+
+- [ ] **Brand: assemble the deck in an agent, if the measure says so**
+  (M, ⭐⭐) — split out of the trial fixes 2026-11-02. The main
+  conversation still writes the deck HTML itself. Moving it to a Sonnet
+  agent is heavier (an agent writes only in its own folder, so the draft
+  and its `deck.css` would live there and be copied out). First measure the
+  next real trial without the screenshots in the main conversation, then
+  decide.
 
 - [ ] **Redo the presentation frame with BRACE's visual identity** (M,
   ⭐⭐) — surfaced 2026-11-01. `skills/brand/assets/deck.css` is a neutral

@@ -25,6 +25,9 @@ if any(c in path for c in "\n\r\0") or any(part == ".." for part in path.split("
 # Follows every symlink, dangling ones included; missing parts are kept.
 real = os.path.realpath(path)
 marker = "/docs/brace/agents/" + name + "/"
+# One agents folder in the path, never a project nested inside one.
+if real.count("/docs/brace/agents/") != 1:
+    sys.exit(1)
 i = real.rfind(marker)
 if i <= 0 or real.endswith("/") or len(real) == i + len(marker):
     sys.exit(1)

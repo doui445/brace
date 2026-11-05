@@ -1103,3 +1103,22 @@ Closed out the portfolio sub-pages work and cut the release:
   settled name reopened as a question. Also logged: redo the deck frame
   once BRACE has its own visual identity.
 - Left before 1.1.0: fix these gaps, then the same trial on Antigravity.
+
+## 2026-11-02 — The trial fixes (feat/brand)
+
+- The owner asked to start without questions; my calls are marked in the
+  spec (local, `docs/superpowers/specs/2026-11-02-brand-trial-fixes-design.md`).
+- Notification: the Claude Code `PostToolUse` hook now also runs after
+  shell commands, and the brand hook scans the final decks instead of
+  watching the written file: a deck filed with `cp` is notified, once per
+  session, in its own language. Decks already there at session start are
+  marked seen. Checked by hand: the hook run on the trial deck showed the
+  notification.
+- Two languages asked at the workshop (working, brand), kept in
+  `BRIEF.md`; an opening message with the steps, time and measured cost;
+  a new fact never reopens a settled choice.
+- Lighter main conversation: `brand` no longer reads screenshots; a new
+  `shoot_deck.sh` gives the creative director one PNG per slide (checked
+  with the real Chrome on the trial deck). The deck assembly by an agent
+  waits for the next measure (`BACKLOG.md`).
+- The five minor review findings fixed. Suite green.

@@ -42,8 +42,8 @@ memory, read by the skills; the user is shown rendered pages, never the
 Markdown.
 
 Headings come from `skills/track/references/i18n/<code>.md` (`brand.*`
-keys), in the project's effective language (see `track`'s
-`## Output language`). The Touchpoints section of `STRATEGY.md` lists repo
+keys), in the working language (see `## Languages`), or English when
+there is no catalogue for it. The Touchpoints section of `STRATEGY.md` lists repo
 files in backticks on list items: a hook reads it.
 
 `STATUS.md` frontmatter, three keys only:
@@ -73,10 +73,32 @@ through this line and resume at the new stage:
   "not tracked".
 - `docs/brace/brand/` exists: resume at `brand_stage` (through the
   `legacy:` line if needed). Otherwise start the workshop.
-- At the start of a mission, say once that the user can stop whenever they
-  like. At every save point (brief validated, presentation filed, document
+- At the start of a mission, before reading the project, say in one short
+  message, in the working language: the five steps (workshop, backstage,
+  strategic presentation, adjustments, delivery); about an hour of active
+  time in all; what needs the user (the workshop, choosing a route,
+  validating each document) and what runs alone (the backstage, about ten
+  minutes); and the cost, measured on a small project: about 15 million
+  tokens read, almost all from the cache, and about 120 thousand written,
+  more for a bigger project. Then say once that the user can stop whenever
+  they like. At every save point (brief validated, presentation filed, document
   validated, end of a session), say it again in one line: "It is saved, you
   can stop here, we will pick up from this point."
+
+## Languages
+
+Two languages, asked at the workshop (`references/workshop.md`) and kept
+in `BRIEF.md` under `brand.brief.heading.languages`:
+
+- **The working language**: everything `brand` says to the user, progress
+  lines included, the presentations (`<html lang="...">`), the brand
+  documents and their headings. Before the workshop settles it, use the
+  language the user writes in.
+- **The brand's language**: what the public reads (tagline, one-liner,
+  the texts of the mockups, the README).
+
+Brief every agent with both. They may differ: a French-speaking owner can
+build a brand that speaks English.
 
 ## How to ask
 
@@ -85,7 +107,11 @@ already know. Ask only what you cannot find, one question at a time, each
 with an example, two or three possible answers and your recommendation. An
 answer the user does not know stays "to fill in" or becomes an assumption,
 marked as one, checked at the presentation. Reuse the user's own words.
-Nothing goes into a brand file before the user approves it. Follow
+Nothing goes into a brand file before the user approves it. A new fact on
+a choice already made (the name's package is taken, a competitor turns up)
+is reported, with what it changes, at the next natural moment (usually the
+presentation); it never reopens the choice as a question. The user reopens
+it if they want. Follow
 `track`'s `## Asking questions` and the platform notes
 (`skills/track/references/platform-claude.md`,
 `skills/track/references/platform-antigravity.md`).
@@ -160,6 +186,13 @@ When the user corrects an agent's work (a competitor to drop, a source not
 to trust, a word to avoid), append the correction to that agent's
 `docs/brace/agents/<agent>/BRIEF.md`: you write it for the user, since the
 agents never see the conversation.
+
+## Keeping the conversation light
+
+The main conversation is where the cost is: every step rereads it. Never
+read a screenshot of a presentation yourself; the rendering check is the
+creative director's, in its own context (`references/backstage.md`). Read
+each reference file when its session starts, not before.
 
 ## Writes and permissions
 

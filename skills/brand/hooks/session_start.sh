@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # BRACE brand -- session_start. Called by dispatch/run.sh only in projects
-# where docs/brace/brand/ exists. Prints one line when the brand strategy
+# where docs/brace/brand/ exists. First marks the final presentations
+# already there as seen this session (decks.sh), so the post-write
+# notification fires only for new ones. Prints one line when the brand strategy
 # was last reviewed more than 6 months ago (brand_reviewed in STATUS.md),
 # unless the user postponed the review in the last 30 days. Silent
 # otherwise, and on any error. Bash 3.2 compatible.
@@ -10,6 +12,10 @@ set -uo pipefail
 
 ROOT="${BRACE_PROJECT_ROOT:-}"
 [ -n "$ROOT" ] && [ -d "$ROOT/docs/brace/brand" ] || exit 0
+if [ -n "${BRACE_SESSION:-}" ]; then
+  . "$BRACE_PLUGIN_ROOT/skills/brand/hooks/decks.sh"
+  brand_seed_seen "$ROOT" "$BRACE_SESSION"
+fi
 case "${BRACE_SOURCE:-}" in compact|resume) exit 0 ;; esac
 if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then SKILL="brand"; else SKILL="brace:brand"; fi
 

@@ -7,7 +7,7 @@
       { "matcher": "Edit|Write", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/dispatch/claude/pre_tool_use.sh\"" } ] }
     ],
     "PostToolUse": [
-      { "matcher": "Edit|Write", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/dispatch/claude/post_tool_use.sh\"" } ] }
+      { "matcher": "Edit|Write|Bash", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/dispatch/claude/post_tool_use.sh\"" } ] }
     ]
   }
 }

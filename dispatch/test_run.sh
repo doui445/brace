@@ -70,6 +70,13 @@ has "$OUT" "DESIGN-POST" "post_tool_use finds the project from the file"
 has "$OUT" "project=[$P]" "post_tool_use exports the in-scope project root"
 hasnt "$OUT" "MACHINE" "machine checks only at session start"
 
+# A shell command (no file): the project is found from the working folder.
+OUT="$(BRACE_CWD="$P/src" run post_tool_use)"
+has "$OUT" "DESIGN-POST" "post_tool_use without a file -> project from BRACE_CWD"
+has "$OUT" "project=[$P]" "post_tool_use without a file -> project root exported"
+OUT="$(BRACE_CWD="/outside" run post_tool_use)"
+hasnt "$OUT" "DESIGN-POST" "post_tool_use without a file, outside scopes -> project skill not run"
+
 OUTSIDE="$TMP/outside/q"
 mkdir -p "$OUTSIDE/docs/brace/design"; touch "$OUTSIDE/docs/brace/STATUS.md"
 OUT="$(BRACE_FILE="$OUTSIDE/docs/brace/design/DESIGN.md" run post_tool_use)"

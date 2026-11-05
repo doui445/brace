@@ -34,7 +34,15 @@ the bump, a release never breaks an existing project. The version lives in
 - Brand presentations: local HTML pages that read as a deck and print to
   PDF one slide per page, from a template shipped in
   `skills/brand/assets/` with free fonts (Fraunces, Inter, OFL).
-- A macOS notification when a brand presentation is ready.
+- A macOS notification when a brand presentation is ready, in the
+  presentation's language, however the file was written.
+- The brand workshop asks for two languages: the working language
+  (conversation, presentations, documents) and the brand's language (what
+  the public reads).
+- A brand mission opens with its five steps, about an hour of active
+  time, what needs the user and what runs alone, and its measured cost.
+- `skills/brand/scripts/shoot_deck.sh`: one screenshot per slide, so the
+  creative director sees the rendered presentation without a PDF reader.
 - A `PreToolUse` hook on Claude Code: a BRACE agent writes in its own
   `docs/brace/agents/<agent>/` folder without a permission prompt, and
   only there.
@@ -45,12 +53,19 @@ the bump, a release never breaks an existing project. The version lives in
 - The `analyst` takes its research depth from the caller (never asks the
   user), can read refused pages with a browser when one is available, and
   finds references (brands that made a comparable choice).
+- The Claude Code `PostToolUse` hook also runs after shell commands.
+- `brand` no longer reads presentation screenshots itself (the creative
+  director does, in its own context): a lighter main conversation.
+- A new fact on a settled brand choice is reported, never asked again.
 
 ### Fixed
 - Brand touchpoints are read from the list items of the section only: a
   file named in a note there is no longer a touchpoint.
 - Background agents' writes to their own folder were denied; they now
   land without a prompt.
+- An agent can no longer write into a project nested in an agents folder.
+- The brand notification checks the language code, reads a `language:`
+  line after a tab, and strips backslashes from its text.
 
 ## [1.0.0] — 2026-10-16
 

@@ -5,9 +5,9 @@ workshop frames the mission. It ends on a validated `BRIEF.md`.
 
 ## Before the first question
 
-1. Say what is going to happen, in three lines: a short workshop now, then
-   the team works in the background, then a presentation to react to. Say
-   the user can stop whenever they like.
+1. Say what is going to happen (`SKILL.md`, `## Starting`): the five
+   steps, the time, what needs the user, the measured cost, and that they
+   can stop whenever they like.
 2. **Read the project first**: `README.md`, the code and its comments, a
    site or landing page if the repo has one, the notes, `STATUS.md`,
    `docs/brace/agents/` if earlier reports exist. What already exists is
@@ -45,6 +45,11 @@ recommendation. Never an open question on its own.
    the project, with your recommendation.
 8. **What you never want**: a tone, a word, a cliche of the market. Offer
    the cliches you spotted.
+9. **The languages**, always asked: the working language and the brand's language
+   (`SKILL.md`, `## Languages`), in one question, pre-filled: we work in
+   the language the user writes in, the brand speaks the language of the
+   README or the public texts. Offer that pairing and one or two others
+   (both the same, the other way round), with your recommendation.
 
 The user does not know an answer: write "to fill in", or, when the
 presentation can settle it, an assumption marked as one ("Assumption:

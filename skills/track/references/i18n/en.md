@@ -116,6 +116,7 @@ says, validated with the user at the workshop.
 - brand.brief.heading.taste: What you like
 - brand.brief.heading.emotion: The feeling to leave
 - brand.brief.heading.never: What you never want
+- brand.brief.heading.languages: Languages (working, brand)
 - brand.brief.heading.assumptions: Assumptions to check
 
 ## brand/SESSIONS.md

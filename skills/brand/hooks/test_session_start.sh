@@ -7,7 +7,7 @@ FAIL=0
 has() { case "$1" in *"$2"*) echo "PASS: $3" ;; *) echo "FAIL: $3: missing [$2] in [$1]"; FAIL=1 ;; esac; }
 empty() { [ -z "$1" ] && echo "PASS: $2" || { echo "FAIL: $2: got [$1]"; FAIL=1; }; }
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
-export HOME="$TMP/home"; mkdir -p "$HOME/.brace"
+export HOME="$TMP/home" TMPDIR="$TMP/tmp"; mkdir -p "$HOME/.brace" "$TMPDIR"
 ago() { python3 -c 'import sys,datetime; print(datetime.date.today()-datetime.timedelta(days=int(sys.argv[1])))' "$1"; }
 proj() { mkdir -p "$1/docs/brace/brand"; printf -- '---\nproject: p\nstatus: active\nlast_updated: 2026-01-01\n%s---\n' "${2:-}" > "$1/docs/brace/STATUS.md"; }
 run() { BRACE_PROJECT_ROOT="$1" BRACE_TOOL="${2:-claude}" BRACE_SOURCE="${3:-startup}" BRACE_PLUGIN_ROOT="$PLUGIN_ROOT" bash "$HOOK"; }
@@ -68,6 +68,21 @@ has "$OUT" "VOICE.md" "antigravity touchpoint line points to VOICE.md"
 empty "$(run "$A" claude)" "claude -> no touchpoint line (the post-write hook covers it)"
 rm -f "$A/docs/brace/brand/STRATEGY.md"
 empty "$(run "$A" antigravity)" "antigravity without STRATEGY.md -> silent"
+
+# The decks already there are marked seen: the notification stays for new ones.
+K="$TMP/scope/k"
+proj "$K" "brand_reviewed: $(ago 10)
+"
+mkdir -p "$K/docs/brace/brand/presentations"
+touch "$K/docs/brace/brand/presentations/2026-09-01-strategy.html" "$K/docs/brace/brand/presentations/draft.html"
+for SRC in startup resume; do
+  SEEN="$TMPDIR/brace-brand-notify/k-$SRC.seen"
+  empty "$(BRACE_SESSION="k-$SRC" run "$K" claude "$SRC")" "seeding prints nothing ($SRC)"
+  grep -qxF "$K/docs/brace/brand/presentations/2026-09-01-strategy.html" "$SEEN" 2>/dev/null && echo "PASS: existing deck seeded ($SRC)" || { echo "FAIL: existing deck not seeded ($SRC)"; FAIL=1; }
+  grep -q "draft.html" "$SEEN" 2>/dev/null && { echo "FAIL: draft seeded ($SRC)"; FAIL=1; } || echo "PASS: draft not seeded ($SRC)"
+done
+BRACE_SESSION="k-startup" run "$K" >/dev/null
+[ "$(wc -l < "$TMPDIR/brace-brand-notify/k-startup.seen" | tr -d ' ')" = 1 ] && echo "PASS: seeding twice adds no duplicate" || { echo "FAIL: duplicate in seen list"; FAIL=1; }
 
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
 exit $FAIL

@@ -27,7 +27,9 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   `deck.css`, `example.html`, `fonts/` with Fraunces and Inter under OFL,
   tested by `test_assets.py`), and `hooks/session_start.sh` (review
   reminder) / `hooks/post_tool_use.sh` (voice drift on touchpoints, macOS
-  notification when a presentation is ready), + their `test_*.sh`.
+  notification when a presentation is ready), + their `test_*.sh`;
+  `scripts/shoot_deck.sh` (one screenshot per slide for the creative
+  director, + its test).
 - `agents/` — BRACE agents (`analyst`, `strategist`, `copywriter`,
   `creative-director`): `agents/<agent>.md` for Antigravity,
   `agents/claude/<agent>.md` for Claude Code (listed in

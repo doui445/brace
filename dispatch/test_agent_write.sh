@@ -32,6 +32,11 @@ check Explore "$P/docs/brace/agents/analyst/r.md" 1 "other agent type -> not all
 check "" "$P/docs/brace/agents/analyst/r.md" 1 "main conversation -> not allowed"
 check brace:analyst "$U/docs/brace/agents/analyst/r.md" 1 "untracked project -> not allowed"
 check brace:analyst "docs/brace/agents/analyst/r.md" 1 "relative path -> not allowed"
+# A fake tracked project nested in another agent's folder: the marker twice.
+N="$P/docs/brace/agents/strategist/fake"; mkdir -p "$N/docs/brace/agents/analyst"; touch "$N/docs/brace/STATUS.md"
+check brace:analyst "$N/docs/brace/agents/analyst/r.md" 1 "project nested in another agent's folder -> not allowed"
+M="$P/docs/brace/agents/analyst/fake"; mkdir -p "$M/docs/brace/agents/analyst"; touch "$M/docs/brace/STATUS.md"
+check brace:analyst "$M/docs/brace/agents/analyst/r.md" 1 "own marker twice in the path -> not allowed"
 eq "$(cat "$TMP/out")" "" "prints nothing"
 
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"

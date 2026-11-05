@@ -82,9 +82,11 @@ class PluginManifestTests(unittest.TestCase):
             self.assertTrue(path.is_file(), f"missing: {path}")
             self.assertTrue(os.access(path, os.X_OK), f"not executable: {path}")
 
-    def test_claude_post_tool_use_matches_edit_write(self):
-        for group in _load("claude-hooks.json")["hooks"].get("PostToolUse", []):
-            self.assertEqual(group.get("matcher"), "Edit|Write")
+    def test_claude_post_tool_use_matches_edit_write_bash(self):
+        groups = _load("claude-hooks.json")["hooks"].get("PostToolUse", [])
+        self.assertTrue(groups)
+        for group in groups:
+            self.assertEqual(group.get("matcher"), "Edit|Write|Bash")
 
     def test_claude_pre_tool_use_matches_edit_write(self):
         groups = _load("claude-hooks.json")["hooks"].get("PreToolUse", [])

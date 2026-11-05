@@ -21,7 +21,10 @@ presentation (`brand_stage: presentation`).
 - Work in `presentations/draft.html`. After the creative director's
   review, write the final version as
   `presentations/<YYYY-MM-DD>-<session>.html` (`strategy`, `adjustments`,
-  `delivery`): that write sends the notification. Keep every final
+  `delivery`), with the file-writing tool: its appearance sends the
+  notification. Set `<html lang="...">` to the working language
+  (`SKILL.md`, `## Languages`); the mockups' texts are in the brand's
+  language. Keep every final
   version; overwrite only the draft.
 
 ## Two layers

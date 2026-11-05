@@ -35,6 +35,17 @@ grep -q "$PROJ" "$TMP/out/PORTFOLIO.html" 2>/dev/null && echo "PASS: portfolio r
 OUT="$(printf '{"tool_name": "Read", "tool_input": {"file_path": "%s"}, "session_id": "s1"}' "$P/docs/brace/STATUS.md" | bash "$DIR/claude/post_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: non-write tool ignored" || { echo "FAIL: Read produced [$OUT]"; FAIL=1; }
 
+# A shell command reaches the dispatcher with the working folder (the brand
+# notification watches decks written by a command).
+mkdir -p "$P/docs/brace/brand/presentations"
+STUB="$TMP/notify_stub.sh"; NOTE="$TMP/notified"
+printf '#!/usr/bin/env bash\necho "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$STUB"
+touch "$P/docs/brace/brand/presentations/2026-01-01-strategy.html"
+OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "cp a b"}, "cwd": "%s", "session_id": "sb"}' "$P" | BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME=Darwin bash "$DIR/claude/post_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: Bash PostToolUse -> no text" || { echo "FAIL: Bash produced [$OUT]"; FAIL=1; }
+grep -q "presentation is ready" "$NOTE" 2>/dev/null && echo "PASS: deck written by a command -> notification" || { echo "FAIL: no notification after Bash"; FAIL=1; }
+rm -rf "$P/docs/brace/brand"
+
 # PreToolUse: a BRACE agent writing in its own folder is allowed, nothing else.
 AW="$P/docs/brace/agents/analyst/r.md"
 OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"

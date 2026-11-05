@@ -109,6 +109,7 @@ dit déjà, validé avec l'utilisateur à l'atelier.
 - brand.brief.heading.taste: Ce que tu aimes
 - brand.brief.heading.emotion: L'émotion à laisser
 - brand.brief.heading.never: Ce que tu ne veux surtout pas
+- brand.brief.heading.languages: Les langues (de travail, de la marque)
 - brand.brief.heading.assumptions: Hypothèses à vérifier
 
 ## brand/SESSIONS.md

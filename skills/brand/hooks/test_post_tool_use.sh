@@ -98,33 +98,80 @@ empty "$(run "$N" "$N/README.md")" "no Touchpoints section -> silent"
 empty "$(run "" "$P/README.md")" "no project root -> silent"
 empty "$(BRACE_FILE="$P/README.md" BRACE_PROJECT_ROOT="$P" BRACE_PLUGIN_ROOT="$PLUGIN_ROOT" bash "$HOOK")" "no session id -> silent"
 
-# Presentation ready -> macOS notification (stubbed), once per file and session.
+# Presentation ready -> macOS notification (stubbed). The hook scans the
+# final decks after any write or command, and notifies each one once per
+# session, however it was written (an editor write or a cp).
 NOTE="$TMP/notified"; STUB="$TMP/notify_stub.sh"
 printf '#!/usr/bin/env bash\nprintf "%%s|%%s\\n" "$1" "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$STUB"
 nrun() { BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME="${5:-Darwin}" run "$1" "$2" "${3:-n1}" "${4:-claude}"; }
 calls() { [ -f "$NOTE" ] && wc -l < "$NOTE" | tr -d ' ' || echo 0; }
-D="$TMP/scope/d"; mkdir -p "$D/docs/brace/brand/presentations"
-DECK="$D/docs/brace/brand/presentations/2026-10-26-strategy.html"
+ncount() { [ "$(calls)" = "$1" ] && echo "PASS: $2" || { echo "FAIL: $2: $(calls) calls, expected $1"; FAIL=1; }; }
+D="$TMP/scope/d"; PR="$D/docs/brace/brand/presentations"; mkdir -p "$PR"
+DECK="$PR/2026-10-26-strategy.html"
+echo '<html lang="en">' > "$PR/draft.html"
+nrun "$D" "$PR/draft.html" >/dev/null
+ncount 0 "draft.html -> never notified"
+echo '<html lang="en">' > "$DECK"
 empty "$(nrun "$D" "$DECK")" "presentation -> no text output"
 has "$(cat "$NOTE" 2>/dev/null)" "BRACE|Your brand presentation is ready." "presentation -> notification"
 nrun "$D" "$DECK" >/dev/null
-[ "$(calls)" = 1 ] && echo "PASS: same deck, same session -> once" || { echo "FAIL: same deck, same session -> once: $(calls) calls"; FAIL=1; }
-nrun "$D" "$DECK" n2 >/dev/null
-[ "$(calls)" = 2 ] && echo "PASS: new session -> notified again" || { echo "FAIL: new session -> notified again: $(calls) calls"; FAIL=1; }
-nrun "$D" "$D/docs/brace/brand/presentations/draft.html" n3 >/dev/null
-[ "$(calls)" = 2 ] && echo "PASS: draft.html -> never notified" || { echo "FAIL: draft.html -> never notified: $(calls) calls"; FAIL=1; }
-nrun "$D" "$D/docs/brace/brand/presentations/notes.md" n3 >/dev/null
-[ "$(calls)" = 2 ] && echo "PASS: non-html file -> not notified" || { echo "FAIL: non-html file -> not notified: $(calls) calls"; FAIL=1; }
-empty "$(nrun "$D" "$DECK" n4 claude Linux)" "not macOS -> no output"
-[ "$(calls)" = 2 ] && echo "PASS: not macOS -> not notified" || { echo "FAIL: not macOS -> not notified: $(calls) calls"; FAIL=1; }
-F="$TMP/scope/f"; mkdir -p "$F/docs/brace/brand/presentations"
-printf -- '---\nproject: f\nlanguage: fr\n---\n' > "$F/docs/brace/STATUS.md"
-nrun "$F" "$F/docs/brace/brand/presentations/a.html" >/dev/null
-has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Ta présentation de marque est prête." "language fr -> French message"
-G="$TMP/scope/g"; mkdir -p "$G/docs/brace/brand/presentations"; echo fr > "$HOME/.brace/language.txt"
-nrun "$G" "$G/docs/brace/brand/presentations/a.html" >/dev/null
+ncount 1 "same deck, same session -> once"
+nrun "$D" "" >/dev/null
+ncount 1 "a later command, deck already seen -> silent"
+cp "$DECK" "$PR/2026-10-27-adjustments.html"
+nrun "$D" "" >/dev/null
+ncount 2 "deck copied by a command (no file) -> notified"
+nrun "$D" "$D/src/x.py" >/dev/null
+ncount 2 "unrelated write, nothing new -> silent"
+echo '<html lang="en">' > "$PR/.shot.html"
+nrun "$D" "" >/dev/null
+ncount 2 "hidden temporary deck -> not notified"
+echo 'x' > "$PR/notes.md"
+nrun "$D" "$PR/notes.md" >/dev/null
+ncount 2 "non-html file -> not notified"
+nrun "$D" "" n2 >/dev/null
+ncount 3 "new session, no seen list -> the final decks are new (one notification)"
+empty "$(nrun "$D" "" n4 claude Linux)" "not macOS -> no output"
+ncount 3 "not macOS -> not notified"
+
+# The seen list seeded by session_start: decks already there stay quiet.
+H="$TMP/scope/h"; HP="$H/docs/brace/brand/presentations"; mkdir -p "$HP"
+echo '<html lang="en">' > "$HP/2026-09-01-strategy.html"
+mkdir -p "$TMPDIR/brace-brand-notify"; printf '%s\n' "$HP/2026-09-01-strategy.html" > "$TMPDIR/brace-brand-notify/seeded.seen"
+nrun "$H" "" seeded >/dev/null
+ncount 3 "deck in the seeded list -> not notified"
+
+# Language: the deck's own lang first, then the project, then language.txt.
+F="$TMP/scope/f"; FP="$F/docs/brace/brand/presentations"; mkdir -p "$FP"
+printf -- '---\nproject: f\nlanguage: en\n---\n' > "$F/docs/brace/STATUS.md"
+echo '<!DOCTYPE html><html lang="fr">' > "$FP/a.html"
+nrun "$F" "$FP/a.html" >/dev/null
+has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Ta présentation de marque est prête." "deck lang fr -> French message"
+printf -- '---\nproject: f\nlanguage:\tfr\n---\n' > "$F/docs/brace/STATUS.md"
+echo '<html>' > "$FP/b.html"
+nrun "$F" "$FP/b.html" >/dev/null
+has "$(tail -1 "$NOTE" 2>/dev/null)" "prête" "no deck lang, language after a tab -> French message"
+G="$TMP/scope/g"; GP="$G/docs/brace/brand/presentations"; mkdir -p "$GP"; echo fr > "$HOME/.brace/language.txt"
+echo '<html>' > "$GP/a.html"
+nrun "$G" "$GP/a.html" >/dev/null
 has "$(tail -1 "$NOTE" 2>/dev/null)" "prête" "language.txt fr -> French message"
+echo '../../x' > "$HOME/.brace/language.txt"
+echo '<html>' > "$GP/b.html"
+nrun "$G" "$GP/b.html" >/dev/null
+has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Your brand presentation is ready." "invalid language code -> English message"
 rm -f "$HOME/.brace/language.txt"
+
+# The real AppleScript path never gets a backslash or a double quote.
+OSA="$TMP/bin"; mkdir -p "$OSA"; printf '#!/usr/bin/env bash\nprintf "%%s" "$2" > "%s/osa_arg"\n' "$TMP" > "$OSA/osascript"; chmod +x "$OSA/osascript"
+FAKE="$TMP/fakeplugin"; mkdir -p "$FAKE/dispatch" "$FAKE/skills/track/references/i18n" "$FAKE/skills/brand/hooks"
+cp "$PLUGIN_ROOT/dispatch/lib.sh" "$FAKE/dispatch/"; cp "$PLUGIN_ROOT"/skills/brand/hooks/*.sh "$FAKE/skills/brand/hooks/"
+printf -- '- brand.notify.title: BR"ACE\\\n- brand.notify.ready: Ready \\" now.\n' > "$FAKE/skills/track/references/i18n/en.md"
+Q="$TMP/scope/q"; QP="$Q/docs/brace/brand/presentations"; mkdir -p "$QP"; echo '<html lang="en">' > "$QP/a.html"
+PATH="$OSA:$PATH" BRACE_UNAME=Darwin BRACE_FILE="$QP/a.html" BRACE_SESSION=q1 BRACE_PROJECT_ROOT="$Q" BRACE_PLUGIN_ROOT="$FAKE" bash "$FAKE/skills/brand/hooks/post_tool_use.sh"
+sleep 1
+ARG="$(cat "$TMP/osa_arg" 2>/dev/null)"
+case "$ARG" in *'\'*) echo "FAIL: backslash reached AppleScript: [$ARG]"; FAIL=1 ;; *'display notification'*) echo "PASS: no backslash in the AppleScript" ;; *) echo "FAIL: osascript not called: [$ARG]"; FAIL=1 ;; esac
+case "$ARG" in *'BR"ACE'*|*'Ready "'*) echo "FAIL: double quote reached AppleScript: [$ARG]"; FAIL=1 ;; *) echo "PASS: no double quote in the texts" ;; esac
 
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
 exit $FAIL

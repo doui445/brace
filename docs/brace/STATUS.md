@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-11-01
+last_updated: 2026-11-02
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -49,7 +49,8 @@ a strategic presentation as a local HTML deck, adjustments validated one
 rendered document at a time, a delivery page. Agents write in their own
 folder without a prompt (a hook, tested for real on Claude Code); a macOS
 notification says when a presentation is ready. Whole-branch review
-done, its critical and important findings fixed; suite green.
+done, its findings fixed. First real trial on Claude Code done
+(2026-11-01) and its gaps fixed (2026-11-02); suite green.
 
 ### Known gaps
 
@@ -59,11 +60,10 @@ done, its critical and important findings fixed; suite green.
 
 ## Next 3 actions
 
-1. **Fix the gaps from the real trial** (done on Claude Code 2026-11-01,
-   see `BACKLOG.md`): the missing notification, the working and brand
-   languages asked at the workshop, a word up front on the steps, time
-   and measured token range, a lighter main conversation, the creative
-   director seeing the render. Then the same trial on Antigravity
+1. **Second real trial** of the brand agency, on a project of another kind
+   (the gaps of the first trial are fixed, 2026-11-02): check the
+   notification, the two languages, the opening message, and measure the
+   tokens again. Then the same trial on Antigravity
    (`agy plugin install "$PWD"` in a throwaway config).
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
