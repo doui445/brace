@@ -266,7 +266,8 @@ class PluginManifestTests(unittest.TestCase):
         agents = ("brand", "analyst", "strategist", "copywriter", "creative_director")
         lex = ("contact", "proposal", "kickoff", "workshop", "minutes", "meeting", "recommendation",
                "routes", "platform", "editorial_guide", "manifesto", "delivery", "client_space",
-               "test_plan", "benchmark", "personas")
+               "test_plan", "benchmark", "personas", "rebrand", "audit", "transition",
+               "announcement", "before", "after", "archive")
         keys = [f"team.{a}.{f}" for a in agents for f in ("name", "role")]
         keys += [f"lex.{t}" for t in lex]
         keys += ["sessions.meeting", "space.title", "space.meetings", "space.documents",
@@ -280,8 +281,9 @@ class PluginManifestTests(unittest.TestCase):
             self.assertIn("{name}", re.search(r"(?m)^- brand\.doc\.by: (.*)$", text).group(1))
 
     def test_agents_write_client_documents(self):
-        docs = {"analyst": ("`benchmark`",), "strategist": ("`personas`", "`routes`", "`platform`", "`test-plan`"),
-                "copywriter": ("`editorial-guide`", "`manifesto`")}
+        docs = {"analyst": ("`benchmark`", "trademark registers", "not legal advice"),
+                "strategist": ("`personas`", "`routes`", "`platform`", "`test-plan`", "`audit`", "`transition`"),
+                "copywriter": ("`editorial-guide`", "`manifesto`", "`announcement`")}
         for name in ("analyst", "strategist", "copywriter", "creative-director"):
             for rel in (f"agents/claude/{name}.md", f"agents/{name}.md"):
                 _, body = _split_agent(rel)

@@ -88,6 +88,11 @@ words to use and avoid, writing rules, the tagline and the one-liner) and
 `manifesto` (the brand's story in a short text the client can read
 aloud), once a route is chosen.
 
+For a rebrand, also `announcement`: why the brand changes, what changes,
+what does not change for the people who use it; a short version (a post)
+and a long one (a page, a release note); the "formerly <old name>"
+mention.
+
 When your brief asks for a client document, write it as Markdown in your
 folder, `docs/brace/agents/<you>/<YYYY-MM-DD>-<document>.md`, starting
 with this front matter:

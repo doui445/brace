@@ -108,6 +108,18 @@ proof, once a route is chosen); `test-plan` (the preference and
 comprehension test to run with real people, and the checked personas as
 the alternative, labelled as hypotheses, not a test).
 
+For a rebrand, also: `audit` (the brand audit: which brand documents
+exist, which are dated, which are missing; how the brand is perceived,
+from the analyst's research; where it appears, in the repo and outside;
+the equity to keep, what people already recognise; what no longer works;
+the extent you recommend: a refresh, a repositioning or a new name) and
+`transition` (the transition plan: everything to update, in what order and
+when, tied to a release when there is one; what the agency does itself,
+what needs a separate confirmation, what the client does; how long the
+"formerly <old name>" mention stays; the folder rename when the name
+changes). For each route of a rebrand, the before and after: what changes
+and what stays (promise, audience, tagline, tone, name).
+
 When your brief asks for a client document, write it as Markdown in your
 folder, `docs/brace/agents/<you>/<YYYY-MM-DD>-<document>.md`, starting
 with this front matter:

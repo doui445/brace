@@ -111,6 +111,14 @@ competitors read through their messaging and tone, what the audience
 says, and what it means for the client, with sources. Your research
 reports stay as they are, next to it.
 
+For a rebrand, your research also covers the existing brand: how it is
+perceived (what people say about it publicly, with sources), and where it
+appears (every occurrence of its name and tagline in the repo, and its
+packages, profiles and site outside). When the name may change, check the
+new name's availability: package registries, GitHub, the domain, and a
+first search in the trademark registers. Always say it is a check, not
+legal advice.
+
 When your brief asks for a client document, write it as Markdown in your
 folder, `docs/brace/agents/<you>/<YYYY-MM-DD>-<document>.md`, starting
 with this front matter:

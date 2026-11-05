@@ -209,6 +209,13 @@ La notification macOS envoyée quand une présentation de marque est prête.
 - brand.lex.test_plan: plan de test
 - brand.lex.benchmark: benchmark concurrentiel
 - brand.lex.personas: personas
+- brand.lex.rebrand: rebranding
+- brand.lex.audit: audit de marque
+- brand.lex.transition: plan de transition
+- brand.lex.announcement: annonce
+- brand.lex.before: aujourd'hui
+- brand.lex.after: demain
+- brand.lex.archive: archive
 - brand.space.title: Ta marque, {project}
 - brand.space.meetings: Nos rendez-vous
 - brand.space.documents: Tes documents

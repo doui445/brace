@@ -215,6 +215,13 @@ The macOS notification sent when a brand presentation is ready.
 - brand.lex.test_plan: test plan
 - brand.lex.benchmark: competitive benchmark
 - brand.lex.personas: personas
+- brand.lex.rebrand: rebrand
+- brand.lex.audit: brand audit
+- brand.lex.transition: transition plan
+- brand.lex.announcement: announcement
+- brand.lex.before: today
+- brand.lex.after: tomorrow
+- brand.lex.archive: archive
 - brand.space.title: Your brand, {project}
 - brand.space.meetings: Our meetings
 - brand.space.documents: Your documents
