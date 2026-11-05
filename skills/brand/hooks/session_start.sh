@@ -55,6 +55,9 @@ case "$STAGE" in
     if [ -n "$MEETING" ] && python3 -c 'import sys,datetime; sys.exit(0 if datetime.datetime.strptime(sys.argv[1], "%Y-%m-%d %H:%M") > datetime.datetime.now() else 1)' "$MEETING" 2>/dev/null; then
       LINE="$LINE The next meeting is $MEETING; the client came back early: ask whether to move on now, ask a question, or change something from the last meeting."
     fi
+    # The last "- mission:" line says what kind of mission this is.
+    MISSION="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | sed -n 's/^- mission:[[:blank:]]*\([a-z]*\)[[:blank:]]*$/\1/p' | tail -1)"
+    [ "$MISSION" = "rebrand" ] && LINE="$LINE This is a rebrand: follow references/rebrand.md."
     echo "$LINE"
     exit 0 ;;
 esac

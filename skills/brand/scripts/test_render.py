@@ -81,6 +81,18 @@ class CompareSlideTests(unittest.TestCase):
         self.assertIn('<td class="after">&amp;</td>', out)
 
 
+class CompareMinorTests(unittest.TestCase):
+    def test_table_class_differs_from_the_slide(self):
+        out = render.render_deck(CMP + "row: a | b | c\n")
+        self.assertIn('<table class="cmp">', out)
+        self.assertNotIn('<table class="compare">', out)
+
+    def test_head_defaults_to_the_catalogue(self):
+        md = "---\ntitle: T\nlang: fr\nfooter: F\n---\n\n::: compare\ntitle: x\nrow: a | b | c\n"
+        out = render.render_deck(md)
+        self.assertIn("<th>Aujourd'hui</th><th>Demain</th>", out.replace("&#x27;", "'"))
+
+
 class RenderDocTests(unittest.TestCase):
     def test_doc_signature_and_meta(self):
         out = render.render_doc(doc("## Who else\n\nText."))

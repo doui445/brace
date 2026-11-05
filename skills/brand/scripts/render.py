@@ -334,7 +334,7 @@ def _mock(b):
     return f'    <div>\n{device}      <div class="caption">{i("caption")}</div>\n    </div>\n'
 
 
-def _slide(s, n, total, footer):
+def _slide(s, n, total, footer, t=None):
     i = lambda k: inline(s.get(k), "b")  # noqa: E731
     out = _meta(s)
     if s.kind == "cover":
@@ -361,6 +361,10 @@ def _slide(s, n, total, footer):
                 f'      <div class="sub">{i("sub")}</div>\n    </div>\n  </div>\n')
     elif s.kind == "compare":
         before, after = _pair(s.get("head"))
+        if not s.get("head"):
+            t = t or {}
+            before = _cap(t.get("brand.lex.before", ""))
+            after = _cap(t.get("brand.lex.after", ""))
         rows = ""
         for value in s.all("row"):
             cells = [c.strip() for c in value.split(" | ")] + ["", ""]
@@ -368,7 +372,7 @@ def _slide(s, n, total, footer):
                      f'<td class="after">{inline(" | ".join(cells[2:]).strip(" |"), "b")}</td></tr>\n')
         out += ('  <div class="head">\n'
                 f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n'
-                '  <table class="compare">\n'
+                '  <table class="cmp">\n'
                 f'    <thead><tr><th></th><th>{inline(before, "b")}</th><th>{inline(after, "b")}</th></tr></thead>\n'
                 f"    <tbody>\n{rows}    </tbody>\n  </table>\n")
     elif s.kind in ("context", "refs"):
@@ -426,7 +430,8 @@ def render_deck(text, css="deck.css"):
         lang = "en"
     total = len(slides)
     dots = "".join(f'<a href="#s{n}"></a>' for n in range(1, total + 1))
-    body = "\n".join(_slide(s, n, total, meta.get("footer", "")) for n, s in enumerate(slides, 1))
+    t = catalogue(lang)
+    body = "\n".join(_slide(s, n, total, meta.get("footer", ""), t) for n, s in enumerate(slides, 1))
     return (
         "<!DOCTYPE html>\n"
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'

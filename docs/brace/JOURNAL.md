@@ -1184,3 +1184,17 @@ Closed out the portfolio sub-pages work and cut the release:
   command, tested with spaces in the paths), the GitHub rename under a
   separate confirmation.
 - Next: the agency rebrands BRACE in this repo.
+
+## 2026-11-05 — The rebrand reviewed
+
+- Fresh review: no critical finding, three important ones (the rename
+  command moved the memory even when the folder rename failed; the
+  rebrand marker relied on the first `SESSIONS.md` entry; renaming the
+  folder the plugin runs from breaks its own hooks), eight minor ones.
+  All fixed: the command now runs from a real test (spaces, existing
+  target, no memory, failed move) and copies the memory instead of moving
+  it; the session start names a rebrand from the last `- mission:` line;
+  with `--plugin-dir` inside the folder the agency gives the command for
+  after `/exit`; the table and the slide no longer share a class (the
+  real cause of the earlier offset); the columns default to today and
+  tomorrow; the archive is taken before the proposal.

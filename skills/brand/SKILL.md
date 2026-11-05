@@ -113,7 +113,8 @@ through this line and resume at the new stage:
   Say the brand work starts once the move is done; brief the agents as
   "not tracked".
 - `docs/brace/brand/` exists: resume at `brand_stage` (through the
-  `legacy:` line if needed); a hook reminds you at session start. Otherwise
+  `legacy:` line if needed); a hook reminds you at session start, and says
+  when the mission is a rebrand (`references/rebrand.md`). Otherwise
   start with the first contact, `references/contact.md`.
 
 ## The meetings
@@ -131,9 +132,9 @@ when it starts, not before:
 
 **A rebrand** runs the same meetings with what a rebrand adds (the
 archive, the audit, the extent, the before and after, the transition):
-`references/rebrand.md`. Its first `SESSIONS.md` entry carries the machine
-line `- mission: rebrand`; on resume, read it and follow
-`references/rebrand.md`.
+`references/rebrand.md`. The mission's first `SESSIONS.md` entry carries
+the machine line `- mission: rebrand` (the last `- mission:` line counts);
+on resume, the session start says so: follow `references/rebrand.md`.
 
 Between meetings 1 and 2, 2 and 3, 3 and 4, the team works
 (`references/backstage.md`, stage `backstage` after the workshop). Meetings
