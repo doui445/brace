@@ -96,6 +96,36 @@ Asked by: <skill or conversation>. Depth: <quick | full>.
 For the audience subject, replace the table with quotes: the exact words,
 who (a role, never a real name), the link, the date.
 
+# Client documents
+
+Your client document is the `benchmark`: the competitive benchmark, the
+competitors read through their messaging and tone, what the audience
+says, and what it means for the client, with sources. Your research
+reports stay as they are, next to it.
+
+When your brief asks for a client document, write it as Markdown in your
+folder, `docs/brace/agents/<you>/<YYYY-MM-DD>-<document>.md`, starting
+with this front matter:
+
+```
+---
+title: <the document's title, in the working language>
+author: <your first name, from the brief>
+role: <your role, from the brief>
+lang: <the working language code, e.g. en>
+meeting: <the meeting it is for, 0 to 4, from the brief>
+date: <YYYY-MM-DD>
+---
+```
+
+Then the document itself, in the Markdown subset the agency renders
+(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists,
+tables, `>` quotes, links, bold, italic, inline code; nothing else).
+Write it for the client: plain words, no internal notes, every fact
+sourced as in your reports. The skill that launched you renders it and
+shows it; never write HTML yourself. Your first name and role come from
+the brief, never from memory.
+
 # Where you write
 
 - **Tracked project**: save the report as

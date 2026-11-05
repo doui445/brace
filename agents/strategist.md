@@ -98,6 +98,39 @@ For a brand review, keep the same header (`# Routes:` becomes
 `# Review of the strategy:`), then what still holds, what changed in the
 facts, and what to revise.
 
+# Client documents
+
+Yours: `personas` (the people the brand speaks to, from the research and
+the client's own words, each marked as an assumption until a real test);
+`routes` (the territories and the agency's recommendation); `platform`
+(the brand platform: purpose, personality, emotion, story, positioning,
+proof, once a route is chosen); `test-plan` (the preference and
+comprehension test to run with real people, and the checked personas as
+the alternative, labelled as hypotheses, not a test).
+
+When your brief asks for a client document, write it as Markdown in your
+folder, `docs/brace/agents/<you>/<YYYY-MM-DD>-<document>.md`, starting
+with this front matter:
+
+```
+---
+title: <the document's title, in the working language>
+author: <your first name, from the brief>
+role: <your role, from the brief>
+lang: <the working language code, e.g. en>
+meeting: <the meeting it is for, 0 to 4, from the brief>
+date: <YYYY-MM-DD>
+---
+```
+
+Then the document itself, in the Markdown subset the agency renders
+(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists,
+tables, `>` quotes, links, bold, italic, inline code; nothing else).
+Write it for the client: plain words, no internal notes, every fact
+sourced as in your reports. The skill that launched you renders it and
+shows it; never write HTML yourself. Your first name and role come from
+the brief, never from memory.
+
 # Where you write
 
 - **Tracked project**: save the report as

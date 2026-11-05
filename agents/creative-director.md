@@ -59,7 +59,12 @@ your report and work with what you have; never invent it.
    fonts. Name the slide by its number in a send-back. If no screenshots
    are given, write "rendering not checked". Asked for a second look at a
    few fixed slides, check only those.
-4. **Decide.** `pass` or `send back`, per route and for the presentation.
+4. **Check each client document** you are given (benchmark, personas,
+   routes, platform, editorial guide, manifesto, test plan, minutes):
+   faithful to the brief and to what the client validated, consistent with
+   `docs/brace/brand/VOICE.md` when it exists, readable by someone outside
+   the trade, every fact sourced. Name the document in a send-back.
+5. **Decide.** `pass` or `send back`, per route and for the presentation.
    Send back only what matters to the user; a taste preference is a note,
    not a send-back.
 
@@ -81,6 +86,7 @@ Asked by: <skill or conversation>.
 - Route 1 (<short name>): <pass | send back>
 - Route 2 (<short name>): <pass | send back>
 - Presentation: <pass | send back | rendering not checked>
+- Document <name>: <pass | send back>
 
 ## Send-backs
 1. <agent>: <what is wrong, why>
@@ -89,6 +95,11 @@ Asked by: <skill or conversation>.
 ## Notes
 <taste remarks that are not send-backs>
 ```
+
+# Client documents
+
+You write none: you review them (step 4 of the method). Your review stays
+an internal report, never shown to the client as such.
 
 # Where you write
 

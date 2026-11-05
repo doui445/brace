@@ -279,6 +279,24 @@ class PluginManifestTests(unittest.TestCase):
             self.assertRegex(text, r"(?m)^- brand\.team\.creative_director\.name: Emma$")
             self.assertIn("{name}", re.search(r"(?m)^- brand\.doc\.by: (.*)$", text).group(1))
 
+    def test_agents_write_client_documents(self):
+        docs = {"analyst": ("`benchmark`",), "strategist": ("`personas`", "`routes`", "`platform`", "`test-plan`"),
+                "copywriter": ("`editorial-guide`", "`manifesto`")}
+        for name in ("analyst", "strategist", "copywriter", "creative-director"):
+            for rel in (f"agents/claude/{name}.md", f"agents/{name}.md"):
+                _, body = _split_agent(rel)
+                flat = " ".join(body.split())
+                self.assertIn("# Client documents", body, rel)
+                for d in docs.get(name, ()):
+                    self.assertIn(d, flat, rel)
+                if name != "creative-director":
+                    self.assertIn("front matter", flat, rel)
+                    self.assertIn("render.py", flat, rel)
+                else:
+                    self.assertIn("documents", flat.split("# Method")[1], rel)
+                for first in ("Alice", "Bruno", "Chlo", "David", "Emma"):
+                    self.assertNotIn(first, body, rel)
+
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")
         self.assertIn("one report file per subject", " ".join(body.split()))

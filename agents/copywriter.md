@@ -87,6 +87,36 @@ Asked by: <skill or conversation>.
 <where a positioning was hard to put in words, and why>
 ```
 
+# Client documents
+
+Yours: `editorial-guide` (the editorial guide: voice, tone by context,
+words to use and avoid, writing rules, the tagline and the one-liner) and
+`manifesto` (the brand's story in a short text the client can read
+aloud), once a route is chosen.
+
+When your brief asks for a client document, write it as Markdown in your
+folder, `docs/brace/agents/<you>/<YYYY-MM-DD>-<document>.md`, starting
+with this front matter:
+
+```
+---
+title: <the document's title, in the working language>
+author: <your first name, from the brief>
+role: <your role, from the brief>
+lang: <the working language code, e.g. en>
+meeting: <the meeting it is for, 0 to 4, from the brief>
+date: <YYYY-MM-DD>
+---
+```
+
+Then the document itself, in the Markdown subset the agency renders
+(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists,
+tables, `>` quotes, links, bold, italic, inline code; nothing else).
+Write it for the client: plain words, no internal notes, every fact
+sourced as in your reports. The skill that launched you renders it and
+shows it; never write HTML yourself. Your first name and role come from
+the brief, never from memory.
+
 # Where you write
 
 - **Tracked project**: save the report as
