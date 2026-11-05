@@ -30,18 +30,6 @@ hook line gives: it silences the reminder for 30 days.
 
 ## Rebrand
 
-On the user's request, or when a review shows the positioning or the
-ambition has changed. "It looks old" is not a reason.
-
-- Run the sessions again, from the workshop (`brand_stage: brief`), with
-  the current brand as material: the pre-filled brief starts from it.
-- **Problem sprint**: list everything that no longer works in the current
-  brand, then fix it point by point.
-- Repositioning first; everything else follows from it.
-- Soft continuity by default: keep what echoes the heritage. A brutal break
-  with the brand's core loses the people who knew it.
-- If the name changes, go through `references/name.md`.
-- Write what is kept and what is dropped from the heritage in
-  `docs/brace/brand/DECISIONS.md`.
-- End like a first mission: delivery (`references/delivery.md`),
-  `brand_stage: done`, `brand_reviewed` set to today.
+On the client's request, or when a review shows the positioning or the
+ambition has changed: a rebrand mission, `references/rebrand.md`. "It
+looks old" is not a reason.

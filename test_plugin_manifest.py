@@ -315,6 +315,21 @@ class PluginManifestTests(unittest.TestCase):
             self.assertIn(needle, skill, needle)
         self.assertIn("brand.team.creative_director", skill)
 
+    def test_brand_rebrand_reference(self):
+        refs = REPO / "skills" / "brand" / "references"
+        self.assertTrue((refs / "rebrand.md").is_file())
+        skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
+        self.assertIn("references/rebrand.md", skill)
+        self.assertIn("- mission: rebrand", skill)
+        self.assertIn("references/rebrand.md", (refs / "revision.md").read_text(encoding="utf-8"))
+        text = " ".join((refs / "rebrand.md").read_text(encoding="utf-8").split())
+        for needle in ("archive/", "- mission: rebrand", "very last action", "after `/exit`",
+                       "gh repo rename", "git remote set-url", "~/.claude/projects/", "formerly"):
+            self.assertIn(needle, text, needle)
+        docs = (refs / "documents.md").read_text(encoding="utf-8")
+        for name in ("audit", "transition", "announcement"):
+            self.assertIn(f"| `{name}` |", docs, name)
+
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")
         self.assertIn("one report file per subject", " ".join(body.split()))

@@ -20,6 +20,9 @@ document is there for whoever wants to dig.
 | Editorial guide | `editorial-guide` | `copywriter` | 3 |
 | Manifesto | `manifesto` | `copywriter` | 3 |
 | Test plan | `test-plan` | `strategist` | 4 |
+| Brand audit (a rebrand) | `audit` | `strategist` | 2 |
+| Transition plan (a rebrand) | `transition` | `strategist` | 4 |
+| Announcement (a rebrand) | `announcement` | `copywriter` | 4 |
 
 An agent writes its documents in its own folder
 (`docs/brace/agents/<agent>/<YYYY-MM-DD>-<file name>.md`); the account

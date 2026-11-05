@@ -70,6 +70,8 @@ In the project, `docs/brace/brand/`, created on first use:
 - `presentations/`: the decks, rendered (`<YYYY-MM-DD>-<meeting>.html`),
   kept as history; `draft.html` is the one draft in progress.
 - `index.html`: the client space, rendered last after every piece of work.
+- `archive/<YYYY-MM-DD>/`: the brand as it was before a rebrand, never
+  removed.
 
 One fact, one file. The documents' Markdown and the raw research stay in
 the agents' folders (`docs/brace/agents/<agent>/`); the brand files keep
@@ -126,6 +128,12 @@ when it starts, not before:
 | 2 | Strategic recommendation | `references/presentation.md` | `presentation` |
 | 3 | Brand platform | `references/adjustments.md` | `adjustments` |
 | 4 | Delivery | `references/delivery.md` | `delivery` |
+
+**A rebrand** runs the same meetings with what a rebrand adds (the
+archive, the audit, the extent, the before and after, the transition):
+`references/rebrand.md`. Its first `SESSIONS.md` entry carries the machine
+line `- mission: rebrand`; on resume, read it and follow
+`references/rebrand.md`.
 
 Between meetings 1 and 2, 2 and 3, 3 and 4, the team works
 (`references/backstage.md`, stage `backstage` after the workshop). Meetings
