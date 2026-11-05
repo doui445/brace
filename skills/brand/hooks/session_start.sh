@@ -50,7 +50,8 @@ case "$STAGE" in
   *[!a-z_-]*) exit 0 ;;
   *)
     LINE="[BRACE] A brand mission is in progress (stage $STAGE). In your first reply, resume the agency (invoke the $SKILL skill): greet the client, say where we are and what the team did."
-    MEETING="$(sed -n 's/^- meeting: \([0-9]\{4\}-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]\)[[:blank:]]*$/\1/p' "$ROOT/docs/brace/brand/SESSIONS.md" 2>/dev/null | tail -1)"
+    # The newest "- meeting:" line, whatever its form; kept only when well formed.
+    MEETING="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | grep '^- meeting:' | tail -1 | sed -n 's/^- meeting: \([0-9]\{4\}-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]\)[[:blank:]]*$/\1/p')"
     if [ -n "$MEETING" ] && python3 -c 'import sys,datetime; sys.exit(0 if datetime.datetime.strptime(sys.argv[1], "%Y-%m-%d %H:%M") > datetime.datetime.now() else 1)' "$MEETING" 2>/dev/null; then
       LINE="$LINE The next meeting is $MEETING; the client came back early: ask whether to move on now, ask a question, or change something from the last meeting."
     fi

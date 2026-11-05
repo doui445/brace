@@ -11,7 +11,9 @@ they are missing. Exit 0 rendered, 1 bad input (message on stderr).
 Python 3 standard library only; self-relative (finds its assets and the
 i18n catalogues from its own path).
 """
+import datetime
 import html
+import os
 import re
 import shutil
 import sys
@@ -62,8 +64,23 @@ def parse_front_matter(text):
     return meta, m.group(2)
 
 
+def assets_dir(dst):
+    """Where an output's stylesheets live: the project's docs/brace/brand/
+    folder when the output is inside it (one copy for documents/,
+    presentations/ and the client space), else the output's own folder."""
+    folder = Path(dst).resolve().parent
+    for d in (folder, *folder.parents):
+        if d.name == "brand" and d.parent.name == "brace" and d.parent.parent.name == "docs":
+            return d
+    return folder
+
+
+def css_href(dst, name):
+    return Path(os.path.relpath(assets_dir(dst) / name, Path(dst).resolve().parent)).as_posix()
+
+
 def ensure_assets(dst_dir):
-    """Copy the house stylesheets and fonts next to an output, if missing."""
+    """Copy the house stylesheets and fonts into a folder, if missing."""
     dst_dir = Path(dst_dir)
     dst_dir.mkdir(parents=True, exist_ok=True)
     for name in ("deck.css", "doc.css"):
@@ -167,7 +184,7 @@ def md_to_html(text):
 
 # --- documents ---------------------------------------------------------------
 
-def render_doc(text):
+def render_doc(text, css="doc.css"):
     meta, body = parse_front_matter(text)
     for key in ("title", "author", "role", "lang"):
         if not meta.get(key):
@@ -184,7 +201,7 @@ def render_doc(text):
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{esc(meta['title'])}</title>\n{metas}"
-        '<link rel="stylesheet" href="doc.css">\n</head>\n<body>\n<main class="page">\n'
+        f'<link rel="stylesheet" href="{esc(css)}">\n</head>\n<body>\n<main class="page">\n'
         f'<header class="doc-head">\n<div class="kicker">BRACE</div>\n<h1>{esc(meta["title"])}</h1>\n{date}</header>\n'
         f'<div class="body">\n{md_to_html(body)}\n</div>\n'
         f'<footer class="doc-sign"><span>{sign}</span><span>BRACE</span></footer>\n'
@@ -389,7 +406,7 @@ SCRIPT = """<script>
 """
 
 
-def render_deck(text):
+def render_deck(text, css="deck.css"):
     meta, slides = parse_deck(text)
     lang = meta.get("lang", "en")
     if not re.fullmatch(r"[a-z]{2}", lang):
@@ -402,7 +419,7 @@ def render_deck(text):
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{esc(meta.get('title', ''))}</title>\n"
-        '<link rel="stylesheet" href="deck.css">\n</head>\n<body>\n'
+        f'<link rel="stylesheet" href="{esc(css)}">\n</head>\n<body>\n'
         f'<nav class="dots">{dots}</nav>\n\n{body}\n{SCRIPT}</body>\n</html>\n')
 
 
@@ -414,21 +431,28 @@ def main(argv):
             src, dst = Path(argv[1]), Path(argv[2])
             if not src.is_file():
                 raise RenderError(f"no such file: {src}")
-            text = src.read_text(encoding="utf-8")
-            out = render_doc(text) if argv[0] == "doc" else render_deck(text)
-            ensure_assets(dst.parent)
+            try:
+                text = src.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                raise RenderError(f"{src} is not UTF-8 text")
+            if argv[0] == "doc":
+                out = render_doc(text, css_href(dst, "doc.css"))
+            else:
+                out = render_deck(text, css_href(dst, "deck.css"))
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")
             return 0
         if len(argv) == 2 and argv[0] == "space":
             root = Path(argv[1])
             dst = root / "docs" / "brace" / "brand" / "index.html"
             out = render_space(root)
-            ensure_assets(dst.parent)
+            ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")
             return 0
         print(__doc__.strip(), file=sys.stderr)
         return 1
-    except RenderError as e:
+    except (RenderError, OSError) as e:
         print(f"render.py: {e}", file=sys.stderr)
         return 1
 
@@ -436,12 +460,27 @@ def main(argv):
 MEETING_LEX = {"0": "contact", "1": "workshop", "2": "recommendation", "3": "platform", "4": "delivery"}
 
 
-def _front(path):
-    """The front matter of a tracking file, or {}."""
+def _read(path):
+    """A tracking file's text, never failing on a bad byte; "" if absent."""
     try:
-        return parse_front_matter(path.read_text(encoding="utf-8"))[0]
-    except (OSError, RenderError):
+        return path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return ""
+
+
+def _front(path):
+    """The front matter of a tracking file, values without comment or quotes."""
+    try:
+        meta = parse_front_matter(_read(path))[0]
+    except RenderError:
         return {}
+    return {k: re.sub(r"\s+#.*$", "", v).strip().strip("\"'") for k, v in meta.items()}
+
+
+def _mission(brief):
+    """The first paragraph under the brief's first section: the mission."""
+    m = re.search(r"(?m)^## .*\n+((?:(?!#)\S.*\n?)+)", _read(brief))
+    return " ".join(m.group(1).split()) if m else ""
 
 
 def _doc_info(path):
@@ -461,31 +500,49 @@ def render_space(root):
     root = Path(root)
     brand = root / "docs" / "brace" / "brand"
     status = _front(root / "docs" / "brace" / "STATUS.md")
-    lang = status.get("language", "").strip('"') or "en"
+    lang = status.get("language", "") or "en"
     if not re.fullmatch(r"[a-z]{2}", lang):
         lang = "en"
     t = catalogue(lang)
-    project = status.get("project", "").strip('"') or root.name
+    project = status.get("project", "") or root.name
     none = f'<p class="none">{esc(t.get("brand.space.none", ""))}</p>'
 
-    sessions = brand / "SESSIONS.md"
-    text = sessions.read_text(encoding="utf-8") if sessions.is_file() else ""
+    text = _read(brand / "SESSIONS.md")
     entries = re.findall(r"(?m)^## (.+?)\s*$", text)
-    meetings = re.findall(r"(?m)^- meeting: (\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*$", text)
+    lines = re.findall(r"(?m)^- meeting:(.*)$", text)
+    upcoming = ""
+    if lines:
+        try:
+            when = datetime.datetime.strptime(lines[-1].strip(), "%Y-%m-%d %H:%M")
+            upcoming = lines[-1].strip() if when > datetime.datetime.now() else ""
+        except ValueError:
+            upcoming = ""
 
-    groups = {}
+    groups, minutes = {}, []
     docs_dir = brand / "documents"
     for path in sorted(docs_dir.glob("*.html")) if docs_dir.is_dir() else ():
         meta, title = _doc_info(path)
+        if re.search(r"-minutes(-\d+)?$", path.stem):
+            minutes.append((path.name, title))
+            continue
         groups.setdefault(meta.get("meeting", ""), []).append((path.name, title, meta))
     decks = sorted(p.name for p in (brand / "presentations").glob("*.html")
                    if p.name != "draft.html") if (brand / "presentations").is_dir() else []
 
     parts = []
-    if meetings:
-        parts.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(meetings[-1])}</p>')
+    mission = _mission(brand / "BRIEF.md")
+    if mission:
+        parts.append(f'<p class="mission">{inline(mission)}</p>')
+    if upcoming:
+        parts.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(upcoming)}</p>')
     parts.append(f'<h2>{esc(t.get("brand.space.meetings", ""))}</h2>')
-    parts.append("<ul>" + "".join(f"<li>{inline(e)}</li>" for e in entries) + "</ul>" if entries else none)
+    if entries:
+        parts.append("<ul>" + "".join(f"<li>{inline(e)}</li>" for e in entries) + "</ul>")
+    if minutes:
+        parts.append("<ul>" + "".join(
+            f'<li><a href="documents/{esc(n)}">{esc(ti)}</a></li>' for n, ti in minutes) + "</ul>")
+    if not entries and not minutes:
+        parts.append(none)
     parts.append(f'<h2>{esc(t.get("brand.space.documents", ""))}</h2>')
     if not groups and not decks:
         parts.append(none)

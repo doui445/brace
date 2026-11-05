@@ -44,6 +44,7 @@ body { background: var(--paper-2); font-family: var(--sans); color: var(--ink); 
 .space .next { font-family: var(--serif); font-size: 24px; color: var(--accent); }
 .space .by { color: var(--ink-3); font-size: 13px; margin-left: 6px; }
 .space .none { color: var(--ink-3); }
+.space .mission { font-family: var(--serif); font-size: 20px; color: var(--ink-2); }
 @page { size: A4; margin: 18mm; }
 @media print {
   body { background: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }

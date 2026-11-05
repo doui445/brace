@@ -1154,3 +1154,12 @@ Closed out the portfolio sub-pages work and cut the release:
   rendering is unchanged (checked by screenshot).
 - Next: a real trial of the agency on BRACE itself, which also names the
   team.
+
+## 2026-11-05 — The real agency reviewed
+
+- Whole-branch review by a fresh reviewer: one critical finding (the
+  Markdown renderer looped forever on a stray pipe or an indented quote),
+  three important ones (the first contact set no stage, so no resume at
+  the workshop appointment; Antigravity lost its touchpoint list during a
+  mission; emphasis broke links), nine minor ones. The owner asked to fix
+  them all: each with a test that failed first; suite green.

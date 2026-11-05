@@ -21,7 +21,8 @@ director's review, render the final version as
 
 **The syntax.** A front matter (`title`, `lang` the working language,
 `footer`), then one slide per `::: <type>` line, then `field: value` lines.
-In every value, ` | ` separates two parts (a label and a text, or two
+Inside a slide, its own fields come before the first `@` block (a field
+after a block belongs to that block). In every value, ` | ` separates two parts (a label and a text, or two
 lines of a title). Inline `**bold**`, `*italic*` and `` `code` `` work
 everywhere.
 

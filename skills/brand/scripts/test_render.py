@@ -206,5 +206,75 @@ class RenderSpaceTests(unittest.TestCase):
             self.assertIn("Ta marque, tally", out)
 
 
+class RenderSpaceMinorTests(unittest.TestCase):
+    def test_past_meeting_is_not_shown_as_next(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, sessions="# S\n\n- meeting: 2001-01-01 10:00\n")
+            out = render.render_space(root)
+            self.assertNotIn("2001-01-01 10:00", out)
+            self.assertNotIn("Next meeting", out)
+
+    def test_status_value_with_a_comment(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d)
+            (root / "docs" / "brace" / "STATUS.md").write_text(
+                '---\nproject: tally  # the tool\nlanguage: "fr"  # owner\n---\n', encoding="utf-8")
+            out = render.render_space(root)
+            self.assertIn('<html lang="fr">', out)
+            self.assertIn("Ta marque, tally<", out)
+
+    def test_tracking_file_not_utf8_still_renders(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d)
+            (root / "docs" / "brace" / "brand" / "SESSIONS.md").write_bytes(b"# S\n\n## 2026 \xff entry\n")
+            r = run("space", str(root))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertNotIn("Traceback", r.stderr)
+
+    def test_source_not_utf8_exits_1_with_a_message(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "src.md"
+            src.write_bytes(b"---\ntitle: \xff\n---\n")
+            r = run("doc", str(src), str(Path(d) / "o.html"))
+            self.assertEqual(r.returncode, 1)
+            self.assertNotIn("Traceback", r.stderr)
+            self.assertIn("UTF-8", r.stderr)
+
+    def test_space_shows_the_mission_and_links_the_minutes(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n",
+                           docs=(("2026-11-05-minutes-1.html", "1", "Minutes of the workshop"),
+                                 ("2026-11-05-benchmark.html", "2", "Competitive benchmark")))
+            (root / "docs" / "brace" / "brand" / "BRIEF.md").write_text(
+                "# BRAND BRIEF\n\nIntro line.\n\n## The project\n\nA small tool that logs your hours.\n\n## Who it is for\n\nFreelancers.\n",
+                encoding="utf-8")
+            out = render.render_space(root)
+            self.assertIn("A small tool that logs your hours.", out)
+            meetings = out.split("Our meetings")[1].split("Your documents")[0]
+            self.assertIn('href="documents/2026-11-05-minutes-1.html"', meetings)
+            documents = out.split("Your documents")[1]
+            self.assertNotIn("minutes-1", documents)
+            self.assertIn("Competitive benchmark", documents)
+
+
+class SharedAssetsTests(unittest.TestCase):
+    def test_one_copy_of_the_assets_per_brand_folder(self):
+        with tempfile.TemporaryDirectory() as d:
+            brand = Path(d) / "p" / "docs" / "brace" / "brand"
+            src = Path(d) / "src.md"
+            src.write_text(doc("Text."), encoding="utf-8")
+            dst = brand / "documents" / "x.html"
+            self.assertEqual(run("doc", str(src), str(dst)).returncode, 0)
+            deck_src = Path(d) / "deck.md"
+            deck_src.write_text("---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: cover\ntitle: x\n", encoding="utf-8")
+            deck = brand / "presentations" / "draft.html"
+            self.assertEqual(run("deck", str(deck_src), str(deck)).returncode, 0)
+            self.assertIn('href="../doc.css"', dst.read_text(encoding="utf-8"))
+            self.assertIn('href="../deck.css"', deck.read_text(encoding="utf-8"))
+            self.assertTrue((brand / "fonts" / "inter" / "Inter.ttf").is_file())
+            self.assertFalse((brand / "documents" / "fonts").exists())
+            self.assertFalse((brand / "presentations" / "fonts").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

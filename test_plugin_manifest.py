@@ -304,11 +304,14 @@ class PluginManifestTests(unittest.TestCase):
         # The first contact sets the stage, so a client who leaves after it
         # is brought back at the workshop appointment.
         self.assertIn("`brand_stage: brief`", (refs / "contact.md").read_text(encoding="utf-8"))
+        self.assertIn("| `brief` |", (refs / "documents.md").read_text(encoding="utf-8"))
+        self.assertIn("before the first `@`", " ".join((refs / "presentation.md").read_text(encoding="utf-8").split()))
         skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
         for needle in ("references/contact.md", "references/workshop.md", "references/presentation.md",
                        "references/adjustments.md", "references/delivery.md", "references/documents.md",
                        "render.py", "/clear", "/exit", "auto_publish", "never claims to be human"):
             self.assertIn(needle, skill, needle)
+        self.assertIn("brand.team.creative_director", skill)
 
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")

@@ -22,8 +22,11 @@ assumption or stays "to fill in", never invented.
 The client talks to one person: the account director, played by `brand`.
 Behind her, the team. Every first name and role comes from the catalogue
 (`brand.team.<agent>.name` and `.role` in
-`skills/track/references/i18n/<code>.md`), never from memory: they are
-provisional and will change.
+`skills/track/references/i18n/<code>.md`, the agent's name with an
+underscore: `brand.team.brand`, `brand.team.analyst`,
+`brand.team.strategist`, `brand.team.copywriter`,
+`brand.team.creative_director`), never from memory: they are provisional
+and will change.
 
 | Agent | Trade | Writes | Never does |
 |---|---|---|---|

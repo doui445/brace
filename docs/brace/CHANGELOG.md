@@ -83,6 +83,14 @@ the bump, a release never breaks an existing project. The version lives in
 - An agent can no longer write into a project nested in an agents folder.
 - The brand notification checks the language code, reads a `language:`
   line after a tab, and strips backslashes from its text.
+- The renderer never loops on a stray pipe or an indented quote, keeps
+  links intact, reads tracking files with a bad byte, and says when a
+  source is not UTF-8. The client space shows the mission, links the
+  minutes, and hides a past meeting; one copy of the fonts per project.
+- The mission resume reads a `SESSIONS.md` with Windows line ends and
+  ignores an older meeting when the newest line is malformed; the first
+  contact sets the stage; Antigravity keeps its touchpoint list during a
+  mission.
 
 ## [1.0.0] — 2026-10-16
 

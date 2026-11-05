@@ -11,6 +11,7 @@ document is there for whoever wants to dig.
 | Document | File name | Author | Meeting |
 |---|---|---|---|
 | Proposal | `proposal` | account director (`brand`) | 0 |
+| Brief (the workshop's minutes) | `brief` | account director (`brand`) | 1 |
 | Minutes of each meeting | `minutes-<n>` | account director (`brand`) | each |
 | Competitive benchmark | `benchmark` | `analyst` | 2 |
 | Personas | `personas` | `strategist` | 2 |
