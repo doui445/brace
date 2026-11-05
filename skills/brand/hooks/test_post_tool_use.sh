@@ -113,7 +113,7 @@ nrun "$D" "$PR/draft.html" >/dev/null
 ncount 0 "draft.html -> never notified"
 echo '<html lang="en">' > "$DECK"
 empty "$(nrun "$D" "$DECK")" "presentation -> no text output"
-has "$(cat "$NOTE" 2>/dev/null)" "BRACE|Your brand presentation is ready." "presentation -> notification"
+has "$(cat "$NOTE" 2>/dev/null)" "BRACE|The agency's work is ready." "presentation -> notification"
 nrun "$D" "$DECK" >/dev/null
 ncount 1 "same deck, same session -> once"
 nrun "$D" "" >/dev/null
@@ -146,19 +146,19 @@ F="$TMP/scope/f"; FP="$F/docs/brace/brand/presentations"; mkdir -p "$FP"
 printf -- '---\nproject: f\nlanguage: en\n---\n' > "$F/docs/brace/STATUS.md"
 echo '<!DOCTYPE html><html lang="fr">' > "$FP/a.html"
 nrun "$F" "$FP/a.html" >/dev/null
-has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Ta présentation de marque est prête." "deck lang fr -> French message"
+has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Le travail de l'agence est prêt." "deck lang fr -> French message"
 printf -- '---\nproject: f\nlanguage:\tfr\n---\n' > "$F/docs/brace/STATUS.md"
 echo '<html>' > "$FP/b.html"
 nrun "$F" "$FP/b.html" >/dev/null
-has "$(tail -1 "$NOTE" 2>/dev/null)" "prête" "no deck lang, language after a tab -> French message"
+has "$(tail -1 "$NOTE" 2>/dev/null)" "prêt" "no deck lang, language after a tab -> French message"
 G="$TMP/scope/g"; GP="$G/docs/brace/brand/presentations"; mkdir -p "$GP"; echo fr > "$HOME/.brace/language.txt"
 echo '<html>' > "$GP/a.html"
 nrun "$G" "$GP/a.html" >/dev/null
-has "$(tail -1 "$NOTE" 2>/dev/null)" "prête" "language.txt fr -> French message"
+has "$(tail -1 "$NOTE" 2>/dev/null)" "prêt" "language.txt fr -> French message"
 echo '../../x' > "$HOME/.brace/language.txt"
 echo '<html>' > "$GP/b.html"
 nrun "$G" "$GP/b.html" >/dev/null
-has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Your brand presentation is ready." "invalid language code -> English message"
+has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|The agency's work is ready." "invalid language code -> English message"
 rm -f "$HOME/.brace/language.txt"
 
 # The real AppleScript path never gets a backslash or a double quote.

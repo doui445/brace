@@ -43,7 +43,7 @@ printf '#!/usr/bin/env bash\necho "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$
 touch "$P/docs/brace/brand/presentations/2026-01-01-strategy.html"
 OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "cp a b"}, "cwd": "%s", "session_id": "sb"}' "$P" | BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME=Darwin bash "$DIR/claude/post_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: Bash PostToolUse -> no text" || { echo "FAIL: Bash produced [$OUT]"; FAIL=1; }
-grep -q "presentation is ready" "$NOTE" 2>/dev/null && echo "PASS: deck written by a command -> notification" || { echo "FAIL: no notification after Bash"; FAIL=1; }
+grep -q "work is ready" "$NOTE" 2>/dev/null && echo "PASS: deck written by a command -> notification" || { echo "FAIL: no notification after Bash"; FAIL=1; }
 rm -rf "$P/docs/brace/brand"
 
 # PreToolUse: a BRACE agent writing in its own folder is allowed, nothing else.

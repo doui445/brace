@@ -261,6 +261,24 @@ class PluginManifestTests(unittest.TestCase):
                         "sessions.decided", "sessions.waiting", "sessions.next"):
                 self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
 
+    def test_i18n_has_brand_team_lexicon_and_space(self):
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        agents = ("brand", "analyst", "strategist", "copywriter", "creative_director")
+        lex = ("contact", "proposal", "kickoff", "workshop", "minutes", "meeting", "recommendation",
+               "routes", "platform", "editorial_guide", "manifesto", "delivery", "client_space",
+               "test_plan", "benchmark", "personas")
+        keys = [f"team.{a}.{f}" for a in agents for f in ("name", "role")]
+        keys += [f"lex.{t}" for t in lex]
+        keys += ["sessions.meeting", "space.title", "space.meetings", "space.documents",
+                 "space.next", "space.none", "doc.by", "notify.ready"]
+        for code in ("en", "fr"):
+            text = (i18n / f"{code}.md").read_text(encoding="utf-8")
+            for key in keys:
+                self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
+            self.assertRegex(text, r"(?m)^- brand\.team\.brand\.name: Alice$")
+            self.assertRegex(text, r"(?m)^- brand\.team\.creative_director\.name: Emma$")
+            self.assertIn("{name}", re.search(r"(?m)^- brand\.doc\.by: (.*)$", text).group(1))
+
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")
         self.assertIn("one report file per subject", " ".join(body.split()))

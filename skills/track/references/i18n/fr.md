@@ -121,6 +121,7 @@ Append-only, une entrée par séance.
 - brand.sessions.decided: Décidé
 - brand.sessions.waiting: En attente
 - brand.sessions.next: Suite
+- brand.sessions.meeting: Prochain rendez-vous
 
 ## brand/FOUNDATIONS.md
 
@@ -182,8 +183,40 @@ Append-only, séparé du `DECISIONS.md` principal du projet.
 
 La notification macOS envoyée quand une présentation de marque est prête.
 
+- brand.team.brand.name: Alice
+- brand.team.brand.role: directrice de clientèle
+- brand.team.analyst.name: Bruno
+- brand.team.analyst.role: analyste
+- brand.team.strategist.name: Chloé
+- brand.team.strategist.role: stratège
+- brand.team.copywriter.name: David
+- brand.team.copywriter.role: rédacteur
+- brand.team.creative_director.name: Emma
+- brand.team.creative_director.role: directrice de création
+- brand.lex.contact: prise de contact
+- brand.lex.proposal: proposition
+- brand.lex.kickoff: réunion de lancement
+- brand.lex.workshop: atelier de cadrage
+- brand.lex.minutes: compte rendu
+- brand.lex.meeting: rendez-vous
+- brand.lex.recommendation: recommandation stratégique
+- brand.lex.routes: territoires
+- brand.lex.platform: plateforme de marque
+- brand.lex.editorial_guide: charte éditoriale
+- brand.lex.manifesto: manifeste
+- brand.lex.delivery: livraison
+- brand.lex.client_space: espace client
+- brand.lex.test_plan: plan de test
+- brand.lex.benchmark: benchmark concurrentiel
+- brand.lex.personas: personas
+- brand.space.title: Ta marque, {project}
+- brand.space.meetings: Nos rendez-vous
+- brand.space.documents: Tes documents
+- brand.space.next: Prochain rendez-vous
+- brand.space.none: Rien pour l'instant.
+- brand.doc.by: {name}, {role}
 - brand.notify.title: BRACE
-- brand.notify.ready: Ta présentation de marque est prête.
+- brand.notify.ready: Le travail de l'agence est prêt.
 
 ## Shared
 
