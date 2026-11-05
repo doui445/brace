@@ -40,7 +40,7 @@ OUT="$(printf '{"tool_name": "Read", "tool_input": {"file_path": "%s"}, "session
 mkdir -p "$P/docs/brace/brand/presentations"
 STUB="$TMP/notify_stub.sh"; NOTE="$TMP/notified"
 printf '#!/usr/bin/env bash\necho "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$STUB"
-touch "$P/docs/brace/brand/presentations/2026-01-01-strategy.html"
+touch "$P/docs/brace/brand/presentations/2026-01-01-strategy.html" "$P/docs/brace/brand/index.html"
 OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "cp a b"}, "cwd": "%s", "session_id": "sb"}' "$P" | BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME=Darwin bash "$DIR/claude/post_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: Bash PostToolUse -> no text" || { echo "FAIL: Bash produced [$OUT]"; FAIL=1; }
 grep -q "work is ready" "$NOTE" 2>/dev/null && echo "PASS: deck written by a command -> notification" || { echo "FAIL: no notification after Bash"; FAIL=1; }

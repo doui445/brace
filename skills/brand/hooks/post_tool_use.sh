@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # BRACE brand -- post_tool_use. Called by dispatch/run.sh after a file
 # write or a shell command, only in projects where docs/brace/brand/
-# exists. Each time, sends a macOS notification when a final brand
-# presentation (docs/brace/brand/presentations/*.html, never draft.html)
-# appeared that this session has not seen yet, whatever wrote it (an
-# editor write or a cp); prints nothing for it. Then, when the written file
+# exists. Each time, sends one macOS notification when deliverables this
+# session has not seen yet (final decks, never draft.html, and rendered
+# documents; see decks.sh) are covered by a client space (index.html) at
+# least as recent, whatever wrote them (an editor write or a cp); prints
+# nothing for it. Then, when the written file
 # is listed in the Touchpoints section of docs/brace/brand/STRATEGY.md
 # (see touchpoints.sh), reminds the agent to check it against VOICE.md,
 # once per file and session. Claude Code only in practice: the Antigravity
@@ -38,18 +39,22 @@ brand_lang() {
   case "$code" in [a-z][a-z]) printf '%s' "$code" ;; esac
 }
 
-# New final decks -> one notification (macOS only).
-if [ "${BRACE_UNAME:-$(uname -s 2>/dev/null)}" = "Darwin" ]; then
+# Work ready -> one notification (macOS only). New deliverables count once
+# the client space (index.html, rendered last, after the tracking files) is
+# at least as recent as each of them.
+INDEX="$ROOT/docs/brace/brand/index.html"
+if [ "${BRACE_UNAME:-$(uname -s 2>/dev/null)}" = "Darwin" ] && [ -f "$INDEX" ]; then
   SEEN="$(brand_seen_file "$SESSION")"
   mkdir -p "$(dirname "$SEEN")" 2>/dev/null || true
   NEW=""
   while IFS= read -r f; do
     [ -n "$f" ] || continue
     grep -qxF -- "$f" "$SEEN" 2>/dev/null && continue
+    [ "$f" -nt "$INDEX" ] && continue
     printf '%s\n' "$f" >> "$SEEN" 2>/dev/null || continue
     NEW="$f"
   done <<DECKS
-$(brand_final_decks "$ROOT")
+$(brand_final_files "$ROOT")
 DECKS
   if [ -n "$NEW" ]; then
     LANG_CODE="$(brand_lang "$NEW" 's/.*<html[^>]*[[:blank:]]lang="\([a-z][a-z]\)[^"]*".*/\1/p')"
@@ -78,7 +83,7 @@ case "$FILE" in
   "$ROOT"/*) REL="${FILE#"$ROOT"/}" ;;
   *) exit 0 ;;
 esac
-case "$REL" in docs/brace/brand/presentations/*) exit 0 ;; esac
+case "$REL" in docs/brace/brand/presentations/*|docs/brace/brand/documents/*|docs/brace/brand/index.html) exit 0 ;; esac
 
 STRATEGY="$ROOT/docs/brace/brand/STRATEGY.md"
 [ -f "$STRATEGY" ] || exit 0

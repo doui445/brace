@@ -98,65 +98,78 @@ empty "$(run "$N" "$N/README.md")" "no Touchpoints section -> silent"
 empty "$(run "" "$P/README.md")" "no project root -> silent"
 empty "$(BRACE_FILE="$P/README.md" BRACE_PROJECT_ROOT="$P" BRACE_PLUGIN_ROOT="$PLUGIN_ROOT" bash "$HOOK")" "no session id -> silent"
 
-# Presentation ready -> macOS notification (stubbed). The hook scans the
-# final decks after any write or command, and notifies each one once per
-# session, however it was written (an editor write or a cp).
+# Work ready -> macOS notification (stubbed). The hook scans the final
+# deliverables (decks and documents) after any write or command. It notifies
+# only once the client space (index.html, rendered last, after the tracking
+# files) is at least as recent as the new deliverables: then they are all
+# marked seen and one notification goes, however they were written.
 NOTE="$TMP/notified"; STUB="$TMP/notify_stub.sh"
 printf '#!/usr/bin/env bash\nprintf "%%s|%%s\\n" "$1" "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$STUB"
 nrun() { BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME="${5:-Darwin}" run "$1" "$2" "${3:-n1}" "${4:-claude}"; }
 calls() { [ -f "$NOTE" ] && wc -l < "$NOTE" | tr -d ' ' || echo 0; }
 ncount() { [ "$(calls)" = "$1" ] && echo "PASS: $2" || { echo "FAIL: $2: $(calls) calls, expected $1"; FAIL=1; }; }
-D="$TMP/scope/d"; PR="$D/docs/brace/brand/presentations"; mkdir -p "$PR"
+space() { touch "$1/docs/brace/brand/index.html"; }
+D="$TMP/scope/d"; PR="$D/docs/brace/brand/presentations"; DO="$D/docs/brace/brand/documents"; mkdir -p "$PR" "$DO"
 DECK="$PR/2026-10-26-strategy.html"
-echo '<html lang="en">' > "$PR/draft.html"
+echo '<html lang="en">' > "$PR/draft.html"; space "$D"
 nrun "$D" "$PR/draft.html" >/dev/null
 ncount 0 "draft.html -> never notified"
-echo '<html lang="en">' > "$DECK"
-empty "$(nrun "$D" "$DECK")" "presentation -> no text output"
-has "$(cat "$NOTE" 2>/dev/null)" "BRACE|The agency's work is ready." "presentation -> notification"
+echo '<html lang="en">' > "$DECK"; touch -t 203001010000 "$DECK"
 nrun "$D" "$DECK" >/dev/null
-ncount 1 "same deck, same session -> once"
+ncount 0 "deck newer than the client space -> not yet"
+space "$D"; touch -t 203001010001 "$D/docs/brace/brand/index.html"
+empty "$(nrun "$D" "$D/docs/brace/brand/index.html")" "client space rendered -> no text output"
+has "$(cat "$NOTE" 2>/dev/null)" "BRACE|The agency's work is ready." "client space rendered after the deck -> notification"
 nrun "$D" "" >/dev/null
-ncount 1 "a later command, deck already seen -> silent"
-cp "$DECK" "$PR/2026-10-27-adjustments.html"
+ncount 1 "a later command, nothing new -> silent"
+echo '<html lang="en">' > "$DO/2030-01-02-benchmark.html"; echo '<html lang="en">' > "$DO/2030-01-02-personas.html"
+touch -t 203001020000 "$DO/2030-01-02-benchmark.html" "$DO/2030-01-02-personas.html"
+nrun "$D" "$DO/2030-01-02-benchmark.html" >/dev/null
+ncount 1 "two documents, client space older -> nothing"
+cp "$DECK" "$PR/2030-01-02-adjustments.html"; touch -t 203001020000 "$PR/2030-01-02-adjustments.html"
+touch -t 203001020001 "$D/docs/brace/brand/index.html"
 nrun "$D" "" >/dev/null
-ncount 2 "deck copied by a command (no file) -> notified"
-nrun "$D" "$D/src/x.py" >/dev/null
-ncount 2 "unrelated write, nothing new -> silent"
-echo '<html lang="en">' > "$PR/.shot.html"
+ncount 2 "client space rendered after documents and a copied deck (a command) -> one notification"
+echo '<html lang="en">' > "$DO/2030-01-03-platform.html"; touch -t 203001030000 "$DO/2030-01-03-platform.html"
 nrun "$D" "" >/dev/null
-ncount 2 "hidden temporary deck -> not notified"
+ncount 2 "a third document newer than the client space -> nothing until it is rendered again"
+echo '<html lang="en">' > "$PR/.shot.html"; touch -t 203001030001 "$D/docs/brace/brand/index.html"
+nrun "$D" "" >/dev/null
+ncount 3 "client space rendered again -> notified; the hidden file is never a deliverable"
 echo 'x' > "$PR/notes.md"
 nrun "$D" "$PR/notes.md" >/dev/null
-ncount 2 "non-html file -> not notified"
+ncount 3 "non-html file -> not notified"
 nrun "$D" "" n2 >/dev/null
-ncount 3 "new session, no seen list -> the final decks are new (one notification)"
+ncount 4 "new session, no seen list -> the deliverables are new (one notification)"
 empty "$(nrun "$D" "" n4 claude Linux)" "not macOS -> no output"
-ncount 3 "not macOS -> not notified"
+ncount 4 "not macOS -> not notified"
+NS="$TMP/scope/ns"; mkdir -p "$NS/docs/brace/brand/documents"; echo '<html>' > "$NS/docs/brace/brand/documents/a.html"
+nrun "$NS" "" >/dev/null
+ncount 4 "no client space at all -> no notification"
 
-# The seen list seeded by session_start: decks already there stay quiet.
+# The seen list seeded by session_start: deliverables already there stay quiet.
 H="$TMP/scope/h"; HP="$H/docs/brace/brand/presentations"; mkdir -p "$HP"
-echo '<html lang="en">' > "$HP/2026-09-01-strategy.html"
+echo '<html lang="en">' > "$HP/2026-09-01-strategy.html"; space "$H"
 mkdir -p "$TMPDIR/brace-brand-notify"; printf '%s\n' "$HP/2026-09-01-strategy.html" > "$TMPDIR/brace-brand-notify/seeded.seen"
 nrun "$H" "" seeded >/dev/null
-ncount 3 "deck in the seeded list -> not notified"
+ncount 4 "deck in the seeded list -> not notified"
 
-# Language: the deck's own lang first, then the project, then language.txt.
+# Language: the newest deliverable's own lang first, then the project, then language.txt.
 F="$TMP/scope/f"; FP="$F/docs/brace/brand/presentations"; mkdir -p "$FP"
 printf -- '---\nproject: f\nlanguage: en\n---\n' > "$F/docs/brace/STATUS.md"
-echo '<!DOCTYPE html><html lang="fr">' > "$FP/a.html"
+echo '<!DOCTYPE html><html lang="fr">' > "$FP/a.html"; space "$F"
 nrun "$F" "$FP/a.html" >/dev/null
 has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|Le travail de l'agence est prêt." "deck lang fr -> French message"
 printf -- '---\nproject: f\nlanguage:\tfr\n---\n' > "$F/docs/brace/STATUS.md"
-echo '<html>' > "$FP/b.html"
+echo '<html>' > "$FP/b.html"; space "$F"
 nrun "$F" "$FP/b.html" >/dev/null
 has "$(tail -1 "$NOTE" 2>/dev/null)" "prêt" "no deck lang, language after a tab -> French message"
 G="$TMP/scope/g"; GP="$G/docs/brace/brand/presentations"; mkdir -p "$GP"; echo fr > "$HOME/.brace/language.txt"
-echo '<html>' > "$GP/a.html"
+echo '<html>' > "$GP/a.html"; space "$G"
 nrun "$G" "$GP/a.html" >/dev/null
 has "$(tail -1 "$NOTE" 2>/dev/null)" "prêt" "language.txt fr -> French message"
 echo '../../x' > "$HOME/.brace/language.txt"
-echo '<html>' > "$GP/b.html"
+echo '<html>' > "$GP/b.html"; space "$G"
 nrun "$G" "$GP/b.html" >/dev/null
 has "$(tail -1 "$NOTE" 2>/dev/null)" "BRACE|The agency's work is ready." "invalid language code -> English message"
 rm -f "$HOME/.brace/language.txt"
@@ -166,7 +179,7 @@ OSA="$TMP/bin"; mkdir -p "$OSA"; printf '#!/usr/bin/env bash\nprintf "%%s" "$2" 
 FAKE="$TMP/fakeplugin"; mkdir -p "$FAKE/dispatch" "$FAKE/skills/track/references/i18n" "$FAKE/skills/brand/hooks"
 cp "$PLUGIN_ROOT/dispatch/lib.sh" "$FAKE/dispatch/"; cp "$PLUGIN_ROOT"/skills/brand/hooks/*.sh "$FAKE/skills/brand/hooks/"
 printf -- '- brand.notify.title: BR"ACE\\\n- brand.notify.ready: Ready \\" now.\n' > "$FAKE/skills/track/references/i18n/en.md"
-Q="$TMP/scope/q"; QP="$Q/docs/brace/brand/presentations"; mkdir -p "$QP"; echo '<html lang="en">' > "$QP/a.html"
+Q="$TMP/scope/q"; QP="$Q/docs/brace/brand/presentations"; mkdir -p "$QP"; echo '<html lang="en">' > "$QP/a.html"; touch "$Q/docs/brace/brand/index.html"
 PATH="$OSA:$PATH" BRACE_UNAME=Darwin BRACE_FILE="$QP/a.html" BRACE_SESSION=q1 BRACE_PROJECT_ROOT="$Q" BRACE_PLUGIN_ROOT="$FAKE" bash "$FAKE/skills/brand/hooks/post_tool_use.sh"
 sleep 1
 ARG="$(cat "$TMP/osa_arg" 2>/dev/null)"

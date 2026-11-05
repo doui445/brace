@@ -45,7 +45,7 @@ proj "$P" "brand_reviewed: $(ago 200) # last full review
 has "$(run "$P")" "last reviewed on $(ago 200)." "date followed by a comment is read"
 proj "$P" "brand_stage: voice
 "
-empty "$(run "$P")" "no brand_reviewed (brand in progress) -> silent"
+has "$(run "$P")" "resume the agency" "no brand_reviewed (brand in progress) -> resume line"
 proj "$P" "brand_reviewed: someday
 "
 empty "$(run "$P")" "unreadable date -> silent"
@@ -83,6 +83,40 @@ for SRC in startup resume; do
 done
 BRACE_SESSION="k-startup" run "$K" >/dev/null
 [ "$(wc -l < "$TMPDIR/brace-brand-notify/k-startup.seen" | tr -d ' ')" = 1 ] && echo "PASS: seeding twice adds no duplicate" || { echo "FAIL: duplicate in seen list"; FAIL=1; }
+
+# A mission in progress: the agency takes the client back at startup and after /clear.
+hasnt() { case "$1" in *"$2"*) echo "FAIL: $3: unexpected [$2]"; FAIL=1 ;; *) echo "PASS: $3" ;; esac; }
+when() { python3 -c 'import sys,datetime; print((datetime.datetime.now()+datetime.timedelta(days=int(sys.argv[1]))).strftime("%Y-%m-%d %H:%M"))' "$1"; }
+M="$TMP/scope/m"
+proj "$M" "brand_stage: backstage
+"
+OUT="$(run "$M" claude clear)"
+has "$OUT" "A brand mission is in progress (stage backstage)" "mission in progress + clear -> resume line"
+has "$OUT" "resume the agency" "resume line asks to resume the agency"
+has "$OUT" "brace:brand" "resume line names brace:brand"
+hasnt "$OUT" "came back early" "no SESSIONS.md -> no meeting sentence"
+has "$(run "$M" claude startup)" "in progress" "startup -> resume line"
+empty "$(run "$M" claude compact)" "compact -> silent"
+has "$(run "$M" antigravity "")" "invoke the brand skill" "antigravity, no source -> resume line naming brand"
+printf '# S\n\n## 2026-11-05 Workshop\n\n- meeting: %s\n' "$(when 1)" > "$M/docs/brace/brand/SESSIONS.md"
+OUT="$(run "$M" claude clear)"
+has "$OUT" "The next meeting is $(when 1)" "future meeting -> named"
+has "$OUT" "came back early" "future meeting -> move on, a question, or a change"
+printf '# S\n\n- meeting: %s\n' "$(when -1)" > "$M/docs/brace/brand/SESSIONS.md"
+hasnt "$(run "$M" claude clear)" "came back early" "past meeting -> plain resume"
+printf '# S\n\n- meeting: thursday\n' > "$M/docs/brace/brand/SESSIONS.md"
+OUT="$(run "$M" claude clear)"
+has "$OUT" "in progress" "malformed meeting -> still resumes"
+hasnt "$OUT" "came back early" "malformed meeting -> no meeting sentence"
+printf '# S\n\n- meeting: %s\n\n- meeting: %s\n' "$(when -2)" "$(when 2)" > "$M/docs/brace/brand/SESSIONS.md"
+has "$(run "$M" claude clear)" "$(when 2)" "the last meeting line wins"
+proj "$M" "brand_stage: interview
+"
+has "$(run "$M" claude startup)" "stage interview" "a 1.0 stage -> resume too"
+proj "$M" "brand_stage: done
+brand_reviewed: $(ago 10)
+"
+empty "$(run "$M" claude startup)" "done -> no resume line"
 
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
 exit $FAIL
