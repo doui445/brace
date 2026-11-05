@@ -82,6 +82,56 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   presentation and the workshop questions were "straight to the point";
   to check again on other kinds of projects.
 
+- [ ] **The agency feels like a real agency** (L, ⭐⭐⭐) — surfaced
+  2026-11-05 after the first real trial, before the 1.1.0 release. Settled
+  with the owner: (1) no AI barrier felt, but never posing as humans (BRACE
+  is an AI tool, asked sincerely it says so); (2) the account director
+  opens with the client and the project, a word on the agency and how we
+  will work together, then the concrete; agency vocabulary throughout
+  (kickoff, framing workshop, strategic recommendation, brand platform),
+  kept in the i18n catalogues; (3) every team member has a first name and
+  signs their work; test names first, then the agency runs on BRACE itself
+  to choose the real ones (a second trial too); (4) a commercial proposal
+  before kickoff (scope, schedule, budget in tokens): where the measured
+  cost goes; (5) the real documents an agency writes (proposal, workshop
+  minutes, benchmark, personas, brand platform, routes, strategic
+  recommendation, editorial guide, manifesto, test plan), each written by
+  the agent whose trade it is, in Markdown, rendered to HTML by a stdlib
+  script shipped with the plugin in BRACE's house style; presentations
+  rest on them; a client space page lists documents, meetings and the
+  next step; (6) minutes after each meeting, validated before the team
+  goes to work; (7) meetings: everything is settled before the team goes to
+  work (questions answered, minutes validated, the next meeting set and
+  put in the calendar), so the client is free during the work; the
+  session stays open while the team works (background agents live in it);
+  when the work is done and filed, the agency says to `/clear` and go on,
+  or `/exit` and come back at the meeting; the next session (or the one
+  after `/clear`) resumes the agency on its own; never a fake wait;
+  coming back early gets "move on now, a question, or a change?";
+  (8) the real-people test explained (what, how long, what it brings),
+  with written personas checked by the agency offered as the alternative,
+  labelled as hypotheses, not a test; (9) no repo words with the client
+  ("do you approve the tagline and the one-liner?"), then applied,
+  committed and pushed under the durable authorization of the tracking
+  item below; (10) "tu" in French, the agency is close to its clients.
+  Open: the client's own visual identity in the rendering script waits for
+  1.2 (`design`).
+
+- [ ] **BRACE's welcome in tracking** (M, ⭐⭐⭐) — surfaced 2026-11-05.
+  (1) First use: BRACE introduces itself in the first question, asks for
+  a nickname to address the user (else their name), says what the
+  tracking files are, asks the global language once; kept in
+  `~/.brace/`. (2) Later openings, new projects included: hello with the
+  nickname, one sentence on what tracking is, then the questions; the
+  language only if never chosen. (3) Questions that fit any project, not
+  only code (no stack or architecture question for a project without
+  code; "an online backup?" rather than git words). (4) The backup
+  question is also where BRACE asks, once, whether it may commit and push
+  by itself whatever the user validates; the answer is kept. (5) After an
+  update, the first opening says in two or three lines what changed for
+  the user (a short user-facing "what's new" written at each release).
+  BRACE the tracker is "he", the agency (its account director) "she".
+
 - [ ] **Brand: assemble the deck in an agent, if the measure says so**
   (M, ⭐⭐) — split out of the trial fixes 2026-11-02. The main
   conversation still writes the deck HTML itself. Moving it to a Sonnet

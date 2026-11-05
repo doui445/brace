@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-11-02
+last_updated: 2026-11-05
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -60,11 +60,10 @@ done, its findings fixed. First real trial on Claude Code done
 
 ## Next 3 actions
 
-1. **Second real trial** of the brand agency, on a project of another kind
-   (the gaps of the first trial are fixed, 2026-11-02): check the
-   notification, the two languages, the opening message, and measure the
-   tokens again. Then the same trial on Antigravity
-   (`agy plugin install "$PWD"` in a throwaway config).
+1. **Make the agency a real agency** (spec written 2026-11-05, see
+   `BACKLOG.md`), then a real trial of it **on BRACE itself** (it also
+   names the team) with a token measure. The trial on a project of
+   another kind (not code) comes after all the work, welcome included.
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
    `BACKLOG.md`). 1.2 brings the brand's face (logo, palette, type) in

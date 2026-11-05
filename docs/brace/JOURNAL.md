@@ -1122,3 +1122,22 @@ Closed out the portfolio sub-pages work and cut the release:
   with the real Chrome on the trial deck). The deck assembly by an agent
   waits for the next measure (`BACKLOG.md`).
 - The five minor review findings fixed. Suite green.
+
+## 2026-11-05 — Where the agency and the welcome should go
+
+- The owner wants BRACE to feel like someone, and the agency like a real
+  agency: its vocabulary, named team members, a commercial proposal with
+  the budget, the real documents an agency writes (rendered by a shipped
+  script in BRACE's house style), a client space, minutes after each
+  meeting, meetings in the calendar, the tagline approved rather than
+  "the README". Line kept: never posing as humans.
+- Tracking gets a welcome: nickname, what tracking is, the global
+  language once, questions that fit projects without code, the durable
+  commit and push authorization asked with the backup question, a
+  "what's new" after an update.
+- Asked whether the agent can end its own session: no, and background
+  agents die with the session; the agency instead says when the work is
+  done and invites the user to close, and the next session resumes.
+- Order: the trial fixes committed; the agency next (before 1.1.0) with
+  test names, then the agency run on BRACE itself to name its team; the
+  welcome right after. Both in `BACKLOG.md`.
