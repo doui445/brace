@@ -118,6 +118,22 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   Open: the client's own visual identity in the rendering script waits for
   1.2 (`design`).
 
+- [ ] **Rebranding as a real agency mission** (M, ⭐⭐⭐) — surfaced
+  2026-11-05, before the trial on BRACE itself. Settled with the owner: a
+  rebrand runs the meetings like a new mission, with what a real rebrand
+  adds: "why now" first, the current brand archived before anything
+  changes, an audit (document inventory, perception, where the brand
+  appears, the equity to keep, the recommended extent), the extent chosen
+  by the client (refresh, repositioning, new name), a before and after for
+  each route, the documents never made produced along the way, a test
+  with current users too, a transition plan and an announcement. If the
+  name changes: availability checked (not legal advice), and the folder
+  rename proposed at the end and done by the agency as the session's very
+  last action (folder and Claude Code memory in one command; fallback: the
+  command to run after `/exit`), the GitHub rename under a separate
+  confirmation. Spec `docs/superpowers/specs/2026-11-05-rebranding-design.md`.
+  The trial: a rebrand of BRACE in the real repo.
+
 - [ ] **BRACE's welcome in tracking** (M, ⭐⭐⭐) — surfaced 2026-11-05.
   (1) First use: BRACE introduces itself in the first question, asks for
   a nickname to address the user (else their name), says what the

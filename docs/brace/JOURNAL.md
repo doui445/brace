@@ -1163,3 +1163,11 @@ Closed out the portfolio sub-pages work and cut the release:
   the workshop appointment; Antigravity lost its touchpoint list during a
   mission; emphasis broke links), nine minor ones. The owner asked to fix
   them all: each with a test that failed first; suite green.
+
+## 2026-11-05 — The rebrand, settled
+
+- The trial on BRACE itself becomes a rebrand (its brand dates from 1.0).
+  The agency's rebrand path predates the real agency, so it gets its own
+  work first: archive, audit, extent, before and after, missing documents
+  made, transition plan, announcement, folder rename proposed as a
+  command for after `/exit`. In `BACKLOG.md`; the spec is written.
