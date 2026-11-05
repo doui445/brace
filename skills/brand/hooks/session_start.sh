@@ -35,6 +35,14 @@ brand_front() {
   ' "$STATUS" 2>/dev/null || true
 }
 
+# Antigravity cannot receive the post-write voice reminder: list the
+# touchpoints once here so the agent checks them itself when it writes one.
+if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then
+  . "$BRACE_PLUGIN_ROOT/skills/brand/hooks/touchpoints.sh"
+  TP="$(brand_touchpoints "$ROOT/docs/brace/brand/STRATEGY.md" "$BRACE_PLUGIN_ROOT" | awk 'NF { printf "%s%s", (n++ ? ", " : ""), $0 }')"
+  [ -n "$TP" ] && echo "[BRACE] Brand touchpoints in this project: $TP. When you write one of them, check it against docs/brace/brand/VOICE.md (the $SKILL skill, references/voice.md): flag any drift in one line with a proposed rewrite."
+fi
+
 # A mission in progress: the agency takes the client back (startup, /clear).
 STAGE="$(brand_front brand_stage)"
 case "$STAGE" in
@@ -50,13 +58,6 @@ case "$STAGE" in
     exit 0 ;;
 esac
 
-# Antigravity cannot receive the post-write voice reminder: list the
-# touchpoints once here so the agent checks them itself when it writes one.
-if [ "${BRACE_TOOL:-claude}" = "antigravity" ]; then
-  . "$BRACE_PLUGIN_ROOT/skills/brand/hooks/touchpoints.sh"
-  TP="$(brand_touchpoints "$ROOT/docs/brace/brand/STRATEGY.md" "$BRACE_PLUGIN_ROOT" | awk 'NF { printf "%s%s", (n++ ? ", " : ""), $0 }')"
-  [ -n "$TP" ] && echo "[BRACE] Brand touchpoints in this project: $TP. When you write one of them, check it against docs/brace/brand/VOICE.md (the $SKILL skill, references/voice.md): flag any drift in one line with a proposed rewrite."
-fi
 
 REVIEWED="$(awk '
   { gsub(/\r/, "") }

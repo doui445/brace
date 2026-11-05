@@ -301,6 +301,9 @@ class PluginManifestTests(unittest.TestCase):
         refs = REPO / "skills" / "brand" / "references"
         for name in ("contact.md", "documents.md"):
             self.assertTrue((refs / name).is_file(), name)
+        # The first contact sets the stage, so a client who leaves after it
+        # is brought back at the workshop appointment.
+        self.assertIn("`brand_stage: brief`", (refs / "contact.md").read_text(encoding="utf-8"))
         skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
         for needle in ("references/contact.md", "references/workshop.md", "references/presentation.md",
                        "references/adjustments.md", "references/delivery.md", "references/documents.md",

@@ -49,6 +49,7 @@ director, rendered and shown:
 
 Ask: "Shall we go with this proposal?" (yes, a change, not now). Yes:
 write the first `SESSIONS.md` entry (the proposal accepted, with a link to
-the document), then offer to hold the workshop now or at an appointment
+the document) and set `brand_stage: brief`, so that the agency comes back
+on its own if the client leaves now; then offer to hold the workshop now or at an appointment
 (`SKILL.md`, the closing of a meeting). The workshop starts in the same
 session when the client wants: `references/workshop.md`.

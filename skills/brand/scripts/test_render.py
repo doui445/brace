@@ -133,6 +133,33 @@ def project(d, sessions=None, docs=(), decks=(), lang="en"):
     return root
 
 
+def md_in_subprocess(text):
+    code = "import sys; sys.path.insert(0, sys.argv[1]); import render; print(render.md_to_html(sys.argv[2]))"
+    return subprocess.run([sys.executable, "-c", code, str(HERE), text], capture_output=True, text=True, timeout=5)
+
+
+class MarkdownEdgeTests(unittest.TestCase):
+    def test_line_starts_never_hang(self):
+        cases = ["| not a table\nnext", "Text\n| pipe line", "|a|\n|-|", "   > indented quote"]
+        for prefix in ("|", ">", " >", "#", "####", "-", "1.", "*", "1)"):
+            cases += [prefix, prefix + " text", "text\n" + prefix, prefix + "\ntext"]
+        for text in cases:
+            try:
+                r = md_in_subprocess(text)
+            except subprocess.TimeoutExpired:
+                self.fail(f"md_to_html hangs on {text!r}")
+            self.assertEqual(r.returncode, 0, (text, r.stderr))
+
+    def test_indented_quote_is_a_quote(self):
+        self.assertIn("<blockquote><p>q</p></blockquote>", md_in_subprocess("   > q").stdout)
+
+    def test_emphasis_never_touches_a_url(self):
+        out = render.inline("[x](http://a.com/**b**/c) and [y](https://e.com/a_*b*_c)")
+        self.assertIn('href="http://a.com/**b**/c"', out)
+        self.assertIn('href="https://e.com/a_*b*_c"', out)
+        self.assertIn("<strong>t</strong>", render.inline("[**t**](x.html)"))
+
+
 class RenderSpaceTests(unittest.TestCase):
     def test_space_lists_documents_by_meeting(self):
         with tempfile.TemporaryDirectory() as d:

@@ -88,15 +88,21 @@ def inline(text, bold="strong"):
             continue
         s = esc(part)
 
-        def link(m):
-            label, url = m.group(1), html.unescape(m.group(2))
-            if not SAFE_URL.match(url):
-                return label
-            return f'<a href="{esc(url)}">{label}</a>'
+        def emphasis(t):
+            t = re.sub(r"\*\*(.+?)\*\*", rf"<{bold}>\1</{bold}>", t)
+            return re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", t)
 
-        s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", link, s)
-        s = re.sub(r"\*\*(.+?)\*\*", rf"<{bold}>\1</{bold}>", s)
-        s = re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", s)
+        # Links are set aside first, so that emphasis never reaches a URL.
+        links = []
+
+        def link(m):
+            label, url = emphasis(m.group(1)), html.unescape(m.group(2))
+            links.append(f'<a href="{esc(url)}">{label}</a>' if SAFE_URL.match(url) else label)
+            return f"\x00{len(links) - 1}\x00"
+
+        s = re.sub(r"\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)", link, s)
+        s = emphasis(s)
+        s = re.sub(r"\x00(\d+)\x00", lambda m: links[int(m.group(1))], s)
         out.append(s)
     return "".join(out)
 
@@ -140,14 +146,17 @@ def md_to_html(text):
                 out.append(f"<{tag}>" + "".join(f"<li>{inline(x)}</li>" for x in items) + f"</{tag}>")
                 break
         else:
-            if line.startswith(">"):
+            if line.lstrip().startswith(">"):
                 quote = []
-                while i < len(lines) and lines[i].startswith(">"):
-                    quote.append(lines[i][1:].strip())
+                while i < len(lines) and lines[i].lstrip().startswith(">"):
+                    quote.append(lines[i].lstrip()[1:].strip())
                     i += 1
                 out.append("<blockquote>" + md_to_html("\n".join(quote)) + "</blockquote>")
                 continue
-            para = []
+            # The first line always belongs to the paragraph (a stray "|" or
+            # "####" is plain text), so the loop always moves on.
+            para = [line.strip()]
+            i += 1
             while i < len(lines) and lines[i].strip() and not re.match(r"(#{1,3} |[-*] |\d+[.)] |>|\|)", lines[i].lstrip()):
                 para.append(lines[i].strip())
                 i += 1
