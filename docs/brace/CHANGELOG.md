@@ -60,6 +60,9 @@ the bump, a release never breaks an existing project. The version lives in
   documents never made produced along the way, a test with current users,
   a transition plan and an announcement, and the folder renamed as the
   session's very last action when the name changes.
+- A client who comes back to a delivered brand without a precise request
+  is asked what brings them back: a review, a rebrand or a one-off
+  request, with the agency's recommendation.
 - A `PreToolUse` hook on Claude Code: a BRACE agent writes in its own
   `docs/brace/agents/<agent>/` folder without a permission prompt, and
   only there.

@@ -63,14 +63,17 @@ agency resuming on its own; suite green.
 
 ## Next 3 actions
 
-1. **Real trial: the agency rebrands BRACE**, in this repo, in a new
-   session started with `claude --plugin-dir .` (the rebrand mission is
-   built, 2026-11-05): the 1.0 brand archived, every missing document
-   made, the team named, the folder rename to `brace` given as the command to run
-   after `/exit` (the plugin runs from this folder, so the agency does not
-   rename it itself).
-   Measure the tokens. Then BRACE's welcome in tracking (`BACKLOG.md`),
-   then a trial on a project that is not code.
+1. **Real trial: the agency rebrands BRACE** (planned the evening of
+   2026-11-05), in this repo, in a new session: `cd` here, then
+   `claude --plugin-dir .`, then `/brace:brand` without saying "rebrand".
+   Check that the agency asks what brings the client back and recommends
+   the rebrand itself (1.0 format, no client documents, old folder name);
+   then the 1.0 brand archived, every missing document made, the team
+   named, and the folder rename to `brace` given as the command to run
+   after `/exit` (the plugin runs from this folder). Bring the session id
+   back here: measure the tokens, read the path through. Then BRACE's
+   welcome in tracking (`BACKLOG.md`), then a trial on a project that is
+   not code.
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
    `BACKLOG.md`). 1.2 brings the brand's face (logo, palette, type) in

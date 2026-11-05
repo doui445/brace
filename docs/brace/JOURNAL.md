@@ -1198,3 +1198,13 @@ Closed out the portfolio sub-pages work and cut the release:
   after `/exit`; the table and the slide no longer share a class (the
   real cause of the earlier offset); the columns default to today and
   tomorrow; the archive is taken before the proposal.
+
+## 2026-11-05 — A returning client, and the trial set for tonight
+
+- Gap found by tracing the path: on a delivered brand with no precise
+  request, the skill had nothing to resume and would improvise. Now the
+  account director asks what brings the client back and offers a review,
+  a rebrand or a one-off request, with a recommendation from the signs she
+  sees. Tested; suite green.
+- The trial is set for tonight: `/brace:brand` on BRACE without saying
+  "rebrand", to check that the agency proposes it itself.
