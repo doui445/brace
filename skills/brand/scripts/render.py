@@ -424,8 +424,84 @@ def main(argv):
         return 1
 
 
+MEETING_LEX = {"0": "contact", "1": "workshop", "2": "recommendation", "3": "platform", "4": "delivery"}
+
+
+def _front(path):
+    """The front matter of a tracking file, or {}."""
+    try:
+        return parse_front_matter(path.read_text(encoding="utf-8"))[0]
+    except (OSError, RenderError):
+        return {}
+
+
+def _doc_info(path):
+    text = path.read_text(encoding="utf-8", errors="replace")
+    meta = dict(re.findall(r'<meta name="brace-([a-z]+)" content="([^"]*)">', text))
+    m = re.search(r"<title>(.*?)</title>", text, re.S)
+    title = html.unescape(m.group(1)) if m else path.stem
+    return {k: html.unescape(v) for k, v in meta.items()}, title
+
+
+def _cap(text):
+    return text[:1].upper() + text[1:]
+
+
 def render_space(root):
-    raise RenderError("the client space is not available yet")
+    """The client space: the mission, the meetings, the documents, next meeting."""
+    root = Path(root)
+    brand = root / "docs" / "brace" / "brand"
+    status = _front(root / "docs" / "brace" / "STATUS.md")
+    lang = status.get("language", "").strip('"') or "en"
+    if not re.fullmatch(r"[a-z]{2}", lang):
+        lang = "en"
+    t = catalogue(lang)
+    project = status.get("project", "").strip('"') or root.name
+    none = f'<p class="none">{esc(t.get("brand.space.none", ""))}</p>'
+
+    sessions = brand / "SESSIONS.md"
+    text = sessions.read_text(encoding="utf-8") if sessions.is_file() else ""
+    entries = re.findall(r"(?m)^## (.+?)\s*$", text)
+    meetings = re.findall(r"(?m)^- meeting: (\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*$", text)
+
+    groups = {}
+    docs_dir = brand / "documents"
+    for path in sorted(docs_dir.glob("*.html")) if docs_dir.is_dir() else ():
+        meta, title = _doc_info(path)
+        groups.setdefault(meta.get("meeting", ""), []).append((path.name, title, meta))
+    decks = sorted(p.name for p in (brand / "presentations").glob("*.html")
+                   if p.name != "draft.html") if (brand / "presentations").is_dir() else []
+
+    parts = []
+    if meetings:
+        parts.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(meetings[-1])}</p>')
+    parts.append(f'<h2>{esc(t.get("brand.space.meetings", ""))}</h2>')
+    parts.append("<ul>" + "".join(f"<li>{inline(e)}</li>" for e in entries) + "</ul>" if entries else none)
+    parts.append(f'<h2>{esc(t.get("brand.space.documents", ""))}</h2>')
+    if not groups and not decks:
+        parts.append(none)
+    for key in sorted(groups, key=lambda k: (not k.isdigit(), int(k) if k.isdigit() else 0)):
+        label = t.get(f"brand.lex.{MEETING_LEX.get(key, '')}", "") if key in MEETING_LEX else ""
+        if label:
+            parts.append(f"<h3>{esc(_cap(label))}</h3>")
+        items = "".join(
+            f'<li><a href="documents/{esc(name)}">{esc(title)}</a>'
+            + (f' <span class="by">{esc(meta.get("author", ""))}</span>' if meta.get("author") else "")
+            + "</li>" for name, title, meta in groups[key])
+        parts.append(f"<ul>{items}</ul>")
+    if decks:
+        parts.append("<ul>" + "".join(
+            f'<li><a href="presentations/{esc(d)}">{esc(d[:-5])}</a></li>' for d in decks) + "</ul>")
+
+    title = t.get("brand.space.title", "{project}").replace("{project}", project)
+    return (
+        "<!DOCTYPE html>\n"
+        f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f"<title>{esc(title)}</title>\n"
+        '<link rel="stylesheet" href="doc.css">\n</head>\n<body>\n<main class="page">\n'
+        f'<header class="doc-head">\n<div class="kicker">BRACE</div>\n<h1>{esc(title)}</h1>\n</header>\n'
+        '<div class="body space">\n' + "\n".join(parts) + "\n</div>\n</main>\n</body>\n</html>\n")
 
 
 if __name__ == "__main__":

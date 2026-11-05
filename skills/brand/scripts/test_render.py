@@ -117,5 +117,67 @@ class RenderDocTests(unittest.TestCase):
             self.assertEqual(run("doc", str(src), str(Path(d) / "o.html")).returncode, 1)
 
 
+def project(d, sessions=None, docs=(), decks=(), lang="en"):
+    root = Path(d) / "proj"
+    brand = root / "docs" / "brace" / "brand"
+    (brand / "documents").mkdir(parents=True)
+    (brand / "presentations").mkdir()
+    (root / "docs" / "brace" / "STATUS.md").write_text(
+        f"---\nproject: tally\nlanguage: {lang}\nbrand_stage: adjustments\n---\n", encoding="utf-8")
+    if sessions is not None:
+        (brand / "SESSIONS.md").write_text(sessions, encoding="utf-8")
+    for name, meeting, title in docs:
+        (brand / "documents" / name).write_text(render.render_doc(doc("Text.", meeting=meeting, title=title)), encoding="utf-8")
+    for name in decks:
+        (brand / "presentations" / name).write_text("<html></html>", encoding="utf-8")
+    return root
+
+
+class RenderSpaceTests(unittest.TestCase):
+    def test_space_lists_documents_by_meeting(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, docs=(("2026-11-05-benchmark.html", "2", "Competitive benchmark"),
+                                    ("2026-11-06-platform.html", "3", "Brand platform")))
+            out = render.render_space(root)
+            self.assertIn('href="documents/2026-11-05-benchmark.html"', out)
+            self.assertIn("Competitive benchmark", out)
+            self.assertIn("Brand platform", out)
+            self.assertIn("strategic recommendation", out.lower())
+            self.assertIn("brand platform", out.lower())
+            self.assertLess(out.index("Competitive benchmark"), out.index("Brand platform"))
+
+    def test_space_next_meeting(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n\n- meeting: 2026-11-06 09:00\n\n"
+                                       "## 2026-11-06 Recommendation\n\n- meeting: 2026-11-07 10:00\n")
+            out = render.render_space(root)
+            self.assertIn("2026-11-07 10:00", out)
+            self.assertIn("2026-11-05 Workshop", out)
+            self.assertIn("Your brand, tally", out)
+
+    def test_space_empty_project(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d)
+            r = run("space", str(root))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            out = (root / "docs" / "brace" / "brand" / "index.html").read_text(encoding="utf-8")
+            self.assertIn("Nothing here yet.", out)
+            self.assertTrue((root / "docs" / "brace" / "brand" / "doc.css").is_file())
+
+    def test_space_lists_presentations_not_draft(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, decks=("2026-11-06-strategy.html", "draft.html"))
+            out = render.render_space(root)
+            self.assertIn('href="presentations/2026-11-06-strategy.html"', out)
+            self.assertNotIn("draft.html", out)
+
+    def test_space_in_french(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, lang="fr")
+            out = render.render_space(root)
+            self.assertIn('<html lang="fr">', out)
+            self.assertIn("Ta marque, tally", out)
+
+
 if __name__ == "__main__":
     unittest.main()
