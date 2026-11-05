@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent / "assets"
-SLIDES = ("cover", "route", "context", "refs", "reco", "doc")
+SLIDES = ("cover", "route", "compare", "context", "refs", "reco", "doc")
 MOCKUPS = ("laptop", "phone", "post", "readme", "hero", "profile")
 
 

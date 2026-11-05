@@ -122,6 +122,14 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em
 .profile .stats { margin-top: 10px; color: #657786; font-size: 12px; }
 
 /* References: brands that made a comparable choice (sourced by the analyst) */
+/* Before and after (a rebrand) */
+.compare { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 1.05vw; }
+.compare th, .compare td { text-align: left; vertical-align: top; padding: 2.2vh 1.2vw; border-bottom: 1px solid var(--line); }
+.slide.compare .head { margin-bottom: 5vh; }
+.compare thead th { font-size: .75vw; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.compare tbody th { width: 16%; font-weight: 600; color: var(--ink-2); }
+.compare td.before { width: 40%; color: var(--ink-3); }
+.compare td.after { width: 44%; color: var(--ink); font-family: var(--serif); font-size: 1.35vw; border-left: 3px solid var(--accent); background: var(--accent-soft); }
 .refs .grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4vw; margin-top: 5vh; align-content: center; }
 .ref { background: #fff; border: 1px solid var(--line); padding: 28px 26px 24px; display: flex; flex-direction: column; min-height: 44vh; }
 .ref .mark { height: 110px; display: grid; place-items: center; background: var(--paper-2); margin: -28px -26px 24px; font-family: var(--serif); font-size: 30px; }

@@ -30,6 +30,7 @@ everywhere.
 |---|---|---|
 | `cover` | `meta`, `eyebrow`, `title`, `text`, `routes` (separated by the pipe), `on` (the route shown first), `foot` | |
 | `route` | `meta`, `eyebrow`, `title`, `lede`, `why` (repeat: label, pipe, text), `tagline` (label, pipe, quote), `sub`, `foot` | |
+| `compare` | `meta`, `title`, `intro`, `head` (the two column labels, pipe-separated), `row` (repeat: label, pipe, before, pipe, after), `foot` | |
 | `context` | `meta`, `title`, `intro`, `foot` | `@laptop hero`, `@laptop readme`, `@phone post`, `@phone profile` |
 | `refs` | `meta`, `title`, `intro`, `foot` | `@ref` (`mark`, `title`, `text`, `take`, `src`) |
 | `reco` | `meta`, `eyebrow`, `title`, `lede`, `item` (repeat), `next` (label, pipe, text), `foot` | |

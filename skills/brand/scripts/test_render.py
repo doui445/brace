@@ -53,6 +53,34 @@ class RenderDeckTests(unittest.TestCase):
         self.assertIn("a &lt;script&gt;x&lt;/script&gt; &amp; &quot;q&quot;", out)
 
 
+CMP = "---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: compare\nmeta: Route 1 | Before and after\ntitle: What changes\nintro: And what stays.\nhead: Today | Tomorrow\n"
+
+
+class CompareSlideTests(unittest.TestCase):
+    def test_compare_slide(self):
+        out = render.render_deck(CMP + "row: Promise | Track your time | Nothing to rebuild\nrow: Tone | Busy | Calm\n")
+        self.assertIn('<section class="slide compare"', out)
+        self.assertEqual(out.count('<td class="before">'), 2)
+        self.assertEqual(out.count('<td class="after">'), 2)
+        self.assertIn("<th>Promise</th>", out)
+        self.assertIn("Nothing to rebuild", out)
+        self.assertIn("<th>Today</th>", out)
+        self.assertIn("What changes", out)
+
+    def test_compare_row_with_two_parts(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "deck.md"
+            src.write_text(CMP + "row: a | b\n", encoding="utf-8")
+            r = run("deck", str(src), str(Path(d) / "o.html"))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn('<td class="after"></td>', (Path(d) / "o.html").read_text(encoding="utf-8"))
+
+    def test_compare_escapes(self):
+        out = render.render_deck(CMP + "row: x | <b> | &\n")
+        self.assertIn('<td class="before">&lt;b&gt;</td>', out)
+        self.assertIn('<td class="after">&amp;</td>', out)
+
+
 class RenderDocTests(unittest.TestCase):
     def test_doc_signature_and_meta(self):
         out = render.render_doc(doc("## Who else\n\nText."))

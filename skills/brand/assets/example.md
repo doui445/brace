@@ -25,6 +25,16 @@ tagline: Proposed tagline | The timesheet your client believes.
 sub: One-liner: Tally keeps an exact record of your hours, ready to send.
 foot: Route 1 of 2
 
+::: compare
+meta: Route 1 | Before and after
+title: What changes, and what stays.
+intro: For a rebrand, each route shows the brand of today next to the one it proposes.
+head: Today | With route 1
+row: Promise | Track your time from the terminal. | The timesheet your client believes.
+row: Tone | Technical, feature first. | Plain and exact, proof first.
+row: Name | Tally | Tally, kept.
+foot: Route 1 of 2
+
 ::: context
 meta: Route 1 | In context
 title: Where people will meet it first.

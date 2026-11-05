@@ -213,6 +213,7 @@ def render_doc(text, css="doc.css"):
 FIELDS = {
     "cover": {"meta", "eyebrow", "title", "text", "routes", "on", "foot"},
     "route": {"meta", "eyebrow", "title", "lede", "why", "tagline", "sub", "foot"},
+    "compare": {"meta", "title", "intro", "head", "row", "foot"},
     "context": {"meta", "title", "intro", "foot"},
     "refs": {"meta", "title", "intro", "foot"},
     "reco": {"meta", "eyebrow", "title", "lede", "item", "next", "foot"},
@@ -358,6 +359,18 @@ def _slide(s, n, total, footer):
                 '    <div class="tagline">\n'
                 f'      <small>{inline(label, "b")}</small>\n      <blockquote>{inline(quote, "b")}</blockquote>\n'
                 f'      <div class="sub">{i("sub")}</div>\n    </div>\n  </div>\n')
+    elif s.kind == "compare":
+        before, after = _pair(s.get("head"))
+        rows = ""
+        for value in s.all("row"):
+            cells = [c.strip() for c in value.split(" | ")] + ["", ""]
+            rows += (f'      <tr><th>{inline(cells[0], "b")}</th><td class="before">{inline(cells[1], "b")}</td>'
+                     f'<td class="after">{inline(" | ".join(cells[2:]).strip(" |"), "b")}</td></tr>\n')
+        out += ('  <div class="head">\n'
+                f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n'
+                '  <table class="compare">\n'
+                f'    <thead><tr><th></th><th>{inline(before, "b")}</th><th>{inline(after, "b")}</th></tr></thead>\n'
+                f"    <tbody>\n{rows}    </tbody>\n  </table>\n")
     elif s.kind in ("context", "refs"):
         out += ('  <div class="head">\n'
                 f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n')
