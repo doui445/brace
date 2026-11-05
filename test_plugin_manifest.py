@@ -297,6 +297,16 @@ class PluginManifestTests(unittest.TestCase):
                 for first in ("Alice", "Bruno", "Chlo", "David", "Emma"):
                     self.assertNotIn(first, body, rel)
 
+    def test_brand_references_cover_the_meetings(self):
+        refs = REPO / "skills" / "brand" / "references"
+        for name in ("contact.md", "documents.md"):
+            self.assertTrue((refs / name).is_file(), name)
+        skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
+        for needle in ("references/contact.md", "references/workshop.md", "references/presentation.md",
+                       "references/adjustments.md", "references/delivery.md", "references/documents.md",
+                       "render.py", "/clear", "/exit", "auto_publish", "never claims to be human"):
+            self.assertIn(needle, skill, needle)
+
     def test_analyst_writes_one_report_per_subject(self):
         _, body = _split_agent("agents/claude/analyst.md")
         self.assertIn("one report file per subject", " ".join(body.split()))

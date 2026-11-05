@@ -1,75 +1,93 @@
-# Presentation
+# Strategic recommendation
 
-Read by `SKILL.md` to build a presentation, and at the strategic
-presentation (`brand_stage: presentation`).
+Read by `SKILL.md` to build a deck, and at meeting 2 (`brand_stage:
+presentation`).
 
-## The files
+## The deck: Markdown, rendered
 
-- The template ships with this skill: `assets/deck.css`, `assets/fonts/`,
-  and `assets/example.html`, the model to follow (one `section` per slide,
-  the slide and mockup classes it uses).
-- At the first presentation in a project, copy the stylesheet and the
-  fonts next to the presentations, in one command:
+Never write a deck's HTML: write its Markdown and render it.
 
-  ```bash
-  mkdir -p "<root>/docs/brace/brand/presentations" && \
-    cp -R "<skill>/assets/deck.css" "<skill>/assets/fonts" "<root>/docs/brace/brand/presentations/"
-  ```
+```bash
+python3 "<skill>/scripts/render.py" deck \
+  "<root>/docs/brace/agents/brand/<YYYY-MM-DD>-<meeting>.md" \
+  "<root>/docs/brace/brand/presentations/draft.html"
+```
 
-  `<skill>` is this skill's folder. Each presentation links
-  `<link rel="stylesheet" href="deck.css">`.
-- Work in `presentations/draft.html`. After the creative director's
-  review, write the final version as
-  `presentations/<YYYY-MM-DD>-<session>.html` (`strategy`, `adjustments`,
-  `delivery`), with the file-writing tool: its appearance sends the
-  notification. Set `<html lang="...">` to the working language
-  (`SKILL.md`, `## Languages`); the mockups' texts are in the brand's
-  language. Keep every final
-  version; overwrite only the draft.
+The model is `assets/example.md` (its rendering is `assets/example.html`):
+read it before writing a deck. Work on `draft.html`; after the creative
+director's review, render the final version as
+`presentations/<YYYY-MM-DD>-<meeting>.html` (`strategy`, `adjustments`,
+`delivery`). Keep every final version; overwrite only the draft.
+
+**The syntax.** A front matter (`title`, `lang` the working language,
+`footer`), then one slide per `::: <type>` line, then `field: value` lines.
+In every value, ` | ` separates two parts (a label and a text, or two
+lines of a title). Inline `**bold**`, `*italic*` and `` `code` `` work
+everywhere.
+
+| Type | Fields | Blocks |
+|---|---|---|
+| `cover` | `meta`, `eyebrow`, `title`, `text`, `routes` (separated by the pipe), `on` (the route shown first), `foot` | |
+| `route` | `meta`, `eyebrow`, `title`, `lede`, `why` (repeat: label, pipe, text), `tagline` (label, pipe, quote), `sub`, `foot` | |
+| `context` | `meta`, `title`, `intro`, `foot` | `@laptop hero`, `@laptop readme`, `@phone post`, `@phone profile` |
+| `refs` | `meta`, `title`, `intro`, `foot` | `@ref` (`mark`, `title`, `text`, `take`, `src`) |
+| `reco` | `meta`, `eyebrow`, `title`, `lede`, `item` (repeat), `next` (label, pipe, text), `foot` | |
+| `doc` | `meta`, `title`, `intro`, `ask`, `foot`, then free Markdown | |
+
+Mockup fields: `@laptop hero` (`bar`, `brand`, `title`, `text`, `cta`,
+`caption`), `@laptop readme` (`bar`, `file`, `name`, `tag`, `text`
+repeated, `caption`), `@phone post` (`name`, `handle`, `text` repeated,
+`card`, `url`, `caption`), `@phone profile` (`banner`, `name`, `handle`,
+`bio`, `stats`, `caption`). `foot` is ` left | middle` or just the middle
+(the left is then the front matter's `footer`); the page number is added.
+An unknown type or field stops the render with exit code 1 and the line:
+fix the Markdown.
 
 ## Two layers
 
-- The frame (cover, brief, recommendation, documents) is in the BRACE
-  agency's house style, `deck.css` as it is.
-- Each route shows its own identity through the frame variables on its
-  sections (`--accent`, `--serif`, `--sans`). In this release, without
-  visual identity, keep the frame's values; the mockups show the route's
-  words on real supports (README, post, home page, profile) in a neutral
-  layout.
+- The frame (cover, recommendation, documents) is in the agency's house
+  style, `deck.css` as it is.
+- The mockups show each route's words on real supports (project page,
+  post, home page, profile) in a neutral layout; the route's own visual
+  identity comes in a later release.
 
-## The strategic presentation
+## The deck of meeting 2
 
 Order of slides, one route at a time:
 
-1. `cover`: the user's own sentence from the brief, and the routes to
+1. `cover`: the client's own sentence from the brief, and the routes to
    come.
 2. For each route: `route` (positioning, who it is for, against whom, the
    risk, the tagline and the one-liner), `context` (two mockups:
    `laptop` with `readme` or `hero`, `phone` with `post` or `profile`),
    `refs` (the analyst's references).
-3. `reco`: the agency's recommendation, and the weighing of the user's
+3. `reco`: the agency's recommendation, and the weighing of the client's
    tastes against the target, said plainly ("You like loud brands; your
    target trusts calm ones. We recommend calm, and here is what we kept
    from your taste.").
+
+It rests on the documents of the backstage (`benchmark`, `personas`,
+`routes`): mention them, the client can open them from their space.
 
 **References**: text and link only, no third-party image or logo. Each
 says what we take from it and what we leave, and comes from the analyst's
 report, with its source.
 
-## Showing it
+## The meeting
 
-1. Give the user the file path to open in a browser (arrows move between
-   slides; it prints to PDF one slide per page).
-2. Walk through it one route at a time in the conversation, in a few lines
-   each.
+1. Open it as a meeting: what the team did since last time, in two lines,
+   then the deck (its path, opened in the browser; arrows move between
+   slides; it prints one slide per page).
+2. Walk through it one route at a time, in a few lines each.
 3. Propose, never ask "do you like it?". Say what each route promises in
-   one line, give your recommendation and why ("Route 1 promises an exact
-   record, route 2 a calm partner; I would pick 1, because your target
+   one line, give the recommendation and why ("Route 1 promises an exact
+   record, route 2 a calm partner; we would pick 1, because your target
    gets asked to justify its hours"), then offer the choices: route 1,
-   route 2, a mix of both, or another round. Point at what the user said
+   route 2, a mix of both, or another round. Point at what the client said
    they never wanted, and say how each route avoids it.
-4. The user picks one route, combines elements of several, or asks for
+4. The client picks one route, combines elements of several, or asks for
    another round (back to `references/backstage.md` with what they said).
-5. Write the routes set aside, and why, in `docs/brace/brand/DECISIONS.md`.
-   Append an entry to `SESSIONS.md`. Say it is saved.
-6. Set `brand_stage: adjustments`.
+5. Close the meeting (`SKILL.md`): the minutes (the route chosen, the
+   routes set aside and why, also in `docs/brace/brand/DECISIONS.md`), the
+   next appointment, then the team writes the platform. Set
+   `brand_stage: adjustments`.

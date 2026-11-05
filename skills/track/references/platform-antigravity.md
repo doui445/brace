@@ -47,4 +47,8 @@ planned path, not an error.
 A `PostToolUse` hook cannot pass text to the agent on Antigravity, so
 skills that react to a write say it at session start instead: `brand`
 lists the project's brand touchpoints there, and the agent checks them
-against the voice itself when it writes one.
+against the voice itself when it writes one. The same session start
+brings the agency back when a brand mission is in progress. The
+notification comes at the next file write after the client space is
+rendered (the `PostToolUse` matcher does not see shell commands); with
+the agents in the foreground, the client is there anyway.
