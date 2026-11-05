@@ -1141,3 +1141,16 @@ Closed out the portfolio sub-pages work and cut the release:
 - Order: the trial fixes committed; the agency next (before 1.1.0) with
   test names, then the agency run on BRACE itself to name its team; the
   welcome right after. Both in `BACKLOG.md`.
+
+## 2026-11-05 — The real agency built (feat/brand)
+
+- Spec and plan written and approved, then built inline in seven tasks,
+  each test first: catalogue (team, lexicon, client space), `render.py`
+  (documents, decks, client space), hooks (the client space as the ready
+  signal, the mission resuming at startup and after `/clear`), agents
+  writing the client documents, the skill rewritten meeting by meeting
+  (`contact.md` and `documents.md` new).
+- The deck example is now Markdown rendered by the script; the visible
+  rendering is unchanged (checked by screenshot).
+- Next: a real trial of the agency on BRACE itself, which also names the
+  team.

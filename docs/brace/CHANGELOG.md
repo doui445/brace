@@ -43,6 +43,17 @@ the bump, a release never breaks an existing project. The version lives in
   time, what needs the user and what runs alone, and its measured cost.
 - `skills/brand/scripts/shoot_deck.sh`: one screenshot per slide, so the
   creative director sees the rendered presentation without a PDF reader.
+- The agency works like a real one: a named team (provisional names, from
+  the catalogue), a first contact with a proposal (scope, meetings, time,
+  budget), five meetings that each end with minutes and the next
+  appointment (in the calendar when possible), the documents an agency
+  writes (benchmark, personas, routes, brand platform, editorial guide,
+  manifesto, test plan), and a client space listing them.
+- `skills/brand/scripts/render.py`: renders documents, decks and the
+  client space from Markdown in the house style (`assets/doc.css`, the
+  deck model in `assets/example.md`).
+- A brand mission in progress brings the agency back at session start and
+  after `/clear`, with the next meeting when the client comes back early.
 - A `PreToolUse` hook on Claude Code: a BRACE agent writes in its own
   `docs/brace/agents/<agent>/` folder without a permission prompt, and
   only there.
@@ -57,6 +68,12 @@ the bump, a release never breaks an existing project. The version lives in
 - `brand` no longer reads presentation screenshots itself (the creative
   director does, in its own context): a lighter main conversation.
 - A new fact on a settled brand choice is reported, never asked again.
+- The brand notification now means the work is ready: it waits for the
+  client space, rendered last after every tracking file.
+- The agents write the client documents; the creative director reviews
+  them too.
+- The tagline is approved in the client's words, then applied and saved
+  (commit and push without a question once allowed).
 
 ### Fixed
 - Brand touchpoints are read from the list items of the section only: a

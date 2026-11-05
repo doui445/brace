@@ -29,7 +29,9 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   reminder) / `hooks/post_tool_use.sh` (voice drift on touchpoints, macOS
   notification when a presentation is ready), + their `test_*.sh`;
   `scripts/shoot_deck.sh` (one screenshot per slide for the creative
-  director, + its test).
+  director) and `scripts/render.py` (documents, decks and the client space
+  from Markdown, stdlib), + their tests; `assets/doc.css` and
+  `assets/example.md` (the deck model, rendered into `example.html`).
 - `agents/` — BRACE agents (`analyst`, `strategist`, `copywriter`,
   `creative-director`): `agents/<agent>.md` for Antigravity,
   `agents/claude/<agent>.md` for Claude Code (listed in

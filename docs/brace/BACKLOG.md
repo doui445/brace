@@ -82,8 +82,9 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   presentation and the workshop questions were "straight to the point";
   to check again on other kinds of projects.
 
-- [ ] **The agency feels like a real agency** (L, ⭐⭐⭐) — surfaced
-  2026-11-05 after the first real trial, before the 1.1.0 release. Settled
+- [x] **The agency feels like a real agency** (L, ⭐⭐⭐) — surfaced
+  2026-11-05 after the first real trial, built on `feat/brand` 2026-11-05
+  (spec `docs/superpowers/specs/2026-11-05-vraie-agence-design.md`). Settled
   with the owner: (1) no AI barrier felt, but never posing as humans (BRACE
   is an AI tool, asked sincerely it says so); (2) the account director
   opens with the client and the project, a word on the agency and how we
