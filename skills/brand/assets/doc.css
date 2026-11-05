@@ -1,0 +1,48 @@
+/* BRACE agency document: the house style for a written deliverable
+   (benchmark, platform, editorial guide, minutes...). Linked by every
+   document as <link rel="stylesheet" href="doc.css">, with fonts/ next
+   to it. Works offline; prints on A4. */
+
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces/Fraunces.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces/Fraunces-Italic.ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/inter/Inter.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+
+:root {
+  --paper: #F4F1EA;
+  --paper-2: #EAE5DA;
+  --ink: #17171B;
+  --ink-2: #55534E;
+  --ink-3: #8C8880;
+  --line: #D8D2C4;
+  --accent: #2F4A3A;
+  --accent-soft: #DCE3D6;
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--paper-2); font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.6; }
+.page { max-width: 820px; margin: 48px auto; background: var(--paper); padding: 72px 80px 64px; box-shadow: 0 1px 0 var(--line); }
+.doc-head { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 36px; }
+.kicker { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.doc-head h1 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -.01em; margin-top: 10px; }
+.doc-date { color: var(--ink-3); font-size: 13px; margin-top: 10px; }
+.body h1, .body h2, .body h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; line-height: 1.2; }
+.body h1 { font-size: 32px; margin: 40px 0 14px; }
+.body h2 { font-size: 26px; margin: 36px 0 12px; }
+.body h3 { font-size: 20px; margin: 28px 0 10px; }
+.body p, .body ul, .body ol, .body table, .body blockquote { margin-bottom: 16px; }
+.body ul, .body ol { padding-left: 22px; }
+.body li + li { margin-top: 4px; }
+.body a { color: var(--accent); }
+.body code { font-family: var(--mono); font-size: .9em; background: var(--paper-2); padding: 1px 5px; border-radius: 4px; }
+.body blockquote { border-left: 3px solid var(--accent); padding: 4px 0 4px 18px; color: var(--ink-2); font-family: var(--serif); font-size: 19px; }
+.body table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.body th, .body td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.body th { font-weight: 600; color: var(--ink-2); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.doc-sign { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 13px; display: flex; justify-content: space-between; }
+@page { size: A4; margin: 18mm; }
+@media print {
+  body { background: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { margin: 0; padding: 0; max-width: none; box-shadow: none; background: none; }
+}
