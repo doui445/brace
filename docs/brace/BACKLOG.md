@@ -118,8 +118,9 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   Open: the client's own visual identity in the rendering script waits for
   1.2 (`design`).
 
-- [ ] **Rebranding as a real agency mission** (M, ⭐⭐⭐) — surfaced
-  2026-11-05, before the trial on BRACE itself. Settled with the owner: a
+- [x] **Rebranding as a real agency mission** (M, ⭐⭐⭐) — surfaced
+  2026-11-05, before the trial on BRACE itself; built on `feat/brand`
+  2026-11-05. Settled with the owner: a
   rebrand runs the meetings like a new mission, with what a real rebrand
   adds: "why now" first, the current brand archived before anything
   changes, an audit (document inventory, perception, where the brand

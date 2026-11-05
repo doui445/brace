@@ -54,6 +54,12 @@ the bump, a release never breaks an existing project. The version lives in
   deck model in `assets/example.md`).
 - A brand mission in progress brings the agency back at session start and
   after `/clear`, with the next meeting when the client comes back early.
+- A rebrand runs as a real agency mission: "why now" first, the current
+  brand archived, an audit and the extent as the client's decision, a
+  before and after for each route (a new `compare` slide), the brand
+  documents never made produced along the way, a test with current users,
+  a transition plan and an announcement, and the folder renamed as the
+  session's very last action when the name changes.
 - A `PreToolUse` hook on Claude Code: a BRACE agent writes in its own
   `docs/brace/agents/<agent>/` folder without a permission prompt, and
   only there.

@@ -1171,3 +1171,16 @@ Closed out the portfolio sub-pages work and cut the release:
   work first: archive, audit, extent, before and after, missing documents
   made, transition plan, announcement, folder rename proposed as a
   command for after `/exit`. In `BACKLOG.md`; the spec is written.
+
+## 2026-11-05 — The rebrand built (feat/brand)
+
+- Spec and plan approved, built inline in four tasks, each test first: a
+  `compare` slide (today next to tomorrow), the rebrand documents in the
+  agents (audit, transition plan, announcement; the analyst checks a new
+  name's availability, never as legal advice), and `references/rebrand.md`
+  meeting by meeting.
+- The folder rename, settled with the owner: the agency does it itself as
+  the session's very last action (folder and Claude Code memory in one
+  command, tested with spaces in the paths), the GitHub rename under a
+  separate confirmation.
+- Next: the agency rebrands BRACE in this repo.
