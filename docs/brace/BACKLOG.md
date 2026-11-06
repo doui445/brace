@@ -6,6 +6,15 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 
 ## Open
 
+- [ ] **Brand: work alongside an existing agency or the user's own docs**
+  (M, ⭐⭐⭐) — surfaced 2026-11-06 at meeting 2 of the BRACE rebrand.
+  BRACE backs the user up, it does not have to replace a real agency. The
+  user may bring brand documents they or an agency already made: `brand`
+  takes them in, keeps what holds, and builds only the rest. A second use:
+  checking that the project keeps following an existing branding (beyond
+  the voice drift hook). How documents come in and are marked as
+  "provided", to design first.
+
 - [ ] **A writing skill (to think about)** (?, ⭐⭐) — surfaced 2026-10-22
   in the first brand session. Rules that make writing more human and carry
   the voice of whoever speaks: no slash, no semicolon, no vertical bar in

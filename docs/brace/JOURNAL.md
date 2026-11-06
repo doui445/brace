@@ -1225,3 +1225,22 @@ Closed out the portfolio sub-pages work and cut the release:
   kept the tagline (its first meaning, "agreed", ties all the skills),
   asked for a short explanation of the signature in English and French,
   and for the team's real first names, now proposed.
+
+## 2026-11-07 — The rebrand trial, meeting 2 held
+
+- Meeting 2 ran early (the client came back before the appointment).
+  Repositioning chosen. None of the three routes convinced at first: asked
+  "what is BRACE?", the client answered "your projects, up to date, but
+  above all projects that look like you"; the team wrote a fourth route
+  from it, then the client settled on route 3 with that phrase as the
+  colour of the texts. French tagline: "Enfin sur la même longueur
+  d'onde." (the calque "sur la même page" checked by the analyst).
+- The team's names were hired from three rounds of checked candidates
+  (Julie, Ravi, Constance, Ben, Lou); they take effect at delivery.
+- Then the backstage for meeting 3: platform, editorial guide, manifesto,
+  one review round. Next appointment 2026-11-07 14:00.
+- Found on the way: the client wants to choose among candidates rather
+  than accept one set; and does not want the chat to repeat what an
+  opened document says. Auto mode's classifier again blocked the
+  agency's closing writes without a reason. A product idea logged in
+  `BACKLOG.md`: brand work alongside an existing agency's documents.

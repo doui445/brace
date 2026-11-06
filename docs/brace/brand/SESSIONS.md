@@ -77,3 +77,51 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 ### Suite
 
 - Le rendez-vous 2 : la recommandation stratégique.
+
+## 2026-11-07 — Rendez-vous 2 : la recommandation stratégique
+
+### Décidé
+
+- Un repositionnement : le nom, la phrase et la personnalité restent.
+- Le territoire 3, « Rien sans toi » (« It asks. It writes it down. You
+  decide. »), avec « des projets qui te ressemblent » comme couleur des
+  textes, jamais comme promesse. Mis de côté : les territoires 1, 2 et 4
+  (voir les décisions de la marque).
+- La phrase en français : « Enfin sur la même longueur d'onde. »
+- L'équipe : Julie, Ravi, Constance, Ben, Lou.
+- Rien en public sur le design à venir, les compétences à venir, la vie
+  privée ni la reprise des documents d'une agence, tant que ce n'est pas
+  livré et vérifié.
+- [Le compte rendu](documents/2026-11-07-minutes-2.html).
+
+### En attente
+
+- Les entretiens avec de vraies personnes.
+- Les nouveaux prénoms entrent en scène à la livraison, avec la
+  transition.
+
+### Suite
+
+- L'équipe écrit la plateforme de marque, la charte éditoriale et le
+  manifeste.
+
+- meeting: 2026-11-07 14:00
+
+## 2026-11-07 — Le travail de l'équipe (avant le rendez-vous 3)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu valides au rendez-vous.
+
+### En attente
+
+- Chloé : [la plateforme de marque](documents/2026-11-07-platform.html).
+- David : [la charte éditoriale](documents/2026-11-07-editorial-guide.html),
+  [le manifeste](documents/2026-11-07-manifesto.html).
+- Emma : relu, corrections faites.
+- Une question pour toi : la valeur « Honnêteté totale » garde-t-elle ce
+  nom ?
+
+### Suite
+
+- Le rendez-vous 3 : la plateforme de marque, document par document.

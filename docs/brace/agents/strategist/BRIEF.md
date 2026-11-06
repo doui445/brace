@@ -35,4 +35,10 @@ création). Prénoms provisoires : à remplacer par de vrais prénoms.
 
 ## Corrections du client
 
-Aucune à ce jour.
+- 2026-11-06, rendez-vous 2 : repositionnement choisi (nom, phrase
+  « Finally on the same page. », Jarvis gardés). Phrase française : « Enfin
+  sur la même longueur d'onde. ». Aucun des trois territoires n'a convaincu
+  seul ; le client veut un territoire 4 sur « tes projets à jour, mais surtout
+  tes projets qui te ressemblent » (voir `2026-11-06-route-4.md`). Règle :
+  aucune promesse publique sur les compétences à venir ni sur la vie privée ;
+  « rien n'est jamais oublié » est un argument, pas une promesse écrite.
