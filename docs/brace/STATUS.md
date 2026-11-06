@@ -13,7 +13,7 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: brief
+brand_stage: backstage
 brand_reviewed: 2026-10-22
 ---
 

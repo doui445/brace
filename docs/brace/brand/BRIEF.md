@@ -1,0 +1,101 @@
+# BRIEF DE MARQUE — BRACE
+
+Ce qui a été demandé à l'agence. Validé à l'atelier de cadrage du 2026-11-06 : [le brief](documents/2026-11-06-brief.html).
+## Le rebranding
+
+- **Pourquoi maintenant** : le premier branding n'était pas complet. Aucun
+  des documents d'une marque n'a été fait.
+- **Ce qui ne marche plus** (validé) :
+  1. rien n'est documenté : ni brief, ni benchmark, ni personas, ni
+     territoires comparés, ni plateforme, ni charte, ni manifeste ;
+  2. des bases fragiles : des personas construits sur six réponses de ton
+     entourage, une signature jamais testée ;
+  3. une promesse qui parle surtout de mémoire, alors que BRACE suit tes
+     projets, fait la marque et bientôt le design (le point qui décidera de
+     l'ampleur) ;
+  4. des restes d'avant : l'ancien nom à plusieurs endroits, les prénoms
+     provisoires de l'équipe, aucune porte d'entrée pour les utilisateurs
+     d'applications web.
+- **Ce qui doit rester** (validé) : le nom BRACE et sa signature cachée
+  « Barely Remarkable, Admittedly Capable Engine », la personnalité façon
+  Jarvis, les valeurs. Et la phrase d'accroche « Finally on the same
+  page. » : elle ne parle pas que de mémoire. L'expression veut d'abord
+  dire « d'accord, alignés », ce qui relie toutes les compétences de BRACE.
+  L'audit vérifie seulement qu'elle tient pour tout le système.
+- **Ce qui a changé** (validé) : le produit (le suivi, puis une agence de
+  marque, et le design qui arrive) et le public, qui s'élargit. L'ambition
+  ne change pas pour l'instant.
+- **En plus de la mission** : l'explication de la signature en une ou deux
+  phrases simples, en anglais et en français, pour une page « À propos »
+  ou le pied de page du site. Et les vrais prénoms de l'équipe de
+  l'agence.
+
+## Le projet
+
+BRACE transforme ton IA en vrai assistant pour tes projets : il s'en
+souvient, il les garde propres et professionnels, et il les suit tous. Un
+plugin libre et gratuit pour Claude Code et Antigravity.
+
+## Ce que la marque doit obtenir
+
+1. L'adoption par le bouche-à-oreille.
+2. Une réputation de confiance dans le monde des agents IA.
+3. Des revenus, un jour (aucun modèle choisi).
+
+## Pour qui
+
+- **Le pilote** (la cible d'aujourd'hui) : il mène plusieurs projets ou une
+  entreprise avec Claude et Claude Code, et vérifie tout lui-même.
+- **Le débrouillard** (la cible de demain) : étudiant, créatif ou
+  entrepreneur qui démarre, surtout sur des applications web.
+- **Élargi à l'atelier** : toute personne qui a plusieurs projets concrets
+  à mener, entrepreneurs compris. Chloé reprend les personas sur cette
+  base.
+
+Les plateformes : d'abord une version stable et fiable pour Claude Code.
+Antigravity a surtout servi à vérifier que BRACE pourra s'ouvrir plus tard,
+et à poser les règles qui le faciliteront. L'ouverture à d'autres agents
+reste une direction, pas une promesse affichée.
+
+## Les concurrents que tu connais
+
+- Les alternatives : les applications d'IA (ChatGPT, l'application
+  Claude), les éditeurs (Cursor, Copilot), la mémoire native des agents.
+- Les concurrents directs : superpowers, ECC, claude-mem, Spec Kit, BMAD,
+  Taskmaster.
+- Une promesse voisine : OpenClaw, Hermes, Meta Muse, Tab, Notion AI,
+  Manus.
+- *Hypothèse* : avec la marque, il faut ajouter les outils de branding par
+  IA. Bruno ira voir.
+
+## Le nom
+
+BRACE, gardé depuis le 4 octobre, et confirmé à l'atelier.
+
+## Ce que tu aimes
+
+Jarvis pour le comportement, Apple pour la sensation : simple, sobre, sans
+friction.
+
+## L'émotion à laisser
+
+La sérénité, appuyée sur la confiance : c'est pris en charge, tu n'as plus
+à y penser.
+
+## Ce que tu ne veux surtout pas
+
+La surenchère de chiffres, la magie promise, les mécaniques d'addiction,
+les dark patterns, la télémétrie, les outils imposés.
+
+## Les langues (de travail, de la marque)
+
+- **Langue de travail** : le français.
+- **Langue de la marque** : l'anglais d'abord, le français en second.
+  D'autres langues viendront peut-être plus tard (l'espagnol, par
+  exemple).
+
+## Hypothèses à vérifier
+
+- Les outils de branding par IA sont à ajouter aux concurrents (Bruno
+  vérifie).
+- La phrase d'accroche tient pour tout le système (l'audit vérifie).
