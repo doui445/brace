@@ -1,6 +1,7 @@
 # BRIEF DE MARQUE — BRACE
 
 Ce qui a été demandé à l'agence. Validé à l'atelier de cadrage du 2026-11-06 : [le brief](documents/2026-11-06-brief.html).
+
 ## Le rebranding
 
 - **Pourquoi maintenant** : le premier branding n'était pas complet. Aucun

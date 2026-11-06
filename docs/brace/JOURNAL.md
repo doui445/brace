@@ -1208,3 +1208,20 @@ Closed out the portfolio sub-pages work and cut the release:
   sees. Tested; suite green.
 - The trial is set for tonight: `/brace:brand` on BRACE without saying
   "rebrand", to check that the agency proposes it itself.
+
+## 2026-11-06 — The rebrand trial, up to meeting 2
+
+- `/brace:brand` on a delivered brand: the agency asked what brings the
+  client back and recommended the rebrand from the signs it saw. Archive,
+  proposal, framing workshop, then the team's backstage (benchmark, audit,
+  personas, three routes, words, references, deck, two reviews), all
+  in one session.
+- Found on the way: auto mode's classifier gave no verdict on the
+  agency's writes twice (the client had to leave auto mode); the macOS
+  calendar tool had write-only access, so no event could be created; a
+  `reco` item starting with bold text and " : " breaks the slide into
+  narrow columns; French guillemets need non-breaking spaces in decks.
+- The client widened the target (anyone with several concrete projects),
+  kept the tagline (its first meaning, "agreed", ties all the skills),
+  asked for a short explanation of the signature in English and French,
+  and for the team's real first names, now proposed.

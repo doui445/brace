@@ -55,3 +55,25 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
   la présentation.
 
 - meeting: 2026-11-06 19:00
+
+## 2026-11-06 — Le travail de l'équipe (avant le rendez-vous 2)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu décides au rendez-vous.
+
+### En attente
+
+- Bruno : [le benchmark](documents/2026-11-06-benchmark.html), les
+  références de chaque territoire, la vérification des prénoms.
+- Chloé : [l'audit](documents/2026-11-06-audit.html),
+  [les personas](documents/2026-11-06-personas.html),
+  [les territoires](documents/2026-11-06-routes.html). Recommandation : un
+  repositionnement, territoire 3 « Rien sans toi ».
+- David : les mots des trois territoires, la phrase en français, les
+  prénoms de l'équipe.
+- Emma : relu, corrections faites, validé.
+
+### Suite
+
+- Le rendez-vous 2 : la recommandation stratégique.
