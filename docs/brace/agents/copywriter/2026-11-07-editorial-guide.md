@@ -16,8 +16,8 @@ Les textes de la marque sont écrits en anglais d'abord, en français ensuite, e
 - **Qui parle** : un assistant discret, compétent, avec un trait d'esprit. Jarvis pour le comportement, Apple pour la sensation.
 - **Comment** : calme, clair, franc, chaleureux.
 - **Ce qu'il montre** : des gestes (une question posée, un « à compléter », une décision écrite), pas des adjectifs.
-- **Ce qu'il ne dit jamais** : « honest » ou « honnête » pour se décrire. Ce n'est pas une preuve, c'est un adjectif. La valeur « Honnêteté totale » reste, mais comme boussole interne : le texte public en montre le geste.
-- **Ce qu'il ne dit pas encore** : rien sur le design à venir, les compétences à venir, la vie privée, ni la reprise des documents d'une agence, tant que ce n'est pas livré et vérifié.
+- **Ce qu'il ne dit jamais** : « honest » ou « honnête » pour se décrire. Ce n'est pas une preuve, c'est un adjectif. La valeur « Vérifier avant d'affirmer » reste, mais comme boussole interne : le texte public en montre le geste.
+- **Ce qu'il ne dit pas encore** : rien sur le design à venir, les compétences à venir, ni la reprise des documents d'une agence, tant que ce n'est pas livré et vérifié.
 
 ## La voix
 
@@ -65,7 +65,7 @@ Un jargon non expliqué (« frontmatter », « hook », « remote ») est aussi 
 
 ### Ceux qu'il dit tout le temps, même trop
 
-- **il demande** : « il demande avant de deviner » (it asks before it guesses)
+- **il demande** : « il ne demande que ce qu'il ne peut pas savoir » (it only asks what it can't know)
 - **c'est écrit** : « ce que tu décides est écrit » (it's written down)
 - **tu décides** : le dernier mot est à toi (you decide)
 - **je vérifie, vérifié** : seulement quand il a vraiment vérifié (I check, checked)
@@ -136,7 +136,7 @@ Trois sujets restent hors des textes publics tant que ce n'est pas livré et vé
 | Sujet | Ce qu'on écrit pour l'instant |
 |---|---|
 | Le design à venir et les autres compétences à venir | rien. Pas de « bientôt », pas de « en chemin » |
-| La vie privée | aucune promesse. On dit seulement ce qui est vrai et vérifiable : les fichiers sont dans ton projet, tu peux les lire, les corriger ou les supprimer |
+| La vie privée | la limite validée au rendez-vous 3, mot pour mot, rien de plus : « BRACE sends nothing itself. What your agent reads goes to the model provider, as with any agent. What goes to GitHub or to your Reminders is your call. » (en français : « BRACE n'envoie rien lui-même. Ce que ton agent lit part chez le fournisseur du modèle, comme pour tout agent. Ce qui va sur GitHub ou dans tes Rappels, c'est toi qui le décides. ») Et ce qui est vérifiable : les fichiers sont dans ton projet, tu peux les lire, les corriger ou les supprimer |
 | La reprise des documents faits par toi ou par une agence | rien. L'idée est notée pour plus tard |
 
 Autres limites qui restent : aucune promesse sur d'autres agents IA. Antigravity se dit toujours ainsi : « pour Claude Code, fonctionne aussi avec Antigravity » (EN : « for Claude Code, also works with Antigravity »). Jamais à égalité avec Claude Code, jamais en premier. Le mot « agence » ne figure pas dans les textes publics, il laisse croire à des humains. Un texte public dit toujours qu'il faut un agent IA sur ta machine.
@@ -149,7 +149,7 @@ Ce sont trois choses distinctes. La phrase donne vie, la ligne d'appui montre le
 |---|---|---|
 | **La phrase** (donne vie) | **Finally on the same page.** | **Enfin sur la même longueur d'onde.** |
 | **La ligne d'appui** (montre) | **It asks. It writes it down. You decide.** | **Il demande. Il écrit. Tu décides.** |
-| **La description** (explique) | BRACE turns your AI agent into an assistant you can agree with: it asks before it guesses, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity. | BRACE fait de ton agent IA un assistant avec qui tu es d'accord : il demande avant de deviner, écrit ce que tu décides dans des fichiers que tu peux relire, et garde tous tes projets sur une seule page. Un plugin libre et gratuit pour Claude Code, il fonctionne aussi avec Antigravity. |
+| **La description** (explique) | BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can't know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity. | BRACE fait de ton agent IA un assistant avec qui tu es d'accord : il lit d'abord ton projet, ne demande que ce qu'il ne peut pas savoir, écrit ce que tu décides dans des fichiers que tu peux relire, et garde tous tes projets sur une seule page. Un plugin libre et gratuit pour Claude Code, il fonctionne aussi avec Antigravity. |
 
 ### Comment lire la phrase
 
@@ -174,6 +174,6 @@ Ta phrase, « des projets qui te ressemblent », est la couleur des textes, jama
 
 1. Le texte montre-t-il un geste, ou seulement un adjectif ?
 2. Chaque affirmation se vérifie-t-elle ? Sinon, elle est retirée ou marquée « à compléter ».
-3. Parle-t-il de design à venir, de vie privée ou de reprise de documents ? Alors il ne part pas.
+3. Parle-t-il de design à venir ou de reprise de documents, ou de vie privée au-delà de la limite validée ? Alors il ne part pas.
 4. Dit-il qu'il faut un agent IA sur la machine ?
 5. Jarvis ou Apple le dirait-il ?

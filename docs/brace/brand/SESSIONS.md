@@ -125,3 +125,50 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 ### Suite
 
 - Le rendez-vous 3 : la plateforme de marque, document par document.
+
+## 2026-11-07 — Rendez-vous 3 : la plateforme de marque
+
+### Décidé
+
+- La plateforme de marque, la charte éditoriale et le manifeste : validés,
+  reportés dans les fondations, la stratégie et la voix.
+- La valeur 3 s'appelle « Vérifier avant d'affirmer ».
+- La limite de la vie privée, vérifiée dans le code, se dit mot pour mot.
+- La description : « il lit d'abord ton projet, ne demande que ce qu'il ne
+  peut pas savoir ».
+- Le manifeste dit aussi : il te suggère une façon de travailler ou un
+  outil, propose de l'installer, et tu choisis.
+- [Le compte rendu](documents/2026-11-07-minutes-3.html).
+
+### En attente
+
+- La porte d'entrée pour qui n'a pas d'agent sur sa machine.
+- La disponibilité du nom BRACE parmi les plugins.
+- Les entretiens avec de vraies personnes.
+
+### Suite
+
+- L'équipe prépare la livraison : la vérification du nom, le plan de test,
+  le plan de transition et l'annonce.
+
+- meeting: 2026-11-09 14:00
+
+## 2026-11-07 — Le travail de l'équipe (avant le rendez-vous 4)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu valides au rendez-vous.
+
+### En attente
+
+- Bruno : [le nom BRACE parmi les plugins](documents/2026-11-07-names-check-4.html),
+  doute mineur, rien de bloquant.
+- Chloé : [le plan de test](documents/2026-11-07-test-plan.html),
+  [le plan de transition](documents/2026-11-07-transition.html).
+- David : [l'annonce](documents/2026-11-07-announcement.html),
+  [les textes en place](documents/2026-11-07-front-page-texts.html).
+- Emma : relu, corrections faites.
+
+### Suite
+
+- Le rendez-vous 4 : la livraison.

@@ -17,9 +17,11 @@ Monday morning. You paste in the same instructions as last week, and you are not
 
 You know your AI can do a lot. What wears you out is everything around it. Explaining again. Checking again. Wondering what it understood this time.
 
+And often, you do not know what else it could do, or what would fit you and what you need.
+
 An assistant can work another way.
 
-It reads before it speaks. It asks instead of guessing. When it does not know, it says so, and leaves a gap marked "to fill in". It writes down what you decide, and why, in plain files you can open, correct or delete. When it thinks you are wrong, it says so once, calmly, and then you decide.
+It reads before it speaks. It asks instead of guessing. When it matters, it suggests a way of working or a tool, and offers to install it. You choose. When it does not know, it says so, and leaves a gap marked "to fill in". It writes down what you decide, and why, in plain files you can open, correct or delete. When it thinks you are wrong, it says so once, calmly, and then you decide.
 
 It saves and publishes only what you have approved. You do not have to take its word for it: you can read every file.
 
@@ -41,9 +43,11 @@ Lundi matin. Tu recolles les mêmes consignes que la semaine dernière, et tu ne
 
 Tu sais que ton IA peut beaucoup. Ce qui t'épuise, c'est tout ce qu'il y a autour. Réexpliquer. Revérifier. Te demander ce qu'elle a compris cette fois.
 
+Et souvent, tu ne sais pas ce qu'elle pourrait faire de plus, ni ce qui irait avec toi et tes besoins.
+
 Un assistant peut travailler autrement.
 
-Il lit avant de parler. Il demande au lieu de deviner. Quand il ne sait pas, il le dit, et il laisse un « à compléter ». Il écrit ce que tu décides, et pourquoi, dans des fichiers simples que tu peux ouvrir, corriger ou supprimer. Quand il pense que tu te trompes, il le dit une fois, calmement, et ensuite c'est toi qui tranches.
+Il lit avant de parler. Il demande au lieu de deviner. Quand ça compte, il te suggère une façon de travailler ou un outil, et propose de l'installer. C'est toi qui choisis. Quand il ne sait pas, il le dit, et il laisse un « à compléter ». Il écrit ce que tu décides, et pourquoi, dans des fichiers simples que tu peux ouvrir, corriger ou supprimer. Quand il pense que tu te trompes, il le dit une fois, calmement, et ensuite c'est toi qui tranches.
 
 Il n'enregistre et ne publie que ce que tu as validé. Tu n'as pas à le croire sur parole : tu peux lire chaque fichier.
 
@@ -65,6 +69,7 @@ Chaque affirmation du manifeste renvoie à quelque chose que tu peux ouvrir.
 |---|---|
 | Il écrit dans des fichiers que tu peux ouvrir, corriger ou supprimer | les fichiers de suivi, dans le dossier de ton projet |
 | Il n'enregistre et ne publie que ce que tu as validé, et tu peux lire chaque fichier | le comportement décrit dans le README : rien n'est commité ni poussé sur GitHub sans confirmation |
+| Il suggère une façon de travailler ou un outil, et propose de l'installer, toi seul choisis | les propositions que BRACE fait en cours de route, par exemple le plugin superpowers pour planifier un gros chantier ou l'outil Rappels d'Apple quand il manque (ce ne sont que des exemples, la liste évolue), jamais imposées |
 | Il est libre et gratuit | la licence MIT du dépôt |
 | Il faut un agent IA sur ton ordinateur | ce que BRACE est : un plugin |
 

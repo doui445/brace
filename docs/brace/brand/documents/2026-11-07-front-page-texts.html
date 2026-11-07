@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les textes en place</title>
+<meta name="brace-author" content="David">
+<meta name="brace-role" content="rédacteur">
+<meta name="brace-meeting" content="4">
+<meta name="brace-date" content="2026-11-07">
+<link rel="stylesheet" href="../doc.css">
+</head>
+<body>
+<main class="page">
+<header class="doc-head">
+<div class="kicker">BRACE</div>
+<h1>Les textes en place</h1>
+<div class="doc-date">2026-11-07</div>
+</header>
+<div class="body">
+<p>Voici les textes exacts que la page d&#x27;accueil du dépôt et les fiches d&#x27;installation afficheront, tels qu&#x27;ils se liraient en place. Pour chaque ligne, le texte actuel, puis le nouveau. Ils sont en anglais, la langue de la marque. Aucun fichier du dépôt n&#x27;est modifié avant ta validation.</p>
+<p>Les lignes viennent du <a href="2026-11-07-transition.html">plan de transition</a>. La description, la phrase d&#x27;appui et la phrase de marque sont reprises mot pour mot de la charte éditoriale. Rien n&#x27;est annoncé qui ne soit pas livré, et Antigravity vient toujours en second.</p>
+<h2>La page d&#x27;accueil (README.md)</h2>
+<h3>Lignes 5 et 6, la situation de départ</h3>
+<p>Actuel :</p>
+<blockquote><p>Your AI forgets your project between sessions, and you explain it again. Every time.</p></blockquote>
+<p>Nouveau :</p>
+<blockquote><p>Monday morning. You paste in the same instructions as last week, and you are not sure which of your notes is still true.</p></blockquote>
+<h3>Lignes 8 à 12, la description</h3>
+<p>Actuel :</p>
+<blockquote><p>BRACE turns your AI into a real assistant for your projects. It&#x27;s a free, open-source plugin for Claude Code and Antigravity. It keeps your project&#x27;s memory in files you can read: where you stand, what was decided, what comes next. It keeps them up to date, suggests the right tools when they help, and tells you when it doesn&#x27;t know.</p></blockquote>
+<p>Nouveau (mot pour mot de la charte) :</p>
+<blockquote><p>BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can&#x27;t know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.</p></blockquote>
+<h3>Lignes 14 et 15, les compétences</h3>
+<p>Actuel :</p>
+<blockquote><p>Its skills share that memory. Track follows your projects, brand gives them a voice and a strategy, and design is on its way.</p></blockquote>
+<p>Nouveau (le design à venir sort, et « memory » aussi) :</p>
+<blockquote><p>Track follows your projects. Brand writes down your project&#x27;s voice and strategy, after meetings where you validate each document.</p></blockquote>
+<h3>Lignes 17 et 18, la phrase d&#x27;appui</h3>
+<p>Actuel :</p>
+<blockquote><p>Pick up where you left off. Keep your project clean. Follow a summary of all your projects on a single page.</p></blockquote>
+<p>Nouveau (mot pour mot de la charte) :</p>
+<blockquote><p>It asks. It writes it down. You decide.</p></blockquote>
+<h3>Ligne 20, la mention de l&#x27;ancien nom</h3>
+<p>Actuel et nouveau, inchangée. C&#x27;est la seule mention de l&#x27;ancien nom dans les textes publics.</p>
+<blockquote><p>Formerly project-tracker.</p></blockquote>
+<h3>Lignes 99 et 100, ce qu&#x27;il faut</h3>
+<p>Actuel :</p>
+<blockquote><ul><li><strong>Claude Code</strong> or <strong>Antigravity</strong> — that&#x27;s the only hard requirement.</li></ul></blockquote>
+<p>Nouveau :</p>
+<blockquote><ul><li><strong>An AI agent on your computer.</strong> BRACE is a plugin for Claude Code, and it also works with Antigravity. Without an agent, it has nothing to run in. It is the only hard requirement.</li></ul></blockquote>
+<h3>La première page, lue d&#x27;un trait</h3>
+<p>Une fois les lignes en place, le haut du README se lit ainsi :</p>
+<blockquote><h1>BRACE</h1>
+<p><strong>Finally on the same page.</strong></p>
+<p>Monday morning. You paste in the same instructions as last week, and you are not sure which of your notes is still true.</p>
+<p>BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can&#x27;t know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.</p>
+<p>Track follows your projects. Brand writes down your project&#x27;s voice and strategy, after meetings where you validate each document.</p>
+<p>It asks. It writes it down. You decide.</p>
+<p>Formerly project-tracker.</p></blockquote>
+<h2>Les descriptions affichées à l&#x27;installation</h2>
+<h3>.claude-plugin/plugin.json, ligne 3 (Claude Code)</h3>
+<p>Actuel :</p>
+<blockquote><p>BRACE turns your AI into a real assistant for your projects: it remembers, keeps them clean and professional, and follows them all. For Claude Code and Antigravity.</p></blockquote>
+<p>Nouveau (la description de la charte, mot pour mot) :</p>
+<blockquote><p>BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can&#x27;t know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.</p></blockquote>
+<h3>plugin.json à la racine, ligne 3 (Antigravity)</h3>
+<p>Actuel : le même texte que ci-dessus. Nouveau : la même description, mot pour mot.</p>
+<h3>.claude-plugin/marketplace.json, ligne 11 (l&#x27;entrée brace)</h3>
+<p>Actuel : le même texte que ci-dessus. Nouveau : la même description, mot pour mot.</p>
+<h3>.claude-plugin/marketplace.json, ligne 6 (la place de marché)</h3>
+<p>Actuel :</p>
+<blockquote><p>BRACE, a real assistant for your projects in Claude Code and Antigravity, and the project-tracker bridge that installs it.</p></blockquote>
+<p>Nouveau :</p>
+<blockquote><p>BRACE, a plugin for your AI agent: it asks, writes down what you decide, and keeps all your projects on one page. For Claude Code, it also works with Antigravity. This marketplace also carries the update for people coming from the earlier plugin.</p></blockquote>
+<p>La ligne 6 ne cite plus l&#x27;ancien nom : la seule mention reste celle du README. L&#x27;entrée de la passerelle (lignes 15 à 18) n&#x27;est pas touchée.</p>
+<h3>La version</h3>
+<p>Les trois fichiers affichent 1.0.0. Les nouvelles descriptions n&#x27;arrivent chez les gens qu&#x27;avec une version publiée : 1.1 (hypothèse, à confirmer à la sortie).</p>
+<h2>Avant, en français</h2>
+<p>Ce texte sert au plan de test : il faut la version française de la présentation d&#x27;avant, pour la comparer à la nouvelle. C&#x27;est une proposition de traduction du texte anglais du 22 octobre, que tu valides. Le français cherche l&#x27;expression qui existe, il ne calque pas. Ce texte n&#x27;est pas à publier : il garde « design arrive » parce que l&#x27;original le disait, et c&#x27;est justement ce que le test compare.</p>
+<h3>La phrase de marque</h3>
+<blockquote><p>Enfin sur la même page.</p></blockquote>
+<h3>La description d&#x27;avant</h3>
+<blockquote><p>BRACE fait de ton IA un vrai assistant pour tes projets. C&#x27;est un plugin libre et open source pour Claude Code et Antigravity. Il garde la mémoire de ton projet dans des fichiers que tu peux lire : où tu en es, ce qui a été décidé, ce qui vient ensuite. Il les tient à jour, te propose les bons outils quand ils aident, et te dit quand il ne sait pas.</p></blockquote>
+<h3>Le texte de présentation d&#x27;avant, en entier</h3>
+<blockquote><p>Ton IA oublie ton projet d&#x27;une session à l&#x27;autre, et tu le lui réexpliques. À chaque fois.</p>
+<p>BRACE fait de ton IA un vrai assistant pour tes projets. C&#x27;est un plugin libre et open source pour Claude Code et Antigravity. Il garde la mémoire de ton projet dans des fichiers que tu peux lire : où tu en es, ce qui a été décidé, ce qui vient ensuite. Il les tient à jour, te propose les bons outils quand ils aident, et te dit quand il ne sait pas.</p>
+<p>Ses compétences partagent cette mémoire. Track suit tes projets, brand leur donne une voix et une stratégie, et design arrive.</p>
+<p>Reprends là où tu t&#x27;étais arrêté. Garde ton projet propre. Suis le résumé de tous tes projets sur une seule page.</p></blockquote>
+<h2>Ce que tu peux vérifier</h2>
+<table><thead><tr><th>Le texte dit</th><th>Ce qui le soutient</th></tr></thead><tbody><tr><td>Les textes actuels cités</td><td>les lignes du <code>README.md</code>, de <code>.claude-plugin/plugin.json</code>, de <code>plugin.json</code> et de <code>.claude-plugin/marketplace.json</code>, aux numéros indiqués</td></tr><tr><td>La description, la phrase d&#x27;appui et la phrase de marque sont mot pour mot ceux de la charte</td><td><code>docs/brace/brand/VOICE.md</code>, partie « Tagline and boilerplate »</td></tr><tr><td>Le texte d&#x27;avant en français traduit l&#x27;anglais du 22 octobre</td><td><code>docs/brace/brand/VOICE.md</code>, partie « Earlier texts », « Presentation text »</td></tr><tr><td>Brand écrit la voix et la stratégie du projet après des rendez-vous validés</td><td><code>docs/brace/brand/</code> et <code>docs/brace/agents/brand/</code> dans ce dépôt</td></tr><tr><td>Il faut un agent IA sur l&#x27;ordinateur</td><td>ce que BRACE est : un plugin</td></tr></tbody></table>
+</div>
+<footer class="doc-sign"><span>David, rédacteur</span><span>BRACE</span></footer>
+</main>
+</body>
+</html>

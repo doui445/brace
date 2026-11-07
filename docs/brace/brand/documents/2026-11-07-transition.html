@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de transition</title>
+<meta name="brace-author" content="Chloé">
+<meta name="brace-role" content="stratège">
+<meta name="brace-meeting" content="4">
+<meta name="brace-date" content="2026-11-07">
+<link rel="stylesheet" href="../doc.css">
+</head>
+<body>
+<main class="page">
+<header class="doc-head">
+<div class="kicker">BRACE</div>
+<h1>Plan de transition</h1>
+<div class="doc-date">2026-11-07</div>
+</header>
+<div class="body">
+<h2>En bref</h2>
+<p>Tu as choisi un <strong>repositionnement</strong> : le nom BRACE reste, la promesse et le public changent. Il n&#x27;y a donc <strong>pas de renommage</strong> : ni le dépôt GitHub, ni le plugin, ni la migration des anciens utilisateurs ne bougent. La transition tient en quatre listes, dans cet ordre :</p>
+<ol><li>ce que l&#x27;agence fait elle-même dans le dépôt ;</li><li>ce qui demande ta confirmation, parce que c&#x27;est public ;</li><li>ce que tu fais en dehors du dépôt ;</li><li>les nouveaux prénoms de l&#x27;équipe, qui entrent en dernier.</li></ol>
+<p>Chaque ligne dit le fichier, ce qu&#x27;il dit aujourd&#x27;hui, et ce qu&#x27;il dira. Les textes viennent tous de la <a href="2026-11-07-editorial-guide.html">charte éditoriale</a> (le fichier de voix <code>VOICE.md</code>). Nous n&#x27;en écrivons aucun nouveau ici.</p>
+<p>Règles tenues partout : rien de public sur ce qui n&#x27;est pas livré (le design à venir, les autres compétences à venir, la reprise de documents), la limite sur la vie privée mot pour mot si elle apparaît, et Antigravity toujours cité en second : « pour Claude Code, fonctionne aussi avec Antigravity ».</p>
+<h2>1. Ce que l&#x27;agence fait elle-même</h2>
+<p>Chaque modification est montrée avant d&#x27;être faite, et enregistrée une fois que tu as validé (la publication suit ta règle d&#x27;enregistrement habituelle).</p>
+<h3>La page d&#x27;accueil du dépôt</h3>
+<p>Fichier : <code>README.md</code>.</p>
+<table><thead><tr><th>Ligne</th><th>Aujourd&#x27;hui</th><th>Ce qui change</th></tr></thead><tbody><tr><td>3</td><td>« Finally on the same page. »</td><td>Reste. Elle est déjà en place</td></tr><tr><td>5 à 6</td><td>« Your AI forgets your project between sessions, and you explain it again. Every time. »</td><td>Remplacé : voir le haut du README tel qu&#x27;il se lira</td></tr><tr><td>8 à 12</td><td>« BRACE turns your AI into a real assistant for your projects. It&#x27;s a free, open-source plugin for Claude Code and Antigravity. It keeps your project&#x27;s memory… »</td><td>Remplacé : voir le haut du README</td></tr><tr><td>14 à 15</td><td>« Its skills share that memory. Track follows your projects, brand gives them a voice and a strategy, and <strong>design is on its way</strong>. »</td><td>Remplacé, et la mention du design à venir <strong>sort</strong> : voir le haut du README</td></tr><tr><td>17 à 18</td><td>« Pick up where you left off. Keep your project clean. Follow a summary of all your projects on a single page. »</td><td>Remplacé : voir le haut du README</td></tr><tr><td>99 à 100</td><td>« Claude Code or Antigravity — that&#x27;s the only hard requirement. »</td><td>Réécrit : voir la ligne de prérequis dans le même texte</td></tr></tbody></table>
+<p>Les textes eux-mêmes sont écrits par David, avec le haut du README tel qu&#x27;il se lira : <a href="2026-11-07-front-page-texts.html">textes de la page d&#x27;accueil</a>. Ce plan ne les redécrit pas : tu valides ce texte, pas un tableau d&#x27;intentions.</p>
+<h3>La mention « formerly project-tracker »</h3>
+<ul><li><strong>Aujourd&#x27;hui</strong> : <code>README.md</code> ligne 20, « Formerly project-tracker. »</li><li><strong>Demain</strong> : elle reste, <strong>seule</strong>, à la ligne 20 du README (règle de la</li></ul>
+<p>plateforme, partie 9). Aucune autre page ne parle de l&#x27;ancien nom : ni les descriptions, ni les nouvelles de la version dans le README, ni les notes de version, ni l&#x27;annonce.</p>
+<ul><li><strong>Combien de temps</strong> : <em>proposition de notre part</em>, jusqu&#x27;à la revue de six</li></ul>
+<p>mois (mai 2027). On la retire alors, avec la section ci-dessous. À toi de confirmer, ou de choisir une autre date.</p>
+<p>La section « Coming from project-tracker » (<code>README.md</code> lignes 47 à 58) n&#x27;est pas une mention « formerly » : c&#x27;est le mode d&#x27;emploi pour qui a encore l&#x27;ancien plugin. Elle cite l&#x27;ancien nom six fois, parce qu&#x27;elle doit. Elle <strong>reste</strong> tant que des gens peuvent encore avoir l&#x27;ancien plugin (règle de zéro rupture). Elle part en même temps que la mention de la ligne 20.</p>
+<h3>Les descriptions affichées à l&#x27;installation</h3>
+<table><thead><tr><th>Fichier</th><th>Ligne</th><th>Aujourd&#x27;hui</th><th>Ce qui change</th></tr></thead><tbody><tr><td><code>.claude-plugin/plugin.json</code></td><td>3</td><td>« BRACE turns your AI into a real assistant for your projects: it remembers, keeps them clean and professional, and follows them all. For Claude Code and Antigravity. »</td><td>La description de la charte (anglais) : voir le <a href="2026-11-07-front-page-texts.html">texte de David</a></td></tr><tr><td><code>plugin.json</code> (racine, Antigravity)</td><td>3</td><td>Le même texte</td><td>La même description : même page</td></tr><tr><td><code>.claude-plugin/marketplace.json</code></td><td>11</td><td>Le même texte (entrée <code>brace</code>)</td><td>La même description : même page</td></tr><tr><td><code>.claude-plugin/marketplace.json</code></td><td>6</td><td>« BRACE, a real assistant for your projects in Claude Code and Antigravity, and the project-tracker bridge that installs it. »</td><td>Réécrit : voir la même page</td></tr></tbody></table>
+<p><strong>À ne pas toucher.</strong> <code>.claude-plugin/marketplace.json</code> lignes 15 à 18 (l&#x27;entrée du plugin passerelle : « project-tracker is now BRACE. This final release installs brace for you. ») et <code>bridge/.claude-plugin/plugin.json</code> ligne 4. Le plugin passerelle est publié, il fait la migration, et il dit déjà la bonne chose.</p>
+<p><strong>La version.</strong> Les trois fichiers affichent <code>1.0.0</code> (<code>.claude-plugin/plugin.json</code> ligne 4, <code>.claude-plugin/marketplace.json</code> ligne 12, <code>plugin.json</code> racine). Les nouvelles descriptions n&#x27;arrivent chez les utilisateurs qu&#x27;avec une version publiée. La prochaine est <strong>1.1 (à confirmer à la sortie)</strong>, comme dans l&#x27;annonce. <em>À compléter :</em> sa date. Les trois fichiers restent égaux.</p>
+<h3>Les restes d&#x27;avant qui contredisent la nouvelle voix</h3>
+<p>Relevé du dépôt, hors dossier <code>docs/</code>. Il est court :</p>
+<ul><li><code>README.md</code> ligne 15, « design is on its way » (déjà dans le tableau</li></ul>
+<p>ci-dessus).</p>
+<ul><li><code>README.md</code> lignes 8 à 12 et les descriptions des trois manifestes :</li></ul>
+<p>« it remembers » et « real assistant » parlent de mémoire, l&#x27;ancienne promesse (audit, partie 4).</p>
+<ul><li><code>README.md</code> ligne 9 et ligne 99 : « Claude Code and Antigravity » côte à côte.</li><li><code>docs/brace/STATUS.md</code> ligne 2, <code>project: project-tracker</code> : **on ne le</li></ul>
+<p>change pas**. La règle du fichier est que cette valeur est le nom du dossier, et le dossier s&#x27;appelle encore ainsi. Voir « À décider » plus bas.</p>
+<p>Deux choses ne sont pas des restes à effacer :</p>
+<ul><li><code>docs/brace/brand/VOICE.md</code>, partie « Earlier texts » : deux textes d&#x27;avant,</li></ul>
+<p>dont l&#x27;un contient « design is on its way ». Ils sont gardés comme archive, pas comme modèles.</p>
+<ul><li>Les scripts de migration dans <code>skills/track/hooks/</code> citent <code>project-tracker</code></li></ul>
+<p>pour trouver les anciens dossiers. C&#x27;est leur travail.</p>
+<p><em>Ce que nous n&#x27;avons pas relu :</em> les messages que BRACE affiche pendant une séance. Ils sont la voix aussi, mais dispersés dans le code ; ils sont vérifiés à la main aux revues, et pas par ce plan.</p>
+<h2>2. Ce qui demande ta confirmation (c&#x27;est public)</h2>
+<p>Rien ne part sans que tu aies dit oui.</p>
+<h3>La description du dépôt GitHub et ses sujets</h3>
+<p>Le dépôt <code>doui445/brace</code> n&#x27;a aujourd&#x27;hui <strong>ni description ni sujets ni site</strong> (recherche de Bruno, 6 novembre).</p>
+<ul><li><strong>Description.</strong> Nous proposons la description de la charte, mot pour mot</li></ul>
+<p>(environ 275 caractères, sous la limite de GitHub). L&#x27;agence la pose avec <code>gh repo edit</code> après ton accord.</p>
+<ul><li><strong>Sujets.</strong> <em>Proposition de notre part, non relevée dans un fait :</em></li></ul>
+<p><code>claude-code</code>, <code>claude-code-plugin</code>, <code>ai-agent</code>, <code>project-tracking</code>. Bruno vérifie d&#x27;abord que ces sujets existent et sont utilisés. Antigravity est cité dans la description, pas dans les sujets : un sujet n&#x27;a pas de rang, et il mettrait les deux au même niveau.</p>
+<ul><li><strong>Site.</strong> Il n&#x27;existe pas. On ne met pas d&#x27;adresse.</li></ul>
+<h3>Ce qui devient public</h3>
+<ul><li>Le <code>README.md</code> et les manifestes, à l&#x27;enregistrement, selon ta règle de</li></ul>
+<p>publication.</p>
+<ul><li>Les notes de la version, quand elle sort : David les écrit avec</li></ul>
+<p>l&#x27;annonce, pour la version 1.1 (à confirmer à la sortie).</p>
+<h2>3. Ce que tu fais en dehors du dépôt</h2>
+<ul><li><strong>Lancer le test.</strong> Envoyer la page aux 5 à 10 personnes</li></ul>
+<p>(<a href="2026-11-07-test-plan.html">plan de test</a>).</p>
+<ul><li><strong>Publier l&#x27;annonce</strong>, une fois la version sortie et l&#x27;annonce validée. Elle</li></ul>
+<p>remplace le court message du 21 octobre, qui parle encore de mémoire et met les deux agents côte à côte.</p>
+<ul><li><strong>Les profils et publications qui présentent BRACE.</strong> <em>À compléter :</em></li></ul>
+<p>lesquels existent. Nous n&#x27;en avons trouvé aucun dans nos recherches (aucune mention de BRACE, benchmark partie 3), mais nous ne voyons pas tes comptes. S&#x27;il y en a, chacun est repris avec la description de la charte.</p>
+<ul><li><strong>Le site.</strong> Prévu, non commencé : rien à faire pour l&#x27;instant.</li><li><strong>Les entretiens.</strong> Le guide d&#x27;Alice est prêt ; ils ne sont pas dans la</li></ul>
+<p>transition, mais ils nourrissent la revue de six mois.</p>
+<ul><li><strong>Dire merci</strong> aux personnes du test, et revenir vers celles qui ont laissé</li></ul>
+<p>une adresse.</p>
+<p><strong>Le nom BRACE : vérifié.</strong> Bruno a fait la vérification (<a href="2026-11-07-names-check-4.html">note</a>). Verdict : <em>doute mineur</em>, rien ne bloque. Il n&#x27;a trouvé aucun plugin, outil ou marque BRACE dans cette catégorie. Le nom <code>brace</code> seul est pris sur npm et sur PyPI par des projets sans rapport. La place de marché officielle de Claude Code, Homebrew et <code>@brace</code> sont libres. Il n&#x27;a <strong>pas</strong> vérifié Antigravity, VS Code ni les places de marché communautaires. C&#x27;est une vérification, pas un avis juridique. Le plan reste donc valable tel quel.</p>
+<h2>4. Les nouveaux prénoms de l&#x27;équipe</h2>
+<p>Tu as choisi Julie, Ravi, Constance, Ben et Lou au rendez-vous 2. Ils entrent <strong>à la livraison</strong>, <strong>en dernier</strong>, une fois la mission fermée, pour que les documents de ce rendez-vous restent signés de façon cohérente.</p>
+<table><thead><tr><th>Rôle</th><th>Aujourd&#x27;hui</th><th>Demain</th></tr></thead><tbody><tr><td>Directrice de clientèle</td><td>Alice</td><td>Julie</td></tr><tr><td>Analyste</td><td>Bruno</td><td>Ravi</td></tr><tr><td>Stratège</td><td>Chloé</td><td>Constance</td></tr><tr><td>Rédacteur</td><td>David</td><td>Ben</td></tr><tr><td>Directrice de création</td><td>Emma</td><td>Lou</td></tr></tbody></table>
+<p>Les rôles ne changent pas. Source du tableau : compte rendu du rendez-vous 2.</p>
+<p><strong>Où ils vivent.</strong> Dans le catalogue des textes :</p>
+<ul><li><code>skills/track/references/i18n/en.md</code>, lignes 192 à 201 : les clés</li></ul>
+<p><code>brand.team.brand</code>, <code>brand.team.analyst</code>, <code>brand.team.strategist</code>, <code>brand.team.copywriter</code> et <code>brand.team.creative_director</code>, chacune avec son <code>.name</code> et son <code>.role</code>.</p>
+<ul><li><code>skills/track/references/i18n/fr.md</code>, lignes 186 à 195 : les mêmes dix clés.</li></ul>
+<p>Dix lignes par fichier, vingt en tout. Seuls les <code>.name</code> changent, jamais les <code>.role</code>, et les clés restent telles quelles. Les agents et les documents les lisent dans ce catalogue, nulle part ailleurs.</p>
+<p>Deux doutes sont déjà notés : Julie (une assistante de planning IA porte ce nom en France, vérification de Bruno) et Ravi (un petit outil d&#x27;agents IA, compte rendu du rendez-vous 2). Ils ne bloquent pas.</p>
+<p>Deux autres endroits en dépendent, mais se règlent d&#x27;eux-mêmes :</p>
+<ul><li>Les fichiers <code>BRIEF.md</code> de chaque agent, dans <code>docs/brace/agents/</code>, citent</li></ul>
+<p>les prénoms provisoires. Chaque agent les met à jour à sa prochaine mission.</p>
+<ul><li><code>skills/brand/scripts/test_render.py</code> (lignes 18, 99, 101 et 113) utilise</li></ul>
+<p>« Bruno » comme exemple dans un test. C&#x27;est un jeu d&#x27;essai, pas un texte de marque : il peut rester.</p>
+<p><strong>Les documents déjà rendus</strong> (plateforme, charte, manifeste, procès-verbaux) sont signés des prénoms d&#x27;alors. Nous proposons de les laisser tels quels : ils ont été validés ainsi, et ils sont l&#x27;archive du travail. Si tu préfères les refaire, dis-le.</p>
+<h2>5. À décider avec toi</h2>
+<ul><li><strong>Le dossier du projet.</strong> Le dossier s&#x27;appelle encore <code>project-tracker</code>.</li></ul>
+<p>C&#x27;est un reste de l&#x27;ancien nom, mais le nom BRACE ne change pas dans ce repositionnement, et le renommer n&#x27;est pas dans la mission. Si tu veux le faire, c&#x27;est la toute dernière action de la session, avec la commande de secours (BRACE tourne depuis ce dossier). Il fait aussi passer <code>project:</code> de <code>STATUS.md</code> à <code>brace</code>, et le portfolio avec lui. <em>Notre avis :</em> pas maintenant, une décision séparée.</p>
+<ul><li><strong>La date où la mention « formerly project-tracker » part.</strong> Proposition :</li></ul>
+<p>la revue de six mois.</p>
+<ul><li><strong>Les documents signés des anciens prénoms</strong> : les laisser, ou les refaire.</li></ul>
+<h2>Ordre et calendrier</h2>
+<table><thead><tr><th>Quand</th><th>Quoi</th><th>Qui</th></tr></thead><tbody><tr><td>Au rendez-vous 4</td><td>Tu valides ce plan, le plan de test, l&#x27;annonce et la phrase en place sur la page d&#x27;accueil</td><td>Toi</td></tr><tr><td>Juste après</td><td>Les modifications des listes 1 (page d&#x27;accueil, mention, descriptions)</td><td>L&#x27;agence</td></tr><tr><td>Le soir même ou le lendemain</td><td>Le test, envoyé à 5 à 10 personnes</td><td>Toi</td></tr><tr><td>À la sortie de la version</td><td>Description et sujets GitHub, notes de version, annonce</td><td>L&#x27;agence (après ton oui) et toi</td></tr><tr><td>En dernier, une fois la mission fermée</td><td>Les cinq prénoms dans les deux catalogues</td><td>L&#x27;agence</td></tr><tr><td>Revue de six mois (mai 2027, <em>à confirmer</em>)</td><td>Retrait de « formerly project-tracker » et de la section d&#x27;accueil de l&#x27;ancien plugin ; relecture de la voix</td><td>L&#x27;agence et toi</td></tr></tbody></table>
+<p><em>À compléter :</em> la date de la version (1.1, à confirmer à la sortie), l&#x27;outil du formulaire de test.</p>
+</div>
+<footer class="doc-sign"><span>Chloé, stratège</span><span>BRACE</span></footer>
+</main>
+</body>
+</html>

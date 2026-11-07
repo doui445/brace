@@ -42,3 +42,21 @@ Brand choices: what was tried, why it was set aside, what was kept.
 - **Équipe** : Julie, Ravi, Constance, Ben, Lou, choisis sur trois tours
   de candidats vérifiés. Écartés à la vérification : Theo, Robin, Simon,
   Alma, Diana, Felix, Victor (Viktor), Hector.
+
+## 2026-11-07 — Rendez-vous 3 : la plateforme de marque
+
+- **Plateforme validée** : [la plateforme de marque](documents/2026-11-07-platform.html),
+  reportée dans les fondations et la stratégie.
+- **Ligne d'appui** : « It asks. It writes it down. You decide. » (« Il
+  demande. Il écrit. Tu décides. »). Elle prouve la phrase, ne la remplace
+  pas.
+- **La couleur « des projets qui te ressemblent »** : après la promesse,
+  jamais avant ; ce qui ressemble, c'est ce que tu as écrit et validé ; en
+  anglais « true to you », « looks like you » écarté.
+- **Valeur 3 renommée** : « Vérifier avant d'affirmer », anciennement
+  « Honnêteté totale ». Écartés : garder le nom (le mot fait slogan),
+  « Rien sans preuve » (se confond avec « Rien sans toi »).
+- **Limite de la vie privée** : « BRACE n'envoie rien lui-même. Ce que ton
+  agent lit part chez le fournisseur du modèle, comme pour tout agent. Ce
+  qui va sur GitHub ou dans tes Rappels, c'est toi qui le décides. »
+  Vérifiée dans le code. Écarté : ne rien dire pour l'instant.

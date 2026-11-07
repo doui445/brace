@@ -1244,3 +1244,28 @@ Closed out the portfolio sub-pages work and cut the release:
   opened document says. Auto mode's classifier again blocked the
   agency's closing writes without a reason. A product idea logged in
   `BACKLOG.md`: brand work alongside an existing agency's documents.
+
+## 2026-11-07 — The rebrand trial, meeting 3 held
+
+- The client came early and started meeting 3 at once. Platform, editorial
+  guide and manifesto validated one by one, each with small changes: value
+  3 renamed "Check before claiming"; the privacy limit settled and checked
+  in the code first (BRACE sends nothing itself; GitHub and Reminders are
+  the user's call); the description now says it reads the project first
+  and only asks what it cannot know; the manifesto adds that BRACE
+  suggests ways of working and tools, and offers to install them.
+- The brand files (`FOUNDATIONS.md`, `STRATEGY.md`, `VOICE.md`, brand
+  `DECISIONS.md`) carry the validated platform; `VOICE.md` is now English
+  from the French guide.
+- Product idea logged in `BACKLOG.md`: help the user get the most out of
+  their AI (tools presented with pros and cons from fresh research and
+  feedback, and one catalogue of every tool BRACE can propose).
+- Then the delivery backstage: name check among plugins (minor doubt,
+  nothing blocking), test plan, transition plan, announcement, the texts
+  in place; one review round. Meeting 4 set 2026-11-09 14:00, in the
+  client's calendar (the agency asked which calendar once, kept in
+  `~/.brace/prefs.txt`).
+- Found on the way: auto mode's classifier again refused writes without a
+  verdict (a subagent's and then brand's own), cleared by leaving auto
+  mode; a subagent first reported "written" for a file that was not on
+  disk, so the agency checks its agents' files before relying on them.

@@ -2,6 +2,11 @@
 
 Where we play and against whom. Revised over time.
 
+Updated 2026-11-07 from the validated
+[brand platform](documents/2026-11-07-platform.html) (rebrand, route
+"Nothing without you"). What we put first: trust, then order (all your
+projects on one page).
+
 ## Objectives
 
 In order:
@@ -13,143 +18,137 @@ In order:
    chosen yet.
 
 ## Personas
+The audience: **anyone with several concrete projects to run,
+entrepreneurs included**, with a stable version for Claude Code first.
+Provisional: six questionnaire answers from the owner's circle (not a
+sample) and the public's voices found by the analyst; no interview yet,
+the guide is ready. Detail: [personas](documents/2026-11-06-personas.html).
 
-Provisional: built 2026-10-20 from six questionnaire answers (people from
-the owner's circle, not a sample) and the analyst's audience report
-(`docs/brace/agents/analyst/2026-10-19-audience.md`). Quotes are the
-respondents' own words, translated from French.
+1. **The pilot** (first): runs several projects with Claude and Claude
+   Code, checks everything, and fears silent drift. Judges the promise:
+   everything written is readable. Well supported by the data.
+2. **The entrepreneur with several hats** (next): "a brilliant consultant
+   who gets amnesia every Monday morning". The least supported persona.
+   *Assumption*: uses an AI on their machine.
+3. **The resourceful one** (tomorrow): mostly on web apps. Still no way
+   in, since BRACE needs an agent on the machine: no promise to them until
+   one exists (a product question, noted for later).
 
-1. **The pilot** (today's target): runs a business or several projects at
-   once (an agency, analysis, accounting, an app) with Claude and Claude
-   Code. Files work in one folder per project and checks everything
-   personally.
-   - **Before BRACE**: "I manage pretty well", "a boss with assistants",
-     but "a lot of reiteration", and the AI "answers beside the point".
-   - **Wants**: agents that guess what is needed before it is fully said.
-2. **The resourceful one** (tomorrow's target): a student, a creative, or
-   someone starting a business, mostly on web apps, with several AIs at
-   once. Many projects, few finished.
-   - **Before BRACE**: hits token and credit limits, the AI "drowns" and
-     "cannot find the right elements", "you have to think about how to talk
-     to it", feels "watched, distant".
-   - **Wants**: an AI that organises itself and makes a detailed plan they
-     can edit.
-
-What the answers confirm: token or credit limits (3 of 6), relevance more
-than forgetting, one folder per project already (5 of 6), no trust in the
-result without checking, several AIs and so no shared journal.
-
-Open point: 4 of 6 use AI in a web app, and BRACE needs an agent on the
-machine today. The resourceful one needs a way in; nothing decided yet.
+What they share: several projects, the same thing repeated to the AI,
+checking every result, a taste for simple and sober. Their starting state
+(*assumption* until the interviews): tired of starting from zero, and
+wary after being burned by a stale fact.
 
 ## Competitive landscape
+Summary approved 2026-10-19, level 4 added 2026-11-06. Reports, with
+sources: `docs/brace/agents/analyst/2026-10-19-competitors.md` and the
+[benchmark](documents/2026-11-06-benchmark.html).
 
-Summary approved 2026-10-19. Full report, with sources:
-`docs/brace/agents/analyst/2026-10-19-competitors.md`.
-
-- **Level 1, alternatives**: AI chat apps and sites (ChatGPT, the Claude
-  app, Claude Cowork), IDEs (Cursor, Copilot), and the native memory of
-  Claude Code and Antigravity. Memory is everywhere, but it is notes or
-  opaque, and nothing keeps the project in order.
-- **Level 2, direct competitors**: superpowers (a working method), ECC,
-  Everything Claude Code (performance, and a loose memory vault),
-  claude-mem (memory in a database), Spec Kit, BMAD, Taskmaster. Each
-  covers one piece, none the whole. Their tone is dense and one-upping.
+- **Level 1, alternatives**: AI chat apps and sites, IDEs, the native
+  memory of Claude Code and Antigravity; since November, Claude Design and
+  Anthropic's marketing plugin, next door on "on-brand".
+- **Level 2, direct competitors**: superpowers, ECC, claude-mem, Spec Kit,
+  BMAD, Taskmaster. Each covers one piece, none the whole. Their tone is
+  dense and one-upping.
 - **Level 3, a similar promise**: OpenClaw, Hermes, Meta Muse, Tab, Notion
-  AI, Manus. They sell outcomes ("it does things"), not project quality.
-  Tab bets on trust.
-- **Nobody holds**: organised memory you can read, a project that stays
-  clean, a view of all your projects with real follow-up, a calm tone, and
-  tools proposed only when useful.
+  AI, Manus. They sell outcomes. Tab bets on trust (not rechecked).
+- **Level 4, AI branding tools and AI "agencies"**: logo and brand kits
+  (Looka, Brandmark), platforms shouting numbers and claiming to replace
+  the agency (MarkGrid, MarkBase). Tailor Brands comes near the calm
+  register, for starting a US business.
+- **Nobody holds**: calm instead of numbers, a project record you can
+  read, and the user deciding.
 
 ## Differentiators
+Different, not better. Three, no more.
 
-Different, not better.
+1. **It does not guess what it cannot know.** It asks, marks "to fill in"
+   and dares to disagree. The public fears exactly the silent error: "the
+   failure mode isn't 'tool forgot', it's 'tool remembers a stale fact'".
+2. **What is decided is written down, in readable files you can edit, in
+   your project.** Not a database. In texts, say what BRACE does, without
+   comparing (the gap with claude-mem was not rechecked).
+3. **Calm instead of numbers.** The AI "agencies" shout figures; BRACE
+   does the opposite.
 
-1. **The whole system, not one more piece**: memory, tracking, portfolio,
-   reminders and skills in one plugin, working together.
-2. **Organised, relevant memory you can read**: real files in your project
-   (status, decisions, journal...), kept current. Not a database, not loose
-   notes.
-3. **The project stays clean**: BRACE does not only remember, it keeps the
-   project in order, complete and professional.
-4. **All your projects at a glance**, with real-life follow-up (reminders,
-   calendar).
-5. **It proposes, it does not impose**: tools and choices come only when
-   justified, and it stays light on tokens.
-6. **Honest enough to disagree**: it never guesses, it asks, and it tells
-   you when you are wrong.
-
-Direction, not yet a differentiator: BRACE is built to extend to more
-agents over time (two today, Claude Code and Antigravity). "Shared across
-agents" alone does not set it apart: ECC shares a memory vault across
-harnesses through its CLI
-(`docs/brace/agents/analyst/2026-10-19-competitors-multi-tool-memory.md`).
-What may: one readable project record that every agent reads and writes,
-with no extra runtime.
+Counts without being a difference on its own: the brand as a living
+folder in the project, read back by the AI. Not claimed as exclusive.
+No longer an argument: "shared across agents" (claude-mem claims it, and
+the ambition is Claude Code first).
 
 ## Positioning
+Two axes: **what you buy** (one piece for one task ↔ help across all your
+projects) and **what is promised** (results, numbers, noise ↔ trust, calm,
+checkable).
 
-Two axes: **one piece to assemble ↔ a complete system** (horizontal) and
-**hidden or loose memory ↔ organised memory you can read** (vertical).
+|  | Results, numbers, noise | Trust, calm, checkable |
+|---|---|---|
+| **Help across all projects** | MarkGrid, MarkBase, ECC | **BRACE** (nearly free; Tailor Brands, Tab nearby) |
+| **One piece for one task** | superpowers, claude-mem, Spec Kit, BMAD, Looka, Brandmark | Little occupied; Claude Design sells visuals, enthusiastically |
 
-```
-                 organised memory you can read
-                              |
-      Spec Kit, BMAD          |           * BRACE
-      (specs in Git)          |
-                              |
-  one piece ------------------+------------------ complete system
-                              |
-      claude-mem, CLAUDE.md   |        ECC (vast, loose memory vault)
-      superpowers (no         |        AI apps, Muse, OpenClaw
-      memory)                 |        (opaque memory)
-                              |
-                  hidden or loose memory
-```
+Our reading of tone and discourse, not a measure.
 
-The free place: a complete system with organised, readable memory.
+> For people who run several projects with an AI on their machine and
+> check what they get back, BRACE is the AI you are on the same page with:
+> it reads what it can, asks what it cannot know, writes down what you
+> decide. Unlike tools that remember for the AI or promise a result in
+> minutes, it keeps everything readable, editable and yours.
 
-> For people who want the full power of AI on their machine without the
-> hassle, BRACE is the system that gives the AI an organised memory and
-> keeps every project clean and followed. Unlike tools you must assemble
-> yourself, it is complete from install, it proposes without imposing, and
-> it tells you the truth.
+The words are the strategist's; the editorial guide refines them.
 
 ## Mechanism
-
 1. **The memory is the project itself**: standard files (status,
-   decisions, journal, backlog...) inside the project. The AI reads them
-   at the start of each session, so it starts where you left off, with
-   nothing to re-explain.
-2. **It keeps itself current**: at each session and after each significant
-   change, BRACE checks whether the files are behind and proposes the
-   update. Hand-written CLAUDE.md files go stale; this does not.
-3. **It stays true**: BRACE never guesses. What it does not know, it asks,
-   or marks "to fill in". The memory holds no inventions.
-4. **One folder for all**: every skill (tracking, brand, soon design) and
-   every agent reads and writes the same place. That makes a system, not
-   separate pieces.
+   decisions, journal, backlog) in the project, read at the start of each
+   session, so it starts where you left off.
+2. **It reads before asking**: it only asks what it cannot read. That is
+   what keeps it Jarvis: ahead of you, never in your place.
+3. **It writes down what is decided, and why**: nobody has to keep the
+   notes by hand ("Giant paste-docs died because I never updated them").
+4. **You validate before it saves or publishes**: and it asks once before
+   doing it on its own.
+5. **No telemetry**: no usage statistics sent. The privacy limit is in the
+   foundations, value 6.
+6. **The brand is made like the rest**: meetings and documents validated
+   one by one, kept in the project; public texts are then checked against
+   the voice. This rebrand was made that way.
 
-Most memory on offer is about the user (Claude, ChatGPT, Muse). Project
-context exists too (Claude and ChatGPT projects, CLAUDE.md, ECC's project
-vault), but as files, notes or instructions, not as a project record kept
-current: where it stands, what was decided and why, what comes next.
+**The first visible gesture: all your projects on one page** (the
+portfolio). The promise stays "nothing without you"; order is its first
+proof, not a competing promise.
 
 ## Proof points
+No outside testimonial, no token figure: none exists.
 
-- **BRACE tracks itself**: its own tracking files are public in the repo
-  (`docs/brace/`), from day one.
-- **Published and installable** the official way on Claude Code and
-  Antigravity.
+- **BRACE tracks itself** in public from day one (`docs/brace/`).
+- **"Never guess" is written down** and can be checked in the repo.
+- **This rebrand**: meetings, readable documents, validated one by one,
+  public in the repo.
+- **The portfolio**: all projects on one page.
+- **Installable the official way** on Claude Code (also on Antigravity).
+  Free and open source (MIT).
 - **A full test suite** (`run_tests.sh`).
-- **The founder's experience** (presented as such, not as an independent
-  review): more productive with AI, moves faster on projects, never has to
-  re-explain, rarely has to remind the AI of something it forgot.
+- **Never commits or pushes to GitHub without confirmation.**
+- **The founder's experience**, presented as such, never as an
+  independent review.
 
-Missing: testimonials from other people (one questionnaire respondent
-already uses project-tracker but declined to be contacted), and a measure
-of "light on tokens".
+Missing: testimonials from other people, a measure of "light", the first
+interview voices.
+
+## What we say in public
+
+No public promise on what is not shipped.
+
+| Topic | State | In a public text |
+|---|---|---|
+| Tracking, written decisions, portfolio | Exists | Yes, with facts |
+| Brand made through validated meetings and documents | Exists | Yes |
+| Keeping the project true to the brand | Partly (public texts checked against the voice) | Only what is checked |
+| Coming design work and skills | Does not exist | Nothing |
+| Privacy | Limit settled and checked (foundations, value 6) | That limit, word for word |
+| Taking over documents made by you or an agency | Idea for later | Nothing until shipped and checked |
+| Other agents than Claude Code | A direction | Antigravity cited as a fact, always second: "for Claude Code, also works with Antigravity" |
+| "Replaces your agency" | Against the line | Never |
+| Former name project-tracker | To clean up | One "formerly project-tracker", in the README only |
 
 ## Indicator
 
@@ -177,7 +176,6 @@ They are the voice too, but scattered in the code; the voice file gets a rule
 for them instead, checked by hand at reviews.
 
 ## Non-goals
-
 - No engagement or addiction mechanics.
 - Real end states: BRACE does not try to hold your attention.
 - No dark patterns.
@@ -187,3 +185,5 @@ for them instead, checked by hand at reviews.
   leaves your machine".
 - No imposed tool: everything proposed stays optional.
 - No telemetry: no statistics sent without your knowledge.
+- Never present BRACE as an agency to the public: it is how we work, not
+  what people get.

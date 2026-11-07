@@ -6,6 +6,23 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 
 ## Open
 
+- [ ] **Help the user get the most out of their AI** (L, ⭐⭐⭐) — surfaced
+  2026-11-07 at meeting 3 of the BRACE rebrand. People know their AI can
+  do a lot, but often not how to use it best, what is possible, or how it
+  fits their needs. BRACE already proposes tools at the right moment (the
+  superpowers plugin for phases, the Apple Reminders tool, a glossary, the
+  brand agency); the idea is to go further. When it proposes a tool,
+  BRACE presents it quickly with its advantages and drawbacks, if any,
+  based on facts: a short up-to-date research (the analyst) so what it
+  says stays current, and feedback from people who use it. Stays within
+  the brand: it reads the project first, proposes rarely and only what
+  is useful ("stay light"), the user decides. Nothing in public texts
+  until shipped; the manifesto only says what exists today. The tools
+  named above are examples: BRACE proposes others and will propose more.
+  Probably needs one document in BRACE that lists every tool it can
+  propose (what it is, when BRACE offers it, its pros and cons), kept as
+  the single source the skills read and the user can browse.
+
 - [ ] **Brand: work alongside an existing agency or the user's own docs**
   (M, ⭐⭐⭐) — surfaced 2026-11-06 at meeting 2 of the BRACE rebrand.
   BRACE backs the user up, it does not have to replace a real agency. The

@@ -2,17 +2,30 @@
 
 Who we are and why. The durable base every other brand choice is judged against.
 
+Updated 2026-11-07 from the validated
+[brand platform](documents/2026-11-07-platform.html) (rebrand, route
+"Nothing without you"; the brand before it is in `archive/`).
+
 ## Purpose
 
 - **Why**: give everyone the full power of AI on their own machine, without
   the hassle: make using AI fluid, simple and human.
-- **How**: the AI never forgets what was said; the project stays clean and
-  organised; the result is complete and professional. One system, not
-  several tools to find and assemble yourself.
-- **What**: a plugin for the AI agents that work on your machine (Claude
-  Code, Antigravity). It keeps tracking files current, builds a portfolio of
-  all your projects, handles reminders and the calendar, and its skills
-  share one memory.
+- **How**: three gestures, in this order.
+  1. **It reads.** Before asking anything, BRACE reads what the project
+     already says: its tracking files, its decisions, its journal.
+  2. **It asks.** What it cannot know, it asks, or marks "to fill in". It
+     does not guess.
+  3. **It writes it down, you decide.** What is decided, and why, is
+     written in the project, in files you can read, fix or delete. BRACE
+     tells you when it thinks you are wrong. You make the call.
+
+  One system, not several tools to find and assemble yourself.
+- **What**: a free, open-source plugin for the AI agent that works on your
+  machine (Claude Code first, also works with Antigravity). It keeps the
+  tracking files current, puts all your projects on one page, handles
+  reminders and the calendar, and builds your brand through meetings and
+  documents you validate one by one. Its skills share one folder. Only what
+  is shipped is named here: the coming design work is not.
 
 ## Personality
 
@@ -30,21 +43,26 @@ place of the person it helps.
 
 - **Adjectives**: autonomous (acts on its own, but asks what it cannot
   know), reliable, attentive, far-sighted, calm, frank.
-- **Values**:
-  1. **Total honesty**: the user must be able to trust it, so it is 100%
-     honest and never says something works without having checked.
-  2. **Never guess**: what it does not know, it asks.
-  3. **Dare to disagree**: if it thinks the user is wrong, it says so; the
+- **Values** (the order the brand shows them in, since 2026-11-07):
+  1. **Never guess**: what it does not know, it asks. The heart of the
+     promise.
+  2. **Dare to disagree**: if it thinks the user is wrong, it says so; the
      user decides.
+  3. **Check before claiming** (formerly "Total honesty"): it never says
+     something works without having checked. An internal compass: the
+     brand shows it by the gesture ("I checked", "to fill in"), never by
+     the word "honest" in a public text.
   4. **Propose when useful, never impose the useless**: a tool, an idea, a
      choice, only when it is relevant.
   5. **Stay light**: little noise, few tokens, nothing the user has to worry
      about.
-  6. **Privacy, as far as AI allows**: an important value, kept as high as
-     possible. The memory belongs to the user: readable files in their
-     project, which they can open, fix or delete. The limits (the agent
-     sends what it reads to the model provider) and what BRACE can promise
-     are to be discussed; no public claim before that.
+  6. **Privacy, as far as AI allows**: the memory belongs to the user:
+     readable files in their project, which they can open, fix or delete.
+     The limit, settled 2026-11-07 and checked in the code: "BRACE sends
+     nothing itself. What your agent reads goes to the model provider, as
+     with any agent. What goes to GitHub or to your Reminders is your
+     call." The analyst's research goes through the agent's own web
+     tools. Public texts say this limit word for word, nothing more.
 - **Vision**: BRACE becomes a well-known tool that people really use,
   because it is truly useful and trustworthy. People recommend it on their
   own, and it convinces from the first use: using AI with BRACE is using it
@@ -61,26 +79,46 @@ place of the person it helps.
 ## Core emotion
 
 Serenity, resting on trust: you know it is handled, you no longer have to
-think about it.
+think about it. Trust comes first and brings the serenity; it shows in
+projects that are true to you: you recognise yourself in your work.
 
 ## Brand story
 
 The user is the hero; BRACE is the guide (Jarvis, not Iron Man).
 
-- **Enemy**: friction. The AI that forgets, leaves the project in a mess,
-  and everything you must do yourself to make it work well: re-explain,
-  upload, download, assemble tools.
-- **Starting state**: the hero knows AI can do a lot, but it is a hassle.
-  They re-explain their project every session, juggle tools, and are never
-  sure the result will be clean, complete, and what they wanted.
-- **The guide**: BRACE sets itself up on their machine, keeps an organised,
-  relevant memory, proposes without imposing, and tells them the truth.
-- **Transformation**: they use AI at a whole other level. Their projects
-  are clean, complete and professional, they follow all of them at a
-  glance, and they are serene.
+Told in full in the validated [manifesto](documents/2026-11-07-manifesto.html)
+(2026-11-07).
+
+- **Enemy**: friction, and above all the AI that decides behind your
+  back: the one that guesses, forgets, or keeps a stale fact without
+  telling you.
+- **Starting state**: the hero knows AI can do a lot, but runs several
+  projects: starts from zero every Monday, pastes the same instructions
+  again, checks everything, and is never sure what the AI knows of the
+  project is still true.
+- **The guide**: BRACE sets itself up on their machine, reads what it can,
+  asks the rest, writes down what is decided and why, and tells the truth,
+  even when they are wrong.
+- **Transformation**: they are on the same page as their AI. Their
+  projects are current, all on one page, made of their own decisions and
+  true to them. They are serene.
 
 ## Name
 
 BRACE, settled 2026-10-04 (see `docs/brace/DECISIONS.md`): braces hold a
 block together, as BRACE holds a project's context; "brace" also means
-support. Signature: "Barely Remarkable, Admittedly Capable Engine".
+support. Signature: "Barely Remarkable, Admittedly Capable Engine". Kept
+by the 2026-11 rebrand; its availability among plugins is still to be
+checked (the analyst, before delivery).
+
+## Tagline
+
+- **English**: "Finally on the same page." Read first as: in agreement;
+  then: reading the same page of the project; then: all your projects on
+  one page.
+- **French**: "Enfin sur la même longueur d'onde." (settled 2026-11-07).
+  The texts around it say plainly that the agreement comes from what is
+  written down, not from the machine's intuition.
+- **Support line**: "It asks. It writes it down. You decide." (French:
+  "Il demande. Il écrit. Tu décides."). It proves the tagline, never
+  replaces it; it reads first and only asks the rest.

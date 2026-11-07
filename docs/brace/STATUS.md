@@ -13,7 +13,7 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: adjustments
+brand_stage: delivery
 brand_reviewed: 2026-10-22
 ---
 
@@ -54,6 +54,8 @@ done, its findings fixed. First real trial on Claude Code done
 like a real agency: a named team, a proposal, meetings with minutes and
 appointments, the documents rendered by a script, a client space, the
 agency resuming on its own; suite green.
+The real rebrand trial of BRACE itself is at meeting 3 of 4 (platform
+validated 2026-11-07); delivery set for 2026-11-09 14:00.
 
 ### Known gaps
 
