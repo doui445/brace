@@ -103,8 +103,14 @@ redone. Then the client validates them one by one.
 
 ## The folder, last
 
-When the new name is no longer the folder's name, offer the rename in one
-question ("Your project is now called <name>. Shall I rename its folder?").
+Whenever the brand's name differs from the project's folder name, after a
+rebrand or a repositioning alike (the name need not have changed during
+the mission: a folder still carrying an old name counts), recommend the
+rename. The rule is in the strategist's brief for the transition plan
+(`references/backstage.md`), so the plan recommends it too. Ask in one
+question, in her words (for example: your project is now called <name>;
+shall I rename its folder?), with the rename as the recommended choice.
+The client decides.
 It is the session's **very last action**: everything above done and saved,
 the mission closed. After it, nothing runs in this session (every command
 and write would point at a folder that no longer exists).
