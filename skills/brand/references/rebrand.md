@@ -75,7 +75,8 @@ the documents the audit found dated (as the extent decided), **and every
 brand document that was never made** (a brand from 1.0 has no brief,
 minutes, benchmark, personas, routes, platform, editorial guide or
 manifesto as documents). A document that still holds is kept, never
-redone. Then the client validates them one by one.
+redone. They are presented together at the platform meeting, where the
+feedback is taken at once (`references/adjustments.md`).
 
 ## 4. Delivery
 

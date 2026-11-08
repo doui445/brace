@@ -131,6 +131,7 @@ printf '# S\n\n- meeting: %s\n\n## Meeting\n\n- held: %s\n- phase: strategy\n' "
 OUT="$(run "$M" claude clear)"
 hasnt "$OUT" "came back early" "meeting already started (held after it) -> no early-arrival sentence"
 has "$OUT" "in progress" "meeting already started -> still resumes"
+hasnt "$OUT" "what the team did" "resume line never invites a who-did-what recap"
 printf '# S\n\n- held: %s\n- meeting: %s\n' "$(when -2)" "$(when 1)" > "$M/docs/brace/brand/SESSIONS.md"
 has "$(run "$M" claude clear)" "came back early" "next meeting set after the last held one -> early-arrival sentence"
 proj "$M" "brand_stage: presentation

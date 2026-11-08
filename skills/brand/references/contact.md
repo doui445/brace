@@ -145,7 +145,8 @@ Then ask for the go-ahead (yes, a change, not now), as a selectable
 choice. Yes:
 
 1. Write the `SESSIONS.md` entry (the proposal accepted, a link to the
-   document) with `- plan:` (the phases, machine values, for example
+   document, `- held:` with the time of this first contact and
+   `- phase: contact`) with `- plan:` (the phases, machine values, for example
    `- plan: contact, framing, strategy, platform, delivery`), and set
    `brand_stage: brief`, so that the agency comes back on its own if the
    client leaves now.

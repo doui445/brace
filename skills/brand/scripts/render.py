@@ -675,23 +675,30 @@ def space_data(root):
     documents = sorted((x for _, x in latest.values()),
                        key=lambda d: (PHASES.index(d["phase"]) if d["phase"] in PHASES else len(PHASES), d["date"], d["name"]))
 
-    # Meetings: the entries marked held, named by their phase; an older
-    # mission (no held line anywhere) lists every entry as it was.
+    # Meetings: the entries marked held, named by their phase. In a mission
+    # begun before plans and held lines (no "- plan:"), the entries before
+    # the first held one are listed as they were; any other entry without
+    # held is the team's work, not a meeting.
     entries = re.split(r"(?m)^## ", sessions)[1:]
-    held = [e for e in entries if re.search(r"(?m)^- held:", e)]
-    meetings = []
-    if held:
-        for e in held:
-            phase = _last(e, "phase")
-            heading = e.split("\n", 1)[0].strip()
-            title = t.get(f"brand.phase.{phase}", "") or re.sub(r"^\d{4}-\d{2}-\d{2}\s*", "", heading)
-            linked = [m for m in minutes if m["phase"] == phase]
-            meetings.append({"title": title, "phase": phase, "held": _last(e, "held"),
-                             "minutes": linked[-1]["name"] if linked else ""})
-        loose = []
-    else:
-        meetings = [{"title": e.split("\n", 1)[0].strip(), "phase": "", "held": "", "minutes": ""} for e in entries]
-        loose = minutes
+    first = next((n for n, e in enumerate(entries) if re.search(r"(?m)^- held:", e)), len(entries))
+    if _last(sessions, "plan"):
+        first = 0  # a mission with a plan writes held lines from its first meeting
+    meetings = [{"title": e.split("\n", 1)[0].strip(), "phase": "", "held": "", "minutes": ""}
+                for e in entries[:first]]
+    unused = sorted(minutes, key=lambda m: (m["date"], m["name"]))
+    for e in entries[first:]:
+        when = _last(e, "held")
+        if not when:
+            continue
+        phase = _last(e, "phase")
+        heading = e.split("\n", 1)[0].strip()
+        title = t.get(f"brand.phase.{phase}", "") or re.sub(r"^\d{4}-\d{2}-\d{2}\s*", "", heading)
+        # Its minutes: the first unused ones of its phase, dated on or after it.
+        mine = next((m for m in unused if m["phase"] == phase and m["date"] >= when[:10]), None)
+        if mine:
+            unused.remove(mine)
+        meetings.append({"title": title, "phase": phase, "held": when, "minutes": mine["name"] if mine else ""})
+    loose = unused
 
     nxt = ""
     when = _last(sessions, "meeting")
@@ -849,6 +856,11 @@ def _shortcut_name(root, data):
     return f"{name} - {short}.html"
 
 
+def _exclude_line(name):
+    """A file at the repository's root, as a literal gitignore pattern."""
+    return "/" + re.sub(r'([\\\[\]!#*?])', r"\\\1", name)
+
+
 def _exclude(root, add=(), drop=()):
     """Add or drop lines of .git/info/exclude, only when .git is a folder."""
     git = Path(root) / ".git"
@@ -876,7 +888,7 @@ def write_shortcut(root, data):
     for p in old:
         if p.name != name:
             p.unlink()
-    _exclude(root, drop=[p.name for p in old if p.name != name])
+    _exclude(root, drop=[_exclude_line(p.name) for p in old if p.name != name])
     if name is None:
         return None
     target = root / name
@@ -886,7 +898,7 @@ def write_shortcut(root, data):
         f'<meta http-equiv="refresh" {SHORTCUT_MARK}>\n'
         f"<title>{esc(name[:-5])}</title>\n</head>\n<body>\n"
         f'<p><a href="{SHORTCUT_TARGET}">{esc(name[:-5])}</a></p>\n</body>\n</html>\n', encoding="utf-8")
-    _exclude(root, add=[name])
+    _exclude(root, add=[_exclude_line(name)])
     return target
 
 

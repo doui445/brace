@@ -49,7 +49,7 @@ case "$STAGE" in
   ""|done) ;;
   *[!a-z_-]*) exit 0 ;;
   *)
-    LINE="[BRACE] A brand mission is in progress (stage $STAGE). In your first reply, resume the agency (invoke the $SKILL skill): greet the client, say where we are and what the team did."
+    LINE="[BRACE] A brand mission is in progress (stage $STAGE). In your first reply, resume the agency (invoke the $SKILL skill): greet the client and say where we are; the recap of the work opens the next meeting, never as a list of who did what."
     # The newest "- meeting:" line, whatever its form; kept only when well
     # formed, and only when no "- held:" line follows it (that meeting started).
     MEETING="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | grep -E '^- (meeting|held):' | tail -1 | sed -n 's/^- meeting: \([0-9]\{4\}-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]\)[[:blank:]]*$/\1/p')"

@@ -325,7 +325,8 @@ class SpaceDataTests(unittest.TestCase):
         self.assertEqual(self.data(stage="done", files=files)["mission"], "Give everyone their hours back.")
 
     def test_meetings_are_held_entries_named_by_phase(self):
-        sessions = ("# S\n\n## 2026-11-06 Our team's work\n\nDone.\n\n"
+        sessions = ("# S\n\n- plan: contact, framing, strategy, platform, delivery\n\n"
+                    "## 2026-11-06 Our team's work\n\nDone.\n\n"
                     "## 2026-11-07 Anything\n\n- held: 2026-11-07 14:00\n- phase: strategy\n")
         meetings = self.data(sessions=sessions)["meetings"]
         self.assertEqual(len(meetings), 1)
@@ -394,6 +395,30 @@ class SpaceDataTests(unittest.TestCase):
         files = {"FOUNDATIONS.md": "## Purpose\n\n- **Why**: x\n\n  Still the list.\n",
                  "BRIEF.md": "## The project\n\nA small tool.\n"}
         self.assertEqual(self.data(stage="done", files=files)["mission"], "A small tool.")
+
+    def test_first_held_meeting_keeps_the_earlier_history(self):
+        sessions = ("# S\n\n## 2026-11-06 First contact\n\nText.\n\n"
+                    "## 2026-11-07 Meeting 2: the recommendation\n\nText.\n\n"
+                    "## 2026-11-08 Our team's work\n\nText.\n\n"
+                    "## 2026-11-09 x\n\n- held: 2026-11-09 14:00\n- phase: delivery\n")
+        docs = (("2026-11-07-minutes-2.html", "2", "Minutes 2"),
+                ("2026-11-09-minutes-4.html", "4", "Minutes 4", {"doc": "minutes", "phase": "delivery"}))
+        data = self.data(sessions=sessions, docs=docs)
+        titles = [m["title"] for m in data["meetings"]]
+        self.assertEqual(titles[:2], ["2026-11-06 First contact", "2026-11-07 Meeting 2: the recommendation"])
+        self.assertEqual(titles[-1], "Delivery")
+        self.assertEqual(data["meetings"][-1]["minutes"], "2026-11-09-minutes-4.html")
+        self.assertEqual([m["name"] for m in data["loose_minutes"]], ["2026-11-07-minutes-2.html"])
+
+    def test_two_meetings_in_one_phase_keep_their_own_minutes(self):
+        sessions = ("# S\n\n## 2026-11-07 a\n\n- held: 2026-11-07 14:00\n- phase: strategy\n\n"
+                    "## 2026-11-09 b\n\n- held: 2026-11-09 14:00\n- phase: strategy\n")
+        docs = (("2026-11-07-minutes-2.html", "2", "M2", {"doc": "minutes", "phase": "strategy"}),
+                ("2026-11-09-minutes-3.html", "3", "M3", {"doc": "minutes", "phase": "strategy"}))
+        data = self.data(sessions=sessions, docs=docs)
+        self.assertEqual([m["minutes"] for m in data["meetings"]],
+                         ["2026-11-07-minutes-2.html", "2026-11-09-minutes-3.html"])
+        self.assertEqual(data["loose_minutes"], [])
 
     def test_delivered_flag_and_stage(self):
         data = self.data(stage="done")
@@ -514,7 +539,7 @@ class ShortcutTests(unittest.TestCase):
         self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
         text = (root / "Acme - client space.html").read_text(encoding="utf-8")
         self.assertIn('content="0; url=docs/brace/brand/index.html"', text)
-        self.assertEqual(self.exclude(root).splitlines().count("Acme - client space.html"), 1)
+        self.assertEqual(self.exclude(root).splitlines().count("/Acme - client space.html"), 1)
 
     def test_shortcut_in_french(self):
         root = self.make(sessions="# S\n\n- brand: Acme\n- language: fr\n")
@@ -546,6 +571,20 @@ class ShortcutTests(unittest.TestCase):
         root = self.make(sessions="# S\n\n- brand: ///\n")
         self.space(root)
         self.assertEqual(self.shortcuts(root), ["proj - client space.html"])
+
+    def test_exclude_line_is_escaped(self):
+        for brand in ("#1 Coffee", "!Bang", "[x] co"):
+            with self.subTest(brand=brand):
+                d = tempfile.TemporaryDirectory()
+                self.addCleanup(d.cleanup)
+                root = project(d.name, sessions=f"# S\n\n- brand: {brand}\n")
+                (root / ".git" / "info").mkdir(parents=True)
+                self.space(root)
+                line = self.exclude(root).strip()
+                self.assertTrue(line.startswith("/"), line)
+                for ch in "#![]":
+                    self.assertNotIn(ch, line.replace("\\" + ch, ""), line)
+                self.assertEqual(render._exclude_line(f"{brand} - client space.html"), line)
 
     def test_no_git(self):
         root = self.make(git=None)
