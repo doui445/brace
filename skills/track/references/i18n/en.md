@@ -107,7 +107,7 @@ The client brief: pre-filled by `brace:brand` from what the project already
 says, validated with the user at the workshop.
 
 - brand.brief.title: BRAND BRIEF — {project}
-- brand.brief.intro: What the agency was asked for. Pre-filled from the project, checked with you at the workshop.
+- brand.brief.intro: What you asked the agency for. We pre-filled it from what we read in your project. Tell us what does not sound like you.
 - brand.brief.heading.project: The project
 - brand.brief.heading.objectives: What the brand must achieve
 - brand.brief.heading.audience: Who it is for
@@ -116,8 +116,7 @@ says, validated with the user at the workshop.
 - brand.brief.heading.taste: What you like
 - brand.brief.heading.emotion: The feeling to leave
 - brand.brief.heading.never: What you never want
-- brand.brief.heading.languages: Languages (working, brand)
-- brand.brief.heading.assumptions: Assumptions to check
+- brand.brief.heading.languages: Languages (main, secondary)
 
 ## brand/SESSIONS.md
 

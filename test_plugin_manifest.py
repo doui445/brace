@@ -257,7 +257,7 @@ class PluginManifestTests(unittest.TestCase):
             for key in ("brief.title", "brief.intro", "brief.heading.project", "brief.heading.objectives",
                         "brief.heading.audience", "brief.heading.competitors", "brief.heading.name",
                         "brief.heading.taste", "brief.heading.emotion", "brief.heading.never",
-                        "brief.heading.assumptions", "sessions.title", "sessions.intro",
+                        "sessions.title", "sessions.intro",
                         "sessions.decided", "sessions.waiting", "sessions.next"):
                 self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
 

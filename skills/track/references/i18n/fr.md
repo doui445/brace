@@ -100,7 +100,7 @@ Le brief client : pré-rempli par `brace:brand` à partir de ce que le projet
 dit déjà, validé avec l'utilisateur à l'atelier.
 
 - brand.brief.title: BRIEF DE MARQUE — {project}
-- brand.brief.intro: Ce qui a été demandé à l'agence. Pré-rempli à partir du projet, vérifié avec toi à l'atelier.
+- brand.brief.intro: Ce que tu as demandé à l'agence. On l'a pré-rempli à partir de ce qu'on a lu dans ton projet. Dis-nous ce qui ne te ressemble pas.
 - brand.brief.heading.project: Le projet
 - brand.brief.heading.objectives: Ce que la marque doit obtenir
 - brand.brief.heading.audience: Pour qui
@@ -109,8 +109,7 @@ dit déjà, validé avec l'utilisateur à l'atelier.
 - brand.brief.heading.taste: Ce que tu aimes
 - brand.brief.heading.emotion: L'émotion à laisser
 - brand.brief.heading.never: Ce que tu ne veux surtout pas
-- brand.brief.heading.languages: Les langues (de travail, de la marque)
-- brand.brief.heading.assumptions: Hypothèses à vérifier
+- brand.brief.heading.languages: Les langues (principale, secondaires)
 
 ## brand/SESSIONS.md
 
