@@ -3,12 +3,38 @@
     python3 -m unittest test_plugin_manifest
 """
 import json
+import re
 import os
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).parent
-CLAUDE_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
+CLAUDE_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh", "pre_tool_use.sh"}
+ANTIGRAVITY_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
+CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep",
+                      "mcp__claude-in-chrome__*"}
+# Antigravity hangs on an unknown tool name: only names verified in its docs.
+AGENTS = ("analyst", "strategist", "copywriter", "creative-director")
+ANTIGRAVITY_AGENT_TOOLS = {"search_web", "read_url_content", "view_file", "grep_search",
+                           "write_to_file", "replace_file_content"}
+
+
+def _split_agent(rel):
+    """(frontmatter dict, body) of an agent file. Values: str, or list for
+    YAML block lists ('  - x'). Enough for these hand-written files."""
+    text = (REPO / rel).read_text(encoding="utf-8")
+    assert text.startswith("---\n"), rel
+    head, body = text[4:].split("\n---\n", 1)
+    fm, key = {}, None
+    for line in head.splitlines():
+        if line.startswith("  - ") and key:
+            fm.setdefault(key, [])
+            fm[key].append(line[4:].strip())
+        elif ":" in line:
+            key, val = line.split(":", 1)
+            key, val = key.strip(), val.strip()
+            fm[key] = val if val else []
+    return fm, body
 
 
 def _load(rel):
@@ -56,8 +82,16 @@ class PluginManifestTests(unittest.TestCase):
             self.assertTrue(path.is_file(), f"missing: {path}")
             self.assertTrue(os.access(path, os.X_OK), f"not executable: {path}")
 
-    def test_claude_post_tool_use_matches_edit_write(self):
-        for group in _load("claude-hooks.json")["hooks"].get("PostToolUse", []):
+    def test_claude_post_tool_use_matches_edit_write_bash(self):
+        groups = _load("claude-hooks.json")["hooks"].get("PostToolUse", [])
+        self.assertTrue(groups)
+        for group in groups:
+            self.assertEqual(group.get("matcher"), "Edit|Write|Bash")
+
+    def test_claude_pre_tool_use_matches_edit_write(self):
+        groups = _load("claude-hooks.json")["hooks"].get("PreToolUse", [])
+        self.assertTrue(groups)
+        for group in groups:
             self.assertEqual(group.get("matcher"), "Edit|Write")
 
     def test_antigravity_hooks_point_at_existing_executables(self):
@@ -67,7 +101,7 @@ class PluginManifestTests(unittest.TestCase):
             for event, entries in block.items():
                 for e in entries:
                     cmds += [x["command"] for x in e.get("hooks", [])] if "hooks" in e else [e["command"]]
-        self.assertEqual({c.rsplit("/", 1)[-1] for c in cmds}, CLAUDE_HOOK_SCRIPTS)
+        self.assertEqual({c.rsplit("/", 1)[-1] for c in cmds}, ANTIGRAVITY_HOOK_SCRIPTS)
         for c in cmds:
             path = REPO / c.lstrip("./")
             self.assertTrue(path.is_file(), f"missing: {c}")
@@ -104,6 +138,242 @@ class PluginManifestTests(unittest.TestCase):
         p = REPO / "commands" / "config.md"
         self.assertTrue(p.is_file())
         self.assertIn("description:", p.read_text(encoding="utf-8"))
+
+    def test_agents_is_a_reserved_skill_name(self):
+        # docs/brace/agents/ holds BRACE agents' per-project folders, never a skill.
+        self.assertFalse((REPO / "skills" / "agents").exists())
+
+    def test_i18n_has_brand_touchpoints_heading(self):
+        # The voice-drift hook finds the Touchpoints section by these values.
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        for code in ("en", "fr"):
+            text = (i18n / f"{code}.md").read_text(encoding="utf-8")
+            self.assertRegex(text, r"(?m)^- brand\.strategy\.heading\.touchpoints: \S")
+
+    def test_claude_manifest_points_at_the_claude_agent(self):
+        self.assertEqual(_load(".claude-plugin/plugin.json").get("agents"),
+                         [f"./agents/claude/{name}.md" for name in AGENTS])
+
+    def test_agent_files(self):
+        for name in AGENTS:
+            with self.subTest(agent=name):
+                claude, c_body = _split_agent(f"agents/claude/{name}.md")
+                agy, a_body = _split_agent(f"agents/{name}.md")
+                for fm in (claude, agy):
+                    self.assertEqual(fm.get("name"), name)
+                    self.assertTrue(fm.get("description"))
+                self.assertTrue(set(t.strip() for t in claude["tools"].split(",")) <= CLAUDE_AGENT_TOOLS)
+                self.assertEqual(claude.get("model"), "sonnet")
+                self.assertEqual(claude.get("background"), "true")
+                self.assertTrue(set(agy["tools"]) <= ANTIGRAVITY_AGENT_TOOLS)
+                self.assertEqual(agy.get("subagent"), "true")
+                self.assertEqual(agy.get("mainAgent"), "false")
+                self.assertEqual(agy.get("model"), "flash")
+                self.assertEqual(agy.get("commandExecutionPolicy"), "off")
+                # Frontmatter values are plain YAML scalars: a ": " inside one breaks
+                # the parser of the host tool.
+                for fm in (claude, agy):
+                    self.assertNotIn(": ", fm.get("description", ""))
+                # One trade, one text: the two bodies must never drift apart.
+                self.assertEqual(c_body, a_body)
+                self.assertIn(f"docs/brace/agents/{name}/", c_body)
+                self.assertNotIn("—", c_body)
+
+    def test_new_agents_report_formats(self):
+        for name, head in (("strategist", "# Routes: "), ("copywriter", "# Words: "),
+                           ("creative-director", "# Review: ")):
+            claude, body = _split_agent(f"agents/claude/{name}.md")
+            self.assertIn(head, body, name)
+            self.assertEqual([t.strip() for t in claude["tools"].split(",")],
+                             ["Read", "Write", "Edit", "Glob", "Grep"], name)
+
+    def test_skills_frontmatter_and_references_exist(self):
+        import re
+        for skill_md in sorted((REPO / "skills").glob("*/SKILL.md")):
+            text = skill_md.read_text(encoding="utf-8")
+            self.assertTrue(text.startswith("---\n"), skill_md)
+            head = text[4:].split("\n---\n", 1)[0]
+            self.assertRegex(head, r"(?m)^name: \S", skill_md)
+            self.assertRegex(head, r"(?m)^description: \S", skill_md)
+            desc = re.search(r"(?m)^description: (.*)$", head).group(1)
+            self.assertNotIn(": ", desc, f"{skill_md}: ': ' breaks the YAML frontmatter")
+            for ref in set(re.findall(r"`(references/[a-z0-9_/.-]+\.md)`", text)):
+                self.assertTrue((skill_md.parent / ref).is_file(), f"{skill_md}: missing {ref}")
+
+    def test_brand_and_analyst_hold_back_on_a_legacy_project(self):
+        # A project still on docs/project-tracker/ (move pending) must never
+        # get a docs/brace/ folder from brand or the analyst: the move would
+        # then find both folders and stop.
+        for rel in ["skills/brand/SKILL.md"] + [f"agents/claude/{n}.md" for n in AGENTS]:
+            text = (REPO / rel).read_text(encoding="utf-8")
+            self.assertIn("docs/project-tracker/", text, rel)
+
+    def test_brand_stages_are_consistent(self):
+        # Every stage a reference sets must be one SKILL.md declares, every
+        # declared stage but done is set somewhere, and the stages of 1.0
+        # still map onto the new ones (zero breakage on resume).
+        import re
+        brand = REPO / "skills" / "brand"
+        head = (brand / "SKILL.md").read_text(encoding="utf-8")
+        declared = re.search(r"`brand_stage: ([a-z |]+)`", head).group(1)
+        stages = {x.strip() for x in declared.split("|")}
+        self.assertEqual(stages, {"brief", "backstage", "presentation", "adjustments", "delivery", "done"})
+        used = set()
+        for f in [brand / "SKILL.md"] + sorted((brand / "references").glob("*.md")):
+            used |= set(re.findall(r"brand_stage: ([a-z]+)`", f.read_text(encoding="utf-8")))
+        self.assertTrue(used <= stages, used - stages)
+        self.assertEqual(stages - {"done"}, used & stages - {"done"}, "a declared stage no reference sets")
+        legacy = re.search(r"(?m)^`?legacy: (.*?)`?$", head)
+        self.assertTrue(legacy, "no legacy: line in SKILL.md")
+        for old in ("interview", "foundations", "strategy", "voice", "name", "test"):
+            self.assertRegex(legacy.group(1), r"\b" + old + r"\b", old)
+
+    def test_brand_never_asks_the_depth(self):
+        for f in sorted((REPO / "skills" / "brand").rglob("*.md")):
+            text = " ".join(f.read_text(encoding="utf-8").split())
+            self.assertNotIn("sk the depth", text, f)
+        self.assertFalse((REPO / "skills" / "brand" / "references" / "interview.md").exists())
+        self.assertFalse((REPO / "skills" / "brand" / "references" / "test.md").exists())
+
+    def test_brand_resumes_a_1_0_project_without_redoing_it(self):
+        # The legacy stages land in adjustments: a 1.0 project has no route
+        # and no BRIEF.md, and its validated files must be kept.
+        text = " ".join((REPO / "skills" / "brand" / "references" / "adjustments.md")
+                        .read_text(encoding="utf-8").split())
+        self.assertIn("## Resumed from 1.0", (REPO / "skills" / "brand" / "references" / "adjustments.md").read_text(encoding="utf-8"))
+        self.assertIn("first missing document", text)
+        self.assertIn("never redrafted", text)
+
+    def test_presentation_proposes_rather_than_asks(self):
+        text = (REPO / "skills" / "brand" / "references" / "presentation.md").read_text(encoding="utf-8")
+        for q in ("What does this route promise?", "Which one feels like your product?",
+                  "Anything you would not want to see said?"):
+            self.assertNotIn(q, text)
+
+    def test_i18n_has_brand_brief_and_sessions(self):
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        for code in ("en", "fr"):
+            text = (i18n / f"{code}.md").read_text(encoding="utf-8")
+            for key in ("brief.title", "brief.intro", "brief.heading.project", "brief.heading.objectives",
+                        "brief.heading.audience", "brief.heading.competitors", "brief.heading.name",
+                        "brief.heading.taste", "brief.heading.emotion", "brief.heading.never",
+                        "sessions.title", "sessions.intro",
+                        "sessions.decided", "sessions.waiting", "sessions.next"):
+                self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
+
+    def test_i18n_has_brand_team_lexicon_and_space(self):
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        agents = ("brand", "analyst", "strategist", "copywriter", "creative_director")
+        lex = ("contact", "proposal", "kickoff", "workshop", "minutes", "meeting", "recommendation",
+               "routes", "platform", "editorial_guide", "manifesto", "delivery", "client_space",
+               "test_plan", "benchmark", "personas", "rebrand", "audit", "transition",
+               "announcement", "before", "after", "archive")
+        keys = [f"team.{a}.{f}" for a in agents for f in ("name", "role")]
+        keys += [f"lex.{t}" for t in lex]
+        keys += ["sessions.meeting", "space.title", "space.next", "space.none", "doc.by", "notify.ready"]
+        keys += [f"space.{k}" for k in ("days", "months", "date", "at", "time", "time_whole")]
+        keys += [f"space.tab.{t}" for t in ("home", "meetings", "documents", "presentations", "brand")]
+        keys += [f"phase.{p}" for p in ("contact", "framing", "strategy", "platform", "visual", "delivery")]
+        for code in ("en", "fr"):
+            text = (i18n / f"{code}.md").read_text(encoding="utf-8")
+            for key in keys:
+                self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
+            self.assertRegex(text, r"(?m)^- brand\.team\.brand\.name: Julie$")
+            self.assertRegex(text, r"(?m)^- brand\.team\.creative_director\.name: Lou$")
+            self.assertIn("{name}", re.search(r"(?m)^- brand\.doc\.by: (.*)$", text).group(1))
+
+    def test_agents_write_client_documents(self):
+        docs = {"analyst": ("`benchmark`", "trademark registers", "not legal advice"),
+                "strategist": ("`personas`", "`routes`", "`platform`", "`test-plan`", "`audit`", "`transition`"),
+                "copywriter": ("`editorial-guide`", "`manifesto`", "`announcement`")}
+        for name in ("analyst", "strategist", "copywriter", "creative-director"):
+            for rel in (f"agents/claude/{name}.md", f"agents/{name}.md"):
+                _, body = _split_agent(rel)
+                flat = " ".join(body.split())
+                self.assertIn("# Client documents", body, rel)
+                for d in docs.get(name, ()):
+                    self.assertIn(d, flat, rel)
+                if name != "creative-director":
+                    self.assertIn("front matter", flat, rel)
+                    self.assertIn("render.py", flat, rel)
+                else:
+                    self.assertIn("documents", flat.split("# Method")[1], rel)
+                for first in ("Alice", "Bruno", "Chlo", "David", "Emma"):
+                    self.assertNotIn(first, body, rel)
+
+    def test_brand_references_cover_the_meetings(self):
+        refs = REPO / "skills" / "brand" / "references"
+        for name in ("contact.md", "documents.md"):
+            self.assertTrue((refs / name).is_file(), name)
+        # The first contact sets the stage, so a client who leaves after it
+        # is brought back at the workshop appointment.
+        self.assertIn("`brand_stage: brief`", (refs / "contact.md").read_text(encoding="utf-8"))
+        self.assertIn("| `brief` |", (refs / "documents.md").read_text(encoding="utf-8"))
+        self.assertIn("before the first `@`", " ".join((refs / "presentation.md").read_text(encoding="utf-8").split()))
+        skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
+        for needle in ("references/contact.md", "references/workshop.md", "references/presentation.md",
+                       "references/adjustments.md", "references/delivery.md", "references/documents.md",
+                       "render.py", "/clear", "/exit", "auto_publish", "never claims to be human"):
+            self.assertIn(needle, skill, needle)
+        self.assertIn("brand.team.creative_director", skill)
+
+    def test_brand_rebrand_reference(self):
+        refs = REPO / "skills" / "brand" / "references"
+        self.assertTrue((refs / "rebrand.md").is_file())
+        skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
+        self.assertIn("references/rebrand.md", skill)
+        self.assertIn("- mission: rebrand", skill)
+        self.assertIn("references/rebrand.md", (refs / "revision.md").read_text(encoding="utf-8"))
+        text = " ".join((refs / "rebrand.md").read_text(encoding="utf-8").split())
+        for needle in ("archive/", "- mission: rebrand", "very last action", "after `/exit`",
+                       "gh repo rename", "git remote set-url", "~/.claude/projects/", "formerly"):
+            self.assertIn(needle, text, needle)
+        docs = (refs / "documents.md").read_text(encoding="utf-8")
+        for name in ("audit", "transition", "announcement"):
+            self.assertIn(f"| `{name}` |", docs, name)
+
+    def test_brand_coming_back_to_a_delivered_brand(self):
+        refs = REPO / "skills" / "brand" / "references"
+        rev = (refs / "revision.md").read_text(encoding="utf-8")
+        self.assertIn("## Coming back to a delivered brand", rev)
+        flat = " ".join(rev.split()).lower()
+        for needle in ("what brings you", "**a review**", "**a rebrand**", "**a one-off request**", "recommend"):
+            self.assertIn(needle, flat, needle)
+        skill = " ".join((REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8").split())
+        self.assertIn("delivered brand", skill)
+
+    def test_analyst_writes_one_report_per_subject(self):
+        _, body = _split_agent("agents/claude/analyst.md")
+        self.assertIn("one report file per subject", " ".join(body.split()))
+
+    def test_analyst_takes_depth_from_caller_and_finds_references(self):
+        for rel in ("agents/claude/analyst.md", "agents/analyst.md"):
+            fm, body = _split_agent(rel)
+            self.assertNotIn("ask the user for the depth", fm["description"], rel)
+            flat = " ".join(body.split())
+            self.assertIn("**references**", flat, rel)
+            self.assertIn("brands that made a comparable choice", flat, rel)
+            self.assertIn("when a browser is available", flat, rel)
+        claude, _ = _split_agent("agents/claude/analyst.md")
+        self.assertIn("mcp__claude-in-chrome__*", [t.strip() for t in claude["tools"].split(",")])
+
+    def test_claude_agent_folder_is_invisible_to_antigravity(self):
+        # Antigravity loads agents/<name>.md and agents/<name>/agent.md: the
+        # Claude copies in agents/claude/ must match neither.
+        claude_dir = REPO / "agents" / "claude"
+        self.assertFalse((claude_dir / "agent.md").exists())
+        self.assertFalse((REPO / "agents" / "claude.md").exists())
+        for f in claude_dir.glob("*.md"):
+            self.assertTrue((REPO / "agents" / f.name).is_file(), f"no Antigravity twin for {f.name}")
+
+    def test_platform_notes_say_every_skill_hooks_run(self):
+        for name in ("platform-claude.md", "platform-antigravity.md"):
+            text = (REPO / "skills" / "track" / "references" / name).read_text(encoding="utf-8")
+            self.assertNotIn("runs `skills/track/hooks/session_start.sh`", text, name)
+            self.assertIn("each skill", text, name)
+
+    def test_brand_skill_exists(self):
+        self.assertTrue((REPO / "skills" / "brand" / "SKILL.md").is_file())
 
     def test_i18n_catalogues_have_matching_keys(self):
         import re

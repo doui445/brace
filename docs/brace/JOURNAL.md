@@ -950,3 +950,434 @@ Closed out the portfolio sub-pages work and cut the release:
   the brand rather than to design. It does (`DECISIONS.md`): a brand's
   face moves to `brand`, shipped in 1.2 with `design`; the 1.1 spec only
   gains that framing.
+
+## 2026-10-19 — `brace:brand` and the `analyst` agent built (branch `feat/brand`)
+
+- Plan executed inline: the reserved `docs/brace/agents/` folder, brand
+  i18n headings, test discovery for every skill, the review reminder and
+  voice-drift hooks, the `analyst` agent (one file per tool, same body),
+  the brand skill and its seven references, the agents contract and docs.
+- Checked for real (headless Claude Code, `--plugin-dir`): `brace:analyst`
+  loads once and `brace:brand` is listed; a quick mission in a tracked
+  test project wrote only its brief and dated report, in the agreed
+  format; outside a tracked project it wrote nothing.
+- A fresh whole-branch review found no critical issue; fixed three: the
+  voice reminder never reached Antigravity (its adapter drops post-write
+  output; the touchpoints are now listed at session start), a project
+  still on the legacy folder could get a second one, and the Touchpoints
+  heading had to match exactly. Six minors deferred.
+- Not done yet: an interactive brand session and the Antigravity install
+  check (it would overwrite the published copy on this machine). Not
+  merged, nothing pushed.
+- The user asked to fix the six deferred minors too, all done with tests:
+  the voice marker hashes the file path (no collision, no over-long
+  name); a review date followed by a comment is read; the foundations get
+  their own `brand_stage: foundations`, and a resumed session skips what
+  is written and reuses a filed report; the analyst writes one report per
+  subject; a guard test keeps the Claude agent copies invisible to
+  Antigravity; the platform notes say every skill's hooks run.
+- Antigravity check (branch installed in place of the published copy,
+  backed up, then the published 1.0.0 reinstalled from GitHub): `agy plugin
+  validate` and the install both load exactly one agent (the Claude copy in
+  `agents/claude/` is ignored); the user started the analyst from the app
+  and it runs. The `agy` command line is not logged in on this machine, so
+  no headless mission was run there.
+
+## 2026-10-20 — First real brand session, on BRACE itself
+
+- `/brace:brand` run on BRACE, following the branch's skill literally,
+  product profile. Foundations and strategy written in
+  `docs/brace/brand/`: purpose, Jarvis-like personality with Apple as the
+  second reference figure, six values (privacy among them, its limits to
+  discuss), the Sage with a touch of the Magician, serenity resting on
+  trust, friction as the enemy; objectives, two provisional personas,
+  landscape, six differentiators, positioning, mechanism, proof points,
+  spontaneous recommendations as the indicator, touchpoints, non-goals.
+  Voice and test still to do.
+- The real analyst ran four missions (competitors and audience full,
+  an Apple benchmark and a multi-agent memory check quick). Findings that
+  changed the strategy: "never forgets" alone is common now; ECC already
+  shares a memory across harnesses, so the differentiator is a readable
+  project record, not sharing itself.
+- A questionnaire page was shared with six people from the owner's
+  circle; their raw answers stay in the gitignored research folder, only
+  anonymised personas are committed. Token limits came up three times; 4
+  of 6 use AI in web apps, which BRACE does not reach today.
+- The session found three defects (in `BACKLOG.md`, blocking the merge):
+  the analyst's writes are denied because it runs in the background; it
+  cannot use a browser for pages its fetch tool is refused; the
+  touchpoints helper takes any backticked name in the section. Plus a new
+  idea: all session messages in one file.
+
+## 2026-10-22 — BRACE brand finished (test deferred)
+
+- Voice written in `docs/brace/brand/VOICE.md`: the word lists, an
+  introduction post (French), four attributes, tone by context (its
+  plugin-message row is the rule for hook messages), lexicon, writing
+  rules (no long dash, no exclamation mark, no slash, semicolon or vertical
+  bar in prose), four message pillars, the tagline "Finally on the same
+  page.", the one-liner, the presentation text, the acronym as signature.
+  Choices and what was set aside in `docs/brace/brand/DECISIONS.md`.
+- The name stage was skipped (BRACE settled 2026-10-04). A five-second
+  test page is ready; the owner chose to run it later, recorded as not
+  tested yet. Brand set to `done`, reviewed 2026-10-22.
+- Tagline, one-liner and presentation carried into the README (with an
+  "About the name" section) and the three manifests; suite green. Fed the
+  README edit to the branch's post-write hook by hand: it flags the
+  touchpoint as expected. The voice check it asks for finds the rest of the
+  README drifting (26 long dashes, slashes in prose); left as is for now.
+- New ideas logged: a writing skill; all session messages in one file.
+  The owner also noted small issues in how the skill runs, to collect next
+  session. Not merged, nothing pushed.
+
+## 2026-10-26 — The BRACE agency: vision discussed (nothing built)
+
+- Started from the owner's "small issues" note on the brand session: the
+  real point is that `brand` should feel like a full agency taking over
+  whenever a project is meant to be shown or sold, not a list of brand
+  questions. Read an exported AI chat about how branding agencies work
+  (roles, phases, documents) and checked it on the web: strategy before
+  design, two or three routes then one refined, internal reviews before
+  the client sees anything all hold; its price range was low (a 2026
+  French barometer gives a 10,000 EUR median).
+- Agreed shape: skills are domains named by a short verb (`track`,
+  `brand`, `design`, `market`); agents are real agency trades
+  (`analyst`, `strategist`, `art-director`, `designer`, `copywriter`,
+  `creative-director`, `researcher`), hired only when a domain needs one,
+  each with its own margin. The agency is a shared method (one
+  interlocutor, examples and references, two or three routes, an explicit
+  call between the owner's taste and the audience, an internal review)
+  plus handoffs between domains, followed by `track`.
+- `brand` keeps the brand's face (logo, palette, goodies, ads); `design`
+  covers the product (an app, or an object up to the maker's brief, no
+  technical drawings); a person is a personal brand. `market` prepares
+  everything and publishes only on an explicit yes, item by item, and
+  never spends money. For an app: brand, design, development (outside the
+  agency), market, with pre-launch work during development.
+- The agency offers itself once per project, right after the owner
+  describes it, if it is meant to be shown or sold; the answer is kept.
+- Permission defect: proposed a BRACE hook letting each agent write only
+  in its own `docs/brace/agents/<agent>/` folder (plugin agents ignore
+  `permissionMode`, hooks do fire inside them). To test for real first.
+- Still open: the order of the work and how it maps to releases; renaming
+  the repo folder to `brace`. Nothing built, nothing committed.
+
+## 2026-10-26 — The brand agency built (feat/brand)
+
+- Wrote the design and the plan, then built it on `feat/brand`: the
+  agents' write hook, the touchpoints fix, the presentation notification,
+  the analyst's changes, three new agents, the presentation template, the
+  skill rewritten in sessions, and the docs.
+- Real test of the write hook in a non-interactive Claude Code run: the
+  `analyst` in the background wrote its file in its own folder; the same
+  run from a copy of the plugin without the hook was blocked. A write to
+  the brand folder was never attempted (the agent refused it by its own
+  rule); the hook gives no decision there, as its tests check.
+- Left: a real trial with the owner on Claude Code and Antigravity, then
+  the release.
+- Final review of the whole branch: one critical finding (a newline in
+  the file path let the write hook allow a path outside the agent's
+  folder) and three important ones (a dangling symlink in the agent's
+  folder, no way to resume a brand started on 1.0, open questions left in
+  the presentation step). All fixed with a test that failed first; suite
+  green. Five minor findings kept for later (`BACKLOG.md`).
+- The real trial is postponed by the owner, still the next step before
+  the release.
+
+## 2026-11-01 — Real trial of the brand agency (Claude Code)
+
+- Full mission on a throwaway project with `claude --plugin-dir .`:
+  tracking, workshop, backstage, strategic presentation, adjustments,
+  delivery, `brand_stage: done`. About an hour of active time.
+- Held: no permission prompt during the background work (the agents'
+  write hook works); the owner found the presentation and the workshop
+  questions "straight to the point".
+- Measured from the transcript: about 14 to 15 M tokens read (98% from
+  cache) and 115 k written for the mission; the main conversation is 95%
+  of it, the four agents 5%. The lever is the main conversation, not the
+  agents' model.
+- Gaps, all in `BACKLOG.md`: no notification (the final deck was filed
+  with `cp` in Bash, the hook only sees `Write`/`Edit`), decks in English
+  for a French-speaking owner, no word up front on the steps and the
+  cost, the creative director blind to the render without `pdftoppm`, a
+  settled name reopened as a question. Also logged: redo the deck frame
+  once BRACE has its own visual identity.
+- Left before 1.1.0: fix these gaps, then the same trial on Antigravity.
+
+## 2026-11-02 — The trial fixes (feat/brand)
+
+- The owner asked to start without questions; my calls are marked in the
+  spec (local, `docs/superpowers/specs/2026-11-02-brand-trial-fixes-design.md`).
+- Notification: the Claude Code `PostToolUse` hook now also runs after
+  shell commands, and the brand hook scans the final decks instead of
+  watching the written file: a deck filed with `cp` is notified, once per
+  session, in its own language. Decks already there at session start are
+  marked seen. Checked by hand: the hook run on the trial deck showed the
+  notification.
+- Two languages asked at the workshop (working, brand), kept in
+  `BRIEF.md`; an opening message with the steps, time and measured cost;
+  a new fact never reopens a settled choice.
+- Lighter main conversation: `brand` no longer reads screenshots; a new
+  `shoot_deck.sh` gives the creative director one PNG per slide (checked
+  with the real Chrome on the trial deck). The deck assembly by an agent
+  waits for the next measure (`BACKLOG.md`).
+- The five minor review findings fixed. Suite green.
+
+## 2026-11-05 — Where the agency and the welcome should go
+
+- The owner wants BRACE to feel like someone, and the agency like a real
+  agency: its vocabulary, named team members, a commercial proposal with
+  the budget, the real documents an agency writes (rendered by a shipped
+  script in BRACE's house style), a client space, minutes after each
+  meeting, meetings in the calendar, the tagline approved rather than
+  "the README". Line kept: never posing as humans.
+- Tracking gets a welcome: nickname, what tracking is, the global
+  language once, questions that fit projects without code, the durable
+  commit and push authorization asked with the backup question, a
+  "what's new" after an update.
+- Asked whether the agent can end its own session: no, and background
+  agents die with the session; the agency instead says when the work is
+  done and invites the user to close, and the next session resumes.
+- Order: the trial fixes committed; the agency next (before 1.1.0) with
+  test names, then the agency run on BRACE itself to name its team; the
+  welcome right after. Both in `BACKLOG.md`.
+
+## 2026-11-05 — The real agency built (feat/brand)
+
+- Spec and plan written and approved, then built inline in seven tasks,
+  each test first: catalogue (team, lexicon, client space), `render.py`
+  (documents, decks, client space), hooks (the client space as the ready
+  signal, the mission resuming at startup and after `/clear`), agents
+  writing the client documents, the skill rewritten meeting by meeting
+  (`contact.md` and `documents.md` new).
+- The deck example is now Markdown rendered by the script; the visible
+  rendering is unchanged (checked by screenshot).
+- Next: a real trial of the agency on BRACE itself, which also names the
+  team.
+
+## 2026-11-05 — The real agency reviewed
+
+- Whole-branch review by a fresh reviewer: one critical finding (the
+  Markdown renderer looped forever on a stray pipe or an indented quote),
+  three important ones (the first contact set no stage, so no resume at
+  the workshop appointment; Antigravity lost its touchpoint list during a
+  mission; emphasis broke links), nine minor ones. The owner asked to fix
+  them all: each with a test that failed first; suite green.
+
+## 2026-11-05 — The rebrand, settled
+
+- The trial on BRACE itself becomes a rebrand (its brand dates from 1.0).
+  The agency's rebrand path predates the real agency, so it gets its own
+  work first: archive, audit, extent, before and after, missing documents
+  made, transition plan, announcement, folder rename proposed as a
+  command for after `/exit`. In `BACKLOG.md`; the spec is written.
+
+## 2026-11-05 — The rebrand built (feat/brand)
+
+- Spec and plan approved, built inline in four tasks, each test first: a
+  `compare` slide (today next to tomorrow), the rebrand documents in the
+  agents (audit, transition plan, announcement; the analyst checks a new
+  name's availability, never as legal advice), and `references/rebrand.md`
+  meeting by meeting.
+- The folder rename, settled with the owner: the agency does it itself as
+  the session's very last action (folder and Claude Code memory in one
+  command, tested with spaces in the paths), the GitHub rename under a
+  separate confirmation.
+- Next: the agency rebrands BRACE in this repo.
+
+## 2026-11-05 — The rebrand reviewed
+
+- Fresh review: no critical finding, three important ones (the rename
+  command moved the memory even when the folder rename failed; the
+  rebrand marker relied on the first `SESSIONS.md` entry; renaming the
+  folder the plugin runs from breaks its own hooks), eight minor ones.
+  All fixed: the command now runs from a real test (spaces, existing
+  target, no memory, failed move) and copies the memory instead of moving
+  it; the session start names a rebrand from the last `- mission:` line;
+  with `--plugin-dir` inside the folder the agency gives the command for
+  after `/exit`; the table and the slide no longer share a class (the
+  real cause of the earlier offset); the columns default to today and
+  tomorrow; the archive is taken before the proposal.
+
+## 2026-11-05 — A returning client, and the trial set for tonight
+
+- Gap found by tracing the path: on a delivered brand with no precise
+  request, the skill had nothing to resume and would improvise. Now the
+  account director asks what brings the client back and offers a review,
+  a rebrand or a one-off request, with a recommendation from the signs she
+  sees. Tested; suite green.
+- The trial is set for tonight: `/brace:brand` on BRACE without saying
+  "rebrand", to check that the agency proposes it itself.
+
+## 2026-11-06 — The rebrand trial, up to meeting 2
+
+- `/brace:brand` on a delivered brand: the agency asked what brings the
+  client back and recommended the rebrand from the signs it saw. Archive,
+  proposal, framing workshop, then the team's backstage (benchmark, audit,
+  personas, three routes, words, references, deck, two reviews), all
+  in one session.
+- Found on the way: auto mode's classifier gave no verdict on the
+  agency's writes twice (the client had to leave auto mode); the macOS
+  calendar tool had write-only access, so no event could be created; a
+  `reco` item starting with bold text and " : " breaks the slide into
+  narrow columns; French guillemets need non-breaking spaces in decks.
+- The client widened the target (anyone with several concrete projects),
+  kept the tagline (its first meaning, "agreed", ties all the skills),
+  asked for a short explanation of the signature in English and French,
+  and for the team's real first names, now proposed.
+
+## 2026-11-07 — The rebrand trial, meeting 2 held
+
+- Meeting 2 ran early (the client came back before the appointment).
+  Repositioning chosen. None of the three routes convinced at first: asked
+  "what is BRACE?", the client answered "your projects, up to date, but
+  above all projects that look like you"; the team wrote a fourth route
+  from it, then the client settled on route 3 with that phrase as the
+  colour of the texts. French tagline: "Enfin sur la même longueur
+  d'onde." (the calque "sur la même page" checked by the analyst).
+- The team's names were hired from three rounds of checked candidates
+  (Julie, Ravi, Constance, Ben, Lou); they take effect at delivery.
+- Then the backstage for meeting 3: platform, editorial guide, manifesto,
+  one review round. Next appointment 2026-11-07 14:00.
+- Found on the way: the client wants to choose among candidates rather
+  than accept one set; and does not want the chat to repeat what an
+  opened document says. Auto mode's classifier again blocked the
+  agency's closing writes without a reason. A product idea logged in
+  `BACKLOG.md`: brand work alongside an existing agency's documents.
+
+## 2026-11-07 — The rebrand trial, meeting 3 held
+
+- The client came early and started meeting 3 at once. Platform, editorial
+  guide and manifesto validated one by one, each with small changes: value
+  3 renamed "Check before claiming"; the privacy limit settled and checked
+  in the code first (BRACE sends nothing itself; GitHub and Reminders are
+  the user's call); the description now says it reads the project first
+  and only asks what it cannot know; the manifesto adds that BRACE
+  suggests ways of working and tools, and offers to install them.
+- The brand files (`FOUNDATIONS.md`, `STRATEGY.md`, `VOICE.md`, brand
+  `DECISIONS.md`) carry the validated platform; `VOICE.md` is now English
+  from the French guide.
+- Product idea logged in `BACKLOG.md`: help the user get the most out of
+  their AI (tools presented with pros and cons from fresh research and
+  feedback, and one catalogue of every tool BRACE can propose).
+- Then the delivery backstage: name check among plugins (minor doubt,
+  nothing blocking), test plan, transition plan, announcement, the texts
+  in place; one review round. Meeting 4 set 2026-11-09 14:00, in the
+  client's calendar (the agency asked which calendar once, kept in
+  `~/.brace/prefs.txt`).
+- Found on the way: auto mode's classifier again refused writes without a
+  verdict (a subagent's and then brand's own), cleared by leaving auto
+  mode; a subagent first reported "written" for a file that was not on
+  disk, so the agency checks its agents' files before relying on them.
+
+## 2026-11-08 — The rebrand trial, delivered
+
+- The client came back a day early and took the delivery at once. Test:
+  checked personas, not real people (hypothesis, not tested; the
+  entrepreneur's door unsupported, the "agreed" reading of the tagline
+  fragile). Tagline and description validated in place; README top and
+  the three install descriptions now carry the editorial guide's text.
+  Transition and announcement validated (the announcement waits for 1.1).
+- The client overrode the agency on one point: the folder becomes `brace`
+  now (`project: brace`). BRACE runs from this folder (`--plugin-dir .`),
+  so the rename is the command to run after `/exit`.
+- Mission closed: `brand_stage: done`, review 2027-05-10 in the client's
+  calendar (meeting 4's event moved), heritage kept and dropped in the
+  brand `DECISIONS.md`, team renamed in both catalogues (Julie, Ravi,
+  Constance, Ben, Lou).
+
+
+## 2026-11-08 — The rebrand trial, read live by the owner
+
+- The owner ran the trial in one session and reported each point in a
+  second one as it happened; every point is kept in the local notes
+  (`docs/superpowers/research/2026-11-06-rebrand-trial-feedback.md`) and
+  drives the fix pass (`STATUS.md`, action 1).
+- What worked: the proposal's clarity, the brief's substance, the agency
+  resuming on its own at the right meeting, the interview offer, the
+  manifesto introduced at its top, the calendar once given full access.
+- What did not: the console does not yet sound like a person (labels,
+  numbered meetings, menus about the process, a credits list of first
+  names, documents restated); internal working documents shown, two of
+  them contradicting each other; feedback pasted into a text instead of
+  rethought; the team producing while the client waits; an empty delivery
+  meeting; chatter while the team works; the client space never introduced,
+  in the wrong language, listing internal files.
+- Settled with the owner: the agency imposes the process and proposes the
+  brand (accepting the proposal and the client's agenda stay the client's
+  call); documents are written as documents, decks carry the team's voice
+  through short signed annotations; present horizontally, read vertically,
+  one form per document; minutes filed, not shown nor validated; the
+  working language asked at first contact, the brand's main and secondary
+  languages at the workshop; auto mode advised by Claude itself, out of the
+  agency frame; tokens kept low by design, a point BRACE can put forward.
+- The owner questioned the visual identity sitting in `brand` (1.2, decided
+  2026-10-19): not reopened; the new meeting flow keeps a slot for a visual
+  phase, the decision is revisited at the 1.2 spec.
+
+## 2026-11-08 — The fix pass scoped, and the version order changed
+
+- Read the rebrand trial's transcripts: about 30 M tokens read from cache
+  on Opus (the conversation) against 10 M on Sonnet (the team); the cost
+  sits in rereading the main conversation. The 17-minute work batch was
+  mostly the write, review, fix chain (3 minutes of permission waits);
+  two name rounds took 33 and 46 minutes on 16 to 21 quick searches. The
+  agency advised against the folder rename because the strategist read
+  the rule as applying only when the brand's name changes.
+- Settled with the owner: four pieces of work (the renderer and the
+  client space, the account director writing without prompts, the
+  agency's voice and flow, a light intake of the brand work the client
+  already has), then 1.1. Version order changed: 1.2 = the brand's face
+  in `brand`, 1.3 = `design` (see `DECISIONS.md`). The scope is proposed
+  from what the client already has; the client stays in charge of it.
+- Budget in the proposal: a token range from the two real measures, with a
+  frugality commitment; the weekly quota share to measure at the next
+  trial (`/usage` before and after).
+- Spec written (local, gitignored) and checked by a builder review; the
+  plan comes next.
+
+## 2026-11-08 — The trial fix pass built
+
+- Built the fix pass from the rebrand trial on `feat/brand`, task by task
+  with tests: the renderer (wrapped and nested lists, rules, no repeated
+  title, signed deck notes), the client documents table with a phase and
+  a form, a client space that reads the mission's language, name, meetings
+  and client documents only, in tabs with the brand at a glance and a
+  shortcut at the project's root, a "Brand" link in the portfolio, and
+  the main conversation allowed to write in the agency's folders.
+- Rewrote the skill's prose: how the agency speaks, process and brand, the
+  mission as phases (a slot kept for the visual of 1.2), the five-part
+  meeting, the first contact with the client's existing brand work and a
+  proposed scope, the workshop's languages, the backstage questions asked
+  in one batch, feedback as an intent, the handover, and the agents.
+- Found on the way: an existing space kept its old stylesheet (the house
+  stylesheets are now refreshed), BRACE's own mission needed fallbacks for
+  its language and name, and a meeting already started still showed as
+  the next one at session start.
+
+## 2026-11-08 — The fix pass reviewed
+
+- A whole-branch review found no critical issue. Fixed: a mission begun
+  before this pass kept its earlier meetings at its first held line; two
+  meetings of one phase keep their own minutes; the shortcut's exclude
+  line is escaped for git; `rebrand.md` no longer says to validate
+  documents one by one; the resume line no longer invites a who-did-what
+  recap.
+- Then its four minors: the client space's home shows what we need from
+  the client (`- ask:` lines), a long brand name is capped in the
+  shortcut, a `.git` file (worktree, submodule) gets its exclude through
+  `gitdir:`, and a third list level goes back to the first.
+- The real auto-mode check moves to the next trial (owner's call).
+
+## 2026-11-08 — BRACE 1.1.0
+
+- Checked the client space in a headless Chrome: tabs by click and arrow
+  keys, the root shortcut, the portfolio's "Brand" link. Fixed what it
+  showed: panel titles missing on paper, Home and End keys in the tabs,
+  the portfolio's two card links stacked on two full-width lines; and the
+  space now writes dates in words in the working language.
+- The two 1.1 riders (keep the Antigravity copy up to date, tidy a
+  bloated `AGENTS.md`) move after `brace:design`: unrelated to `brand`,
+  each needs its own small spec. BRACE's own mission keeps its documents
+  signed with the team's former first names, as its archive.
+- Released 1.1.0: `feat/brand` merged into `main`.

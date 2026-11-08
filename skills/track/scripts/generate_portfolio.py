@@ -156,6 +156,9 @@ STRINGS = {
         "card_updated": "Updated",
         "card_aria_open_repo": "Open the {name} repository",
         "card_view_detail": "Details",
+        "card_brand": "Brand",
+        "card_aria_brand": "Open the brand's client space for {name}",
+        "subpage_brand_space": "Open the client space",
         "card_aria_view_detail": "View details for {name}",
         "uncategorized": "Uncategorized",
         "empty_title": "No tracked projects yet.",
@@ -200,6 +203,9 @@ STRINGS = {
         "card_updated": "Mis à jour",
         "card_aria_open_repo": "Ouvrir le dépôt {name}",
         "card_view_detail": "Détails",
+        "card_brand": "Marque",
+        "card_aria_brand": "Ouvrir l'espace client de la marque de {name}",
+        "subpage_brand_space": "Ouvrir l'espace client",
         "card_aria_view_detail": "Voir le détail de {name}",
         "uncategorized": "Sans catégorie",
         "empty_title": "Aucun projet suivi pour l'instant.",
@@ -456,6 +462,20 @@ def render_card(p, s, today=None):
         f'{_txt(s.get("card_view_detail", "Details"))}</a>'
     ) if slug else ""
 
+    brand_link = ""
+    try:
+        space = Path(p.get("_dir", "")) / "docs" / "brace" / "brand" / "index.html"
+        if p.get("_dir") and space.is_file():
+            brand_link = (
+                f'<a class="card-brand" href="{_attr(space.absolute().as_uri())}" '
+                f'aria-label="{_attr(s.get("card_aria_brand", "{name}").format(name=name))}">'
+                f'{_txt(s.get("card_brand", "Brand"))}</a>'
+            )
+    except (OSError, ValueError):
+        brand_link = ""
+
+    links = f'<div class="card-links">{subpage_link}{brand_link}</div>' if subpage_link or brand_link else ""
+
     # The sub-page link is a SIBLING of {open_tag}/{close_tag}, never nested
     # inside it: when a repo exists, open_tag/close_tag is itself an <a>,
     # and an <a> inside an <a> is invalid HTML5 (the browser silently
@@ -478,7 +498,7 @@ def render_card(p, s, today=None):
       </dl>
       {affordance}
     {close_tag}
-    {subpage_link}
+    {links}
     </div>"""
 
 
@@ -851,9 +871,15 @@ GITHUB_MARK_SVG = (
     "</path></svg>"
 )
 
+# Folders under docs/brace/ that are not skills: agents/ holds the BRACE
+# agents' per-project folders (see references/skills-contract.md).
+RESERVED_BRACE_DIRS = {"agents"}
+
+
 def render_skill_sections(project_dir, data, s):
     """One section per skill folder under docs/brace/ (a skill other than
-    track keeps its files there): its prefixed frontmatter keys
+    track keeps its files there; reserved folders such as agents/ are
+    skipped): its prefixed frontmatter keys
     (<skill>_*) and a link to the folder. "" when there is none. Never
     raises: an unreadable folder yields no section, an unusable path no
     link -- the portfolio run must not abort over it."""
@@ -861,7 +887,10 @@ def render_skill_sections(project_dir, data, s):
     try:
         if not root.is_dir():
             return ""
-        dirs = sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith("."))
+        dirs = sorted(
+            p for p in root.iterdir()
+            if p.is_dir() and not p.name.startswith(".") and p.name not in RESERVED_BRACE_DIRS
+        )
     except (OSError, ValueError):
         return ""
     out = []
@@ -874,6 +903,13 @@ def render_skill_sections(project_dir, data, s):
             f'  <p><a href="{_attr(href)}">{_txt(s["subpage_skill_folder"])}</a></p>\n'
             if href else ""
         )
+        try:
+            space = d / "index.html"
+            if d.name == "brand" and space.is_file():
+                link = (f'  <p><a href="{_attr(space.absolute().as_uri())}">'
+                        f'{_txt(s.get("subpage_brand_space", ""))}</a></p>\n') + link
+        except (OSError, ValueError, RuntimeError):
+            pass
         prefix = d.name + "_"
         items = "".join(
             f"<li><strong>{_txt(k[len(prefix):].replace('_', ' '))}</strong> — {_txt(str(v))}</li>"
@@ -1396,17 +1432,22 @@ PAGE_TEMPLATE = """<!doctype html>
   @media (hover: hover) and (pointer: fine) {{
     .chip:not([aria-pressed="true"]):hover {{ border-color: var(--accent); }}
   }}
-  .card-detail {{
-    display: inline-block;
+  .card-links {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin: 0.5rem 1.35rem 0;
+  }}
+  .card-detail, .card-brand {{
+    display: inline-block;
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--muted);
     text-decoration: none;
   }}
-  .card-detail:focus-visible {{ outline: 2px solid var(--accent2); outline-offset: 2px; }}
+  .card-detail:focus-visible, .card-brand:focus-visible {{ outline: 2px solid var(--accent2); outline-offset: 2px; }}
   @media (hover: hover) and (pointer: fine) {{
-    .card-detail:hover {{ color: var(--accent2); text-decoration: underline; }}
+    .card-detail:hover, .card-brand:hover {{ color: var(--accent2); text-decoration: underline; }}
   }}
   .filter-empty {{
     text-align: center;

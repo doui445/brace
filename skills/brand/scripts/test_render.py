@@ -1,0 +1,824 @@
+"""Tests for skills/brand/scripts/render.py.
+Run: python3 -m unittest discover -s skills/brand/scripts -p 'test_*.py'"""
+import datetime
+import html
+import re
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import render  # noqa: E402
+
+ASSETS = HERE.parent / "assets"
+SCRIPT = HERE / "render.py"
+
+
+def doc(body, **fm):
+    meta = {"title": "Benchmark", "author": "Bruno", "role": "research analyst",
+            "lang": "en", "meeting": "2", "date": "2026-11-05"}
+    meta.update(fm)
+    head = "".join(f"{k}: {v}\n" for k, v in meta.items())
+    return f"---\n{head}---\n\n{body}\n"
+
+
+def run(*args):
+    return subprocess.run([sys.executable, str(SCRIPT), *args], capture_output=True, text=True)
+
+
+class RenderDeckTests(unittest.TestCase):
+    def test_example_md_renders_to_example_html(self):
+        md = (ASSETS / "example.md").read_text(encoding="utf-8")
+        html = (ASSETS / "example.html").read_text(encoding="utf-8")
+        self.assertEqual(render.render_deck(md), html)
+
+    def test_unknown_slide_type_exits_1(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "deck.md"
+            src.write_text("---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: nope\ntitle: x\n", encoding="utf-8")
+            r = run("deck", str(src), str(Path(d) / "deck.html"))
+            self.assertEqual(r.returncode, 1)
+            self.assertIn("nope", r.stderr)
+
+    def test_unknown_field_exits_1(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "deck.md"
+            src.write_text("---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: route\ntittle: x\n", encoding="utf-8")
+            self.assertEqual(run("deck", str(src), str(Path(d) / "o.html")).returncode, 1)
+
+    def test_deck_escapes_html(self):
+        md = "---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: cover\ntitle: a <script>x</script> & \"q\"\n"
+        out = render.render_deck(md)
+        self.assertNotIn("<script>x", out)
+        self.assertIn("a &lt;script&gt;x&lt;/script&gt; &amp; &quot;q&quot;", out)
+
+
+CMP = "---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: compare\nmeta: Route 1 | Before and after\ntitle: What changes\nintro: And what stays.\nhead: Today | Tomorrow\n"
+
+
+class CompareSlideTests(unittest.TestCase):
+    def test_compare_slide(self):
+        out = render.render_deck(CMP + "row: Promise | Track your time | Nothing to rebuild\nrow: Tone | Busy | Calm\n")
+        self.assertIn('<section class="slide compare"', out)
+        self.assertEqual(out.count('<td class="before">'), 2)
+        self.assertEqual(out.count('<td class="after">'), 2)
+        self.assertIn("<th>Promise</th>", out)
+        self.assertIn("Nothing to rebuild", out)
+        self.assertIn("<th>Today</th>", out)
+        self.assertIn("What changes", out)
+
+    def test_compare_row_with_two_parts(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "deck.md"
+            src.write_text(CMP + "row: a | b\n", encoding="utf-8")
+            r = run("deck", str(src), str(Path(d) / "o.html"))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn('<td class="after"></td>', (Path(d) / "o.html").read_text(encoding="utf-8"))
+
+    def test_compare_escapes(self):
+        out = render.render_deck(CMP + "row: x | <b> | &\n")
+        self.assertIn('<td class="before">&lt;b&gt;</td>', out)
+        self.assertIn('<td class="after">&amp;</td>', out)
+
+
+class CompareMinorTests(unittest.TestCase):
+    def test_table_class_differs_from_the_slide(self):
+        out = render.render_deck(CMP + "row: a | b | c\n")
+        self.assertIn('<table class="cmp">', out)
+        self.assertNotIn('<table class="compare">', out)
+
+    def test_head_defaults_to_the_catalogue(self):
+        md = "---\ntitle: T\nlang: fr\nfooter: F\n---\n\n::: compare\ntitle: x\nrow: a | b | c\n"
+        out = render.render_deck(md)
+        self.assertIn("<th>Aujourd'hui</th><th>Demain</th>", out.replace("&#x27;", "'"))
+
+
+class MarkdownListTests(unittest.TestCase):
+    def test_wrapped_item_stays_in_its_item(self):
+        out = render.md_to_html("- first line\n  goes on here\n- second")
+        self.assertEqual(out.count("<li>"), 2)
+        self.assertIn("<li>first line goes on here</li>", out)
+        self.assertNotIn("<p>", out)
+
+    def test_wrapped_item_without_indent(self):
+        out = render.md_to_html("1. one\nstill one\n2. two")
+        self.assertIn("<li>one still one</li>", out)
+
+    def test_nested_list_one_level(self):
+        out = render.md_to_html("- parent\n  - child a\n  - child b\n- next")
+        self.assertIn("<li>parent<ul><li>child a</li><li>child b</li></ul></li>", out)
+        self.assertIn("<li>next</li>", out)
+
+    def test_nested_ordered_list(self):
+        out = render.md_to_html("- how\n  1. reads\n  2. asks")
+        self.assertIn("<li>how<ol><li>reads</li><li>asks</li></ol></li>", out)
+
+    def test_nested_item_wraps(self):
+        out = render.md_to_html("- parent\n  - child\n    wrapped\n- next")
+        self.assertIn("<li>child wrapped</li>", out)
+
+    def test_deeper_nesting_flattens_to_level_one(self):
+        out = render.md_to_html("- a\n  - b\n    - c\n- d")
+        self.assertIn("<li>a<ul><li>b</li></ul></li><li>c</li><li>d</li>", out)
+
+    def test_horizontal_rule(self):
+        out = render.md_to_html("Above\n\n---\n\nBelow")
+        self.assertIn("<hr>", out)
+        self.assertNotIn("---", out)
+
+    def test_rule_ends_a_list(self):
+        out = render.md_to_html("- a\n---\n- b")
+        self.assertEqual(out.count("<ul>"), 2)
+        self.assertIn("<hr>", out)
+
+    def test_paragraph_after_blank_line_leaves_the_list(self):
+        out = render.md_to_html("- a\n\nText.")
+        self.assertIn("<p>Text.</p>", out)
+
+    def test_heading_equal_to_title_is_dropped(self):
+        out = render.render_doc(doc("# Benchmark\n\nText."))
+        self.assertEqual(out.count("Benchmark</h1>"), 1)
+
+
+class DocMetaTests(unittest.TestCase):
+    def test_doc_and_phase_become_metas(self):
+        out = render.render_doc(doc("Text.", doc="benchmark", phase="strategy"))
+        self.assertIn('<meta name="brace-doc" content="benchmark">', out)
+        self.assertIn('<meta name="brace-phase" content="strategy">', out)
+
+
+class DeckNoteTests(unittest.TestCase):
+    DECK = "---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: reco\ntitle: We pick route 1\nnote: Constance | Say why calm wins.\n"
+
+    def test_note_renders_signed(self):
+        out = render.render_deck(self.DECK)
+        self.assertIn('<aside class="note"><b>Constance</b> Say why calm wins.</aside>', out)
+
+    def test_note_allowed_on_every_slide_type(self):
+        for kind in render.FIELDS:
+            self.assertIn("note", render.FIELDS[kind], kind)
+
+    def test_note_hidden_in_print(self):
+        css = (ASSETS / "deck.css").read_text(encoding="utf-8")
+        printed = css.split("@media print", 1)[1]
+        self.assertRegex(printed, r"\.note\b[^{]*\{\s*display:\s*none")
+
+
+class ClientDocsTableTests(unittest.TestCase):
+    def test_documents_md_table_matches_client_docs(self):
+        md = (HERE.parent / "references" / "documents.md").read_text(encoding="utf-8")
+        rows = re.findall(r"^\| [^|]+ \| `([a-z-]+?)(?:-<n>)?` \| [^|]+ \| `([a-z]+)` \| (presented|read) \|", md, re.M)
+        self.assertEqual({name: form for name, _, form in rows}, render.CLIENT_DOCS)
+        for _, phase, _ in rows:
+            self.assertIn(phase, render.PHASES)
+        self.assertIn("creative-brief", render.CLIENT_DOCS)
+        self.assertEqual(render.CLIENT_DOCS["platform"], "presented")
+        self.assertEqual(render.CLIENT_DOCS["editorial-guide"], "read")
+        self.assertEqual(render.PHASES, ("contact", "framing", "strategy", "platform", "visual", "delivery"))
+
+
+class RenderDocTests(unittest.TestCase):
+    def test_doc_signature_and_meta(self):
+        out = render.render_doc(doc("## Who else\n\nText."))
+        self.assertIn('<meta name="brace-author" content="Bruno">', out)
+        self.assertIn('<meta name="brace-meeting" content="2">', out)
+        self.assertIn("Bruno, research analyst", out)
+        self.assertIn("<title>Benchmark</title>", out)
+
+    def test_escapes_html(self):
+        out = render.render_doc(doc('a <b> & "c"'))
+        self.assertIn("a &lt;b&gt; &amp; &quot;c&quot;", out)
+        self.assertNotIn("<b>", out)
+
+    def test_utf8_and_lang(self):
+        out = render.render_doc(doc("Été à Noël.", lang="fr", role="analyste"))
+        self.assertIn('<html lang="fr">', out)
+        self.assertIn("Été à Noël.", out)
+        self.assertIn("Bruno, analyste", out)
+
+    def test_table_list_quote_link(self):
+        body = ("| A | B |\n|---|---|\n| 1 | 2 |\n\n- a\n- b\n\n1. one\n\n> q\n\n"
+                "See [the routes](2026-11-05-routes.html), **bold**, *it*, `code`.")
+        out = render.render_doc(doc(body))
+        self.assertIn("<table>", out)
+        self.assertIn("<th>A</th>", out)
+        self.assertIn("<td>2</td>", out)
+        self.assertIn("<ul><li>a</li><li>b</li></ul>", out)
+        self.assertIn("<ol><li>one</li></ol>", out)
+        self.assertIn("<blockquote><p>q</p></blockquote>", out)
+        self.assertIn('<a href="2026-11-05-routes.html">the routes</a>', out)
+        self.assertIn("<strong>bold</strong>", out)
+        self.assertIn("<em>it</em>", out)
+        self.assertIn("<code>code</code>", out)
+
+    def test_no_script_link(self):
+        out = render.render_doc(doc("[x](javascript:alert(1))"))
+        self.assertNotIn('href="javascript', out)
+
+    def test_offline(self):
+        md = (ASSETS / "example.md").read_text(encoding="utf-8")
+        for out in (render.render_deck(md), render.render_doc(doc("Plain text."))):
+            self.assertNotIn("http", out)
+
+    def test_no_em_dash_in_templates(self):
+        out = render.render_doc(doc("Text."))
+        self.assertNotIn("—", out)
+
+    def test_assets_copied(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "src.md"
+            src.write_text(doc("Text."), encoding="utf-8")
+            dst = Path(d) / "out" / "benchmark.html"
+            r = run("doc", str(src), str(dst))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            for rel in ("benchmark.html", "deck.css", "doc.css", "fonts/inter/Inter.ttf"):
+                self.assertTrue((dst.parent / rel).is_file(), rel)
+
+    def test_missing_front_matter_exits_1(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "src.md"
+            src.write_text("No front matter.", encoding="utf-8")
+            self.assertEqual(run("doc", str(src), str(Path(d) / "o.html")).returncode, 1)
+
+
+def project(d, sessions=None, docs=(), decks=(), lang="en", stage="adjustments", files=None):
+    """A tracked project with a brand folder. docs: (file name, meeting, title)
+    or (file name, meeting, title, {extra front matter}); files: brand file
+    name -> text (BRIEF.md, FOUNDATIONS.md...)."""
+    root = Path(d) / "proj"
+    brand = root / "docs" / "brace" / "brand"
+    (brand / "documents").mkdir(parents=True)
+    (brand / "presentations").mkdir()
+    (root / "docs" / "brace" / "STATUS.md").write_text(
+        f"---\nproject: tally\nlanguage: {lang}\nbrand_stage: {stage}\n---\n", encoding="utf-8")
+    if sessions is not None:
+        (brand / "SESSIONS.md").write_text(sessions, encoding="utf-8")
+    for name, meeting, title, *extra in docs:
+        fm = dict(meeting=meeting, title=title, **(extra[0] if extra else {}))
+        (brand / "documents" / name).write_text(render.render_doc(doc("Text.", **fm)), encoding="utf-8")
+    for name in decks:
+        (brand / "presentations" / name).write_text("<html></html>", encoding="utf-8")
+    for name, text in (files or {}).items():
+        (brand / name).write_text(text, encoding="utf-8")
+    return root
+
+
+def md_in_subprocess(text):
+    code = "import sys; sys.path.insert(0, sys.argv[1]); import render; print(render.md_to_html(sys.argv[2]))"
+    return subprocess.run([sys.executable, "-c", code, str(HERE), text], capture_output=True, text=True, timeout=5)
+
+
+class MarkdownEdgeTests(unittest.TestCase):
+    def test_line_starts_never_hang(self):
+        cases = ["| not a table\nnext", "Text\n| pipe line", "|a|\n|-|", "   > indented quote"]
+        for prefix in ("|", ">", " >", "#", "####", "-", "1.", "*", "1)"):
+            cases += [prefix, prefix + " text", "text\n" + prefix, prefix + "\ntext"]
+        for text in cases:
+            try:
+                r = md_in_subprocess(text)
+            except subprocess.TimeoutExpired:
+                self.fail(f"md_to_html hangs on {text!r}")
+            self.assertEqual(r.returncode, 0, (text, r.stderr))
+
+    def test_indented_quote_is_a_quote(self):
+        self.assertIn("<blockquote><p>q</p></blockquote>", md_in_subprocess("   > q").stdout)
+
+    def test_emphasis_never_touches_a_url(self):
+        out = render.inline("[x](http://a.com/**b**/c) and [y](https://e.com/a_*b*_c)")
+        self.assertIn('href="http://a.com/**b**/c"', out)
+        self.assertIn('href="https://e.com/a_*b*_c"', out)
+        self.assertIn("<strong>t</strong>", render.inline("[**t**](x.html)"))
+
+
+class SpaceDataTests(unittest.TestCase):
+    def data(self, **kw):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+        self.root = project(self._d.name, **kw)
+        return render.space_data(self.root)
+
+    def test_language_from_sessions_over_status(self):
+        self.assertEqual(self.data(sessions="# S\n\n- language: fr\n")["lang"], "fr")
+
+    def test_language_falls_back_to_status(self):
+        self.assertEqual(self.data(sessions="# S\n", lang="fr")["lang"], "fr")
+
+    def test_brand_name_from_sessions(self):
+        self.assertEqual(self.data(sessions="# S\n\n- brand: Acme\n- brand: Zest\n")["brand"], "Zest")
+
+    def test_brand_name_falls_back_to_project(self):
+        self.assertEqual(self.data(sessions="# S\n")["brand"], "tally")
+
+    def test_mission_is_first_paragraph_of_project_section(self):
+        brief = ("# BRIEF\n\nIntro.\n\n## The project\n\n- **Why now**: x\n  and more\n\n"
+                 "A small tool that\nlogs hours.\n\n## Who it is for\n\nFreelancers.\n")
+        self.assertEqual(self.data(files={"BRIEF.md": brief})["mission"], "A small tool that logs hours.")
+
+    def test_mission_in_a_french_brief(self):
+        brief = "# BRIEF\n\n## Le projet\n\nUn petit outil.\n"
+        self.assertEqual(self.data(files={"BRIEF.md": brief})["mission"], "Un petit outil.")
+
+    def test_mission_from_foundations_after_delivery(self):
+        files = {"BRIEF.md": "## The project\n\nOld line.\n",
+                 "FOUNDATIONS.md": "# F\n\n## Purpose\n\nGive everyone their hours back.\n"}
+        self.assertEqual(self.data(stage="done", files=files)["mission"], "Give everyone their hours back.")
+
+    def test_meetings_are_held_entries_named_by_phase(self):
+        sessions = ("# S\n\n- plan: contact, framing, strategy, platform, delivery\n\n"
+                    "## 2026-11-06 Our team's work\n\nDone.\n\n"
+                    "## 2026-11-07 Anything\n\n- held: 2026-11-07 14:00\n- phase: strategy\n")
+        meetings = self.data(sessions=sessions)["meetings"]
+        self.assertEqual(len(meetings), 1)
+        self.assertEqual(meetings[0]["title"], "Strategic recommendation")
+        self.assertEqual(meetings[0]["held"], "2026-11-07 14:00")
+        self.assertEqual(meetings[0]["phase"], "strategy")
+
+    def test_meeting_titles_in_french(self):
+        sessions = "# S\n\n- language: fr\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: platform\n"
+        self.assertEqual(self.data(sessions=sessions)["meetings"][0]["title"], "Plateforme de marque")
+
+    def test_minutes_sit_next_to_their_meeting(self):
+        sessions = "# S\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: strategy\n"
+        docs = (("2026-11-07-minutes-2.html", "2", "Minutes", {"doc": "minutes", "phase": "strategy"}),)
+        data = self.data(sessions=sessions, docs=docs)
+        self.assertEqual(data["meetings"][0]["minutes"], "2026-11-07-minutes-2.html")
+        self.assertEqual(data["documents"], [])
+
+    def test_meeting_before_held_is_not_next(self):
+        sessions = "# S\n\n- meeting: 2099-01-01 10:00\n\n## 2099-01-01 x\n\n- held: 2099-01-01 10:05\n- phase: strategy\n"
+        self.assertEqual(self.data(sessions=sessions)["next"], "")
+
+    def test_future_meeting_after_held_is_next(self):
+        sessions = "# S\n\n## 2026-01-01 x\n\n- held: 2026-01-01 10:05\n- phase: strategy\n- meeting: 2099-01-02 10:00\n"
+        self.assertEqual(self.data(sessions=sessions)["next"], "2099-01-02 10:00")
+
+    def test_only_client_documents_latest_version(self):
+        docs = (("2026-11-06-names-check.html", "2", "Names"),
+                ("2026-11-07-names-check-2.html", "2", "Names 2"),
+                ("2026-11-06-benchmark.html", "2", "Benchmark old"),
+                ("2026-11-07-benchmark.html", "2", "Benchmark new"),
+                ("2026-11-06-minutes-1.html", "1", "Minutes 1"),
+                ("2026-11-07-minutes-2.html", "2", "Minutes 2"))
+        documents = self.data(sessions="# S\n", docs=docs)["documents"]
+        self.assertEqual([(d["name"], d["title"]) for d in documents], [("2026-11-07-benchmark.html", "Benchmark new")])
+        self.assertEqual(documents[0]["phase"], "strategy")
+        self.assertEqual(documents[0]["form"], "read")
+
+    def test_doc_meta_wins_over_the_file_name(self):
+        docs = (("2026-11-07-anything.html", "2", "Guide", {"doc": "editorial-guide", "phase": "platform"}),)
+        documents = self.data(sessions="# S\n", docs=docs)["documents"]
+        self.assertEqual(documents[0]["phase"], "platform")
+
+    def test_legacy_mission_without_new_lines(self):
+        sessions = ("# S\n\n## 2026-11-06 First contact\n\n- meeting: 2026-11-06 18:00\n\n"
+                    "## 2026-11-07 Meeting 2: the recommendation\n\nText.\n")
+        docs = (("2026-11-06-proposal.html", "0", "Proposal"),
+                ("2026-11-07-routes.html", "2", "Routes"),
+                ("2026-11-06-minutes-1.html", "1", "Minutes 1"),
+                ("2026-11-07-team-names-3.html", "2", "Names"))
+        data = self.data(sessions=sessions, docs=docs)
+        self.assertEqual([m["title"] for m in data["meetings"]],
+                         ["2026-11-06 First contact", "2026-11-07 Meeting 2: the recommendation"])
+        self.assertEqual([(d["name"], d["phase"]) for d in data["documents"]],
+                         [("2026-11-06-proposal.html", "contact"), ("2026-11-07-routes.html", "strategy")])
+
+    def test_legacy_language_from_the_documents(self):
+        docs = (("2026-11-07-benchmark.html", "2", "Analyse", {"lang": "fr"}),)
+        self.assertEqual(self.data(sessions="# S\n", docs=docs)["lang"], "fr")
+
+    def test_legacy_brand_name_from_the_brief_title(self):
+        files = {"BRIEF.md": "# BRAND BRIEF \u2014 Acme\n\n## The project\n\nA tool.\n"}
+        self.assertEqual(self.data(sessions="# S\n", files=files)["brand"], "Acme")
+
+    def test_delivered_mission_takes_the_purpose_list_never_the_brief(self):
+        files = {"FOUNDATIONS.md": "## Purpose\n\n- **Why**: give everyone their hours back.\n- **How**: x\n",
+                 "BRIEF.md": "## The project\n\nAn old line.\n"}
+        self.assertEqual(self.data(stage="done", files=files)["mission"], "give everyone their hours back.")
+
+    def test_mission_skips_an_indented_list_continuation(self):
+        brief = "## The project\n\n- x\n\n  Still the list.\n\nA small tool.\n"
+        self.assertEqual(self.data(files={"BRIEF.md": brief})["mission"], "A small tool.")
+
+    def test_first_held_meeting_keeps_the_earlier_history(self):
+        sessions = ("# S\n\n## 2026-11-06 First contact\n\nText.\n\n"
+                    "## 2026-11-07 Meeting 2: the recommendation\n\nText.\n\n"
+                    "## 2026-11-08 Our team's work\n\nText.\n\n"
+                    "## 2026-11-09 x\n\n- held: 2026-11-09 14:00\n- phase: delivery\n")
+        docs = (("2026-11-07-minutes-2.html", "2", "Minutes 2"),
+                ("2026-11-09-minutes-4.html", "4", "Minutes 4", {"doc": "minutes", "phase": "delivery"}))
+        data = self.data(sessions=sessions, docs=docs)
+        titles = [m["title"] for m in data["meetings"]]
+        self.assertEqual(titles[:2], ["2026-11-06 First contact", "2026-11-07 Meeting 2: the recommendation"])
+        self.assertEqual(titles[-1], "Delivery")
+        self.assertEqual(data["meetings"][-1]["minutes"], "2026-11-09-minutes-4.html")
+        self.assertEqual([m["name"] for m in data["loose_minutes"]], ["2026-11-07-minutes-2.html"])
+
+    def test_two_meetings_in_one_phase_keep_their_own_minutes(self):
+        sessions = ("# S\n\n## 2026-11-07 a\n\n- held: 2026-11-07 14:00\n- phase: strategy\n\n"
+                    "## 2026-11-09 b\n\n- held: 2026-11-09 14:00\n- phase: strategy\n")
+        docs = (("2026-11-07-minutes-2.html", "2", "M2", {"doc": "minutes", "phase": "strategy"}),
+                ("2026-11-09-minutes-3.html", "3", "M3", {"doc": "minutes", "phase": "strategy"}))
+        data = self.data(sessions=sessions, docs=docs)
+        self.assertEqual([m["minutes"] for m in data["meetings"]],
+                         ["2026-11-07-minutes-2.html", "2026-11-09-minutes-3.html"])
+        self.assertEqual(data["loose_minutes"], [])
+
+    def test_asks_of_the_last_entry(self):
+        sessions = ("# S\n\n## 2026-11-06 a\n\n- ask: Old thing\n\n"
+                    "## 2026-11-07 b\n\n- ask: Run the interview guide with three people\n- ask: Send us your logo files\n")
+        self.assertEqual(self.data(sessions=sessions)["asks"],
+                         ["Run the interview guide with three people", "Send us your logo files"])
+
+    def test_no_asks_after_delivery(self):
+        sessions = "# S\n\n## 2026-11-07 b\n\n- ask: Something\n"
+        self.assertEqual(self.data(sessions=sessions, stage="done")["asks"], [])
+
+    def test_delivered_flag_and_stage(self):
+        data = self.data(stage="done")
+        self.assertTrue(data["delivered"])
+        self.assertEqual(data["stage"], "done")
+
+
+def panel(out, name):
+    """The HTML of one tab panel of the client space."""
+    return out.split(f'id="p-{name}"', 1)[1].split("</section>", 1)[0]
+
+
+class RenderSpaceTests(unittest.TestCase):
+    def test_space_lists_documents_by_phase(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, docs=(("2026-11-05-benchmark.html", "2", "Competitive benchmark"),
+                                    ("2026-11-06-editorial-guide.html", "3", "Editorial guide")))
+            docs = panel(render.render_space(root), "documents")
+            self.assertIn('href="documents/2026-11-05-benchmark.html"', docs)
+            self.assertIn("Strategic recommendation", docs)
+            self.assertIn("Brand platform", docs)
+            self.assertLess(docs.index("Competitive benchmark"), docs.index("Editorial guide"))
+
+    def test_space_next_meeting_on_home(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n\n- meeting: 2026-11-06 09:00\n\n"
+                                       "## 2026-11-06 Recommendation\n\n- meeting: 2099-11-07 10:00\n")
+            out = render.render_space(root)
+            self.assertIn("Saturday, November 7 2099, 10:00", panel(out, "home"))
+            self.assertIn("2026-11-05 Workshop", panel(out, "meetings"))
+            self.assertIn("Your brand, tally", out)
+
+    def test_space_empty_project(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d)
+            r = run("space", str(root))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            out = (root / "docs" / "brace" / "brand" / "index.html").read_text(encoding="utf-8")
+            self.assertIn("Nothing here yet.", out)
+            self.assertTrue((root / "docs" / "brace" / "brand" / "doc.css").is_file())
+
+    def test_space_lists_presentations_not_draft(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, decks=("2026-11-06-strategy.html", "draft.html"))
+            out = panel(render.render_space(root), "presentations")
+            self.assertIn('href="presentations/2026-11-06-strategy.html"', out)
+            self.assertNotIn("draft.html", out)
+
+    def test_presentations_show_their_title(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, decks=("2026-11-06-strategy.html",))
+            (root / "docs" / "brace" / "brand" / "presentations" / "2026-11-06-strategy.html").write_text(
+                "<html><head><title>Tally · Strategic presentation</title></head></html>", encoding="utf-8")
+            out = panel(render.render_space(root), "presentations")
+            self.assertIn(">Tally · Strategic presentation</a>", out)
+
+    def test_space_in_french(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, lang="fr")
+            out = render.render_space(root)
+            self.assertIn('<html lang="fr">', out)
+            self.assertIn("Ta marque, tally", out)
+
+
+class AssetsRefreshTests(unittest.TestCase):
+    def test_stale_stylesheet_is_refreshed(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "doc.css").write_text("/* old */", encoding="utf-8")
+            render.ensure_assets(d)
+            self.assertEqual((Path(d) / "doc.css").read_text(encoding="utf-8"),
+                             (ASSETS / "doc.css").read_text(encoding="utf-8"))
+
+
+class SpaceGlanceTests(unittest.TestCase):
+    def test_block_prefers_the_quote(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = {"STRATEGY.md": "## Positioning\n\nTwo axes.\n\n| a | b |\n|---|---|\n| c | d |\n\n> For people who run projects.\n\nMore text.\n"}
+            brand = panel(render.render_space(project(d, files=files)), "brand")
+            self.assertIn("For people who run projects.", brand)
+            self.assertNotIn("Two axes.", brand)
+            self.assertNotIn("<table>", brand)
+
+    def test_block_takes_a_table_before_prose(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = {"VOICE.md": "## Tagline and boilerplate\n\nThree things.\n\n| | EN |\n|---|---|\n| Tagline | Same page. |\n"}
+            brand = panel(render.render_space(project(d, files=files)), "brand")
+            self.assertIn("Same page.", brand)
+            self.assertNotIn("Three things.", brand)
+
+    def test_block_without_quote_shows_its_first_block(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = {"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n\nSecond paragraph.\n"}
+            brand = panel(render.render_space(project(d, files=files)), "brand")
+            self.assertIn("Give hours back.", brand)
+            self.assertNotIn("Second paragraph.", brand)
+
+
+class ShortcutTests(unittest.TestCase):
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+
+    def make(self, sessions="# S\n\n- brand: Acme\n", stage="adjustments", git="dir"):
+        root = project(self._d.name, sessions=sessions, stage=stage)
+        if git == "dir":
+            (root / ".git" / "info").mkdir(parents=True)
+        elif git == "file":
+            (root / ".git").write_text("gitdir: elsewhere\n", encoding="utf-8")
+        return root
+
+    def space(self, root):
+        r = run("space", str(root))
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def shortcuts(self, root):
+        return sorted(p.name for p in root.glob("*.html"))
+
+    def exclude(self, root):
+        f = root / ".git" / "info" / "exclude"
+        return f.read_text(encoding="utf-8") if f.is_file() else ""
+
+    def test_shortcut_created_and_excluded(self):
+        root = self.make()
+        self.space(root)
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
+        text = (root / "Acme - client space.html").read_text(encoding="utf-8")
+        self.assertIn('content="0; url=docs/brace/brand/index.html"', text)
+        self.assertEqual(self.exclude(root).splitlines().count("/Acme - client space.html"), 1)
+
+    def test_shortcut_in_french(self):
+        root = self.make(sessions="# S\n\n- brand: Acme\n- language: fr\n")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - espace client.html"])
+
+    def test_shortcut_removed_at_delivery(self):
+        root = self.make()
+        self.space(root)
+        (root / "docs" / "brace" / "STATUS.md").write_text("---\nproject: tally\nbrand_stage: done\n---\n", encoding="utf-8")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), [])
+        self.assertNotIn("client space", self.exclude(root))
+
+    def test_shortcut_follows_a_brand_rename(self):
+        root = self.make()
+        self.space(root)
+        (root / "docs" / "brace" / "brand" / "SESSIONS.md").write_text("# S\n\n- brand: Acme\n- brand: Zest\n", encoding="utf-8")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Zest - client space.html"])
+        self.assertNotIn("Acme", self.exclude(root))
+
+    def test_shortcut_name_strips_unsafe_characters(self):
+        root = self.make(sessions="# S\n\n- brand: A/B: test\n")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["AB test - client space.html"])
+
+    def test_shortcut_name_never_empty(self):
+        root = self.make(sessions="# S\n\n- brand: ///\n")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["proj - client space.html"])
+
+    def test_exclude_line_is_escaped(self):
+        for brand in ("#1 Coffee", "!Bang", "[x] co"):
+            with self.subTest(brand=brand):
+                d = tempfile.TemporaryDirectory()
+                self.addCleanup(d.cleanup)
+                root = project(d.name, sessions=f"# S\n\n- brand: {brand}\n")
+                (root / ".git" / "info").mkdir(parents=True)
+                self.space(root)
+                line = self.exclude(root).strip()
+                self.assertTrue(line.startswith("/"), line)
+                for ch in "#![]":
+                    self.assertNotIn(ch, line.replace("\\" + ch, ""), line)
+                self.assertEqual(render._exclude_line(f"{brand} - client space.html"), line)
+
+    def test_shortcut_name_is_capped(self):
+        root = self.make(sessions="# S\n\n- brand: " + "A" * 300 + "\n")
+        self.space(root)
+        names = self.shortcuts(root)
+        self.assertEqual(len(names), 1)
+        self.assertLessEqual(len(names[0].encode("utf-8")), 200)
+
+    def test_git_file_gets_its_exclude_through_gitdir(self):
+        root = self.make(git=None)
+        real = Path(self._d.name) / "real.git"
+        (real / "info").mkdir(parents=True)
+        (root / ".git").write_text(f"gitdir: {real}\n", encoding="utf-8")
+        self.space(root)
+        self.assertIn("/Acme - client space.html", (real / "info" / "exclude").read_text(encoding="utf-8"))
+
+    def test_git_file_with_a_relative_gitdir(self):
+        root = self.make(git=None)
+        (root / "sub.git" / "info").mkdir(parents=True)
+        (root / ".git").write_text("gitdir: sub.git\n", encoding="utf-8")
+        self.space(root)
+        self.assertIn("/Acme - client space.html", (root / "sub.git" / "info" / "exclude").read_text(encoding="utf-8"))
+
+    def test_no_git(self):
+        root = self.make(git=None)
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
+
+    def test_git_file_left_alone(self):
+        root = self.make(git="file")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
+        self.assertEqual((root / ".git").read_text(encoding="utf-8"), "gitdir: elsewhere\n")
+
+    def test_never_touches_other_html_at_root(self):
+        root = self.make()
+        (root / "index.html").write_text("<p>mine</p>", encoding="utf-8")
+        self.space(root)
+        (root / "docs" / "brace" / "STATUS.md").write_text("---\nproject: tally\nbrand_stage: done\n---\n", encoding="utf-8")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["index.html"])
+
+
+class SpaceTabsTests(unittest.TestCase):
+    def space(self, **kw):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+        return render.render_space(project(self._d.name, **kw))
+
+    def test_tabs_in_working_language(self):
+        out = self.space(sessions="# S\n\n- language: fr\n")
+        for label in ("Accueil", "Rendez-vous", "Documents", "Présentations"):
+            self.assertIn(f">{label}</button>", out)
+        self.assertNotIn("Ma marque", out)
+        self.assertEqual(out.count('<button role="tab"'), 4)
+
+    def test_brand_tab_appears_with_a_filled_brand_file(self):
+        out = self.space(files={"VOICE.md": "# V\n\n## Tagline and boilerplate\n\nFinally on the same page.\n"})
+        self.assertIn(">My brand</button>", out)
+        self.assertIn("Finally on the same page.", panel(out, "brand"))
+        self.assertIn("Tagline", panel(out, "brand"))
+
+    def test_empty_brand_section_shows_no_tab(self):
+        out = self.space(files={"VOICE.md": "# V\n\n## Tagline and boilerplate\n\n## Lexicon\n"})
+        self.assertNotIn(">My brand</button>", out)
+
+    def test_brand_tab_is_home_once_delivered(self):
+        out = self.space(stage="done", files={"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n"})
+        first = out.split('aria-selected="true"', 1)[0].rsplit("<button", 1)[1]
+        self.assertIn('id="tab-brand"', first)
+
+    def test_home_is_first_during_the_mission(self):
+        out = self.space(files={"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n"})
+        first = out.split('aria-selected="true"', 1)[0].rsplit("<button", 1)[1]
+        self.assertIn('id="tab-home"', first)
+
+    def test_home_lists_what_we_need_from_the_client(self):
+        out = self.space(sessions="# S\n\n- language: fr\n\n## 2026-11-07 b\n\n- ask: Envoie-nous ton logo\n")
+        home = panel(out, "home")
+        self.assertIn("Ce qu'on attend de toi", html.unescape(home))
+        self.assertIn("<li>Envoie-nous ton logo</li>", home)
+
+    def test_home_and_end_keys_move_between_tabs(self):
+        self.assertIn("'Home'", render.TABS_SCRIPT)
+        self.assertIn("'End'", render.TABS_SCRIPT)
+
+    def test_panel_titles_show_in_print(self):
+        css = (Path(render.__file__).parent.parent / "assets" / "doc.css").read_text(encoding="utf-8")
+        printed = css.split("@media print", 1)[1]
+        self.assertRegex(printed, r"\.panel-title[^{]*\{[^}]*position:\s*static")
+
+    def test_readable_without_javascript(self):
+        out = self.space(sessions="# S\n")
+        markup = out.split("<script>", 1)[0]
+        self.assertNotIn(" hidden", markup)
+        self.assertIn("<script>", out)
+
+    def test_no_long_dash_in_output(self):
+        out = self.space(sessions="# S\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: strategy\n",
+                         docs=(("2026-11-07-minutes-2.html", "2", "Minutes", {"doc": "minutes", "phase": "strategy"}),))
+        self.assertNotIn("\u2014", out)
+
+    def test_title_uses_brand_name(self):
+        out = self.space(sessions="# S\n\n- brand: Acme\n")
+        self.assertIn("<title>Your brand, Acme</title>", out)
+
+    def test_held_meeting_links_its_minutes(self):
+        out = self.space(sessions="# S\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: strategy\n",
+                         docs=(("2026-11-07-minutes-2.html", "2", "Minutes", {"doc": "minutes", "phase": "strategy"}),))
+        meetings = panel(out, "meetings")
+        self.assertIn("Strategic recommendation", meetings)
+        self.assertIn('href="documents/2026-11-07-minutes-2.html"', meetings)
+
+
+class SpaceDateTests(unittest.TestCase):
+    def test_french_date_with_time(self):
+        t = render.catalogue("fr")
+        self.assertEqual(render.when_text("2027-05-10 14:00", t, today=datetime.date(2027, 1, 1)),
+                         "lundi 10 mai \u00e0 14 h")
+        self.assertEqual(render.when_text("2027-05-10 09:30", t, today=datetime.date(2027, 1, 1)),
+                         "lundi 10 mai \u00e0 9 h 30")
+
+    def test_english_date_names_another_year(self):
+        t = render.catalogue("en")
+        self.assertEqual(render.when_text("2027-05-10 14:00", t, today=datetime.date(2026, 11, 8)),
+                         "Monday, May 10 2027, 14:00")
+
+    def test_date_alone(self):
+        t = render.catalogue("fr")
+        self.assertEqual(render.when_text("2026-11-06", t, today=datetime.date(2026, 11, 8)),
+                         "vendredi 6 novembre")
+
+    def test_unreadable_value_stays_as_written(self):
+        self.assertEqual(render.when_text("next week", render.catalogue("en")), "next week")
+
+    def test_space_shows_the_next_meeting_in_words(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = render.render_space(project(d, sessions="# S\n\n- language: fr\n- meeting: 2099-05-11 14:00\n"))
+            self.assertIn("lundi 11 mai 2099 \u00e0 14 h", panel(out, "home"))
+            self.assertNotIn("2099-05-11", out)
+
+
+class RenderSpaceMinorTests(unittest.TestCase):
+    def test_past_meeting_is_not_shown_as_next(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, sessions="# S\n\n- meeting: 2001-01-01 10:00\n")
+            out = render.render_space(root)
+            self.assertNotIn("2001-01-01 10:00", out)
+            self.assertNotIn("Next meeting", out)
+
+    def test_status_value_with_a_comment(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d)
+            (root / "docs" / "brace" / "STATUS.md").write_text(
+                '---\nproject: tally  # the tool\nlanguage: "fr"  # owner\n---\n', encoding="utf-8")
+            out = render.render_space(root)
+            self.assertIn('<html lang="fr">', out)
+            self.assertIn("Ta marque, tally<", out)
+
+    def test_tracking_file_not_utf8_still_renders(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d)
+            (root / "docs" / "brace" / "brand" / "SESSIONS.md").write_bytes(b"# S\n\n## 2026 \xff entry\n")
+            r = run("space", str(root))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertNotIn("Traceback", r.stderr)
+
+    def test_source_not_utf8_exits_1_with_a_message(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "src.md"
+            src.write_bytes(b"---\ntitle: \xff\n---\n")
+            r = run("doc", str(src), str(Path(d) / "o.html"))
+            self.assertEqual(r.returncode, 1)
+            self.assertNotIn("Traceback", r.stderr)
+            self.assertIn("UTF-8", r.stderr)
+
+    def test_space_shows_the_mission_and_links_the_minutes(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n",
+                           docs=(("2026-11-05-minutes-1.html", "1", "Minutes of the workshop"),
+                                 ("2026-11-05-benchmark.html", "2", "Competitive benchmark")))
+            (root / "docs" / "brace" / "brand" / "BRIEF.md").write_text(
+                "# BRAND BRIEF\n\nIntro line.\n\n## The project\n\nA small tool that logs your hours.\n\n## Who it is for\n\nFreelancers.\n",
+                encoding="utf-8")
+            out = render.render_space(root)
+            self.assertIn("A small tool that logs your hours.", panel(out, "home"))
+            self.assertIn('href="documents/2026-11-05-minutes-1.html"', panel(out, "meetings"))
+            documents = panel(out, "documents")
+            self.assertNotIn("minutes-1", documents)
+            self.assertIn("Competitive benchmark", documents)
+
+
+class SharedAssetsTests(unittest.TestCase):
+    def test_one_copy_of_the_assets_per_brand_folder(self):
+        with tempfile.TemporaryDirectory() as d:
+            brand = Path(d) / "p" / "docs" / "brace" / "brand"
+            src = Path(d) / "src.md"
+            src.write_text(doc("Text."), encoding="utf-8")
+            dst = brand / "documents" / "x.html"
+            self.assertEqual(run("doc", str(src), str(dst)).returncode, 0)
+            deck_src = Path(d) / "deck.md"
+            deck_src.write_text("---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: cover\ntitle: x\n", encoding="utf-8")
+            deck = brand / "presentations" / "draft.html"
+            self.assertEqual(run("deck", str(deck_src), str(deck)).returncode, 0)
+            self.assertIn('href="../doc.css"', dst.read_text(encoding="utf-8"))
+            self.assertIn('href="../deck.css"', deck.read_text(encoding="utf-8"))
+            self.assertTrue((brand / "fonts" / "inter" / "Inter.ttf").is_file())
+            self.assertFalse((brand / "documents" / "fonts").exists())
+            self.assertFalse((brand / "presentations" / "fonts").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

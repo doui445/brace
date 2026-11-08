@@ -6,7 +6,10 @@ FAIL=0
 run() { echo "== $*"; "$@" || FAIL=1; }
 run python3 -m unittest test_plugin_manifest
 run python3 -m unittest discover -s skills/track/scripts -p 'test_*.py'
-for t in dispatch/test_*.sh skills/track/hooks/test_*.sh skills/track/scripts/test_*.sh bridge/hooks/test_*.sh; do
+run python3 -m unittest discover -s skills/brand -p 'test_*.py'
+run python3 -m unittest discover -s skills/brand/scripts -p 'test_*.py'
+for t in dispatch/test_*.sh skills/*/hooks/test_*.sh skills/*/scripts/test_*.sh bridge/hooks/test_*.sh; do
+  [ -f "$t" ] || continue
   run bash "$t"
 done
 [ "$FAIL" -eq 0 ] && echo "ALL TESTS PASSED" || echo "SOME TESTS FAILED"

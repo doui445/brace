@@ -28,5 +28,20 @@ Claude Code displays edit diffs in full by default.
 ## 4. Lifecycle Hooks
 
 Claude Code hooks are declared in `claude-hooks.json` at the plugin root and all call the dispatcher `dispatch/run.sh` through the adapter in `dispatch/claude/`, which runs the scripts of each skill:
-- `SessionStart`: runs `skills/track/hooks/session_start.sh`.
-- `PostToolUse` with matcher `Edit|Write`: runs `skills/track/hooks/post_tool_use.sh` (portfolio regeneration and Reminders sync trigger).
+- `SessionStart`: runs each skill's `hooks/session_start.sh` (`track` always; another skill only where its `docs/brace/<skill>/` exists). Its `source` matters: for `brand`, a mission in progress brings the agency back at `startup` and after `/clear`, never after a compaction.
+- `PreToolUse` with matcher `Edit|Write`: lets a BRACE agent (`agent_type` `brace:<agent>`) write in its own `docs/brace/agents/<agent>/` folder of a tracked project without a permission prompt (`dispatch/agent_write.sh`). Anything else gets no decision: the user's permission settings apply.
+- `PostToolUse` with matcher `Edit|Write|Bash`: runs each skill's `hooks/post_tool_use.sh`; a write passes its file, a shell command only its working folder (for `track`: portfolio regeneration and Reminders sync trigger, on writes only; for `brand`: the voice reminder on touchpoint files, and a macOS notification once the client space is rendered after new deliverables, however they were written).
+
+## 5. Agents
+
+BRACE agents load from the file `.claude-plugin/plugin.json` lists under
+`agents` (`agents/claude/<agent>.md`). Launch one with the Agent tool,
+`subagent_type: "brace:<agent>"`, in the background; it does not see the
+conversation, so pass a complete brief. Its result arrives as a message
+when it finishes; the conversation stays free meanwhile.
+
+An agent writes in its own folder without a prompt (the `PreToolUse` hook
+above), and only there. Background agents keep the MCP tools (the
+`analyst` may use Claude in Chrome when it is connected). Claude Code's
+own notification shows only in some terminals; BRACE sends its own macOS
+notification when the agency's work is ready. Background agents live in the session: closing it stops them, so the agency asks to keep it open while the team works.

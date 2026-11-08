@@ -14,6 +14,143 @@ the bump, a release never breaks an existing project. The version lives in
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-11-08
+
+### Added
+- `brace:brand`: builds and keeps alive a brand's substance in
+  `docs/brace/brand/` (`FOUNDATIONS`, `STRATEGY`, `VOICE`, `DECISIONS`), for
+  product and personal brands; review reminder after 6 months; voice checks
+  on the touchpoint files.
+- The `analyst` agent, BRACE's first agent: background research
+  (competitors, market, audience, name availability), sourced, learning
+  each project from `docs/brace/agents/analyst/`.
+- The agents rules in `references/skills-contract.md`.
+- `brace:brand` works as an agency: a workshop on a pre-filled brief, the
+  team working in the background, a strategic presentation with two or
+  three routes, adjustments validated one document at a time (shown
+  rendered), and a delivery page with a preference and comprehension test
+  to run with real people. New brand files `BRIEF.md` and `SESSIONS.md`.
+- The client space is a tabbed portal (home, meetings with their minutes,
+  documents, presentations, and "My brand", the brand at a glance, which
+  becomes its home once delivered), with a shortcut at the project's root
+  during the mission and a "Brand" link on the portfolio card. Dates
+  read in words, in the working language; it prints whole.
+- Decks carry short notes signed by the teammate who would present each
+  slide (screen only).
+- A mission's scope is proposed from the brand work the client already
+  has (theirs or an agency's), never offered as a menu; the client's
+  documents are attached and kept as theirs. A creative brief for whoever
+  does the visual when the scope leaves it out.
+
+### Changed
+- The front page and the install descriptions carry BRACE's new
+  positioning ("an assistant you can agree with"), from its own rebrand.
+- The agency's team is now Julie, Ravi, Constance, Ben and Lou.
+- Three new agents: `strategist` (positioning routes, creative brief),
+  `copywriter` (the words of each route), `creative-director` (internal
+  review of the routes and of the rendered presentation).
+- Brand presentations: local HTML pages that read as a deck and print to
+  PDF one slide per page, from a template shipped in
+  `skills/brand/assets/` with free fonts (Fraunces, Inter, OFL).
+- A macOS notification when a brand presentation is ready, in the
+  presentation's language, however the file was written.
+- The brand workshop asks for two languages: the working language
+  (conversation, presentations, documents) and the brand's language (what
+  the public reads).
+- A brand mission opens with its five steps, about an hour of active
+  time, what needs the user and what runs alone, and its measured cost.
+- `skills/brand/scripts/shoot_deck.sh`: one screenshot per slide, so the
+  creative director sees the rendered presentation without a PDF reader.
+- The agency works like a real one: a named team (provisional names, from
+  the catalogue), a first contact with a proposal (scope, meetings, time,
+  budget), five meetings that each end with minutes and the next
+  appointment (in the calendar when possible), the documents an agency
+  writes (benchmark, personas, routes, brand platform, editorial guide,
+  manifesto, test plan), and a client space listing them.
+- `skills/brand/scripts/render.py`: renders documents, decks and the
+  client space from Markdown in the house style (`assets/doc.css`, the
+  deck model in `assets/example.md`).
+- A brand mission in progress brings the agency back at session start and
+  after `/clear`, with the next meeting when the client comes back early.
+- A rebrand runs as a real agency mission: "why now" first, the current
+  brand archived, an audit and the extent as the client's decision, a
+  before and after for each route (a new `compare` slide), the brand
+  documents never made produced along the way, a test with current users,
+  a transition plan and an announcement, and the folder renamed as the
+  session's very last action when the name changes.
+- A client who comes back to a delivered brand without a precise request
+  is asked what brings them back: a review, a rebrand or a one-off
+  request, with the agency's recommendation.
+- A `PreToolUse` hook on Claude Code: a BRACE agent writes in its own
+  `docs/brace/agents/<agent>/` folder without a permission prompt, and
+  only there.
+
+### Changed
+- The portfolio detail page ignores `docs/brace/agents/`.
+- `run_tests.sh` runs every skill's tests.
+- The `analyst` takes its research depth from the caller (never asks the
+  user), can read refused pages with a browser when one is available, and
+  finds references (brands that made a comparable choice).
+- The Claude Code `PostToolUse` hook also runs after shell commands.
+- `brand` no longer reads presentation screenshots itself (the creative
+  director does, in its own context): a lighter main conversation.
+- A new fact on a settled brand choice is reported, never asked again.
+- The brand notification now means the work is ready: it waits for the
+  client space, rendered last after every tracking file.
+- The agents write the client documents; the creative director reviews
+  them too.
+- The tagline is approved in the client's words, then applied and saved
+  (commit and push without a question once allowed).
+
+- The account director speaks like a person (full sentences, "our team",
+  no credits, no menus about the process, a meeting named by its subject)
+  and runs the agency's process herself; the client decides the brand,
+  the scope and their own time.
+- A mission is a plan of phases built from the scope, with a slot kept
+  for the visual identity of a later release. Each meeting runs in five
+  parts; the questions for the next phase are asked in one batch before
+  the team works; silence while it works, then a short end-of-session
+  notice outside the agency.
+- Only client documents are rendered and shown, one at a time, each in
+  one form (presented in a deck or read as a page) and written as a
+  document; the team's internal work stays internal. The minutes are
+  filed, never shown or validated. Feedback is rethought as an intent.
+- The delivery is a real handover deck; the test option is chosen at the
+  platform meeting.
+- The working language is asked at the first contact; the workshop asks
+  the brand's main and secondary languages.
+- On Claude Code, the main conversation writes in the agency's folders
+  (`docs/brace/brand/`, `docs/brace/agents/brand/`) without a prompt.
+- The analyst's quick research is capped at about six searches per
+  subject; tabs opened in the client's browser are closed.
+- The house stylesheets are refreshed in a project when the shipped ones
+  change.
+
+### Fixed
+- Brand touchpoints are read from the list items of the section only: a
+  file named in a note there is no longer a touchpoint.
+- Background agents' writes to their own folder were denied; they now
+  land without a prompt.
+- An agent can no longer write into a project nested in an agents folder.
+- The brand notification checks the language code, reads a `language:`
+  line after a tab, and strips backslashes from its text.
+- The renderer never loops on a stray pipe or an indented quote, keeps
+  links intact, reads tracking files with a bad byte, and says when a
+  source is not UTF-8. The client space shows the mission, links the
+  minutes, and hides a past meeting; one copy of the fonts per project.
+- The mission resume reads a `SESSIONS.md` with Windows line ends and
+  ignores an older meeting when the newest line is malformed; the first
+  contact sets the stage; Antigravity keeps its touchpoint list during a
+  mission.
+- The renderer keeps wrapped list items in their item, renders one
+  nested list level and `---` rules, and drops a title repeated as a
+  heading. The client space follows the mission's working language and
+  the brand's name, shows a real mission line, lists only the meetings
+  and the client documents (latest version), and no longer shows a meeting
+  already started as the next one.
+- The folder rename is recommended whenever the brand's name differs from
+  the folder's, after a repositioning too.
+
 ## [1.0.0] — 2026-10-16
 
 ### Added

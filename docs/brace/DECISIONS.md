@@ -582,3 +582,108 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   visual identity in 1.1 (nearly all of the planned `design` work in one
   release); the logo alone in `brand` with colour and type in `design`
   (splits things that are made together).
+
+## 2026-10-26 — Skills are verbs, agents are real trades (extends 2026-10-18)
+
+- **Context**: the third agency domain needed a name, and the owner asked
+  for one naming rule for every skill.
+- **Chosen**: a skill is named by a short English verb, the action BRACE
+  takes on the project (`track`, `brand`, `design`, `market`, later
+  `write`). An agent is named by a trade that really exists in an agency
+  (`analyst`, `strategist`, `art-director`...).
+- **Rejected**: `-ing` nouns (`tracking`, `branding`: renames shipped
+  skills and breaks their commands; `designing` does not work);
+  `marketing` (fine alone, breaks the verb rule); invented roles as agents
+  (`critic`, `auditor`, `reader` become `creative-director`, `strategist`,
+  `researcher`).
+
+## 2026-10-26 — Brand works as an agency
+
+- **Context**: the first real brand session (on BRACE itself) asked too
+  many questions the owner could not answer, and was hard to digest. The
+  owner wants `brand` to feel like hiring an agency: it takes the project
+  in hand, proposes, shows examples and references, works on its own, and
+  comes back with progress.
+- **Chosen**: five sessions (workshop on a pre-filled brief, backstage,
+  strategic presentation, adjustments validated document by document,
+  delivery), a team of four agents with their own margin (`analyst`,
+  `strategist`, `copywriter`, `creative-director`), presentations as local
+  HTML decks in a house style with free embedded fonts, documents always
+  shown rendered, research depth chosen by `brand`, a preference and
+  comprehension test with real people in place of the five-second test,
+  agents writing in their own folder through a `PreToolUse` hook, a BRACE
+  macOS notification, no offer of the agency unprompted.
+- **Rejected**: a sequence of open questions (the 1.0 shape); PDF as the
+  source of a presentation (the HTML prints to PDF anyway, and the stdlib
+  cannot render one well); a cloud or third-party deck tool (offline and
+  free first); offering the agency on every new project (the owner prefers
+  to wait for the topic); the five-second test (thinly documented, not
+  convincing).
+
+## 2026-11-08 — Finish `brand` before `design` (revises 2026-10-19)
+
+- **Context**: the owner pointed out that adding the visual to `brand`
+  means new agents, new meetings and deliverables, and new first names to
+  choose; doing it while `design` is built would reopen `brand` twice.
+  The rebrand trial also left the owner frustrated with no visual identity
+  at the end.
+- **Chosen**: 1.1 = `brand` with the trial's fix pass, which already lays
+  the frame for a visual phase; 1.2 = the brand's face in `brand` (visual
+  routes, logo, palette, type, `art-director`, `designer`); 1.3 =
+  `design`, which reads a complete brand identity and reuses what `brand`
+  1.2 builds (design-skill delegation, visual tests). The visual still
+  belongs to `brand` (2026-10-19 unchanged on that point).
+- **Chosen**: the scope of a mission is proposed from what the client
+  already has, never offered as a menu: everything when nothing exists,
+  the visual only on a solid strategy, the missing parts named on an
+  incomplete one, and only what the client asks for when they want just
+  one part (with a creative brief for whoever does the rest). The client
+  decides the scope; the agency runs the process.
+- **Rejected**: shipping the visual with `design` (the 2026-10-19 reason,
+  shared tooling, is built in `brand` first and reused); holding 1.1 until
+  the visual is done (a very long branch, the substance is ready); a
+  "strategy only / strategy and identity" choice in every proposal
+  (agencies scope from the existing brand, not from a menu).
+
+## 2026-11-08 — Tokens are a design rule
+
+- **Context**: the rebrand trial read about 30 M tokens from cache on Opus
+  (the conversation) against 10 M on Sonnet (the team): the cost sits in
+  rereading the main conversation, so every repeated document, progress
+  line or process menu costs a full turn on the most capable model.
+- **Chosen**: every BRACE flow minimises tokens: never restate an open
+  document, one document at a time, no chatter while the team works, small
+  changes stay small, internal work never rendered. The proposal states
+  the agency's commitment to keep the work light without taking anything
+  from its quality; BRACE can put it forward.
+- **Rejected**: optimising only the render calls (a small gain next to the
+  conversation's rereads).
+
+## 2026-11-08 — The agency runs the process, the client decides the brand
+
+- **Context**: in the trial the agency kept asking the client how it
+  should work (prepare a guide? hold the workshop now?), which a real
+  agency never does.
+- **Chosen**: "propose or impose" applied to `brand`: the agency imposes
+  its process (the brief, the guide, the workshop's timing, the order and
+  form of documents and meetings, the research depth) and says what it
+  needs from the client; the client decides the brand, the scope, their
+  own time (appointments, the test) and the commitment (the proposal).
+  Every scripted line is written as an intention, tested by "would she
+  really say this?".
+- **Rejected**: keeping process questions for transparency (they make the
+  client do the agency's job).
+
+## 2026-11-08 — The main conversation writes in the agency's folders (revises 2026-10-26)
+
+- **Context**: on Claude Code, auto mode's classifier refused the account
+  director's writes several times without a verdict, and the client had to
+  leave auto mode.
+- **Chosen**: the `PreToolUse` hook also allows the main conversation's
+  `Write` and `Edit` in `docs/brace/brand/` and `docs/brace/agents/brand/`
+  of a tracked project (same path checks as the agents' rule). These
+  folders are the agency's own; nothing else writes them. Hooks run
+  before the classifier, so an allow skips it.
+- **Rejected**: keeping the main conversation under the user's settings
+  only (the trial's failure stays); widening to the whole `docs/brace/`
+  (the tracking files are the user's, under `track`'s rules).

@@ -35,6 +35,33 @@ grep -q "$PROJ" "$TMP/out/PORTFOLIO.html" 2>/dev/null && echo "PASS: portfolio r
 OUT="$(printf '{"tool_name": "Read", "tool_input": {"file_path": "%s"}, "session_id": "s1"}' "$P/docs/brace/STATUS.md" | bash "$DIR/claude/post_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: non-write tool ignored" || { echo "FAIL: Read produced [$OUT]"; FAIL=1; }
 
+# A shell command reaches the dispatcher with the working folder (the brand
+# notification watches decks written by a command).
+mkdir -p "$P/docs/brace/brand/presentations"
+STUB="$TMP/notify_stub.sh"; NOTE="$TMP/notified"
+printf '#!/usr/bin/env bash\necho "$2" >> "%s"\n' "$NOTE" > "$STUB"; chmod +x "$STUB"
+touch "$P/docs/brace/brand/presentations/2026-01-01-strategy.html" "$P/docs/brace/brand/index.html"
+OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "cp a b"}, "cwd": "%s", "session_id": "sb"}' "$P" | BRACE_NOTIFY_CMD="$STUB" BRACE_UNAME=Darwin bash "$DIR/claude/post_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: Bash PostToolUse -> no text" || { echo "FAIL: Bash produced [$OUT]"; FAIL=1; }
+grep -q "work is ready" "$NOTE" 2>/dev/null && echo "PASS: deck written by a command -> notification" || { echo "FAIL: no notification after Bash"; FAIL=1; }
+rm -rf "$P/docs/brace/brand"
+
+# PreToolUse: a BRACE agent writing in its own folder is allowed, nothing else.
+AW="$P/docs/brace/agents/analyst/r.md"
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
+has "$OUT" '"permissionDecision": "allow"' "Claude PreToolUse -> agent in its folder allowed"
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse main conversation, an agent's folder -> no decision" || { echo "FAIL: main conversation got [$OUT]"; FAIL=1; }
+mkdir -p "$P/docs/brace/brand"
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}}' "$P/docs/brace/brand/SESSIONS.md" | bash "$DIR/claude/pre_tool_use.sh")"
+has "$OUT" '"permissionDecision": "allow"' "Claude PreToolUse -> main conversation in the brand folder allowed"
+OUT="$(printf '{"tool_name": "Edit", "tool_input": {"file_path": "%s"}}' "$P/docs/brace/STATUS.md" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse main conversation, tracking file -> no decision" || { echo "FAIL: tracking file got [$OUT]"; FAIL=1; }
+OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "touch %s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse Bash -> no decision" || { echo "FAIL: Bash got [$OUT]"; FAIL=1; }
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s\\n/../../../../../escape.md"}, "agent_type": "brace:analyst"}' "$P/docs/brace/agents/analyst/x" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse newline in path -> no decision" || { echo "FAIL: newline in path got [$OUT]"; FAIL=1; }
+
 # Antigravity 1.3 numbers model calls from 0: the first call of each
 # conversation runs, whatever its number; later calls get {}.
 OUT="$(printf '{"invocationNum": 0, "workspacePaths": ["%s"], "conversationId": "c1"}' "$P" | bash "$DIR/antigravity/session_start.sh")"
@@ -93,7 +120,7 @@ OUT="$(printf '{"cwd": "%s", "session_id": "s5", "source": "startup"}' "$L2" | B
   && echo "PASS: Claude restarted after the swap -> pending cleared, project moved" || { echo "FAIL: Claude restarted [$OUT]"; FAIL=1; }
 
 # Garbage input never fails a tool.
-for A in claude/session_start claude/post_tool_use antigravity/session_start antigravity/post_tool_use; do
+for A in claude/session_start claude/post_tool_use claude/pre_tool_use antigravity/session_start antigravity/post_tool_use; do
   OUT="$(echo 'not json' | bash "$DIR/$A.sh")"; RC=$?
   case "$A" in antigravity/*) WANT="{}" ;; *) WANT="" ;; esac
   [ $RC -eq 0 ] && [ "$OUT" = "$WANT" ] && echo "PASS: garbage input -> $A" || { echo "FAIL: $A rc=$RC out=[$OUT]"; FAIL=1; }

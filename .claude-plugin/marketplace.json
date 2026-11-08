@@ -3,13 +3,13 @@
   "owner": {
     "name": "doui445"
   },
-  "description": "BRACE, project memory for AI coding assistants, and the project-tracker bridge that installs it.",
+  "description": "BRACE, a plugin for your AI agent: it asks, writes down what you decide, and keeps all your projects on one page. For Claude Code, it also works with Antigravity. This marketplace also carries the update for people coming from the earlier plugin.",
   "plugins": [
     {
       "name": "brace",
       "source": ".",
-      "description": "Project memory for AI coding assistants: tracking files kept current, a unified portfolio, skills that share one memory.",
-      "version": "1.0.0"
+      "description": "BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can't know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.",
+      "version": "1.1.0"
     },
     {
       "name": "project-tracker",

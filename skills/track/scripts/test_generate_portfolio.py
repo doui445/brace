@@ -402,6 +402,31 @@ class RenderCardTests(unittest.TestCase):
         self.assertNotIn("<a href=", html)
         self.assertNotIn("javascript:", html)
 
+    def test_card_links_the_brand_space_when_present(self):
+        with tempfile.TemporaryDirectory() as d:
+            space = Path(d) / "docs" / "brace" / "brand" / "index.html"
+            space.parent.mkdir(parents=True)
+            space.write_text("<p>space</p>", encoding="utf-8")
+            p = {"project": "P", "status": "active", "last_updated": "2026-08-23", "_path": "p", "_dir": d,
+                 "repo": "https://example.com/repo"}
+            html = gp.render_card(p, gp._strings("en"))
+            self.assertIn(f'<a class="card-brand" href="{space.as_uri()}"', html)
+            self.assertIn(">Brand</a>", html)
+            # A sibling of the whole-card link, never nested inside it.
+            self.assertLess(html.index("</a>"), html.index('class="card-brand"'))
+            self.assertIn(">Marque</a>", gp.render_card(p, gp._strings("fr")))
+            # Details and Brand sit side by side in one row, not stacked.
+            row = html.split('<div class="card-links">', 1)[1].split("</div>", 1)[0]
+            self.assertIn('class="card-detail"', row)
+            self.assertIn('class="card-brand"', row)
+            page = gp.build_page([], "2026-11-08", lang="en")
+            self.assertRegex(page, r"\.card-links\s*\{[^}]*display:\s*flex")
+
+    def test_card_without_brand_space_has_no_brand_link(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = {"project": "P", "status": "active", "last_updated": "2026-08-23", "_path": "p", "_dir": d}
+            self.assertNotIn("card-brand", gp.render_card(p, gp._strings("en")))
+
     def test_absent_repo_renders_no_link(self):
         p = {"project": "P", "status": "active", "last_updated": "2026-08-23", "_path": "p"}
         html = gp.render_card(p, gp._strings("en"))
@@ -1281,6 +1306,16 @@ class BraceLayoutTests(unittest.TestCase):
         self.assertIn((p / "docs" / "brace" / "design").as_uri(), html)
         self.assertIn("Open folder", html)
 
+    def test_brand_section_links_the_client_space(self):
+        p = self.home / "app"
+        self._status(p, "brace", "brand_stage: done\n")
+        (p / "docs" / "brace" / "brand").mkdir()
+        (p / "docs" / "brace" / "brand" / "index.html").write_text("<p>space</p>", encoding="utf-8")
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        html = gp.build_subpage(p, data, "fr")
+        self.assertIn((p / "docs" / "brace" / "brand" / "index.html").as_uri(), html)
+        self.assertIn("Ouvrir l'espace client", html)
+
     def test_skill_sections_never_raise(self):
         p = self.home / "guarded"
         self._status(p, "brace")
@@ -1300,6 +1335,26 @@ class BraceLayoutTests(unittest.TestCase):
         finally:
             os.chdir(cwd)
         self.assertIn((p / "docs" / "brace" / "design").resolve().as_uri(), html)
+
+    def test_agents_folder_is_not_a_skill_section(self):
+        p = self.home / "watched"
+        self._status(p, "brace", "agents_x: y\n")
+        (p / "docs" / "brace" / "agents" / "analyst").mkdir(parents=True)
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        html = gp.build_subpage(p, data, "en")
+        self.assertNotIn('class="subpage-skill"', html)
+        self.assertNotIn("<h2>Agents</h2>", html)
+
+    def test_brand_section_next_to_agents_folder(self):
+        p = self.home / "branded"
+        self._status(p, "brace", "brand_stage: voice\nbrand_profile: product\n")
+        (p / "docs" / "brace" / "brand").mkdir(parents=True)
+        (p / "docs" / "brace" / "agents" / "analyst").mkdir(parents=True)
+        data = gp.parse_frontmatter((p / "docs" / "brace" / "STATUS.md").read_text(encoding="utf-8"))
+        html = gp.build_subpage(p, data, "en")
+        self.assertIn("<h2>Brand</h2>", html)
+        self.assertIn("voice", html)
+        self.assertNotIn("<h2>Agents</h2>", html)
 
     def test_no_skill_section_without_skill_folder(self):
         p = self.home / "plain"

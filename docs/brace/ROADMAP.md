@@ -69,20 +69,28 @@ BRACE (1.0.0):
   with per-tool adapters, skills that plug in by dropping a hook script,
   automatic move from project-tracker (0.14.0 bridge + migration in BRACE),
   official installs only.
+- **1.1.0 — `brace:brand`** (2026-11-08): a brand's substance built and
+  kept alive by an agency (a named team of four agents, a proposal scoped
+  from what the client already has, meetings with minutes, rendered
+  documents and decks, a tabbed client space), tried for real on BRACE's
+  own rebrand.
 
 Detail for each: [`CHANGELOG.md`](CHANGELOG.md), [`DECISIONS.md`](DECISIONS.md).
 
 ## Current focus
 
-**BRACE 1.1: `brace:design`**: track a project's design / brand direction
-under `docs/brace/design/`. File model already frozen in `BACKLOG.md`;
-first question for the spec: `design` and `brand`, one skill or two.
+**BRACE 1.2: the brand's face in `brand`**: visual routes, logo, palette
+and type, brand files, two new agents (`art-director`, `designer`) and
+their first names. BRACE's own visual identity comes out of it.
 
 ## Next
 
-- In parallel, no plugin release: **BRACE's own visual identity** (DA,
-  unblocked by the naming), then the **public website**.
-- Later, undated: portfolio graph view; pressure-testing three skill rules.
+- **1.3: `brace:design`**: applies a complete brand identity to
+  interfaces, and gives non-brand projects a style.
+- **After `design`**: keep the Antigravity copy up to date, tidy a
+  bloated `AGENTS.md` (both in `BACKLOG.md`, moved out of 1.1).
+- Later, undated: the public website; portfolio graph view;
+  pressure-testing three skill rules.
 
 ## Unprioritised ideas
 

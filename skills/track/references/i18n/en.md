@@ -1,8 +1,8 @@
 # i18n catalogue — English (`en`)
 
 Canonical key list for the tracking-file headings and template phrases the
-`brace:track` skill writes. `fr.md` (and any future `<code>.md`) mirrors
-this file: **same keys, same order**. A guard test enforces it.
+`brace:track` and `brace:brand` skills write. `fr.md` (and any future
+`<code>.md`) mirrors this file: **same keys, same order**. A guard test enforces it.
 
 **This file is the source of truth for the wording.** `SKILL.md`,
 `references/writing-tracking-files.md` and `references/backlog-phases.md`
@@ -100,6 +100,157 @@ headings beyond the sub-project names).
 
 - subprojects.title: SUBPROJECTS — {project}
 - subprojects.intro: The sub-projects attached to this project: why each one exists, where it stands, and where its own files live.
+
+## brand/BRIEF.md
+
+The client brief: pre-filled by `brace:brand` from what the project already
+says, validated with the user at the workshop.
+
+- brand.brief.title: BRAND BRIEF — {project}
+- brand.brief.intro: What you asked the agency for. We pre-filled it from what we read in your project. Tell us what does not sound like you.
+- brand.brief.heading.project: The project
+- brand.brief.heading.objectives: What the brand must achieve
+- brand.brief.heading.audience: Who it is for
+- brand.brief.heading.competitors: Competitors you know
+- brand.brief.heading.name: Name
+- brand.brief.heading.taste: What you like
+- brand.brief.heading.emotion: The feeling to leave
+- brand.brief.heading.never: What you never want
+- brand.brief.heading.languages: Languages (main, secondary)
+
+## brand/SESSIONS.md
+
+Append-only, one entry per session.
+
+- brand.sessions.title: BRAND SESSIONS — {project}
+- brand.sessions.intro: One entry per session with the agency: what was decided, what is waiting, what comes next.
+- brand.sessions.decided: Decided
+- brand.sessions.waiting: Waiting
+- brand.sessions.next: Next
+- brand.sessions.meeting: Next meeting
+
+## brand/FOUNDATIONS.md
+
+Written by `brace:brand` (see `skills/brand/references/`). `journey` only for
+a personal brand.
+
+- brand.foundations.title: FOUNDATIONS — {project}
+- brand.foundations.intro: Who we are and why. The durable base every other brand choice is judged against.
+- brand.foundations.heading.purpose: Purpose
+- brand.foundations.heading.personality: Personality
+- brand.foundations.heading.emotion: Core emotion
+- brand.foundations.heading.story: Brand story
+- brand.foundations.heading.journey: Journey
+- brand.foundations.heading.name: Name
+
+## brand/STRATEGY.md
+
+`architecture` only when the project has sub-brands or sub-projects;
+`packaging` and `channels` only for a personal brand. The `touchpoints`
+section lists repo files in backticks: a hook reads it.
+
+- brand.strategy.title: STRATEGY — {project}
+- brand.strategy.intro: Where we play and against whom. Revised over time.
+- brand.strategy.heading.objectives: Objectives
+- brand.strategy.heading.personas: Personas
+- brand.strategy.heading.landscape: Competitive landscape
+- brand.strategy.heading.differentiators: Differentiators
+- brand.strategy.heading.positioning: Positioning
+- brand.strategy.heading.mechanism: Mechanism
+- brand.strategy.heading.proof: Proof points
+- brand.strategy.heading.indicator: Indicator
+- brand.strategy.heading.touchpoints: Touchpoints
+- brand.strategy.heading.architecture: Brand architecture
+- brand.strategy.heading.packaging: Packaging
+- brand.strategy.heading.channels: Channels and cadence
+- brand.strategy.heading.non_goals: Non-goals
+
+## brand/VOICE.md
+
+- brand.voice.title: VOICE — {project}
+- brand.voice.intro: How the brand speaks. Public texts are checked against it.
+- brand.voice.heading.exercise: Voice first
+- brand.voice.heading.attributes: Voice attributes
+- brand.voice.heading.tone: Tone by context
+- brand.voice.heading.lexicon: Lexicon
+- brand.voice.heading.mechanics: Writing rules
+- brand.voice.heading.pillars: Message pillars
+- brand.voice.heading.tagline: Tagline and boilerplate
+
+## brand/DECISIONS.md
+
+Append-only, separate from the project's main `DECISIONS.md`.
+
+- brand.decisions.title: BRAND DECISIONS — {project}
+- brand.decisions.intro: Brand choices: what was tried, why it was set aside, what was kept.
+
+## Brand notifications
+
+The macOS notification sent when a brand presentation is ready.
+
+- brand.team.brand.name: Julie
+- brand.team.brand.role: account director
+- brand.team.analyst.name: Ravi
+- brand.team.analyst.role: research analyst
+- brand.team.strategist.name: Constance
+- brand.team.strategist.role: brand strategist
+- brand.team.copywriter.name: Ben
+- brand.team.copywriter.role: copywriter
+- brand.team.creative_director.name: Lou
+- brand.team.creative_director.role: creative director
+- brand.lex.contact: first contact
+- brand.lex.proposal: proposal
+- brand.lex.kickoff: kickoff meeting
+- brand.lex.workshop: framing workshop
+- brand.lex.minutes: minutes
+- brand.lex.meeting: meeting
+- brand.lex.recommendation: strategic recommendation
+- brand.lex.routes: routes
+- brand.lex.platform: brand platform
+- brand.lex.editorial_guide: editorial guide
+- brand.lex.manifesto: manifesto
+- brand.lex.delivery: delivery
+- brand.lex.client_space: client space
+- brand.lex.test_plan: test plan
+- brand.lex.benchmark: competitive benchmark
+- brand.lex.personas: personas
+- brand.lex.rebrand: rebrand
+- brand.lex.audit: brand audit
+- brand.lex.transition: transition plan
+- brand.lex.announcement: announcement
+- brand.lex.before: today
+- brand.lex.after: tomorrow
+- brand.lex.archive: archive
+- brand.space.title: Your brand, {project}
+- brand.space.next: Next meeting
+- brand.space.ask: What we need from you
+- brand.space.none: Nothing here yet.
+- brand.space.short: client space
+- brand.space.days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+- brand.space.months: January, February, March, April, May, June, July, August, September, October, November, December
+- brand.space.date: {day}, {month} {date}{year}
+- brand.space.at: {when}, {time}
+- brand.space.time: {h}:{mm}
+- brand.space.time_whole: {h}:00
+- brand.space.tab.home: Home
+- brand.space.tab.meetings: Meetings
+- brand.space.tab.documents: Documents
+- brand.space.tab.presentations: Presentations
+- brand.space.tab.brand: My brand
+- brand.space.block.purpose: Purpose
+- brand.space.block.positioning: Positioning
+- brand.space.block.emotion: Core emotion
+- brand.space.block.tagline: Tagline
+- brand.space.block.lexicon: Words we use
+- brand.phase.contact: First contact and proposal
+- brand.phase.framing: Framing workshop
+- brand.phase.strategy: Strategic recommendation
+- brand.phase.platform: Brand platform
+- brand.phase.visual: Visual identity
+- brand.phase.delivery: Delivery
+- brand.doc.by: {name}, {role}
+- brand.notify.title: BRACE
+- brand.notify.ready: The agency's work is ready.
 
 ## Shared
 

@@ -22,9 +22,25 @@ creation, and regenerates a unified `PORTFOLIO.html`. Behaviour spec:
   **self-relative**, never hardcode `~/.claude/...` paths);
   `scripts/generate_portfolio.py` (stdlib only, no deps) and
   `scripts/migrate_project.sh` (+ their tests).
+- `skills/brand/` — `SKILL.md`, `references/` (one per session, plus the
+  content of each brand file), `assets/` (the presentation template:
+  `deck.css`, `example.html`, `fonts/` with Fraunces and Inter under OFL,
+  tested by `test_assets.py`), and `hooks/session_start.sh` (review
+  reminder) / `hooks/post_tool_use.sh` (voice drift on touchpoints, macOS
+  notification when a presentation is ready), + their `test_*.sh`;
+  `scripts/shoot_deck.sh` (one screenshot per slide for the creative
+  director) and `scripts/render.py` (documents, decks and the client space
+  from Markdown, stdlib), + their tests; `assets/doc.css` and
+  `assets/example.md` (the deck model, rendered into `example.html`).
+- `agents/` — BRACE agents (`analyst`, `strategist`, `copywriter`,
+  `creative-director`): `agents/<agent>.md` for Antigravity,
+  `agents/claude/<agent>.md` for Claude Code (listed in
+  `.claude-plugin/plugin.json`); same body, a test enforces it.
 - `dispatch/` — the dispatcher `run.sh`, `lib.sh`, `machine.sh`,
-  `migrate_plugins.sh`, `migrate_config.sh`, and the per-tool adapters
-  `claude/` and `antigravity/` (+ tests).
+  `migrate_plugins.sh`, `migrate_config.sh`, `agent_write.sh` (may a
+  BRACE agent write this file without a prompt), and the per-tool adapters
+  `claude/` (including `pre_tool_use.sh`, Claude Code only) and
+  `antigravity/` (+ tests).
 - Manifests: `.claude-plugin/{plugin,marketplace}.json` and
   `claude-hooks.json` (Claude Code); `plugin.json` + `hooks.json` at the repo
   root (Antigravity). **Never recreate `hooks/hooks.json`** — Antigravity

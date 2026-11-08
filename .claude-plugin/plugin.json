@@ -1,9 +1,15 @@
 {
   "name": "brace",
-  "description": "BRACE is project memory for AI coding assistants: tracking files kept current, a unified portfolio, skills that share one memory.",
-  "version": "1.0.0",
+  "description": "BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can't know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.",
+  "version": "1.1.0",
   "author": { "name": "doui445" },
   "license": "MIT",
   "homepage": "https://github.com/doui445/brace",
-  "hooks": "./claude-hooks.json"
+  "hooks": "./claude-hooks.json",
+  "agents": [
+    "./agents/claude/analyst.md",
+    "./agents/claude/strategist.md",
+    "./agents/claude/copywriter.md",
+    "./agents/claude/creative-director.md"
+  ]
 }

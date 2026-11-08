@@ -1,15 +1,21 @@
 # BRACE
 
-*Barely Remarkable, Admittedly Capable Engine* — formerly project-tracker.
+**Finally on the same page.**
 
-Open a Claude Code session in one of your projects and it keeps a small set of
-Markdown files — `STATUS.md`, `ROADMAP.md`, `JOURNAL.md`, `CHANGELOG.md`,
-`DECISIONS.md` and a few more — current as you work, so you and Claude always
-have the project's context in one predictable place. It also builds a single
-`PORTFOLIO.html` across every project you track.
+Monday morning. You paste in the same instructions as last week, and you are
+not sure which of your notes is still true.
 
-It's a plugin for Claude Code and Antigravity (a skill + a hook dispatcher). It never guesses: anything it
-doesn't know, it asks.
+BRACE turns your AI agent into an assistant you can agree with: it reads your
+project first, asks only what it can't know, writes down what you decide in
+files you can read, and keeps all your projects on one page. A free plugin for
+Claude Code, it also works with Antigravity.
+
+Track follows your projects. Brand writes down your project's voice and
+strategy, after meetings where you validate each document.
+
+It asks. It writes it down. You decide.
+
+Formerly project-tracker.
 
 ## Quick start
 
@@ -68,6 +74,13 @@ Plus, on top of the files:
 - **A unified portfolio** — one `PORTFOLIO.html` aggregating every tracked
   project across all your scope roots, grouped by category, regenerated
   automatically whenever a `STATUS.md` changes.
+- **Brand work** (`/brace:brand`) — for a project that is a brand (a product
+  to launch or a personal brand): purpose, positioning, voice and name,
+  written in `docs/brace/brand/` and kept alive (reviews, rebrand, voice
+  checks on public texts).
+- **A research analyst** — a BRACE agent that researches competitors, the
+  market, what an audience says or a name's availability in the
+  background, with a source on every line.
 - **Optional GitHub automation** — creates a private repo or grafts onto an
   existing one, on request. Never commits or pushes without confirmation.
 - **Optional Apple Reminders sync** (macOS) — links a project to a Reminders
@@ -81,7 +94,9 @@ Plus, on top of the files:
 
 ## Requirements
 
-- **Claude Code** or **Antigravity** — that's the only hard requirement.
+- **An AI agent on your computer.** BRACE is a plugin for Claude Code, and it
+  also works with Antigravity. Without an agent, it has nothing to run in. It is
+  the only hard requirement.
 - **Python 3** — standard library only, no dependencies (bundled, used by the
   portfolio generator).
 - **The `gh` CLI** — only for the optional GitHub repo automation.
@@ -167,6 +182,11 @@ in plain language.
 
 The full behaviour specification lives in
 [`skills/track/SKILL.md`](skills/track/SKILL.md).
+
+## About the name
+
+Barely Remarkable, Admittedly Capable Engine. Braces hold a block together,
+the way BRACE holds your project's context.
 
 ## License
 

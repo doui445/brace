@@ -1,17 +1,20 @@
 ---
-project: project-tracker
+project: brace
 status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-10-17
-next_milestone: "BRACE 1.1: brace:brand"
+last_updated: 2026-11-08
+next_milestone: "BRACE 1.2: the brand's face in brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
 phase_model: "superpowers"
 language: en
 nested_model: "non"
+brand_profile: product
+brand_stage: done
+brand_reviewed: 2026-11-08
 ---
 
 # STATUS — BRACE
@@ -39,6 +42,16 @@ both manifests).
   project-scope swap with the real CLI; Antigravity 1.3 on this machine.
 - Full suite green (`bash run_tests.sh`).
 
+**BRACE 1.1.0** (2026-11-08): `brace:brand` runs as an agency. A named
+team of four agents (`analyst`, `strategist`, `copywriter`,
+`creative-director`) behind an account director; a proposal whose scope
+follows from the brand work the client already has; meetings in five
+parts with minutes and appointments; client documents and decks rendered
+by a script; a tabbed client space with a root shortcut during the
+mission and a "Brand" link on the portfolio card. Tried for real on
+BRACE's own rebrand (delivered 2026-11-08, review 2027-05-10), then a fix
+pass from that trial, reviewed and checked in a headless browser.
+
 ### Known gaps
 
 - A tool session left open since before the swap keeps the old plugin
@@ -47,13 +60,13 @@ both manifests).
 
 ## Next 3 actions
 
-1. **Review the `brace:brand` spec** (BRACE 1.1, written 2026-10-19,
-   gitignored), then the implementation plan: the substance (`FOUNDATIONS`,
-   `STRATEGY`, `VOICE`, the name) and the `analyst` agent. 1.2 brings the
-   brand's face (logo, palette, type) in `brand` plus `brace:design` for
-   interfaces (see `DECISIONS.md`). This machine now runs the published
-   plugin from GitHub: test branches with `claude --plugin-dir .`.
-2. **Resume the DA brainstorm** (BRACE's own identity): its validated
-   foundations and strategy are `brace:brand`'s first real case.
-3. **1.1 riders**: keep the Antigravity copy up to date; tidy a bloated
-   `AGENTS.md` (both in `BACKLOG.md`).
+1. **Publish 1.1.0** (owner's yes): push `main` and the tag, then set the
+   GitHub description and topics and publish the announcement.
+2. **Next real trial** on a dogfood project, on 1.1.0: check in auto mode
+   that a write in `brand/` no longer prompts, the agency's voice and
+   five-part meetings, the scope from existing documents; measure the
+   quota with `/usage` before and after.
+3. **1.2: the brand's face in `brand`** (visual routes, logo, palette,
+   type, `art-director` and `designer`): spec first. Then 1.3 =
+   `brace:design`; the Antigravity copy update and the `AGENTS.md` tidy
+   come after it.

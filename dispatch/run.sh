@@ -55,9 +55,13 @@ case "$EVENT" in
     fi
     ;;
   post_tool_use)
+    # A file write names its file; a shell command only its working folder.
     if [ -n "$BRACE_FILE" ]; then
       SCOPE="$(brace_scope_root "$BRACE_FILE")"
       [ -n "$SCOPE" ] && PROJECT="$(brace_find_project "$(dirname "$BRACE_FILE")" "$SCOPE")"
+    elif [ -n "$BRACE_CWD" ]; then
+      SCOPE="$(brace_scope_root "$BRACE_CWD")"
+      [ -n "$SCOPE" ] && PROJECT="$(brace_find_project "$BRACE_CWD" "$SCOPE")"
     fi
     ;;
 esac
