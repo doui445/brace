@@ -65,4 +65,6 @@ body { background: var(--paper-2); font-family: var(--sans); color: var(--ink); 
   .page { margin: 0; padding: 0; max-width: none; box-shadow: none; background: none; }
   .tabs { display: none !important; }
   .space .panel[hidden] { display: block; }
+  .tabbed .space .panel-title { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+  .tabbed .space .panel + .panel { margin-top: 40px; }
 }

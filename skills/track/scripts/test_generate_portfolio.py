@@ -415,6 +415,12 @@ class RenderCardTests(unittest.TestCase):
             # A sibling of the whole-card link, never nested inside it.
             self.assertLess(html.index("</a>"), html.index('class="card-brand"'))
             self.assertIn(">Marque</a>", gp.render_card(p, gp._strings("fr")))
+            # Details and Brand sit side by side in one row, not stacked.
+            row = html.split('<div class="card-links">', 1)[1].split("</div>", 1)[0]
+            self.assertIn('class="card-detail"', row)
+            self.assertIn('class="card-brand"', row)
+            page = gp.build_page([], "2026-11-08", lang="en")
+            self.assertRegex(page, r"\.card-links\s*\{[^}]*display:\s*flex")
 
     def test_card_without_brand_space_has_no_brand_link(self):
         with tempfile.TemporaryDirectory() as d:

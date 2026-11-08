@@ -474,6 +474,8 @@ def render_card(p, s, today=None):
     except (OSError, ValueError):
         brand_link = ""
 
+    links = f'<div class="card-links">{subpage_link}{brand_link}</div>' if subpage_link or brand_link else ""
+
     # The sub-page link is a SIBLING of {open_tag}/{close_tag}, never nested
     # inside it: when a repo exists, open_tag/close_tag is itself an <a>,
     # and an <a> inside an <a> is invalid HTML5 (the browser silently
@@ -496,7 +498,7 @@ def render_card(p, s, today=None):
       </dl>
       {affordance}
     {close_tag}
-    {subpage_link}{brand_link}
+    {links}
     </div>"""
 
 
@@ -1430,9 +1432,14 @@ PAGE_TEMPLATE = """<!doctype html>
   @media (hover: hover) and (pointer: fine) {{
     .chip:not([aria-pressed="true"]):hover {{ border-color: var(--accent); }}
   }}
+  .card-links {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0.5rem 1.35rem 0;
+  }}
   .card-detail, .card-brand {{
     display: inline-block;
-    margin: 0.5rem 1.35rem 0;
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--muted);

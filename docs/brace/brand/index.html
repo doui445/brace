@@ -84,8 +84,10 @@
     tabs.forEach(function (t, i) {
       t.addEventListener('click', function () { show(t); });
       t.addEventListener('keydown', function (e) {
-        var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (k) { var n = tabs[(i + k + tabs.length) % tabs.length]; show(n); n.focus(); }
+        var j = e.key === 'ArrowRight' ? (i + 1) % tabs.length
+          : e.key === 'ArrowLeft' ? (i - 1 + tabs.length) % tabs.length
+          : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : -1;
+        if (j >= 0) { e.preventDefault(); show(tabs[j]); tabs[j].focus(); }
       });
     });
     document.body.classList.add('tabbed');

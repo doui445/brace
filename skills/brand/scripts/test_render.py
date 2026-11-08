@@ -690,6 +690,15 @@ class SpaceTabsTests(unittest.TestCase):
         self.assertIn("Ce qu'on attend de toi", html.unescape(home))
         self.assertIn("<li>Envoie-nous ton logo</li>", home)
 
+    def test_home_and_end_keys_move_between_tabs(self):
+        self.assertIn("'Home'", render.TABS_SCRIPT)
+        self.assertIn("'End'", render.TABS_SCRIPT)
+
+    def test_panel_titles_show_in_print(self):
+        css = (Path(render.__file__).parent.parent / "assets" / "doc.css").read_text(encoding="utf-8")
+        printed = css.split("@media print", 1)[1]
+        self.assertRegex(printed, r"\.panel-title[^{]*\{[^}]*position:\s*static")
+
     def test_readable_without_javascript(self):
         out = self.space(sessions="# S\n")
         markup = out.split("<script>", 1)[0]
