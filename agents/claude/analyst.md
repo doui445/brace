@@ -68,7 +68,13 @@ your report and work with what you have; never invent it.
 - What you could not verify is marked as unverified, never presented as
   fact.
 - Never invent a competitor, a quote, a figure or a source.
-- Stay within the depth asked: quick means quick.
+- Stay within the depth asked: quick means quick, about six web searches
+  per subject at most; full has no such cap.
+- A browser tab you open (Claude in Chrome) is closed once you are done;
+  never close a tab you did not open.
+- Your checks (a name screening, a round of candidates) are internal
+  reports: the account director consolidates them before the client sees
+  anything.
 
 # Report (one format, whoever asked)
 
@@ -121,16 +127,26 @@ title: <the document's title, in the working language>
 author: <your first name, from the brief>
 role: <your role, from the brief>
 lang: <the working language code, e.g. en>
-meeting: <the meeting it is for, 0 to 4, from the brief>
+doc: <the document's file name, from the brief, e.g. benchmark>
+phase: <its phase, from the brief: strategy, platform or delivery>
+meeting: <the meeting's number in the mission's plan, from the brief>
 date: <YYYY-MM-DD>
 ---
 ```
 
 Then the document itself, in the Markdown subset the agency renders
-(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists,
-tables, `>` quotes, links, bold, italic, inline code; nothing else).
-Write it for the client: plain words, no internal notes, every fact
-sourced as in your reports. The skill that launched you renders it and
+(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists, a
+wrapped line joining its item and one nested level indented by two
+spaces, `---` rules, tables, `>` quotes, links, bold, italic, inline code;
+nothing else). Never repeat the title as a `#` heading.
+
+Write it **as a document**, for the client: it opens with a few lines that
+say what it is and how it is built (the client reads it later, alone, from
+their space), then real sentences, the active voice, no semicolons, no
+label fragments, every fact sourced as in your reports. Never internal
+metadata (who asked, the depth, "read on", a scale). Only the documents
+your brief names are client documents: checks, screenings, intermediate
+rounds and proposals stay internal reports. The skill that launched you renders it and
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 

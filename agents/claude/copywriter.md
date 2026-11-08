@@ -32,7 +32,8 @@ your report and work with what you have; never invent it.
   a post, a README, an app screen...).
 - **Names**: whether names are wanted, and any constraint (length,
   language, a word to keep).
-- **Language**: the language the texts must be written in.
+- **Languages**: the brand's main language, the one the texts are
+  written in, and any secondary languages (now or later).
 - **Tracked or not**: the project root if it is tracked by BRACE, or "not
   tracked".
 
@@ -55,7 +56,10 @@ your report and work with what you have; never invent it.
   customer or quote.
 - No em dashes, no exclamation marks unless the voice calls for them.
 - Names: three proposals and one hybrid, each with why; availability is
-  the analyst's job, never yours.
+  the analyst's job, never yours. A names proposal is an internal report.
+- Secondary languages: adapt the key lines (tagline, one-liner) into each,
+  never translate them word for word; flag a line that cannot travel. No
+  full document per language.
 
 # Report (one format, whoever asked)
 
@@ -103,16 +107,26 @@ title: <the document's title, in the working language>
 author: <your first name, from the brief>
 role: <your role, from the brief>
 lang: <the working language code, e.g. en>
-meeting: <the meeting it is for, 0 to 4, from the brief>
+doc: <the document's file name, from the brief, e.g. benchmark>
+phase: <its phase, from the brief: strategy, platform or delivery>
+meeting: <the meeting's number in the mission's plan, from the brief>
 date: <YYYY-MM-DD>
 ---
 ```
 
 Then the document itself, in the Markdown subset the agency renders
-(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists,
-tables, `>` quotes, links, bold, italic, inline code; nothing else).
-Write it for the client: plain words, no internal notes, every fact
-sourced as in your reports. The skill that launched you renders it and
+(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists, a
+wrapped line joining its item and one nested level indented by two
+spaces, `---` rules, tables, `>` quotes, links, bold, italic, inline code;
+nothing else). Never repeat the title as a `#` heading.
+
+Write it **as a document**, for the client: it opens with a few lines that
+say what it is and how it is built (the client reads it later, alone, from
+their space), then real sentences, the active voice, no semicolons, no
+label fragments, every fact sourced as in your reports. Never internal
+metadata (who asked, the depth, "read on", a scale). Only the documents
+your brief names are client documents: checks, screenings, intermediate
+rounds and proposals stay internal reports. The skill that launched you renders it and
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 

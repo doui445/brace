@@ -64,6 +64,12 @@ your report and work with what you have; never invent it.
    faithful to the brief and to what the client validated, consistent with
    `docs/brace/brand/VOICE.md` when it exists, readable by someone outside
    the trade, every fact sourced. Name the document in a send-back.
+   Also check the form: a read document opens on what it is; no internal
+   metadata (who asked, depth, "read on"); no title repeated as a heading;
+   no semicolons or label fragments; decks speak in verbs and the active
+   voice ("We keep", never a bare "Kept"); the team's notes are short,
+   signed, on a few slides, and never repeat the slide; nothing internal
+   (a check, a round, a proposal) is presented as a client document.
 5. **Decide.** `pass` or `send back`, per route and for the presentation.
    Send back only what matters to the user; a taste preference is a note,
    not a send-back.

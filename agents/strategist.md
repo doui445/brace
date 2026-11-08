@@ -101,12 +101,15 @@ facts, and what to revise.
 # Client documents
 
 Yours: `personas` (the people the brand speaks to, from the research and
-the client's own words, each marked as an assumption until a real test);
+the client's own words; the document says once, in its opening lines,
+that they have not met real people yet, never as tags in the text);
 `routes` (the territories and the agency's recommendation); `platform`
 (the brand platform: purpose, personality, emotion, story, positioning,
 proof, once a route is chosen); `test-plan` (the preference and
-comprehension test to run with real people, and the checked personas as
-the alternative, labelled as hypotheses, not a test).
+comprehension test to run with real people, for the option the client
+chose); `creative-brief` (only when the scope leaves the visual identity to
+someone else: what the brand must convey, its words, the references, what
+to avoid, written for a designer who never met the client).
 
 For a rebrand, also: `audit` (the brand audit: which brand documents
 exist, which are dated, which are missing; how the brand is perceived,
@@ -116,8 +119,9 @@ the extent you recommend: a refresh, a repositioning or a new name) and
 `transition` (the transition plan: everything to update, in what order and
 when, tied to a release when there is one; what the agency does itself,
 what needs a separate confirmation, what the client does; how long the
-"formerly <old name>" mention stays; the folder rename when the name
-changes). For each route of a rebrand, the before and after: what changes
+"formerly <old name>" mention stays; and whenever the brand's name
+differs from the project's folder name, after a rebrand or a repositioning
+alike, the folder rename, recommended, as the session's very last action). For each route of a rebrand, the before and after: what changes
 and what stays (promise, audience, tagline, tone, name).
 
 When your brief asks for a client document, write it as Markdown in your
@@ -130,16 +134,26 @@ title: <the document's title, in the working language>
 author: <your first name, from the brief>
 role: <your role, from the brief>
 lang: <the working language code, e.g. en>
-meeting: <the meeting it is for, 0 to 4, from the brief>
+doc: <the document's file name, from the brief, e.g. benchmark>
+phase: <its phase, from the brief: strategy, platform or delivery>
+meeting: <the meeting's number in the mission's plan, from the brief>
 date: <YYYY-MM-DD>
 ---
 ```
 
 Then the document itself, in the Markdown subset the agency renders
-(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists,
-tables, `>` quotes, links, bold, italic, inline code; nothing else).
-Write it for the client: plain words, no internal notes, every fact
-sourced as in your reports. The skill that launched you renders it and
+(`render.py`: headings `#` to `###`, paragraphs, `-` and `1.` lists, a
+wrapped line joining its item and one nested level indented by two
+spaces, `---` rules, tables, `>` quotes, links, bold, italic, inline code;
+nothing else). Never repeat the title as a `#` heading.
+
+Write it **as a document**, for the client: it opens with a few lines that
+say what it is and how it is built (the client reads it later, alone, from
+their space), then real sentences, the active voice, no semicolons, no
+label fragments, every fact sourced as in your reports. Never internal
+metadata (who asked, the depth, "read on", a scale). Only the documents
+your brief names are client documents: checks, screenings, intermediate
+rounds and proposals stay internal reports. The skill that launched you renders it and
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 
