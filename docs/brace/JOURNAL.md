@@ -1335,3 +1335,22 @@ Closed out the portfolio sub-pages work and cut the release:
   trial (`/usage` before and after).
 - Spec written (local, gitignored) and checked by a builder review; the
   plan comes next.
+
+## 2026-11-08 — The trial fix pass built
+
+- Built the fix pass from the rebrand trial on `feat/brand`, task by task
+  with tests: the renderer (wrapped and nested lists, rules, no repeated
+  title, signed deck notes), the client documents table with a phase and
+  a form, a client space that reads the mission's language, name, meetings
+  and client documents only, in tabs with the brand at a glance and a
+  shortcut at the project's root, a "Brand" link in the portfolio, and
+  the main conversation allowed to write in the agency's folders.
+- Rewrote the skill's prose: how the agency speaks, process and brand, the
+  mission as phases (a slot kept for the visual of 1.2), the five-part
+  meeting, the first contact with the client's existing brand work and a
+  proposed scope, the workshop's languages, the backstage questions asked
+  in one batch, feedback as an intent, the handover, and the agents.
+- Found on the way: an existing space kept its old stylesheet (the house
+  stylesheets are now refreshed), BRACE's own mission needed fallbacks for
+  its language and name, and a meeting already started still showed as
+  the next one at session start.

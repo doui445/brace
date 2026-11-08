@@ -596,9 +596,31 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   skill files it. Test it in a real background run first; check
   Antigravity.
 
-- [ ] **Rename the repo folder to `brace`** (S, ⭐) — surfaced 2026-10-26.
+- [x] **Rename the repo folder to `brace`** (S, ⭐) — surfaced 2026-10-26; done 2026-11-08 at the end of the rebrand trial.
   Move the Claude Code memory folder with it, update the path in the
   Antigravity settings; `project:` becomes `brace`. With every tool closed.
+
+- [ ] **Take in the client's brand work, in full** (M, ⭐⭐⭐) — surfaced
+  2026-11-06 in the rebrand trial; a light version ships in 1.1 (the
+  inventory, `- existing:` lines, the scope proposed from it). Left for
+  1.2: merging the client's documents finely into ours, and actually
+  using their visual elements (logo, palette, type) in the visual phase.
+
+- [ ] **Measure tokens and quota at the next trial** (S, ⭐⭐) — surfaced
+  2026-11-08. Note the weekly percentage of `/usage` before and after a
+  mission, no other session open, to say "about X % of a week on such a
+  plan"; recalibrate the proposal's token range (15 to 40 M read today)
+  and the "about a quarter of an hour" of team work.
+
+- [ ] **Token frugality as a BRACE selling point** (S, ⭐⭐) — surfaced
+  2026-11-08. A line on the front page saying BRACE keeps its token use
+  low by design, written with the 1.1 release texts (a public text: the
+  editorial guide applies).
+
+- [ ] **One brand over several tracked projects** (L, ⭐⭐) — surfaced
+  2026-11-08. A company brand spanning several repositories; goes with
+  brand architecture (sub-brands, sub-projects). Out of 1.1: the agency
+  works in the open project and says so.
 
 ## Completed
 

@@ -66,26 +66,16 @@ for 2027-05-10.
 
 ## Next 3 actions
 
-1. **Fix pass from the rebrand trial feedback** (2026-11-06 to 11-08, owner's
-   notes collected live; full list in the local, gitignored
-   `docs/superpowers/research/2026-11-06-rebrand-trial-feedback.md`): spec
-   written 2026-11-08 (local, `2026-11-08-brand-trial-2-fixes-design.md`),
-   plan next. It also lays the frame for the 1.2 visual phase and a light
-   intake of the client's existing brand work (the scope follows it).
-   Acceptance test for every console line: "would the account director
-   really say this?". Main points: the agency takes charge of the
-   process and the client decides only on the brand; questions anticipated
-   in one batch before the team works; a meeting only to present (5 parts:
-   welcome, presentation in the browser, discussion, recap and next
-   appointment, the team at work), silence while the team works; only
-   client documents are shown, never internal ones, never restated in the
-   console; feedback rethought as an intent, not pasted; delivery becomes a
-   real handover; a tabbed client space (shortcut at the root during the
-   mission, brand book after); `render.py` bugs (wrapped and nested list
-   items, `---`, space language and name); the account director may write
-   without a prompt (auto mode refused writes); token frugality as a design
-   rule. Also: measure the tokens and the 17-minute work batch from the
-   session ids (done 2026-11-08, see `JOURNAL.md`).
+1. **Fix pass from the rebrand trial: built 2026-11-08** (17 tasks on
+   `feat/brand`, suite green): the account director speaks like a person
+   and runs the process, a mission is a plan of phases built from what the
+   client already has, meetings in five parts with the questions asked in
+   one batch, only client documents shown, a real handover, a tabbed
+   client space with a root shortcut and a portfolio link, the renderer
+   fixes, the main conversation writing in the agency's folders. Left: the
+   owner checks for real, in auto mode, that a write in `brand/` no longer
+   prompts or gets refused (`claude --plugin-dir .`); the whole-branch
+   review's findings.
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
    `BACKLOG.md`). Then 1.2 = the brand's face in `brand` (two new agents),

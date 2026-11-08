@@ -28,6 +28,16 @@ the bump, a release never breaks an existing project. The version lives in
   three routes, adjustments validated one document at a time (shown
   rendered), and a delivery page with a preference and comprehension test
   to run with real people. New brand files `BRIEF.md` and `SESSIONS.md`.
+- The client space is a tabbed portal (home, meetings with their minutes,
+  documents, presentations, and "My brand", the brand at a glance, which
+  becomes its home once delivered), with a shortcut at the project's root
+  during the mission and a "Brand" link on the portfolio card.
+- Decks carry short notes signed by the teammate who would present each
+  slide (screen only).
+- A mission's scope is proposed from the brand work the client already
+  has (theirs or an agency's), never offered as a menu; the client's
+  documents are attached and kept as theirs. A creative brief for whoever
+  does the visual when the scope leaves it out.
 
 ### Changed
 - The front page and the install descriptions carry BRACE's new
@@ -89,6 +99,30 @@ the bump, a release never breaks an existing project. The version lives in
 - The tagline is approved in the client's words, then applied and saved
   (commit and push without a question once allowed).
 
+- The account director speaks like a person (full sentences, "our team",
+  no credits, no menus about the process, a meeting named by its subject)
+  and runs the agency's process herself; the client decides the brand,
+  the scope and their own time.
+- A mission is a plan of phases built from the scope, with a slot kept
+  for the visual identity of a later release. Each meeting runs in five
+  parts; the questions for the next phase are asked in one batch before
+  the team works; silence while it works, then a short end-of-session
+  notice outside the agency.
+- Only client documents are rendered and shown, one at a time, each in
+  one form (presented in a deck or read as a page) and written as a
+  document; the team's internal work stays internal. The minutes are
+  filed, never shown or validated. Feedback is rethought as an intent.
+- The delivery is a real handover deck; the test option is chosen at the
+  platform meeting.
+- The working language is asked at the first contact; the workshop asks
+  the brand's main and secondary languages.
+- On Claude Code, the main conversation writes in the agency's folders
+  (`docs/brace/brand/`, `docs/brace/agents/brand/`) without a prompt.
+- The analyst's quick research is capped at about six searches per
+  subject; tabs opened in the client's browser are closed.
+- The house stylesheets are refreshed in a project when the shipped ones
+  change.
+
 ### Fixed
 - Brand touchpoints are read from the list items of the section only: a
   file named in a note there is no longer a touchpoint.
@@ -105,6 +139,14 @@ the bump, a release never breaks an existing project. The version lives in
   ignores an older meeting when the newest line is malformed; the first
   contact sets the stage; Antigravity keeps its touchpoint list during a
   mission.
+- The renderer keeps wrapped list items in their item, renders one
+  nested list level and `---` rules, and drops a title repeated as a
+  heading. The client space follows the mission's working language and
+  the brand's name, shows a real mission line, lists only the meetings
+  and the client documents (latest version), and no longer shows a meeting
+  already started as the next one.
+- The folder rename is recommended whenever the brand's name differs from
+  the folder's, after a repositioning too.
 
 ## [1.0.0] — 2026-10-16
 

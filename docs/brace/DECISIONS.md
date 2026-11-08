@@ -644,3 +644,46 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   the visual is done (a very long branch, the substance is ready); a
   "strategy only / strategy and identity" choice in every proposal
   (agencies scope from the existing brand, not from a menu).
+
+## 2026-11-08 — Tokens are a design rule
+
+- **Context**: the rebrand trial read about 30 M tokens from cache on Opus
+  (the conversation) against 10 M on Sonnet (the team): the cost sits in
+  rereading the main conversation, so every repeated document, progress
+  line or process menu costs a full turn on the most capable model.
+- **Chosen**: every BRACE flow minimises tokens: never restate an open
+  document, one document at a time, no chatter while the team works, small
+  changes stay small, internal work never rendered. The proposal states
+  the agency's commitment to keep the work light without taking anything
+  from its quality; BRACE can put it forward.
+- **Rejected**: optimising only the render calls (a small gain next to the
+  conversation's rereads).
+
+## 2026-11-08 — The agency runs the process, the client decides the brand
+
+- **Context**: in the trial the agency kept asking the client how it
+  should work (prepare a guide? hold the workshop now?), which a real
+  agency never does.
+- **Chosen**: "propose or impose" applied to `brand`: the agency imposes
+  its process (the brief, the guide, the workshop's timing, the order and
+  form of documents and meetings, the research depth) and says what it
+  needs from the client; the client decides the brand, the scope, their
+  own time (appointments, the test) and the commitment (the proposal).
+  Every scripted line is written as an intention, tested by "would she
+  really say this?".
+- **Rejected**: keeping process questions for transparency (they make the
+  client do the agency's job).
+
+## 2026-11-08 — The main conversation writes in the agency's folders (revises 2026-10-26)
+
+- **Context**: on Claude Code, auto mode's classifier refused the account
+  director's writes several times without a verdict, and the client had to
+  leave auto mode.
+- **Chosen**: the `PreToolUse` hook also allows the main conversation's
+  `Write` and `Edit` in `docs/brace/brand/` and `docs/brace/agents/brand/`
+  of a tracked project (same path checks as the agents' rule). These
+  folders are the agency's own; nothing else writes them. Hooks run
+  before the classifier, so an allow skips it.
+- **Rejected**: keeping the main conversation under the user's settings
+  only (the trial's failure stays); widening to the whole `docs/brace/`
+  (the tracking files are the user's, under `track`'s rules).
