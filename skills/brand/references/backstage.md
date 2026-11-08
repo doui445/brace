@@ -124,9 +124,9 @@ client space is rendered, so the order matters.
    never rendered.
 2. **Update every tracking file**: the `SESSIONS.md` entry (what the team
    did), the brand files it feeds once validated, `brand_stage` for the
-   next meeting (after the workshop's backstage: `brand_stage:
-   presentation`), and the project's own tracking (`STATUS.md`,
-   `JOURNAL.md`, as `track` does).
+   next meeting (after the workshop's backstage:
+   `brand_stage: presentation`), and the project's own tracking
+   (`STATUS.md`, `JOURNAL.md`, as `track` does).
 3. **Render the client space last** (`render.py space "<root>"`). On macOS,
    BRACE sends its notification then.
 4. Save (`SKILL.md`, `## Saving`).
