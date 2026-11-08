@@ -93,6 +93,53 @@ class CompareMinorTests(unittest.TestCase):
         self.assertIn("<th>Aujourd'hui</th><th>Demain</th>", out.replace("&#x27;", "'"))
 
 
+class MarkdownListTests(unittest.TestCase):
+    def test_wrapped_item_stays_in_its_item(self):
+        out = render.md_to_html("- first line\n  goes on here\n- second")
+        self.assertEqual(out.count("<li>"), 2)
+        self.assertIn("<li>first line goes on here</li>", out)
+        self.assertNotIn("<p>", out)
+
+    def test_wrapped_item_without_indent(self):
+        out = render.md_to_html("1. one\nstill one\n2. two")
+        self.assertIn("<li>one still one</li>", out)
+
+    def test_nested_list_one_level(self):
+        out = render.md_to_html("- parent\n  - child a\n  - child b\n- next")
+        self.assertIn("<li>parent<ul><li>child a</li><li>child b</li></ul></li>", out)
+        self.assertIn("<li>next</li>", out)
+
+    def test_nested_ordered_list(self):
+        out = render.md_to_html("- how\n  1. reads\n  2. asks")
+        self.assertIn("<li>how<ol><li>reads</li><li>asks</li></ol></li>", out)
+
+    def test_nested_item_wraps(self):
+        out = render.md_to_html("- parent\n  - child\n    wrapped\n- next")
+        self.assertIn("<li>child wrapped</li>", out)
+
+    def test_deeper_nesting_flattens_to_level_one(self):
+        out = render.md_to_html("- a\n  - b\n    - c")
+        self.assertIn("<ul><li>b</li><li>c</li></ul>", out)
+
+    def test_horizontal_rule(self):
+        out = render.md_to_html("Above\n\n---\n\nBelow")
+        self.assertIn("<hr>", out)
+        self.assertNotIn("---", out)
+
+    def test_rule_ends_a_list(self):
+        out = render.md_to_html("- a\n---\n- b")
+        self.assertEqual(out.count("<ul>"), 2)
+        self.assertIn("<hr>", out)
+
+    def test_paragraph_after_blank_line_leaves_the_list(self):
+        out = render.md_to_html("- a\n\nText.")
+        self.assertIn("<p>Text.</p>", out)
+
+    def test_heading_equal_to_title_is_dropped(self):
+        out = render.render_doc(doc("# Benchmark\n\nText."))
+        self.assertEqual(out.count("Benchmark</h1>"), 1)
+
+
 class RenderDocTests(unittest.TestCase):
     def test_doc_signature_and_meta(self):
         out = render.render_doc(doc("## Who else\n\nText."))

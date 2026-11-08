@@ -128,6 +128,52 @@ def _row(line):
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
+LIST_MARKERS = ((re.compile(r"[-*] (.*)"), "ul"), (re.compile(r"\d+[.)] (.*)"), "ol"))
+
+
+def _marker(line):
+    """(tag, item text) when the line starts a list item, else None."""
+    for pat, tag in LIST_MARKERS:
+        m = pat.match(line.lstrip())
+        if m:
+            return tag, m.group(1)
+    return None
+
+
+def _list(lines, i):
+    """One list from lines[i]: wrapped lines join their item, items indented
+    by two spaces or more form one nested level. Returns (html, next i)."""
+    tag = _marker(lines[i])[0]
+    items = []  # [text, child tag, [child texts]]
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+        if not stripped or stripped == "---":
+            break
+        indent = len(line) - len(line.lstrip())
+        mark = _marker(line)
+        if mark and (indent < 2 or not items):
+            if mark[0] != tag:
+                break
+            items.append([mark[1], None, []])
+        elif mark:
+            last = items[-1]
+            last[1] = last[1] or mark[0]
+            last[2].append(mark[1])
+        elif re.match(r"(#{1,3} |>|\|)", line.lstrip()):
+            break
+        elif items[-1][2]:
+            items[-1][2][-1] += " " + stripped
+        else:
+            items[-1][0] += " " + stripped
+        i += 1
+    parts = []
+    for text, sub, children in items:
+        nested = (f"<{sub}>" + "".join(f"<li>{inline(c)}</li>" for c in children) + f"</{sub}>") if children else ""
+        parts.append(f"<li>{inline(text)}{nested}</li>")
+    return f"<{tag}>" + "".join(parts) + f"</{tag}>", i
+
+
 def md_to_html(text):
     """The Markdown subset of references/documents.md, as HTML."""
     lines = text.replace("\r\n", "\n").split("\n")
@@ -154,31 +200,30 @@ def md_to_html(text):
             body = "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in rows)
             out.append(f"<table><thead><tr>{cells}</tr></thead><tbody>{body}</tbody></table>")
             continue
-        for pat, tag in ((r"[-*] (.*)", "ul"), (r"\d+[.)] (.*)", "ol")):
-            if re.match(pat, line.lstrip()):
-                items = []
-                while i < len(lines) and re.match(pat, lines[i].lstrip()):
-                    items.append(re.match(pat, lines[i].lstrip()).group(1))
-                    i += 1
-                out.append(f"<{tag}>" + "".join(f"<li>{inline(x)}</li>" for x in items) + f"</{tag}>")
-                break
-        else:
-            if line.lstrip().startswith(">"):
-                quote = []
-                while i < len(lines) and lines[i].lstrip().startswith(">"):
-                    quote.append(lines[i].lstrip()[1:].strip())
-                    i += 1
-                out.append("<blockquote>" + md_to_html("\n".join(quote)) + "</blockquote>")
-                continue
-            # The first line always belongs to the paragraph (a stray "|" or
-            # "####" is plain text), so the loop always moves on.
-            para = [line.strip()]
+        if line.strip() == "---":
+            out.append("<hr>")
             i += 1
-            while i < len(lines) and lines[i].strip() and not re.match(r"(#{1,3} |[-*] |\d+[.)] |>|\|)", lines[i].lstrip()):
-                para.append(lines[i].strip())
-                i += 1
-            out.append("<p>" + inline(" ".join(para)) + "</p>")
             continue
+        if _marker(line):
+            html_list, i = _list(lines, i)
+            out.append(html_list)
+            continue
+        if line.lstrip().startswith(">"):
+            quote = []
+            while i < len(lines) and lines[i].lstrip().startswith(">"):
+                quote.append(lines[i].lstrip()[1:].strip())
+                i += 1
+            out.append("<blockquote>" + md_to_html("\n".join(quote)) + "</blockquote>")
+            continue
+        # The first line always belongs to the paragraph (a stray "|" or
+        # "####" is plain text), so the loop always moves on.
+        para = [line.strip()]
+        i += 1
+        while i < len(lines) and lines[i].strip() and lines[i].strip() != "---" and not re.match(r"(#{1,3} |[-*] |\d+[.)] |>|\|)", lines[i].lstrip()):
+            para.append(lines[i].strip())
+            i += 1
+        out.append("<p>" + inline(" ".join(para)) + "</p>")
+        continue
     return "\n".join(out)
 
 
@@ -189,6 +234,10 @@ def render_doc(text, css="doc.css"):
     for key in ("title", "author", "role", "lang"):
         if not meta.get(key):
             raise RenderError(f"front matter needs {key}:")
+    # The title is the page's h1 already: a first "# <title>" would repeat it.
+    head, _, rest = body.lstrip("\n").partition("\n")
+    if head.strip() == "# " + meta["title"].strip():
+        body = rest
     lang = meta["lang"] if re.fullmatch(r"[a-z]{2}", meta["lang"]) else "en"
     by = catalogue(lang).get("brand.doc.by", "{name}, {role}")
     sign = esc(by.replace("{name}", meta["author"]).replace("{role}", meta["role"]))
