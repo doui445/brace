@@ -58,7 +58,7 @@ fix the Markdown.
   post, home page, profile) in a neutral layout; the route's own visual
   identity comes in a later release.
 
-## The deck of meeting 2
+## The strategy deck
 
 Order of slides, one route at a time:
 
@@ -73,8 +73,11 @@ Order of slides, one route at a time:
    target trusts calm ones. We recommend calm, and here is what we kept
    from your taste.").
 
-It rests on the documents of the backstage (`benchmark`, `personas`,
-`routes`): mention them, the client can open them from their space.
+The `personas`, `routes` (and, for a rebrand, `audit`) documents are
+presented here: their Markdown is the source of these slides (personas as
+cards, a `doc` slide or a `compare` slide), never also rendered as pages.
+The `benchmark` is a read document: say in one sentence it is in the
+client space for whoever wants the detail.
 
 **References**: text and link only, no third-party image or logo. Each
 says what we take from it and what we leave, and comes from the analyst's
@@ -82,19 +85,32 @@ report, with its source.
 
 ## The meeting
 
-1. Open it as a meeting: what the team did since last time, in two lines,
-   then the deck (its path, opened in the browser; arrows move between
-   slides; it prints one slide per page).
-2. Walk through it one route at a time, in a few lines each.
-3. Propose, never ask "do you like it?". Say what each route promises in
-   one line, give the recommendation and why ("Route 1 promises an exact
-   record, route 2 a calm partner; we would pick 1, because your target
-   gets asked to justify its hours"), then offer the choices: route 1,
-   route 2, a mix of both, or another round. Point at what the client said
-   they never wanted, and say how each route avoids it.
-4. The client picks one route, combines elements of several, or asks for
-   another round (back to `references/backstage.md` with what they said).
-5. Close the meeting (`SKILL.md`): the minutes (the route chosen, the
+The five parts of `SKILL.md` (a meeting), for the strategic
+recommendation:
+
+1. **Welcome and a short recap**: what we prepared since last time, in a
+   sentence or two, never who did what.
+2. **The presentation**: open the final deck (its path) and say how to
+   read it (arrows move between slides, it prints one slide per page,
+   what to look at: what each route promises, and our recommendation at
+   the end). Then stop: the client reads. Nothing of the deck is
+   restated in the console.
+3. **The discussion**: propose, never ask "do you like it?". Give the
+   recommendation and why in a sentence (for example: route 1 promises an
+   exact record, route 2 a calm partner; we would pick 1, because your
+   target gets asked to justify its hours), then the choice as selectable
+   options: route 1, route 2, a mix of both, or another round. Point at
+   what the client said they never wanted, and how the recommended route
+   avoids it. Invite all the feedback at once.
+4. **The recap, the next appointment, goodbye**: the client picks one
+   route, combines elements of several (a small change, settled now), or
+   rejects the direction (a big change: `references/adjustments.md`,
+   feedback). Close the meeting (`SKILL.md`, closing a meeting): the
+   questions for the platform phase, the minutes (the route chosen, the
    routes set aside and why, also in `docs/brace/brand/DECISIONS.md`), the
-   next appointment, then the team writes the platform. Set
-   `brand_stage: adjustments`.
+   next appointment.
+5. **Our team gets to work**: set `brand_stage: adjustments`.
+
+Decks speak like the agency: verbs and the active voice ("We keep", never
+a bare "Kept"), and the team's short signed notes (`note:`) on a few
+slides.
