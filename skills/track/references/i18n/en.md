@@ -226,6 +226,12 @@ The macOS notification sent when a brand presentation is ready.
 - brand.space.ask: What we need from you
 - brand.space.none: Nothing here yet.
 - brand.space.short: client space
+- brand.space.days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+- brand.space.months: January, February, March, April, May, June, July, August, September, October, November, December
+- brand.space.date: {day}, {month} {date}{year}
+- brand.space.at: {when}, {time}
+- brand.space.time: {h}:{mm}
+- brand.space.time_whole: {h}:00
 - brand.space.tab.home: Home
 - brand.space.tab.meetings: Meetings
 - brand.space.tab.documents: Documents

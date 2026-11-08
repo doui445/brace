@@ -220,6 +220,12 @@ La notification macOS envoyée quand une présentation de marque est prête.
 - brand.space.ask: Ce qu'on attend de toi
 - brand.space.none: Rien pour l'instant.
 - brand.space.short: espace client
+- brand.space.days: lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche
+- brand.space.months: janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre
+- brand.space.date: {day} {date} {month}{year}
+- brand.space.at: {when} à {time}
+- brand.space.time: {h} h {mm}
+- brand.space.time_whole: {h} h
 - brand.space.tab.home: Accueil
 - brand.space.tab.meetings: Rendez-vous
 - brand.space.tab.documents: Documents

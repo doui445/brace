@@ -749,6 +749,34 @@ BRAND_BLOCKS = (
     ("brand.space.block.lexicon", "VOICE.md", "brand.voice.heading.lexicon"),
 )
 
+def when_text(value, t, today=None):
+    """A "YYYY-MM-DD[ HH:MM]" value in words, in the catalogue's language
+    ("lundi 10 mai à 14 h"); the year only when it is not this year. A value
+    that does not read as a date stays as written."""
+    try:
+        at = datetime.datetime.strptime(value.strip(), "%Y-%m-%d %H:%M")
+        timed = True
+    except ValueError:
+        try:
+            at = datetime.datetime.strptime(value.strip(), "%Y-%m-%d")
+            timed = False
+        except ValueError:
+            return value
+    days = [x.strip() for x in t.get("brand.space.days", "").split(",")]
+    months = [x.strip() for x in t.get("brand.space.months", "").split(",")]
+    if len(days) != 7 or len(months) != 12:
+        return value
+    today = today or datetime.date.today()
+    year = "" if at.year == today.year else f" {at.year}"
+    text = t.get("brand.space.date", "{day}, {month} {date}{year}").format(
+        day=days[at.weekday()], date=at.day, month=months[at.month - 1], year=year)
+    if not timed:
+        return text
+    key = "brand.space.time_whole" if at.minute == 0 else "brand.space.time"
+    time = t.get(key, "{h}:{mm}").format(h=at.hour, mm=f"{at.minute:02d}")
+    return t.get("brand.space.at", "{when}, {time}").format(when=text, time=time)
+
+
 TABS_SCRIPT = """<script>
   (function () {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
@@ -813,7 +841,7 @@ def render_space(root):
 
     home = []
     if data["next"]:
-        home.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(data["next"])}</p>')
+        home.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(when_text(data["next"], t))}</p>')
     if data["asks"]:
         home.append(f'<h2>{esc(t.get("brand.space.ask", ""))}</h2>\n<ul>'
                     + "".join(f"<li>{inline(x)}</li>" for x in data["asks"]) + "</ul>")
@@ -822,7 +850,7 @@ def render_space(root):
 
     meetings = []
     for m in data["meetings"]:
-        when = f' <span class="by">{esc(m["held"])}</span>' if m["held"] else ""
+        when = f' <span class="by">{esc(when_text(m["held"][:10], t))}</span>' if m["held"] else ""
         link = (f' <a href="documents/{esc(m["minutes"])}">{esc(_cap(t.get("brand.lex.minutes", "")))}</a>'
                 if m["minutes"] else "")
         meetings.append(f"<li>{inline(m['title'])}{when}{link}</li>")

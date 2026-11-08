@@ -1,5 +1,6 @@
 """Tests for skills/brand/scripts/render.py.
 Run: python3 -m unittest discover -s skills/brand/scripts -p 'test_*.py'"""
+import datetime
 import html
 import re
 import subprocess
@@ -462,7 +463,7 @@ class RenderSpaceTests(unittest.TestCase):
             root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n\n- meeting: 2026-11-06 09:00\n\n"
                                        "## 2026-11-06 Recommendation\n\n- meeting: 2099-11-07 10:00\n")
             out = render.render_space(root)
-            self.assertIn("2099-11-07 10:00", panel(out, "home"))
+            self.assertIn("Saturday, November 7 2099, 10:00", panel(out, "home"))
             self.assertIn("2026-11-05 Workshop", panel(out, "meetings"))
             self.assertIn("Your brand, tally", out)
 
@@ -720,6 +721,34 @@ class SpaceTabsTests(unittest.TestCase):
         meetings = panel(out, "meetings")
         self.assertIn("Strategic recommendation", meetings)
         self.assertIn('href="documents/2026-11-07-minutes-2.html"', meetings)
+
+
+class SpaceDateTests(unittest.TestCase):
+    def test_french_date_with_time(self):
+        t = render.catalogue("fr")
+        self.assertEqual(render.when_text("2027-05-10 14:00", t, today=datetime.date(2027, 1, 1)),
+                         "lundi 10 mai \u00e0 14 h")
+        self.assertEqual(render.when_text("2027-05-10 09:30", t, today=datetime.date(2027, 1, 1)),
+                         "lundi 10 mai \u00e0 9 h 30")
+
+    def test_english_date_names_another_year(self):
+        t = render.catalogue("en")
+        self.assertEqual(render.when_text("2027-05-10 14:00", t, today=datetime.date(2026, 11, 8)),
+                         "Monday, May 10 2027, 14:00")
+
+    def test_date_alone(self):
+        t = render.catalogue("fr")
+        self.assertEqual(render.when_text("2026-11-06", t, today=datetime.date(2026, 11, 8)),
+                         "vendredi 6 novembre")
+
+    def test_unreadable_value_stays_as_written(self):
+        self.assertEqual(render.when_text("next week", render.catalogue("en")), "next week")
+
+    def test_space_shows_the_next_meeting_in_words(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = render.render_space(project(d, sessions="# S\n\n- language: fr\n- meeting: 2099-05-11 14:00\n"))
+            self.assertIn("lundi 11 mai 2099 \u00e0 14 h", panel(out, "home"))
+            self.assertNotIn("2099-05-11", out)
 
 
 class RenderSpaceMinorTests(unittest.TestCase):
