@@ -51,7 +51,12 @@ AW="$P/docs/brace/agents/analyst/r.md"
 OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
 has "$OUT" '"permissionDecision": "allow"' "Claude PreToolUse -> agent in its folder allowed"
 OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
-[ -z "$OUT" ] && echo "PASS: PreToolUse main conversation -> no decision" || { echo "FAIL: main conversation got [$OUT]"; FAIL=1; }
+[ -z "$OUT" ] && echo "PASS: PreToolUse main conversation, an agent's folder -> no decision" || { echo "FAIL: main conversation got [$OUT]"; FAIL=1; }
+mkdir -p "$P/docs/brace/brand"
+OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s"}}' "$P/docs/brace/brand/SESSIONS.md" | bash "$DIR/claude/pre_tool_use.sh")"
+has "$OUT" '"permissionDecision": "allow"' "Claude PreToolUse -> main conversation in the brand folder allowed"
+OUT="$(printf '{"tool_name": "Edit", "tool_input": {"file_path": "%s"}}' "$P/docs/brace/STATUS.md" | bash "$DIR/claude/pre_tool_use.sh")"
+[ -z "$OUT" ] && echo "PASS: PreToolUse main conversation, tracking file -> no decision" || { echo "FAIL: tracking file got [$OUT]"; FAIL=1; }
 OUT="$(printf '{"tool_name": "Bash", "tool_input": {"command": "touch %s"}, "agent_type": "brace:analyst"}' "$AW" | bash "$DIR/claude/pre_tool_use.sh")"
 [ -z "$OUT" ] && echo "PASS: PreToolUse Bash -> no decision" || { echo "FAIL: Bash got [$OUT]"; FAIL=1; }
 OUT="$(printf '{"tool_name": "Write", "tool_input": {"file_path": "%s\\n/../../../../../escape.md"}, "agent_type": "brace:analyst"}' "$P/docs/brace/agents/analyst/x" | bash "$DIR/claude/pre_tool_use.sh")"
