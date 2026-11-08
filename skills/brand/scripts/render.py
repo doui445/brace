@@ -155,7 +155,8 @@ def _list(lines, i):
             break
         indent = len(line) - len(line.lstrip())
         mark = _marker(line)
-        if mark and (indent < 2 or not items):
+        # Two spaces nest one level; a deeper item goes back to the first level.
+        if mark and (indent < 2 or indent >= 4 or not items):
             if mark[0] != tag:
                 break
             items.append([mark[1], None, []])
@@ -711,10 +712,13 @@ def space_data(root):
     except ValueError:
         nxt = ""
 
+    # What we need from the client: the "- ask:" lines of the latest entry.
+    asks = [] if stage == "done" or not entries else re.findall(r"(?m)^- ask:[ \t]*(.+?)\s*$", entries[-1])
+
     decks = sorted(p.name for p in (brand / "presentations").glob("*.html")
                    if p.name != "draft.html") if (brand / "presentations").is_dir() else []
     return {"lang": lang, "brand": name, "mission": mission, "next": nxt, "meetings": meetings,
-            "loose_minutes": loose, "documents": documents, "decks": decks, "stage": stage,
+            "loose_minutes": loose, "asks": asks, "documents": documents, "decks": decks, "stage": stage,
             "delivered": stage == "done"}
 
 
@@ -785,6 +789,9 @@ def render_space(root):
     home = []
     if data["next"]:
         home.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(data["next"])}</p>')
+    if data["asks"]:
+        home.append(f'<h2>{esc(t.get("brand.space.ask", ""))}</h2>\n<ul>'
+                    + "".join(f"<li>{inline(x)}</li>" for x in data["asks"]) + "</ul>")
     if data["mission"]:
         home.append(f'<p class="mission">{inline(data["mission"])}</p>')
 
@@ -852,6 +859,8 @@ def _shortcut_name(root, data):
         text = re.sub(r'[/\\:*?"<>|\x00-\x1f\x7f]', "", text)
         return " ".join(text.split()).strip(" .")
     name = clean(data["brand"]) or clean(Path(root).name) or "brand"
+    # Keep the file name well under the usual 255-byte limit.
+    name = name.encode("utf-8")[:150].decode("utf-8", "ignore").strip(" .") or "brand"
     short = catalogue(data["lang"]).get("brand.space.short", "client space")
     return f"{name} - {short}.html"
 
@@ -861,10 +870,25 @@ def _exclude_line(name):
     return "/" + re.sub(r'([\\\[\]!#*?])', r"\\\1", name)
 
 
-def _exclude(root, add=(), drop=()):
-    """Add or drop lines of .git/info/exclude, only when .git is a folder."""
+def _git_dir(root):
+    """The repository's git folder: .git itself, or the folder a .git file
+    points to (a worktree, a submodule); None when there is none."""
     git = Path(root) / ".git"
-    if not git.is_dir():
+    if git.is_dir():
+        return git
+    m = re.match(r"gitdir:\s*(.+?)\s*$", _read(git)) if git.is_file() else None
+    if m:
+        target = Path(m.group(1))
+        target = target if target.is_absolute() else Path(root) / target
+        if target.is_dir():
+            return target
+    return None
+
+
+def _exclude(root, add=(), drop=()):
+    """Add or drop lines of the repository's info/exclude, when there is one."""
+    git = _git_dir(root)
+    if git is None:
         return
     path = git / "info" / "exclude"
     lines = _read(path).split("\n") if path.is_file() else []

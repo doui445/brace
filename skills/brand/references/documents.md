@@ -97,7 +97,7 @@ the meeting's number in this mission's plan.
 
 The subset `render.py` renders: headings `#` to `###`, paragraphs, `-` and
 `1.` lists (a wrapped line joins its item; items indented by two spaces
-form one nested level, deeper ones stay at that level), `---` alone on its
+form one nested level, deeper ones go back to the first level), `---` alone on its
 line (a rule), tables (a header row, a `|---|` line, rows), `>` quotes,
 `[links](file.html)`, `**bold**`, `*italic*`, `` `code` ``. Anything else
 shows as plain text. Never repeat the title as a `#` heading: the page

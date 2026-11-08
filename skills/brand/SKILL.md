@@ -108,7 +108,9 @@ In the project, `docs/brace/brand/`, created on first use:
   starts, in that meeting's entry), `- meeting: YYYY-MM-DD HH:MM` (the next
   appointment; `brand.sessions.meeting` is its label in the minutes),
   `- mission: rebrand`, `- existing: <document> <path or link>` (the
-  client's own brand work). Hooks and `render.py` read them.
+  client's own brand work), `- ask: <what we need from the client>` (one
+  per line, in the latest entry; the client space shows them on its home).
+  Hooks and `render.py` read them.
 - `FOUNDATIONS.md`, `STRATEGY.md`, `VOICE.md`: the validated brand
   platform and editorial guide, the project's memory. Each section opens
   with its short form (a positioning statement as a `>` quote, the tagline
@@ -243,12 +245,16 @@ So that nothing is left to ask while the team works, in this order:
    or validated. Say in one sentence that they are in the space and the
    client can flag anything wrong. The decisions were validated live; the
    minutes only record them.
-3. **The next appointment**: propose a day and a time, the client agrees or
+3. **What we need from the client**, if anything (the interview guide to
+   run, files to send): one `- ask:` line each in this meeting's entry, so
+   the client space's home shows them; said in a sentence, never a list of
+   chores.
+4. **The next appointment**: propose a day and a time, the client agrees or
    moves it. Write the `- meeting:` line. Put it in the client's calendar
    when a calendar tool works (on macOS, the Calendar tool, after asking
    once which calendar). One failure is enough: just say the appointment,
    never retry.
-4. **The team gets to work**: say it like a person (about a quarter of an
+5. **The team gets to work**: say it like a person (about a quarter of an
    hour; keep this session open, the team works inside it; the client can
    do something else and will be told).
 

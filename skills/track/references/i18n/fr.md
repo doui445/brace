@@ -217,6 +217,7 @@ La notification macOS envoyée quand une présentation de marque est prête.
 - brand.lex.archive: archive
 - brand.space.title: Ta marque, {project}
 - brand.space.next: Prochain rendez-vous
+- brand.space.ask: Ce qu'on attend de toi
 - brand.space.none: Rien pour l'instant.
 - brand.space.short: espace client
 - brand.space.tab.home: Accueil

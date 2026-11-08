@@ -72,10 +72,10 @@ for 2027-05-10.
    client already has, meetings in five parts with the questions asked in
    one batch, only client documents shown, a real handover, a tabbed
    client space with a root shortcut and a portfolio link, the renderer
-   fixes, the main conversation writing in the agency's folders. Left: the
-   owner checks for real, in auto mode, that a write in `brand/` no longer
-   prompts or gets refused (`claude --plugin-dir .`); the whole-branch
-   review's findings.
+   fixes, the main conversation writing in the agency's folders. Whole-branch
+   review done, its findings fixed, its four minors too. Left for the next
+   trial: check for real, in auto mode, that a write in `brand/` no longer
+   prompts or gets refused.
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
    `BACKLOG.md`). Then 1.2 = the brand's face in `brand` (two new agents),

@@ -1354,3 +1354,17 @@ Closed out the portfolio sub-pages work and cut the release:
   stylesheets are now refreshed), BRACE's own mission needed fallbacks for
   its language and name, and a meeting already started still showed as
   the next one at session start.
+
+## 2026-11-08 — The fix pass reviewed
+
+- A whole-branch review found no critical issue. Fixed: a mission begun
+  before this pass kept its earlier meetings at its first held line; two
+  meetings of one phase keep their own minutes; the shortcut's exclude
+  line is escaped for git; `rebrand.md` no longer says to validate
+  documents one by one; the resume line no longer invites a who-did-what
+  recap.
+- Then its four minors: the client space's home shows what we need from
+  the client (`- ask:` lines), a long brand name is capped in the
+  shortcut, a `.git` file (worktree, submodule) gets its exclude through
+  `gitdir:`, and a third list level goes back to the first.
+- The real auto-mode check moves to the next trial (owner's call).

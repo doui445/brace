@@ -1,5 +1,6 @@
 """Tests for skills/brand/scripts/render.py.
 Run: python3 -m unittest discover -s skills/brand/scripts -p 'test_*.py'"""
+import html
 import re
 import subprocess
 import sys
@@ -119,8 +120,8 @@ class MarkdownListTests(unittest.TestCase):
         self.assertIn("<li>child wrapped</li>", out)
 
     def test_deeper_nesting_flattens_to_level_one(self):
-        out = render.md_to_html("- a\n  - b\n    - c")
-        self.assertIn("<ul><li>b</li><li>c</li></ul>", out)
+        out = render.md_to_html("- a\n  - b\n    - c\n- d")
+        self.assertIn("<li>a<ul><li>b</li></ul></li><li>c</li><li>d</li>", out)
 
     def test_horizontal_rule(self):
         out = render.md_to_html("Above\n\n---\n\nBelow")
@@ -420,6 +421,16 @@ class SpaceDataTests(unittest.TestCase):
                          ["2026-11-07-minutes-2.html", "2026-11-09-minutes-3.html"])
         self.assertEqual(data["loose_minutes"], [])
 
+    def test_asks_of_the_last_entry(self):
+        sessions = ("# S\n\n## 2026-11-06 a\n\n- ask: Old thing\n\n"
+                    "## 2026-11-07 b\n\n- ask: Run the interview guide with three people\n- ask: Send us your logo files\n")
+        self.assertEqual(self.data(sessions=sessions)["asks"],
+                         ["Run the interview guide with three people", "Send us your logo files"])
+
+    def test_no_asks_after_delivery(self):
+        sessions = "# S\n\n## 2026-11-07 b\n\n- ask: Something\n"
+        self.assertEqual(self.data(sessions=sessions, stage="done")["asks"], [])
+
     def test_delivered_flag_and_stage(self):
         data = self.data(stage="done")
         self.assertTrue(data["delivered"])
@@ -586,6 +597,28 @@ class ShortcutTests(unittest.TestCase):
                     self.assertNotIn(ch, line.replace("\\" + ch, ""), line)
                 self.assertEqual(render._exclude_line(f"{brand} - client space.html"), line)
 
+    def test_shortcut_name_is_capped(self):
+        root = self.make(sessions="# S\n\n- brand: " + "A" * 300 + "\n")
+        self.space(root)
+        names = self.shortcuts(root)
+        self.assertEqual(len(names), 1)
+        self.assertLessEqual(len(names[0].encode("utf-8")), 200)
+
+    def test_git_file_gets_its_exclude_through_gitdir(self):
+        root = self.make(git=None)
+        real = Path(self._d.name) / "real.git"
+        (real / "info").mkdir(parents=True)
+        (root / ".git").write_text(f"gitdir: {real}\n", encoding="utf-8")
+        self.space(root)
+        self.assertIn("/Acme - client space.html", (real / "info" / "exclude").read_text(encoding="utf-8"))
+
+    def test_git_file_with_a_relative_gitdir(self):
+        root = self.make(git=None)
+        (root / "sub.git" / "info").mkdir(parents=True)
+        (root / ".git").write_text("gitdir: sub.git\n", encoding="utf-8")
+        self.space(root)
+        self.assertIn("/Acme - client space.html", (root / "sub.git" / "info" / "exclude").read_text(encoding="utf-8"))
+
     def test_no_git(self):
         root = self.make(git=None)
         self.space(root)
@@ -638,6 +671,12 @@ class SpaceTabsTests(unittest.TestCase):
         out = self.space(files={"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n"})
         first = out.split('aria-selected="true"', 1)[0].rsplit("<button", 1)[1]
         self.assertIn('id="tab-home"', first)
+
+    def test_home_lists_what_we_need_from_the_client(self):
+        out = self.space(sessions="# S\n\n- language: fr\n\n## 2026-11-07 b\n\n- ask: Envoie-nous ton logo\n")
+        home = panel(out, "home")
+        self.assertIn("Ce qu'on attend de toi", html.unescape(home))
+        self.assertIn("<li>Envoie-nous ton logo</li>", home)
 
     def test_readable_without_javascript(self):
         out = self.space(sessions="# S\n")

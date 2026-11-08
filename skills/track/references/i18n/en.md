@@ -223,6 +223,7 @@ The macOS notification sent when a brand presentation is ready.
 - brand.lex.archive: archive
 - brand.space.title: Your brand, {project}
 - brand.space.next: Next meeting
+- brand.space.ask: What we need from you
 - brand.space.none: Nothing here yet.
 - brand.space.short: client space
 - brand.space.tab.home: Home
