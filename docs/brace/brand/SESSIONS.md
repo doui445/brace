@@ -172,3 +172,30 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 ### Suite
 
 - Le rendez-vous 4 : la livraison.
+
+## 2026-11-08 — Rendez-vous 4 : la livraison
+
+### Décidé
+
+- Le test : les personas vérifiés, hypothèse non testée. Rien ne bloque.
+- La phrase et la description validées en place, posées sur la page
+  d'accueil et dans les descriptions à l'installation.
+- Le plan de transition et l'annonce validés.
+- Le dossier du projet devient brace, en toute dernière action.
+- « Formerly project-tracker. » reste jusqu'à la revue de six mois.
+- Les documents gardent les prénoms d'alors ; l'équipe devient Julie,
+  Ravi, Constance, Ben et Lou.
+- [Le compte rendu](documents/2026-11-08-minutes-4.html).
+
+### En attente
+
+- La description et les sujets GitHub, les notes de version : à la sortie
+  de la 1.1, avec ton accord.
+- L'annonce, publiée par toi après la sortie.
+- Le test avec de vraies personnes et les entretiens, quand tu veux.
+
+### Suite
+
+- La revue de six mois. La mission est terminée.
+
+- meeting: 2027-05-10 14:00

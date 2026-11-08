@@ -60,3 +60,29 @@ Brand choices: what was tried, why it was set aside, what was kept.
   agent lit part chez le fournisseur du modèle, comme pour tout agent. Ce
   qui va sur GitHub ou dans tes Rappels, c'est toi qui le décides. »
   Vérifiée dans le code. Écarté : ne rien dire pour l'instant.
+
+## 2026-11-08 — Rendez-vous 4 : la livraison
+
+- **Test** : les personas vérifiés, pas de vraies personnes. *Hypothèse,
+  non testée* ([les personas vérifiés](documents/2026-11-08-personas-check.html)).
+  Le pilote accepte un plugin de plus s'il peut tout relire : tient, comme
+  condition seulement. L'entrepreneur utilise une IA sur sa machine : non
+  soutenu (4 répondants sur 6 sont sur une application web). « D'accord »,
+  première lecture de « Finally on the same page. » : fragile. « Des projets
+  qui te ressemblent » perçu comme un désir : fragile. Écartés : le vrai
+  test (pas maintenant, la page reste prête, avec en plus la question de la
+  langue maternelle), « pas encore testé ».
+- **Phrase et description** validées en place et posées sur la page
+  d'accueil et dans les descriptions à l'installation.
+- **Transition et annonce** validées. L'annonce part à la sortie de la 1.1.
+- **Le dossier** passe de project-tracker à brace (écarté : attendre, la
+  recommandation de l'agence).
+- **« Formerly project-tracker. »** reste jusqu'à la revue de six mois.
+- **Les documents de la mission** gardent les prénoms d'alors ; l'équipe
+  devient Julie, Ravi, Constance, Ben et Lou.
+- **L'héritage** ([la marque d'avant](archive/2026-11-06/)). Gardés : le
+  nom BRACE, la phrase anglaise « Finally on the same page. », le caractère
+  (Jarvis), la valeur « ne jamais deviner », le portfolio comme premier
+  geste. Abandonnés : la promesse de mémoire (« it remembers », « real
+  assistant »), « clean and professional », Claude Code et Antigravity au
+  même rang, le design annoncé avant d'exister.

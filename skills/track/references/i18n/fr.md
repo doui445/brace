@@ -183,15 +183,15 @@ Append-only, séparé du `DECISIONS.md` principal du projet.
 
 La notification macOS envoyée quand une présentation de marque est prête.
 
-- brand.team.brand.name: Alice
+- brand.team.brand.name: Julie
 - brand.team.brand.role: directrice de clientèle
-- brand.team.analyst.name: Bruno
+- brand.team.analyst.name: Ravi
 - brand.team.analyst.role: analyste
-- brand.team.strategist.name: Chloé
+- brand.team.strategist.name: Constance
 - brand.team.strategist.role: stratège
-- brand.team.copywriter.name: David
+- brand.team.copywriter.name: Ben
 - brand.team.copywriter.role: rédacteur
-- brand.team.creative_director.name: Emma
+- brand.team.creative_director.name: Lou
 - brand.team.creative_director.role: directrice de création
 - brand.lex.contact: prise de contact
 - brand.lex.proposal: proposition

@@ -216,9 +216,9 @@ class RenderSpaceTests(unittest.TestCase):
     def test_space_next_meeting(self):
         with tempfile.TemporaryDirectory() as d:
             root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n\n- meeting: 2026-11-06 09:00\n\n"
-                                       "## 2026-11-06 Recommendation\n\n- meeting: 2026-11-07 10:00\n")
+                                       "## 2026-11-06 Recommendation\n\n- meeting: 2099-11-07 10:00\n")
             out = render.render_space(root)
-            self.assertIn("2026-11-07 10:00", out)
+            self.assertIn("2099-11-07 10:00", out)
             self.assertIn("2026-11-05 Workshop", out)
             self.assertIn("Your brand, tally", out)
 

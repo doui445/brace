@@ -1,10 +1,10 @@
 ---
-project: project-tracker
+project: brace
 status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-11-07
+last_updated: 2026-11-08
 next_milestone: "BRACE 1.1: brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -13,8 +13,8 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: delivery
-brand_reviewed: 2026-10-22
+brand_stage: done
+brand_reviewed: 2026-11-08
 ---
 
 # STATUS — BRACE
@@ -54,8 +54,9 @@ done, its findings fixed. First real trial on Claude Code done
 like a real agency: a named team, a proposal, meetings with minutes and
 appointments, the documents rendered by a script, a client space, the
 agency resuming on its own; suite green.
-The real rebrand trial of BRACE itself is at meeting 3 of 4 (platform
-validated 2026-11-07); delivery set for 2026-11-09 14:00.
+The real rebrand trial of BRACE itself is done (delivered 2026-11-08):
+new front page and install descriptions, team renamed, brand review set
+for 2027-05-10.
 
 ### Known gaps
 
@@ -65,24 +66,28 @@ validated 2026-11-07); delivery set for 2026-11-09 14:00.
 
 ## Next 3 actions
 
-1. **Real trial: the agency rebrands BRACE** (planned the evening of
-   2026-11-05), in this repo, in a new session: `cd` here, then
-   `claude --plugin-dir .`, then `/brace:brand` without saying "rebrand".
-   Check that the agency asks what brings the client back and recommends
-   the rebrand itself (1.0 format, no client documents, old folder name);
-   then the 1.0 brand archived, every missing document made, the team
-   named, and the folder rename to `brace` given as the command to run
-   after `/exit` (the plugin runs from this folder). Bring the session id
-   back here: measure the tokens, read the path through. Then BRACE's
-   welcome in tracking (`BACKLOG.md`), then a trial on a project that is
-   not code.
+1. **Fix pass from the rebrand trial feedback** (2026-11-06 to 11-08, owner's
+   notes collected live; full list in the local, gitignored
+   `docs/superpowers/research/2026-11-06-rebrand-trial-feedback.md`): spec
+   then plan. Acceptance test for every console line: "would the account
+   director really say this?". Main points: the agency takes charge of the
+   process and the client decides only on the brand; questions anticipated
+   in one batch before the team works; a meeting only to present (5 parts:
+   welcome, presentation in the browser, discussion, recap and next
+   appointment, the team at work), silence while the team works; only
+   client documents are shown, never internal ones, never restated in the
+   console; feedback rethought as an intent, not pasted; delivery becomes a
+   real handover; a tabbed client space (shortcut at the root during the
+   mission, brand book after); `render.py` bugs (wrapped and nested list
+   items, `---`, space language and name); the account director may write
+   without a prompt (auto mode refused writes); token frugality as a design
+   rule. Also: measure the tokens and the 17-minute work batch from the
+   session ids, and why the agency advised against the folder rename.
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
    `BACKLOG.md`). 1.2 brings the brand's face (logo, palette, type) in
    `brand` plus `brace:design` (see `DECISIONS.md`).
-3. **BRACE's own brand** (`docs/brace/brand/`, written 2026-10-22, kept as
-   is): run the preference and comprehension test with real people, the
-   results go to `docs/brace/brand/DECISIONS.md`. The README still drifts
-   from the voice (long dashes, slashes in prose): left as is by the
-   owner, to revisit. Rename the repo folder to `brace` with every tool
-   closed (`BACKLOG.md`).
+3. **BRACE's own brand** (delivered 2026-11-08, review 2027-05-10): at
+   the 1.1 release, set the GitHub description and topics (owner's yes)
+   and publish the announcement; the test with real people stays ready
+   (add the first-language question).

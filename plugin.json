@@ -1,5 +1,5 @@
 {
   "name": "brace",
-  "description": "BRACE turns your AI into a real assistant for your projects: it remembers, keeps them clean and professional, and follows them all. For Claude Code and Antigravity.",
+  "description": "BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can't know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.",
   "version": "1.0.0"
 }

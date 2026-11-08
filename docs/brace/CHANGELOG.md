@@ -28,6 +28,11 @@ the bump, a release never breaks an existing project. The version lives in
   three routes, adjustments validated one document at a time (shown
   rendered), and a delivery page with a preference and comprehension test
   to run with real people. New brand files `BRIEF.md` and `SESSIONS.md`.
+
+### Changed
+- The front page and the install descriptions carry BRACE's new
+  positioning ("an assistant you can agree with"), from its own rebrand.
+- The agency's team is now Julie, Ravi, Constance, Ben and Lou.
 - Three new agents: `strategist` (positioning routes, creative brief),
   `copywriter` (the words of each route), `creative-director` (internal
   review of the routes and of the rendered presentation).

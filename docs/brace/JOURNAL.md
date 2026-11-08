@@ -1269,3 +1269,49 @@ Closed out the portfolio sub-pages work and cut the release:
   verdict (a subagent's and then brand's own), cleared by leaving auto
   mode; a subagent first reported "written" for a file that was not on
   disk, so the agency checks its agents' files before relying on them.
+
+## 2026-11-08 — The rebrand trial, delivered
+
+- The client came back a day early and took the delivery at once. Test:
+  checked personas, not real people (hypothesis, not tested; the
+  entrepreneur's door unsupported, the "agreed" reading of the tagline
+  fragile). Tagline and description validated in place; README top and
+  the three install descriptions now carry the editorial guide's text.
+  Transition and announcement validated (the announcement waits for 1.1).
+- The client overrode the agency on one point: the folder becomes `brace`
+  now (`project: brace`). BRACE runs from this folder (`--plugin-dir .`),
+  so the rename is the command to run after `/exit`.
+- Mission closed: `brand_stage: done`, review 2027-05-10 in the client's
+  calendar (meeting 4's event moved), heritage kept and dropped in the
+  brand `DECISIONS.md`, team renamed in both catalogues (Julie, Ravi,
+  Constance, Ben, Lou).
+
+
+## 2026-11-08 — The rebrand trial, read live by the owner
+
+- The owner ran the trial in one session and reported each point in a
+  second one as it happened; every point is kept in the local notes
+  (`docs/superpowers/research/2026-11-06-rebrand-trial-feedback.md`) and
+  drives the fix pass (`STATUS.md`, action 1).
+- What worked: the proposal's clarity, the brief's substance, the agency
+  resuming on its own at the right meeting, the interview offer, the
+  manifesto introduced at its top, the calendar once given full access.
+- What did not: the console does not yet sound like a person (labels,
+  numbered meetings, menus about the process, a credits list of first
+  names, documents restated); internal working documents shown, two of
+  them contradicting each other; feedback pasted into a text instead of
+  rethought; the team producing while the client waits; an empty delivery
+  meeting; chatter while the team works; the client space never introduced,
+  in the wrong language, listing internal files.
+- Settled with the owner: the agency imposes the process and proposes the
+  brand (accepting the proposal and the client's agenda stay the client's
+  call); documents are written as documents, decks carry the team's voice
+  through short signed annotations; present horizontally, read vertically,
+  one form per document; minutes filed, not shown nor validated; the
+  working language asked at first contact, the brand's main and secondary
+  languages at the workshop; auto mode advised by Claude itself, out of the
+  agency frame; tokens kept low by design, a point BRACE can put forward.
+- The owner questioned the visual identity sitting in `brand` (1.2, decided
+  2026-10-19): not reopened; the new meeting flow keeps a slot for a visual
+  phase, the decision is revisited at the 1.2 spec.
+\n

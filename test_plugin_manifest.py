@@ -276,8 +276,8 @@ class PluginManifestTests(unittest.TestCase):
             text = (i18n / f"{code}.md").read_text(encoding="utf-8")
             for key in keys:
                 self.assertRegex(text, r"(?m)^- brand\." + re.escape(key) + r": \S", f"{code}: {key}")
-            self.assertRegex(text, r"(?m)^- brand\.team\.brand\.name: Alice$")
-            self.assertRegex(text, r"(?m)^- brand\.team\.creative_director\.name: Emma$")
+            self.assertRegex(text, r"(?m)^- brand\.team\.brand\.name: Julie$")
+            self.assertRegex(text, r"(?m)^- brand\.team\.creative_director\.name: Lou$")
             self.assertIn("{name}", re.search(r"(?m)^- brand\.doc\.by: (.*)$", text).group(1))
 
     def test_agents_write_client_documents(self):

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les personas vérifiés</title>
+<meta name="brace-author" content="Chloé">
+<meta name="brace-role" content="stratège">
+<meta name="brace-meeting" content="4">
+<meta name="brace-date" content="2026-11-08">
+<link rel="stylesheet" href="../doc.css">
+</head>
+<body>
+<main class="page">
+<header class="doc-head">
+<div class="kicker">BRACE</div>
+<h1>Les personas vérifiés</h1>
+<div class="doc-date">2026-11-08</div>
+</header>
+<div class="body">
+<h2>En bref</h2>
+<p><strong>C&#x27;est une hypothèse, pas un test.</strong> Aucune vraie personne n&#x27;a lu quoi que ce soit. J&#x27;ai relu les deux présentations avec les trois personas et avec les recherches de Bruno. Cela oriente, cela ne valide rien. Les décisions de marque noteront « hypothèse, non testée ».</p>
+<p>Tu as validé les personas sans les changer. Cette validation dit que tu t&#x27;y reconnais, elle ne dit pas qu&#x27;ils sont vrais : ils viennent de six proches et de voix en ligne, jamais d&#x27;un entretien (<a href="2026-11-06-personas.html">personas</a>). Ils restent provisoires.</p>
+<p>Les deux présentations sont celles du <a href="2026-11-07-test-plan.html">plan de test</a> : la nouvelle (« Finally on the same page. », « It asks. It writes it down. You decide. », la description de la charte) et celle d&#x27;avant (la description du 22 octobre, « it remembers »).</p>
+<p><strong>Résultat.</strong> Une hypothèse tient, deux sont fragiles, une n&#x27;est pas soutenue. Rien ne bloque.</p>
+<table><thead><tr><th>Hypothèse</th><th>Verdict</th></tr></thead><tbody><tr><td>Le pilote accepte un plugin de plus s&#x27;il peut tout relire</td><td>Tient, comme condition nécessaire seulement</td></tr><tr><td>L&#x27;entrepreneur utilise une IA sur sa machine et peut franchir cette porte</td><td>Non soutenue</td></tr><tr><td>« D&#x27;accord » est la première lecture de la phrase pour un lecteur dont l&#x27;anglais n&#x27;est pas la langue première</td><td>Fragile</td></tr><tr><td>Les gens perçoivent « des projets qui te ressemblent » comme un désir</td><td>Fragile</td></tr></tbody></table>
+<h2>1. Le pilote accepte un plugin de plus s&#x27;il peut tout relire</h2>
+<p><strong>Ce qui le soutient.</strong></p>
+<ul><li>Sur les six répondants du questionnaire, personne ne fait confiance au résultat sans le vérifier (stratégie du 22 octobre, reprise dans les personas).</li><li>Deux voix craignent l&#x27;erreur silencieuse : « the failure mode isn&#x27;t &quot;tool forgot&quot;, it&#x27;s &quot;tool remembers a stale fact&quot; » (développeur à quinze applications, 27 avril 2026, <a href="2026-11-06-research.html">recherche du 6 novembre</a>, partie 4).</li><li>Des fichiers lisibles sont justement ce que la mémoire en base de données de claude-mem n&#x27;offre pas (recherche du 6 novembre, niveau 2).</li></ul>
+<p><strong>Ce qui ne le soutient pas.</strong></p>
+<ul><li>Pouvoir relire est une condition, pas une raison d&#x27;installer. Les sources parlent aussi du coût : « It ended up burning so much tokens and taking actually longer to finish » (développeur qui a désinstallé superpowers, 5 octobre 2026, <a href="2026-10-19-audience.html">audience du 19 octobre</a>, partie 5).</li><li>Le pilote a déjà ses fichiers : « 16 apps, each with its own CLAUDE.md ». Rien ne dit qu&#x27;il veut un système de plus à côté.</li></ul>
+<p><strong>Verdict : tient, comme condition nécessaire.</strong> Sans relecture possible, il n&#x27;accepte pas. Avec, rien ne prouve qu&#x27;il accepte.</p>
+<p><strong>Un vrai test devrait vérifier</strong> ce qu&#x27;il refuse en plus de la relecture : le coût en jetons, le doublon avec ses fichiers actuels.</p>
+<h2>2. L&#x27;entrepreneur utilise une IA sur sa machine et peut franchir cette porte</h2>
+<p><strong>Ce qui le soutient.</strong> Presque rien. Une personne qui produit du contenu « works with AI tools daily » (26 avril 2026), mais elle ne dit pas où : navigateur ou machine.</p>
+<p><strong>Ce qui ne le soutient pas.</strong></p>
+<ul><li>Le persona le dit lui-même : c&#x27;est le moins appuyé, et sa porte d&#x27;entrée est « à construire ».</li><li>Bruno n&#x27;a trouvé aucun entrepreneur non technique qui parle à la première personne de son IA qui laisse son projet en désordre (recherche, « Unverified »).</li><li>Le signal le plus proche va dans l&#x27;autre sens : 4 répondants sur 6 passent par une application web. Ce sont des proches, pas forcément des entrepreneurs, donc ce n&#x27;est pas une preuve, seulement un signal.</li></ul>
+<p><strong>Verdict : non soutenue.</strong> Les deux moitiés (il utilise un agent sur sa machine, il franchit la porte) restent sans source.</p>
+<p><strong>Un vrai test devrait vérifier</strong> les deux questions de l&#x27;écran 1 déjà prévues (« Cette IA, c&#x27;est plutôt… ») et si, à la lecture de « an AI agent on your computer », la personne comprend ce qu&#x27;il lui faut. C&#x27;est le point que le test plan donne comme prioritaire.</p>
+<h2>3. « Agreed » est la première lecture de « Finally on the same page. » pour un lecteur dont l&#x27;anglais n&#x27;est pas la langue première</h2>
+<p><strong>Ce qui le soutient.</strong> Notre intention : la charte écrit que la phrase « first means &quot;agreed, aligned&quot; » (VOICE, « How to read the tagline »). L&#x27;expression anglaise courante est bien celle de l&#x27;accord, mais c&#x27;est une connaissance générale, aucun fichier du projet ne la mesure chez un lecteur non anglophone.</p>
+<p><strong>Ce qui ne le soutient pas.</strong></p>
+<ul><li>Aucune source ne parle de la façon dont ces lecteurs comprennent la phrase. Il s&#x27;agit de ce que nous voulons qu&#x27;on lise.</li><li>L&#x27;audit lui-même relève le risque de « page » lu comme page web ou document, et le test plan le liste parmi les contresens à relever.</li><li>Le texte voisin tire vers le sens littéral : la description dit « keeps all your projects on one page », juste sous la phrase.</li><li>En français, ce risque disparaît, mais « longueur d&#x27;onde » ajoute l&#x27;affinité et peut glisser vers « il me devine » (document du territoire 4, 6 novembre). Cela ne concerne pas ce lecteur-ci.</li></ul>
+<p><strong>Verdict : fragile.</strong> L&#x27;intention est claire, aucun appui chez le lecteur visé.</p>
+<p><strong>Un vrai test devrait vérifier</strong> ce que ce lecteur dit comprendre. Un manque à corriger : les quatre questions de l&#x27;écran 1 ne demandent pas la langue première. Sans elle, on ne sait pas qui est ce lecteur. Je l&#x27;ajouterais.</p>
+<h2>4. Les gens perçoivent « des projets qui te ressemblent » comme un désir</h2>
+<p><strong>Ce qui le soutient.</strong> Une seule voix : la tienne, à la question « qu&#x27;est-ce que BRACE en une phrase » (« mais surtout tes projets qui te ressemblent », territoire 4). C&#x27;est une donnée réelle, mais c&#x27;est celle de la personne qui a créé l&#x27;outil.</p>
+<p><strong>Ce qui ne le soutient pas.</strong></p>
+<ul><li>Les voix du public parlent de douleurs, pas d&#x27;un désir de ressemblance : l&#x27;oubli, la note périmée, « onboarding the same assistant from scratch ». Le plus proche est la personne qui recolle « the same brand guidelines, the same tone rules » : elle veut de la constance, pas forcément se reconnaître.</li><li>Le débrouillard veut un plan qu&#x27;il peut modifier, sans plus (questionnaire).</li><li>Les outils de marque (Looka, Brandmark) vendent le « à vous » pour le logo (recherche, niveau 4), mais c&#x27;est un autre marché.</li><li>Les textes d&#x27;origine mettent en garde : en français la formule peut se lire comme une apparence, ou comme « il te devine ». C&#x27;est pour cela qu&#x27;elle n&#x27;est que la couleur des textes, jamais la promesse (VOICE).</li><li>Aucune des deux présentations du test ne contient cette formule : le test principal ne la mesure pas.</li></ul>
+<p><strong>Verdict : fragile.</strong> Elle repose sur une voix.</p>
+<p><strong>Un vrai test devrait vérifier</strong> avec une question à part, par exemple faire lire « Au bout, un projet fait de ce que tu as décidé » et demander ce que la personne en retient et si cela lui donne envie.</p>
+<h2>Quelle présentation parle à quel persona</h2>
+<table><thead><tr><th>Persona</th><th>Celle qui lui parle mieux</th><th>Pourquoi, d&#x27;après les sources</th><th>Confiance</th></tr></thead><tbody><tr><td><strong>Le pilote</strong></td><td>La nouvelle</td><td>Il veut des agents qui devinent avant que tout soit dit et il vérifie tout. La nouvelle fait les deux gestes : « it reads your project first, asks only what it can&#x27;t know », puis des fichiers qu&#x27;il peut relire. L&#x27;ancienne promet « it remembers », or sa plainte est « tool remembers a stale fact ».</td><td>Moyenne à bonne</td></tr><tr><td><strong>L&#x27;entrepreneur</strong></td><td>Partagé</td><td>L&#x27;ancienne ouvre sur sa douleur, dans ses mots (« Your AI forgets your project… and you explain it again »). La nouvelle parle mieux de ce qu&#x27;il cherche, « all your projects on one page », mais ce besoin est une hypothèse du persona.</td><td>Faible</td></tr><tr><td><strong>Le débrouillard</strong></td><td>La nouvelle, un peu</td><td>« Asks only what it can&#x27;t know » répond à « réfléchir à la façon de lui parler », et les fichiers lisibles à un plan qu&#x27;il peut modifier. Mais l&#x27;ancienne dit « suggests the right tools », proche de « une IA qui s&#x27;organise toute seule ». Aucune des deux ne parle de jetons, et dans les deux il faut un agent sur la machine, alors que 4 répondants sur 6 passent par le web.</td><td>Faible</td></tr></tbody></table>
+<p>Pour l&#x27;entrepreneur, le test compare deux ensembles entiers. La nouvelle présentation du test n&#x27;a pas la ligne de départ « Monday morning… » du README : elle serait donc la plus faible sur le point où il se reconnaît le mieux. Un vrai test le dirait.</p>
+<h2>Ce que cela change</h2>
+<p>Rien ne bloque. Quatre repères :</p>
+<ol><li><strong>Ne pas écrire « validé ».</strong> Les décisions de marque notent « hypothèse, non testée » pour les quatre points, et les personas restent « provisoires ».</li><li><strong>Entrepreneur et porte d&#x27;entrée.</strong> Rien dans cette lecture ne change la ligne « An AI agent on your computer » du README : elle reste, c&#x27;est la seule réponse honnête à un point ouvert.</li><li><strong>La phrase.</strong> Elle est gardée, comme décidé à l&#x27;atelier. Son sens « agreed » reste une intention. Si un test a lieu plus tard, ajouter la langue première à l&#x27;écran 1.</li><li><strong>« Te ressemblent »</strong> reste la couleur des textes, jamais la promesse. Rien n&#x27;autorise à la monter d&#x27;un cran.</li></ol>
+</div>
+<footer class="doc-sign"><span>Chloé, stratège</span><span>BRACE</span></footer>
+</main>
+</body>
+</html>

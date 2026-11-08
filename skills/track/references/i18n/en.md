@@ -189,15 +189,15 @@ Append-only, separate from the project's main `DECISIONS.md`.
 
 The macOS notification sent when a brand presentation is ready.
 
-- brand.team.brand.name: Alice
+- brand.team.brand.name: Julie
 - brand.team.brand.role: account director
-- brand.team.analyst.name: Bruno
+- brand.team.analyst.name: Ravi
 - brand.team.analyst.role: research analyst
-- brand.team.strategist.name: Chloé
+- brand.team.strategist.name: Constance
 - brand.team.strategist.role: brand strategist
-- brand.team.copywriter.name: David
+- brand.team.copywriter.name: Ben
 - brand.team.copywriter.role: copywriter
-- brand.team.creative_director.name: Emma
+- brand.team.creative_director.name: Lou
 - brand.team.creative_director.role: creative director
 - brand.lex.contact: first contact
 - brand.lex.proposal: proposal

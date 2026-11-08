@@ -32,6 +32,20 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   the voice drift hook). How documents come in and are marked as
   "provided", to design first.
 
+- [ ] **BRACE in the Claude plugin directory** (S, ⭐⭐⭐) — surfaced
+  2026-11-08. Community listing after a basic automated review, "Anthropic
+  Verified" after a further quality and safety review (no guarantee).
+  Submitted from the developer portal (paid plan; check the current route
+  on Anthropic's site first). No plugin installs itself for everyone: the
+  listing makes BRACE findable and one click to install. After 1.1, once
+  the README and manifests are polished.
+
+- [ ] **BRACE in Claude Code inside the Claude desktop app** (M, ⭐⭐) —
+  surfaced 2026-11-08. A way to reach people who never open a terminal,
+  the wider audience of the new brand. Check first what works there:
+  hooks, the `/clear` and `/exit` instructions, opening pages,
+  notifications, the Calendar tool.
+
 - [ ] **A writing skill (to think about)** (?, ⭐⭐) — surfaced 2026-10-22
   in the first brand session. Rules that make writing more human and carry
   the voice of whoever speaks: no slash, no semicolon, no vertical bar in

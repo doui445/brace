@@ -2,20 +2,18 @@
 
 **Finally on the same page.**
 
-Your AI forgets your project between sessions, and you explain it again.
-Every time.
+Monday morning. You paste in the same instructions as last week, and you are
+not sure which of your notes is still true.
 
-BRACE turns your AI into a real assistant for your projects. It's a free,
-open-source plugin for Claude Code and Antigravity. It keeps your project's
-memory in files you can read: where you stand, what was decided, what comes
-next. It keeps them up to date, suggests the right tools when they help, and
-tells you when it doesn't know.
+BRACE turns your AI agent into an assistant you can agree with: it reads your
+project first, asks only what it can't know, writes down what you decide in
+files you can read, and keeps all your projects on one page. A free plugin for
+Claude Code, it also works with Antigravity.
 
-Its skills share that memory. Track follows your projects, brand gives them a
-voice and a strategy, and design is on its way.
+Track follows your projects. Brand writes down your project's voice and
+strategy, after meetings where you validate each document.
 
-Pick up where you left off. Keep your project clean. Follow a summary of all
-your projects on a single page.
+It asks. It writes it down. You decide.
 
 Formerly project-tracker.
 
@@ -96,7 +94,9 @@ Plus, on top of the files:
 
 ## Requirements
 
-- **Claude Code** or **Antigravity** — that's the only hard requirement.
+- **An AI agent on your computer.** BRACE is a plugin for Claude Code, and it
+  also works with Antigravity. Without an agent, it has nothing to run in. It is
+  the only hard requirement.
 - **Python 3** — standard library only, no dependencies (bundled, used by the
   portfolio generator).
 - **The `gh` CLI** — only for the optional GitHub repo automation.

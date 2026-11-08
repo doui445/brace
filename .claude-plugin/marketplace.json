@@ -3,12 +3,12 @@
   "owner": {
     "name": "doui445"
   },
-  "description": "BRACE, a real assistant for your projects in Claude Code and Antigravity, and the project-tracker bridge that installs it.",
+  "description": "BRACE, a plugin for your AI agent: it asks, writes down what you decide, and keeps all your projects on one page. For Claude Code, it also works with Antigravity. This marketplace also carries the update for people coming from the earlier plugin.",
   "plugins": [
     {
       "name": "brace",
       "source": ".",
-      "description": "BRACE turns your AI into a real assistant for your projects: it remembers, keeps them clean and professional, and follows them all. For Claude Code and Antigravity.",
+      "description": "BRACE turns your AI agent into an assistant you can agree with: it reads your project first, asks only what it can't know, writes down what you decide in files you can read, and keeps all your projects on one page. A free plugin for Claude Code, it also works with Antigravity.",
       "version": "1.0.0"
     },
     {
