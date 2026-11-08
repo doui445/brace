@@ -490,51 +490,8 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   the choice brings the user nothing. To settle: bounded by the same CLI
   time budget and backoff; a user who never uses Antigravity has no copy,
   so nothing happens; a newer Antigravity copy than Claude Code's is left
-  alone (never downgrade). Lands in 1.1 (a minor: behaviour change).
-
-- [ ] **`brace:brand` skill (the substance)** (L, ⭐⭐⭐) — split out of the
-  design item on 2026-10-16 (see `DECISIONS.md`); ships as BRACE 1.1,
-  before `brace:design` (order swapped 2026-10-17). First real case:
-  BRACE's own foundations and strategy, already validated in the paused DA
-  spec (2026-09-22). Only for projects that are brands (a product to launch, a
-  personal brand). Owns `docs/brace/brand/`: `FOUNDATIONS`, `STRATEGY`,
-  `VOICE`, its own `DECISIONS`, and the name. Takes the frozen content
-  model of those files from the design item, plus the personal-brand
-  profile (2026-09-21) and the research → strategy steps of the workflow
-  (SYNTHESE § 1 steps 1-4). No visual in 1.1; the brand's face (logo,
-  palette, type, assets) joins in 1.2 (revised 2026-10-19).
-  Its own spec → plan cycle.
-
-  **Settled 2026-10-17/18 for the spec:**
-  - Starts on demand only (contract); `design` (1.2) will ask for it.
-  - Two profiles, same files: product brand and personal brand (the
-    personal one adds packaging, one numeric goal, channels and cadence,
-    real name vs pseudonym).
-  - Structure: one skill, a short `SKILL.md` plus a reference per stage
-    (interview, strategy, voice, name, revision and rebrand, personal
-    profile).
-  - Competitive research goes to the `brace:analyst` agent (shipped in the
-    plugin, see the agent rule in `DECISIONS.md`): a mission framed by
-    subject (competitors, market, audience, name availability) and depth
-    (quick or full, **asked each time**); runs in the background while the
-    interview goes on; sourced table, written only after the user's check.
-  - Voice: written after the strategy and before the name, starting with
-    the voice-first exercise; public texts (README, release notes, site,
-    bio) drifting from it are flagged with a rewrite; it evolves through
-    accepted drifts and through a `FOUNDATIONS` / `STRATEGY` revision.
-  - Revision of the strategy: on events (major release, change of target
-    or ambition, an unknown competitor mentioned) and about every 6 months.
-  - Rebranding is in 1.1 (a deep revision: problem sprint, repositioning
-    first, soft continuity by default).
-  - **Added 2026-10-19** after checking against agency practice (web) and
-    the video corpus: real customers' voice (an "audience" mission for the
-    analyst, plus an interview guide for 3-5 real people: past stories,
-    the job the product is hired for); a test step before presenting
-    (tagline, positioning, name with real target people); competitors'
-    messaging and tone; proof points; brand architecture, only when the
-    project has sub-brands or sub-projects; a touchpoints list (also read
-    by the voice-drift hook); one indicator, reviewed at each revision.
-  - Spec written 2026-10-19 (gitignored), awaiting the user's review.
+  alone (never downgrade). A minor (behaviour change); moved out of 1.1
+  on 2026-11-08, lands after `brace:design`.
 
 - [-] **`reader` agent (fresh eyes)** (replaced 2026-10-26 by `researcher`, see Agency agents) (M, ⭐⭐) — surfaced 2026-10-19. A
   BRACE agent that reads a text as a newcomer: its blank context is the
@@ -549,8 +506,8 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   visual too.
 
 - [ ] **Tidy a bloated `AGENTS.md`** (S, ⭐⭐) — a user capture from
-  2026-10-10, scoped 2026-10-16; lands in 1.1 alongside `brace:brand`
-  (a minor: behaviour change). A `track` capability, not a new skill: it
+  2026-10-10, scoped 2026-10-16; a minor (behaviour change), moved out
+  of 1.1 on 2026-11-08, lands after `brace:design`. A `track` capability, not a new skill: it
   applies the existing `AGENTS.md` rules (`writing-tracking-files.md`) to a
   file that has grown, moving what does not belong (history, rationale,
   decisions) to `JOURNAL.md` / `DECISIONS.md` / `ARCHITECTURE.md` rather
@@ -623,6 +580,50 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   works in the open project and says so.
 
 ## Completed
+
+- [x] **`brace:brand` skill (the substance)** (2026-11-08, shipped in 1.1.0) — split out of the
+  design item on 2026-10-16 (see `DECISIONS.md`); ships as BRACE 1.1,
+  before `brace:design` (order swapped 2026-10-17). First real case:
+  BRACE's own foundations and strategy, already validated in the paused DA
+  spec (2026-09-22). Only for projects that are brands (a product to launch, a
+  personal brand). Owns `docs/brace/brand/`: `FOUNDATIONS`, `STRATEGY`,
+  `VOICE`, its own `DECISIONS`, and the name. Takes the frozen content
+  model of those files from the design item, plus the personal-brand
+  profile (2026-09-21) and the research → strategy steps of the workflow
+  (SYNTHESE § 1 steps 1-4). No visual in 1.1; the brand's face (logo,
+  palette, type, assets) joins in 1.2 (revised 2026-10-19).
+  Its own spec → plan cycle.
+
+  **Settled 2026-10-17/18 for the spec:**
+  - Starts on demand only (contract); `design` (1.2) will ask for it.
+  - Two profiles, same files: product brand and personal brand (the
+    personal one adds packaging, one numeric goal, channels and cadence,
+    real name vs pseudonym).
+  - Structure: one skill, a short `SKILL.md` plus a reference per stage
+    (interview, strategy, voice, name, revision and rebrand, personal
+    profile).
+  - Competitive research goes to the `brace:analyst` agent (shipped in the
+    plugin, see the agent rule in `DECISIONS.md`): a mission framed by
+    subject (competitors, market, audience, name availability) and depth
+    (quick or full, **asked each time**); runs in the background while the
+    interview goes on; sourced table, written only after the user's check.
+  - Voice: written after the strategy and before the name, starting with
+    the voice-first exercise; public texts (README, release notes, site,
+    bio) drifting from it are flagged with a rewrite; it evolves through
+    accepted drifts and through a `FOUNDATIONS` / `STRATEGY` revision.
+  - Revision of the strategy: on events (major release, change of target
+    or ambition, an unknown competitor mentioned) and about every 6 months.
+  - Rebranding is in 1.1 (a deep revision: problem sprint, repositioning
+    first, soft continuity by default).
+  - **Added 2026-10-19** after checking against agency practice (web) and
+    the video corpus: real customers' voice (an "audience" mission for the
+    analyst, plus an interview guide for 3-5 real people: past stories,
+    the job the product is hired for); a test step before presenting
+    (tagline, positioning, name with real target people); competitors'
+    messaging and tone; proof points; brand architecture, only when the
+    project has sub-brands or sub-projects; a touchpoints list (also read
+    by the voice-drift hook); one indicator, reviewed at each revision.
+  - Spec written 2026-10-19 (gitignored), awaiting the user's review.
 
 - [x] **BRACE 1.0 — launch + multi-skill foundation** (2026-10-16, 1.0.0)
   (L, ⭐⭐⭐). Renamed BRACE: plugin `brace` (`brace:<skill>`), repo

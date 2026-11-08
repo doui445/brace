@@ -5,7 +5,7 @@ uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
 last_updated: 2026-11-08
-next_milestone: "BRACE 1.1: brace:brand"
+next_milestone: "BRACE 1.2: the brand's face in brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
 backlog_model: "adopté"
@@ -42,21 +42,15 @@ both manifests).
   project-scope swap with the real CLI; Antigravity 1.3 on this machine.
 - Full suite green (`bash run_tests.sh`).
 
-**On `feat/brand`, not merged (BRACE 1.1)**: `brace:brand` runs as an
-agency. A workshop on a brief BRACE pre-fills, four agents working in the
-background (`analyst`, `strategist`, `copywriter`, `creative-director`),
-a strategic presentation as a local HTML deck, adjustments validated one
-rendered document at a time, a delivery page. Agents write in their own
-folder without a prompt (a hook, tested for real on Claude Code); a macOS
-notification says when a presentation is ready. Whole-branch review
-done, its findings fixed. First real trial on Claude Code done
-(2026-11-01) and its gaps fixed (2026-11-02). Since 2026-11-05 it works
-like a real agency: a named team, a proposal, meetings with minutes and
-appointments, the documents rendered by a script, a client space, the
-agency resuming on its own; suite green.
-The real rebrand trial of BRACE itself is done (delivered 2026-11-08):
-new front page and install descriptions, team renamed, brand review set
-for 2027-05-10.
+**BRACE 1.1.0** (2026-11-08): `brace:brand` runs as an agency. A named
+team of four agents (`analyst`, `strategist`, `copywriter`,
+`creative-director`) behind an account director; a proposal whose scope
+follows from the brand work the client already has; meetings in five
+parts with minutes and appointments; client documents and decks rendered
+by a script; a tabbed client space with a root shortcut during the
+mission and a "Brand" link on the portfolio card. Tried for real on
+BRACE's own rebrand (delivered 2026-11-08, review 2027-05-10), then a fix
+pass from that trial, reviewed and checked in a headless browser.
 
 ### Known gaps
 
@@ -66,21 +60,13 @@ for 2027-05-10.
 
 ## Next 3 actions
 
-1. **Fix pass from the rebrand trial: built 2026-11-08** (17 tasks on
-   `feat/brand`, suite green): the account director speaks like a person
-   and runs the process, a mission is a plan of phases built from what the
-   client already has, meetings in five parts with the questions asked in
-   one batch, only client documents shown, a real handover, a tabbed
-   client space with a root shortcut and a portfolio link, the renderer
-   fixes, the main conversation writing in the agency's folders. Whole-branch
-   review done, its findings fixed, its four minors too. Left for the next
-   trial: check for real, in auto mode, that a write in `brand/` no longer
-   prompts or gets refused.
-2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
-   Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
-   `BACKLOG.md`). Then 1.2 = the brand's face in `brand` (two new agents),
-   1.3 = `brace:design` (order changed 2026-11-08, see `DECISIONS.md`).
-3. **BRACE's own brand** (delivered 2026-11-08, review 2027-05-10): at
-   the 1.1 release, set the GitHub description and topics (owner's yes)
-   and publish the announcement; the test with real people stays ready
-   (add the first-language question).
+1. **Publish 1.1.0** (owner's yes): push `main` and the tag, then set the
+   GitHub description and topics and publish the announcement.
+2. **Next real trial** on a dogfood project, on 1.1.0: check in auto mode
+   that a write in `brand/` no longer prompts, the agency's voice and
+   five-part meetings, the scope from existing documents; measure the
+   quota with `/usage` before and after.
+3. **1.2: the brand's face in `brand`** (visual routes, logo, palette,
+   type, `art-director` and `designer`): spec first. Then 1.3 =
+   `brace:design`; the Antigravity copy update and the `AGENTS.md` tidy
+   come after it.

@@ -14,6 +14,8 @@ the bump, a release never breaks an existing project. The version lives in
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-11-08
+
 ### Added
 - `brace:brand`: builds and keeps alive a brand's substance in
   `docs/brace/brand/` (`FOUNDATIONS`, `STRATEGY`, `VOICE`, `DECISIONS`), for
@@ -31,7 +33,8 @@ the bump, a release never breaks an existing project. The version lives in
 - The client space is a tabbed portal (home, meetings with their minutes,
   documents, presentations, and "My brand", the brand at a glance, which
   becomes its home once delivered), with a shortcut at the project's root
-  during the mission and a "Brand" link on the portfolio card.
+  during the mission and a "Brand" link on the portfolio card. Dates
+  read in words, in the working language; it prints whole.
 - Decks carry short notes signed by the teammate who would present each
   slide (screen only).
 - A mission's scope is proposed from the brand work the client already

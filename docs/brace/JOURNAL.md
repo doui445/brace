@@ -1368,3 +1368,16 @@ Closed out the portfolio sub-pages work and cut the release:
   shortcut, a `.git` file (worktree, submodule) gets its exclude through
   `gitdir:`, and a third list level goes back to the first.
 - The real auto-mode check moves to the next trial (owner's call).
+
+## 2026-11-08 — BRACE 1.1.0
+
+- Checked the client space in a headless Chrome: tabs by click and arrow
+  keys, the root shortcut, the portfolio's "Brand" link. Fixed what it
+  showed: panel titles missing on paper, Home and End keys in the tabs,
+  the portfolio's two card links stacked on two full-width lines; and the
+  space now writes dates in words in the working language.
+- The two 1.1 riders (keep the Antigravity copy up to date, tidy a
+  bloated `AGENTS.md`) move after `brace:design`: unrelated to `brand`,
+  each needs its own small spec. BRACE's own mission keeps its documents
+  signed with the team's former first names, as its archive.
+- Released 1.1.0: `feat/brand` merged into `main`.
