@@ -619,6 +619,22 @@ def _first_paragraph(text):
     return ""
 
 
+def _first_item(text):
+    """The first list item of a section, without a leading bold label
+    ("**Why**: ..."), its wrapped lines joined."""
+    lines = text.split("\n")
+    for n, line in enumerate(lines):
+        mark = _marker(line)
+        if mark:
+            item = [mark[1]]
+            for nxt in lines[n + 1:]:
+                if not nxt.strip() or _marker(nxt) or not nxt[:1].isspace():
+                    break
+                item.append(nxt.strip())
+            return re.sub(r"^\*\*[^*]+\*\*\s*:\s*", "", " ".join(item))
+    return ""
+
+
 def _doc_kind(path, meta):
     """(document type, date, version) of a rendered document."""
     m = re.match(r"(\d{4}-\d{2}-\d{2})-(.+)$", path.stem)
@@ -655,10 +671,11 @@ def space_data(root):
     titled = re.search(r"(?m)^# .+? \u2014 (.+?)\s*$", _read(brand / "BRIEF.md"))
     name = _last(sessions, "brand") or (titled.group(1) if titled else "") or status.get("project", "") or root.name
 
-    mission = ""
     if stage == "done":
-        mission = _first_paragraph(_section(_read(brand / "FOUNDATIONS.md"), "brand.foundations.heading.purpose"))
-    if not mission:
+        # Once delivered, the validated purpose, never the brief written before it.
+        purpose = _section(_read(brand / "FOUNDATIONS.md"), "brand.foundations.heading.purpose")
+        mission = _first_paragraph(purpose) or _first_item(purpose)
+    else:
         mission = _first_paragraph(_section(_read(brand / "BRIEF.md"), "brand.brief.heading.project"))
 
     # Documents: client documents only, the latest version of each type.
@@ -768,6 +785,12 @@ def _glance(section):
     return blocks[0] if blocks else ""
 
 
+def _deck_title(path):
+    """A deck's <title>, or its file name without the extension."""
+    m = re.search(r"<title>(.*?)</title>", _read(path), re.S)
+    return html.unescape(m.group(1)).strip() if m and m.group(1).strip() else path.stem
+
+
 def _brand_blocks(brand, t):
     """The brand at a glance: one (title, html) per brand block with content."""
     out = []
@@ -819,7 +842,9 @@ def render_space(root):
     if documents:
         documents.append("</ul>")
 
-    decks = "".join(f'<li><a href="presentations/{esc(x)}">{esc(x[:-5])}</a></li>' for x in data["decks"])
+    deck_dir = root / "docs" / "brace" / "brand" / "presentations"
+    decks = "".join(f'<li><a href="presentations/{esc(x)}">{esc(_deck_title(deck_dir / x))}</a></li>'
+                    for x in data["decks"])
     blocks = _brand_blocks(root / "docs" / "brace" / "brand", t)
 
     panels = [("home", "\n".join(home)), ("meetings", meetings_html),

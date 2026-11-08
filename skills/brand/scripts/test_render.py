@@ -392,10 +392,14 @@ class SpaceDataTests(unittest.TestCase):
         files = {"BRIEF.md": "# BRAND BRIEF \u2014 Acme\n\n## The project\n\nA tool.\n"}
         self.assertEqual(self.data(sessions="# S\n", files=files)["brand"], "Acme")
 
+    def test_delivered_mission_takes_the_purpose_list_never_the_brief(self):
+        files = {"FOUNDATIONS.md": "## Purpose\n\n- **Why**: give everyone their hours back.\n- **How**: x\n",
+                 "BRIEF.md": "## The project\n\nAn old line.\n"}
+        self.assertEqual(self.data(stage="done", files=files)["mission"], "give everyone their hours back.")
+
     def test_mission_skips_an_indented_list_continuation(self):
-        files = {"FOUNDATIONS.md": "## Purpose\n\n- **Why**: x\n\n  Still the list.\n",
-                 "BRIEF.md": "## The project\n\nA small tool.\n"}
-        self.assertEqual(self.data(stage="done", files=files)["mission"], "A small tool.")
+        brief = "## The project\n\n- x\n\n  Still the list.\n\nA small tool.\n"
+        self.assertEqual(self.data(files={"BRIEF.md": brief})["mission"], "A small tool.")
 
     def test_first_held_meeting_keeps_the_earlier_history(self):
         sessions = ("# S\n\n## 2026-11-06 First contact\n\nText.\n\n"
@@ -477,6 +481,14 @@ class RenderSpaceTests(unittest.TestCase):
             out = panel(render.render_space(root), "presentations")
             self.assertIn('href="presentations/2026-11-06-strategy.html"', out)
             self.assertNotIn("draft.html", out)
+
+    def test_presentations_show_their_title(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, decks=("2026-11-06-strategy.html",))
+            (root / "docs" / "brace" / "brand" / "presentations" / "2026-11-06-strategy.html").write_text(
+                "<html><head><title>Tally · Strategic presentation</title></head></html>", encoding="utf-8")
+            out = panel(render.render_space(root), "presentations")
+            self.assertIn(">Tally · Strategic presentation</a>", out)
 
     def test_space_in_french(self):
         with tempfile.TemporaryDirectory() as d:
