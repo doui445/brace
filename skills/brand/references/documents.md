@@ -50,6 +50,27 @@ document, its content goes into the brand file it feeds
 (`FOUNDATIONS.md`, `STRATEGY.md`, `VOICE.md`, `DECISIONS.md`), with a link
 to the document.
 
+## Writing a client document
+
+- **A read document is written as a document**: the care and the voice of
+  its author, in a document's style, not speech. It opens with a few lines
+  that say what it is and how it is built (it is read later, alone, from
+  the client space; the manifesto of the first trial is the model). Then
+  real sentences, verbs, the active voice. No semicolons, no label
+  fragments ("Measured on...", "About an hour..."), no "(pre-filled)" in a
+  title.
+- **A deck speaks like the agency**: no intro page beyond the cover; verbs
+  and the active voice ("We keep", never a bare "Kept"); the team's short
+  signed notes (`note:`) on a few slides, never repeating the slide.
+- **Never internal metadata** shown to the client: who asked, the research
+  depth, "read on", a scale, a review verdict.
+- **One open at a time.** The account director opens one document or deck,
+  one tab, and never two that disagree. What she opens, she is ready to
+  present and defend.
+- **Honest caveats in one sentence.** When a deliverable rests on what is
+  not tested yet (personas from research, say), its opening lines say so
+  once, with what to do about it; never as tags in the text.
+
 ## The Markdown
 
 Every document starts with its front matter, then the text:
