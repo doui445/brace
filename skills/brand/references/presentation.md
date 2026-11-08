@@ -36,6 +36,11 @@ everywhere.
 | `reco` | `meta`, `eyebrow`, `title`, `lede`, `item` (repeat), `next` (label, pipe, text), `foot` | |
 | `doc` | `meta`, `title`, `intro`, `ask`, `foot`, then free Markdown | |
 
+Every slide type also takes `note` (repeat): `note: <first name> | <text>`,
+a short line signed by the teammate who would present that slide, so the
+deck reads as if the team presented it. Put one on a few slides only, never
+to repeat what the slide says; it shows on screen and not in print.
+
 Mockup fields: `@laptop hero` (`bar`, `brand`, `title`, `text`, `cta`,
 `caption`), `@laptop readme` (`bar`, `file`, `name`, `tag`, `text`
 repeated, `caption`), `@phone post` (`name`, `handle`, `text` repeated,

@@ -243,7 +243,7 @@ def render_doc(text, css="doc.css"):
     sign = esc(by.replace("{name}", meta["author"]).replace("{role}", meta["role"]))
     metas = "".join(
         f'<meta name="brace-{k}" content="{esc(meta[k])}">\n'
-        for k in ("author", "role", "meeting", "date") if meta.get(k))
+        for k in ("author", "role", "meeting", "date", "doc", "phase") if meta.get(k))
     date = f'<div class="doc-date">{esc(meta["date"])}</div>\n' if meta.get("date") else ""
     return (
         "<!DOCTYPE html>\n"
@@ -260,13 +260,13 @@ def render_doc(text, css="doc.css"):
 # --- decks -------------------------------------------------------------------
 
 FIELDS = {
-    "cover": {"meta", "eyebrow", "title", "text", "routes", "on", "foot"},
-    "route": {"meta", "eyebrow", "title", "lede", "why", "tagline", "sub", "foot"},
-    "compare": {"meta", "title", "intro", "head", "row", "foot"},
-    "context": {"meta", "title", "intro", "foot"},
-    "refs": {"meta", "title", "intro", "foot"},
-    "reco": {"meta", "eyebrow", "title", "lede", "item", "next", "foot"},
-    "doc": {"meta", "title", "intro", "ask", "foot"},
+    "cover": {"note", "meta", "eyebrow", "title", "text", "routes", "on", "foot"},
+    "route": {"note", "meta", "eyebrow", "title", "lede", "why", "tagline", "sub", "foot"},
+    "compare": {"note", "meta", "title", "intro", "head", "row", "foot"},
+    "context": {"note", "meta", "title", "intro", "foot"},
+    "refs": {"note", "meta", "title", "intro", "foot"},
+    "reco": {"note", "meta", "eyebrow", "title", "lede", "item", "next", "foot"},
+    "doc": {"note", "meta", "title", "intro", "ask", "foot"},
 }
 BLOCKS = {
     "laptop hero": {"bar", "brand", "title", "text", "cta", "caption"},
@@ -454,6 +454,11 @@ def _slide(s, n, total, footer, t=None):
                 + (f"    {body}\n" if body else "")
                 + (f'    <div class="ask">{i("ask")}</div>\n' if s.get("ask") else "")
                 + "  </div>\n")
+    notes = "".join(
+        f'    <aside class="note"><b>{inline(who, "b")}</b> {inline(text, "b")}</aside>\n'
+        for who, text in map(_pair, s.all("note")))
+    if notes:
+        out += f'  <div class="notes">\n{notes}  </div>\n'
     foot = s.get("foot")
     left, mid = _pair(foot) if " | " in foot else (footer, foot)
     out += (f'  <div class="foot"><span>{inline(left, "b")}</span><span>{inline(mid, "b")}</span>'

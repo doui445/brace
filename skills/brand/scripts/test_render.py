@@ -140,6 +140,30 @@ class MarkdownListTests(unittest.TestCase):
         self.assertEqual(out.count("Benchmark</h1>"), 1)
 
 
+class DocMetaTests(unittest.TestCase):
+    def test_doc_and_phase_become_metas(self):
+        out = render.render_doc(doc("Text.", doc="benchmark", phase="strategy"))
+        self.assertIn('<meta name="brace-doc" content="benchmark">', out)
+        self.assertIn('<meta name="brace-phase" content="strategy">', out)
+
+
+class DeckNoteTests(unittest.TestCase):
+    DECK = "---\ntitle: T\nlang: en\nfooter: F\n---\n\n::: reco\ntitle: We pick route 1\nnote: Constance | Say why calm wins.\n"
+
+    def test_note_renders_signed(self):
+        out = render.render_deck(self.DECK)
+        self.assertIn('<aside class="note"><b>Constance</b> Say why calm wins.</aside>', out)
+
+    def test_note_allowed_on_every_slide_type(self):
+        for kind in render.FIELDS:
+            self.assertIn("note", render.FIELDS[kind], kind)
+
+    def test_note_hidden_in_print(self):
+        css = (ASSETS / "deck.css").read_text(encoding="utf-8")
+        printed = css.split("@media print", 1)[1]
+        self.assertRegex(printed, r"\.note\b[^{]*\{\s*display:\s*none")
+
+
 class RenderDocTests(unittest.TestCase):
     def test_doc_signature_and_meta(self):
         out = render.render_doc(doc("## Who else\n\nText."))

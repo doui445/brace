@@ -117,6 +117,7 @@ item: Which of the two routes feels like your product?
 item: In one sentence, what would a client understand from the tagline?
 item: Anything you would not want to see said about Tally?
 next: Next | Pick a route, or mix two, or ask for another. We then write the documents one by one, each shown to you like this.
+note: Clara | Route 2 tempted us too. We kept route 1 because your clients ask for proof, not warmth.
 foot: Recommendation
 
 ::: doc

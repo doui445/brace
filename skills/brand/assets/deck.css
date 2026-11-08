@@ -42,6 +42,10 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em
 .meta { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
 .meta b { color: var(--ink); font-weight: 600; letter-spacing: .2em; }
 .foot { position: absolute; left: 6vw; right: 6vw; bottom: 4vh; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .08em; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 12px; }
+/* Team notes: a short line signed by whoever would present the slide (screen only) */
+.notes { margin-top: 2.4vh; align-self: flex-end; max-width: 40vw; display: flex; flex-direction: column; gap: 6px; text-align: right; }
+.note { font-size: 12px; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+.note b { font-style: normal; font-weight: 600; color: var(--ink-2); margin-right: 4px; }
 .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
 .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 4vw; margin-top: 4vh; }
 .head h2 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.05; }
@@ -167,5 +171,6 @@ table.cmp { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 1.
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: none; }
   html { scroll-snap-type: none; }
   .dots { display: none; }
+  .notes, .note { display: none; }
   .slide { width: 1440px; height: 900px; page-break-after: always; break-after: page; border: 0; }
 }
