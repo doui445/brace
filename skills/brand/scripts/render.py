@@ -524,6 +524,7 @@ def main(argv):
             out = render_space(root)
             ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")
+            write_shortcut(root, space_data(root))
             return 0
         print(__doc__.strip(), file=sys.stderr)
         return 1
@@ -832,6 +833,61 @@ def render_space(root):
         f'<header class="doc-head">\n<div class="kicker">BRACE</div>\n<h1>{esc(title)}</h1>\n</header>\n'
         f'<nav class="tabs" role="tablist">{tabs}</nav>\n'
         f'<div class="body space">\n{sections}\n</div>\n</main>\n{TABS_SCRIPT}</body>\n</html>\n')
+
+
+SHORTCUT_TARGET = "docs/brace/brand/index.html"
+SHORTCUT_MARK = f'content="0; url={SHORTCUT_TARGET}"'
+
+
+def _shortcut_name(root, data):
+    """The shortcut's file name: the brand's name, cleaned for a file system."""
+    def clean(text):
+        text = re.sub(r'[/\\:*?"<>|\x00-\x1f\x7f]', "", text)
+        return " ".join(text.split()).strip(" .")
+    name = clean(data["brand"]) or clean(Path(root).name) or "brand"
+    short = catalogue(data["lang"]).get("brand.space.short", "client space")
+    return f"{name} - {short}.html"
+
+
+def _exclude(root, add=(), drop=()):
+    """Add or drop lines of .git/info/exclude, only when .git is a folder."""
+    git = Path(root) / ".git"
+    if not git.is_dir():
+        return
+    path = git / "info" / "exclude"
+    lines = _read(path).split("\n") if path.is_file() else []
+    kept = [x for x in lines if x not in drop]
+    kept += [x for x in add if x not in kept]
+    while kept and not kept[-1]:
+        kept.pop()
+    if kept != [x for x in lines if x] or drop:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(kept) + ("\n" if kept else ""), encoding="utf-8")
+
+
+def write_shortcut(root, data):
+    """During the mission, a small page at the project root that opens the
+    client space (a redirect, not a link: file:// resolves relative paths
+    from the link itself); removed once the brand is delivered. Kept out of
+    git through .git/info/exclude, never the client's .gitignore."""
+    root = Path(root)
+    old = [p for p in root.glob("*.html") if p.is_file() and SHORTCUT_MARK in _read(p)]
+    name = None if data["delivered"] else _shortcut_name(root, data)
+    for p in old:
+        if p.name != name:
+            p.unlink()
+    _exclude(root, drop=[p.name for p in old if p.name != name])
+    if name is None:
+        return None
+    target = root / name
+    target.write_text(
+        "<!DOCTYPE html>\n"
+        f'<html lang="{data["lang"]}">\n<head>\n<meta charset="utf-8">\n'
+        f'<meta http-equiv="refresh" {SHORTCUT_MARK}>\n'
+        f"<title>{esc(name[:-5])}</title>\n</head>\n<body>\n"
+        f'<p><a href="{SHORTCUT_TARGET}">{esc(name[:-5])}</a></p>\n</body>\n</html>\n', encoding="utf-8")
+    _exclude(root, add=[name])
+    return target
 
 
 if __name__ == "__main__":

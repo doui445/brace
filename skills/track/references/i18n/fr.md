@@ -219,6 +219,7 @@ La notification macOS envoyée quand une présentation de marque est prête.
 - brand.space.title: Ta marque, {project}
 - brand.space.next: Prochain rendez-vous
 - brand.space.none: Rien pour l'instant.
+- brand.space.short: espace client
 - brand.space.tab.home: Accueil
 - brand.space.tab.meetings: Rendez-vous
 - brand.space.tab.documents: Documents

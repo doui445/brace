@@ -225,6 +225,7 @@ The macOS notification sent when a brand presentation is ready.
 - brand.space.title: Your brand, {project}
 - brand.space.next: Next meeting
 - brand.space.none: Nothing here yet.
+- brand.space.short: client space
 - brand.space.tab.home: Home
 - brand.space.tab.meetings: Meetings
 - brand.space.tab.documents: Documents

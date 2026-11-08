@@ -483,6 +483,90 @@ class SpaceGlanceTests(unittest.TestCase):
             self.assertNotIn("Second paragraph.", brand)
 
 
+class ShortcutTests(unittest.TestCase):
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+
+    def make(self, sessions="# S\n\n- brand: Acme\n", stage="adjustments", git="dir"):
+        root = project(self._d.name, sessions=sessions, stage=stage)
+        if git == "dir":
+            (root / ".git" / "info").mkdir(parents=True)
+        elif git == "file":
+            (root / ".git").write_text("gitdir: elsewhere\n", encoding="utf-8")
+        return root
+
+    def space(self, root):
+        r = run("space", str(root))
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def shortcuts(self, root):
+        return sorted(p.name for p in root.glob("*.html"))
+
+    def exclude(self, root):
+        f = root / ".git" / "info" / "exclude"
+        return f.read_text(encoding="utf-8") if f.is_file() else ""
+
+    def test_shortcut_created_and_excluded(self):
+        root = self.make()
+        self.space(root)
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
+        text = (root / "Acme - client space.html").read_text(encoding="utf-8")
+        self.assertIn('content="0; url=docs/brace/brand/index.html"', text)
+        self.assertEqual(self.exclude(root).splitlines().count("Acme - client space.html"), 1)
+
+    def test_shortcut_in_french(self):
+        root = self.make(sessions="# S\n\n- brand: Acme\n- language: fr\n")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - espace client.html"])
+
+    def test_shortcut_removed_at_delivery(self):
+        root = self.make()
+        self.space(root)
+        (root / "docs" / "brace" / "STATUS.md").write_text("---\nproject: tally\nbrand_stage: done\n---\n", encoding="utf-8")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), [])
+        self.assertNotIn("client space", self.exclude(root))
+
+    def test_shortcut_follows_a_brand_rename(self):
+        root = self.make()
+        self.space(root)
+        (root / "docs" / "brace" / "brand" / "SESSIONS.md").write_text("# S\n\n- brand: Acme\n- brand: Zest\n", encoding="utf-8")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Zest - client space.html"])
+        self.assertNotIn("Acme", self.exclude(root))
+
+    def test_shortcut_name_strips_unsafe_characters(self):
+        root = self.make(sessions="# S\n\n- brand: A/B: test\n")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["AB test - client space.html"])
+
+    def test_shortcut_name_never_empty(self):
+        root = self.make(sessions="# S\n\n- brand: ///\n")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["proj - client space.html"])
+
+    def test_no_git(self):
+        root = self.make(git=None)
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
+
+    def test_git_file_left_alone(self):
+        root = self.make(git="file")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["Acme - client space.html"])
+        self.assertEqual((root / ".git").read_text(encoding="utf-8"), "gitdir: elsewhere\n")
+
+    def test_never_touches_other_html_at_root(self):
+        root = self.make()
+        (root / "index.html").write_text("<p>mine</p>", encoding="utf-8")
+        self.space(root)
+        (root / "docs" / "brace" / "STATUS.md").write_text("---\nproject: tally\nbrand_stage: done\n---\n", encoding="utf-8")
+        self.space(root)
+        self.assertEqual(self.shortcuts(root), ["index.html"])
+
+
 class SpaceTabsTests(unittest.TestCase):
     def space(self, **kw):
         self._d = tempfile.TemporaryDirectory()
