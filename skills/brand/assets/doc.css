@@ -45,8 +45,24 @@ body { background: var(--paper-2); font-family: var(--sans); color: var(--ink); 
 .space .by { color: var(--ink-3); font-size: 13px; margin-left: 6px; }
 .space .none { color: var(--ink-3); }
 .space .mission { font-family: var(--serif); font-size: 20px; color: var(--ink-2); }
+.body hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+/* Client space: tabs (shown as tabs only when the script runs; without it,
+   every panel reads one after the other) */
+.tabs { display: none; gap: 4px; border-bottom: 1px solid var(--line); margin: -12px 0 32px; }
+.tabbed .tabs { display: flex; flex-wrap: wrap; }
+.tabs button { font: inherit; font-size: 14px; color: var(--ink-2); background: none; border: 0; border-bottom: 2px solid transparent; padding: 10px 14px; margin-bottom: -1px; cursor: pointer; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.space .panel + .panel { margin-top: 40px; }
+.tabbed .space .panel + .panel { margin-top: 0; }
+.space .panel-title { margin-top: 0; }
+.tabbed .space .panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.space .block { border-top: 1px solid var(--line); padding-top: 14px; margin-bottom: 24px; }
+.space .block h3 { margin-top: 0; font-family: var(--sans); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
 @page { size: A4; margin: 18mm; }
 @media print {
   body { background: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page { margin: 0; padding: 0; max-width: none; box-shadow: none; background: none; }
+  .tabs { display: none !important; }
+  .space .panel[hidden] { display: block; }
 }

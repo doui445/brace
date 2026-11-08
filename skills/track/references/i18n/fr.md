@@ -217,10 +217,18 @@ La notification macOS envoyée quand une présentation de marque est prête.
 - brand.lex.after: demain
 - brand.lex.archive: archive
 - brand.space.title: Ta marque, {project}
-- brand.space.meetings: Nos rendez-vous
-- brand.space.documents: Tes documents
 - brand.space.next: Prochain rendez-vous
 - brand.space.none: Rien pour l'instant.
+- brand.space.tab.home: Accueil
+- brand.space.tab.meetings: Rendez-vous
+- brand.space.tab.documents: Documents
+- brand.space.tab.presentations: Présentations
+- brand.space.tab.brand: Ma marque
+- brand.space.block.purpose: Raison d'être
+- brand.space.block.positioning: Positionnement
+- brand.space.block.emotion: Émotion
+- brand.space.block.tagline: Signature
+- brand.space.block.lexicon: Nos mots
 - brand.phase.contact: Prise de contact et proposition
 - brand.phase.framing: Atelier de cadrage
 - brand.phase.strategy: Recommandation stratégique

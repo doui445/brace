@@ -401,26 +401,29 @@ class SpaceDataTests(unittest.TestCase):
         self.assertEqual(data["stage"], "done")
 
 
+def panel(out, name):
+    """The HTML of one tab panel of the client space."""
+    return out.split(f'id="p-{name}"', 1)[1].split("</section>", 1)[0]
+
+
 class RenderSpaceTests(unittest.TestCase):
-    def test_space_lists_documents_by_meeting(self):
+    def test_space_lists_documents_by_phase(self):
         with tempfile.TemporaryDirectory() as d:
             root = project(d, docs=(("2026-11-05-benchmark.html", "2", "Competitive benchmark"),
-                                    ("2026-11-06-platform.html", "3", "Brand platform")))
-            out = render.render_space(root)
-            self.assertIn('href="documents/2026-11-05-benchmark.html"', out)
-            self.assertIn("Competitive benchmark", out)
-            self.assertIn("Brand platform", out)
-            self.assertIn("strategic recommendation", out.lower())
-            self.assertIn("brand platform", out.lower())
-            self.assertLess(out.index("Competitive benchmark"), out.index("Brand platform"))
+                                    ("2026-11-06-editorial-guide.html", "3", "Editorial guide")))
+            docs = panel(render.render_space(root), "documents")
+            self.assertIn('href="documents/2026-11-05-benchmark.html"', docs)
+            self.assertIn("Strategic recommendation", docs)
+            self.assertIn("Brand platform", docs)
+            self.assertLess(docs.index("Competitive benchmark"), docs.index("Editorial guide"))
 
-    def test_space_next_meeting(self):
+    def test_space_next_meeting_on_home(self):
         with tempfile.TemporaryDirectory() as d:
             root = project(d, sessions="# S\n\n## 2026-11-05 Workshop\n\n- meeting: 2026-11-06 09:00\n\n"
                                        "## 2026-11-06 Recommendation\n\n- meeting: 2099-11-07 10:00\n")
             out = render.render_space(root)
-            self.assertIn("2099-11-07 10:00", out)
-            self.assertIn("2026-11-05 Workshop", out)
+            self.assertIn("2099-11-07 10:00", panel(out, "home"))
+            self.assertIn("2026-11-05 Workshop", panel(out, "meetings"))
             self.assertIn("Your brand, tally", out)
 
     def test_space_empty_project(self):
@@ -435,7 +438,7 @@ class RenderSpaceTests(unittest.TestCase):
     def test_space_lists_presentations_not_draft(self):
         with tempfile.TemporaryDirectory() as d:
             root = project(d, decks=("2026-11-06-strategy.html", "draft.html"))
-            out = render.render_space(root)
+            out = panel(render.render_space(root), "presentations")
             self.assertIn('href="presentations/2026-11-06-strategy.html"', out)
             self.assertNotIn("draft.html", out)
 
@@ -445,6 +448,95 @@ class RenderSpaceTests(unittest.TestCase):
             out = render.render_space(root)
             self.assertIn('<html lang="fr">', out)
             self.assertIn("Ta marque, tally", out)
+
+
+class AssetsRefreshTests(unittest.TestCase):
+    def test_stale_stylesheet_is_refreshed(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "doc.css").write_text("/* old */", encoding="utf-8")
+            render.ensure_assets(d)
+            self.assertEqual((Path(d) / "doc.css").read_text(encoding="utf-8"),
+                             (ASSETS / "doc.css").read_text(encoding="utf-8"))
+
+
+class SpaceGlanceTests(unittest.TestCase):
+    def test_block_prefers_the_quote(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = {"STRATEGY.md": "## Positioning\n\nTwo axes.\n\n| a | b |\n|---|---|\n| c | d |\n\n> For people who run projects.\n\nMore text.\n"}
+            brand = panel(render.render_space(project(d, files=files)), "brand")
+            self.assertIn("For people who run projects.", brand)
+            self.assertNotIn("Two axes.", brand)
+            self.assertNotIn("<table>", brand)
+
+    def test_block_takes_a_table_before_prose(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = {"VOICE.md": "## Tagline and boilerplate\n\nThree things.\n\n| | EN |\n|---|---|\n| Tagline | Same page. |\n"}
+            brand = panel(render.render_space(project(d, files=files)), "brand")
+            self.assertIn("Same page.", brand)
+            self.assertNotIn("Three things.", brand)
+
+    def test_block_without_quote_shows_its_first_block(self):
+        with tempfile.TemporaryDirectory() as d:
+            files = {"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n\nSecond paragraph.\n"}
+            brand = panel(render.render_space(project(d, files=files)), "brand")
+            self.assertIn("Give hours back.", brand)
+            self.assertNotIn("Second paragraph.", brand)
+
+
+class SpaceTabsTests(unittest.TestCase):
+    def space(self, **kw):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+        return render.render_space(project(self._d.name, **kw))
+
+    def test_tabs_in_working_language(self):
+        out = self.space(sessions="# S\n\n- language: fr\n")
+        for label in ("Accueil", "Rendez-vous", "Documents", "Présentations"):
+            self.assertIn(f">{label}</button>", out)
+        self.assertNotIn("Ma marque", out)
+        self.assertEqual(out.count('<button role="tab"'), 4)
+
+    def test_brand_tab_appears_with_a_filled_brand_file(self):
+        out = self.space(files={"VOICE.md": "# V\n\n## Tagline and boilerplate\n\nFinally on the same page.\n"})
+        self.assertIn(">My brand</button>", out)
+        self.assertIn("Finally on the same page.", panel(out, "brand"))
+        self.assertIn("Tagline", panel(out, "brand"))
+
+    def test_empty_brand_section_shows_no_tab(self):
+        out = self.space(files={"VOICE.md": "# V\n\n## Tagline and boilerplate\n\n## Lexicon\n"})
+        self.assertNotIn(">My brand</button>", out)
+
+    def test_brand_tab_is_home_once_delivered(self):
+        out = self.space(stage="done", files={"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n"})
+        first = out.split('aria-selected="true"', 1)[0].rsplit("<button", 1)[1]
+        self.assertIn('id="tab-brand"', first)
+
+    def test_home_is_first_during_the_mission(self):
+        out = self.space(files={"FOUNDATIONS.md": "## Purpose\n\nGive hours back.\n"})
+        first = out.split('aria-selected="true"', 1)[0].rsplit("<button", 1)[1]
+        self.assertIn('id="tab-home"', first)
+
+    def test_readable_without_javascript(self):
+        out = self.space(sessions="# S\n")
+        markup = out.split("<script>", 1)[0]
+        self.assertNotIn(" hidden", markup)
+        self.assertIn("<script>", out)
+
+    def test_no_long_dash_in_output(self):
+        out = self.space(sessions="# S\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: strategy\n",
+                         docs=(("2026-11-07-minutes-2.html", "2", "Minutes", {"doc": "minutes", "phase": "strategy"}),))
+        self.assertNotIn("\u2014", out)
+
+    def test_title_uses_brand_name(self):
+        out = self.space(sessions="# S\n\n- brand: Acme\n")
+        self.assertIn("<title>Your brand, Acme</title>", out)
+
+    def test_held_meeting_links_its_minutes(self):
+        out = self.space(sessions="# S\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: strategy\n",
+                         docs=(("2026-11-07-minutes-2.html", "2", "Minutes", {"doc": "minutes", "phase": "strategy"}),))
+        meetings = panel(out, "meetings")
+        self.assertIn("Strategic recommendation", meetings)
+        self.assertIn('href="documents/2026-11-07-minutes-2.html"', meetings)
 
 
 class RenderSpaceMinorTests(unittest.TestCase):
@@ -490,10 +582,9 @@ class RenderSpaceMinorTests(unittest.TestCase):
                 "# BRAND BRIEF\n\nIntro line.\n\n## The project\n\nA small tool that logs your hours.\n\n## Who it is for\n\nFreelancers.\n",
                 encoding="utf-8")
             out = render.render_space(root)
-            self.assertIn("A small tool that logs your hours.", out)
-            meetings = out.split("Our meetings")[1].split("Your documents")[0]
-            self.assertIn('href="documents/2026-11-05-minutes-1.html"', meetings)
-            documents = out.split("Your documents")[1]
+            self.assertIn("A small tool that logs your hours.", panel(out, "home"))
+            self.assertIn('href="documents/2026-11-05-minutes-1.html"', panel(out, "meetings"))
+            documents = panel(out, "documents")
             self.assertNotIn("minutes-1", documents)
             self.assertIn("Competitive benchmark", documents)
 

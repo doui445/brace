@@ -223,10 +223,18 @@ The macOS notification sent when a brand presentation is ready.
 - brand.lex.after: tomorrow
 - brand.lex.archive: archive
 - brand.space.title: Your brand, {project}
-- brand.space.meetings: Our meetings
-- brand.space.documents: Your documents
 - brand.space.next: Next meeting
 - brand.space.none: Nothing here yet.
+- brand.space.tab.home: Home
+- brand.space.tab.meetings: Meetings
+- brand.space.tab.documents: Documents
+- brand.space.tab.presentations: Presentations
+- brand.space.tab.brand: My brand
+- brand.space.block.purpose: Purpose
+- brand.space.block.positioning: Positioning
+- brand.space.block.emotion: Core emotion
+- brand.space.block.tagline: Tagline
+- brand.space.block.lexicon: Words we use
 - brand.phase.contact: First contact and proposal
 - brand.phase.framing: Framing workshop
 - brand.phase.strategy: Strategic recommendation

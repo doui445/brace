@@ -80,12 +80,15 @@ def css_href(dst, name):
 
 
 def ensure_assets(dst_dir):
-    """Copy the house stylesheets and fonts into a folder, if missing."""
+    """Copy the house stylesheets (refreshed when the shipped ones changed)
+    and the fonts (when missing) into a folder."""
     dst_dir = Path(dst_dir)
     dst_dir.mkdir(parents=True, exist_ok=True)
     for name in ("deck.css", "doc.css"):
-        if not (dst_dir / name).exists():
-            shutil.copy2(ASSETS / name, dst_dir / name)
+        shipped = (ASSETS / name).read_bytes()
+        target = dst_dir / name
+        if not target.exists() or target.read_bytes() != shipped:
+            target.write_bytes(shipped)
     if not (dst_dir / "fonts").exists():
         shutil.copytree(ASSETS / "fonts", dst_dir / "fonts")
 
@@ -707,79 +710,128 @@ def space_data(root):
             "delivered": stage == "done"}
 
 
+# The brand at a glance, in the client space: (block title key, brand file,
+# section heading key). A later release adds its own lines (logo, palette, type).
+BRAND_BLOCKS = (
+    ("brand.space.block.purpose", "FOUNDATIONS.md", "brand.foundations.heading.purpose"),
+    ("brand.space.block.positioning", "STRATEGY.md", "brand.strategy.heading.positioning"),
+    ("brand.space.block.emotion", "FOUNDATIONS.md", "brand.foundations.heading.emotion"),
+    ("brand.space.block.tagline", "VOICE.md", "brand.voice.heading.tagline"),
+    ("brand.space.block.lexicon", "VOICE.md", "brand.voice.heading.lexicon"),
+)
+
+TABS_SCRIPT = """<script>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+    function show(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { show(t); });
+      t.addEventListener('keydown', function (e) {
+        var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (k) { var n = tabs[(i + k + tabs.length) % tabs.length]; show(n); n.focus(); }
+      });
+    });
+    document.body.classList.add('tabbed');
+    show(tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0]);
+  })();
+</script>
+"""
+
+
+def _glance(section):
+    """A section in one look: its first quote (a positioning statement), else
+    its first table (a tagline and its lines), else its first block."""
+    blocks = [b.strip("\n") for b in re.split(r"\n[ \t]*\n(?=\S)", section.strip()) if b.strip()]
+    for start in (">", "|"):
+        found = [b for b in blocks if b.lstrip().startswith(start)]
+        if found:
+            return found[0]
+    return blocks[0] if blocks else ""
+
+
+def _brand_blocks(brand, t):
+    """The brand at a glance: one (title, html) per brand block with content."""
+    out = []
+    for title_key, name, heading_key in BRAND_BLOCKS:
+        body = _section(_read(brand / name), heading_key)
+        if body:
+            out.append((t.get(title_key, ""), md_to_html(_glance(body))))
+    return out
+
+
 def render_space(root):
-    """The client space: the mission, the meetings, the documents, next meeting."""
+    """The client space: tabs for home, meetings, documents, presentations
+    and, once the platform is written, the brand at a glance."""
     root = Path(root)
-    brand = root / "docs" / "brace" / "brand"
-    status = _front(root / "docs" / "brace" / "STATUS.md")
-    lang = status.get("language", "") or "en"
-    if not re.fullmatch(r"[a-z]{2}", lang):
-        lang = "en"
-    t = catalogue(lang)
-    project = status.get("project", "") or root.name
+    data = space_data(root)
+    t = catalogue(data["lang"])
     none = f'<p class="none">{esc(t.get("brand.space.none", ""))}</p>'
 
-    text = _read(brand / "SESSIONS.md")
-    entries = re.findall(r"(?m)^## (.+?)\s*$", text)
-    lines = re.findall(r"(?m)^- meeting:(.*)$", text)
-    upcoming = ""
-    if lines:
-        try:
-            when = datetime.datetime.strptime(lines[-1].strip(), "%Y-%m-%d %H:%M")
-            upcoming = lines[-1].strip() if when > datetime.datetime.now() else ""
-        except ValueError:
-            upcoming = ""
+    home = []
+    if data["next"]:
+        home.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(data["next"])}</p>')
+    if data["mission"]:
+        home.append(f'<p class="mission">{inline(data["mission"])}</p>')
 
-    groups, minutes = {}, []
-    docs_dir = brand / "documents"
-    for path in sorted(docs_dir.glob("*.html")) if docs_dir.is_dir() else ():
-        meta, title = _doc_info(path)
-        if re.search(r"-minutes(-\d+)?$", path.stem):
-            minutes.append((path.name, title))
-            continue
-        groups.setdefault(meta.get("meeting", ""), []).append((path.name, title, meta))
-    decks = sorted(p.name for p in (brand / "presentations").glob("*.html")
-                   if p.name != "draft.html") if (brand / "presentations").is_dir() else []
+    meetings = []
+    for m in data["meetings"]:
+        when = f' <span class="by">{esc(m["held"])}</span>' if m["held"] else ""
+        link = (f' <a href="documents/{esc(m["minutes"])}">{esc(_cap(t.get("brand.lex.minutes", "")))}</a>'
+                if m["minutes"] else "")
+        meetings.append(f"<li>{inline(m['title'])}{when}{link}</li>")
+    meetings_html = ("<ul>" + "".join(meetings) + "</ul>") if meetings else ""
+    if data["loose_minutes"]:
+        meetings_html += "<ul>" + "".join(
+            f'<li><a href="documents/{esc(m["name"])}">{esc(m["title"])}</a></li>' for m in data["loose_minutes"]) + "</ul>"
 
-    parts = []
-    mission = _mission(brand / "BRIEF.md")
-    if mission:
-        parts.append(f'<p class="mission">{inline(mission)}</p>')
-    if upcoming:
-        parts.append(f'<h2>{esc(t.get("brand.space.next", ""))}</h2>\n<p class="next">{esc(upcoming)}</p>')
-    parts.append(f'<h2>{esc(t.get("brand.space.meetings", ""))}</h2>')
-    if entries:
-        parts.append("<ul>" + "".join(f"<li>{inline(e)}</li>" for e in entries) + "</ul>")
-    if minutes:
-        parts.append("<ul>" + "".join(
-            f'<li><a href="documents/{esc(n)}">{esc(ti)}</a></li>' for n, ti in minutes) + "</ul>")
-    if not entries and not minutes:
-        parts.append(none)
-    parts.append(f'<h2>{esc(t.get("brand.space.documents", ""))}</h2>')
-    if not groups and not decks:
-        parts.append(none)
-    for key in sorted(groups, key=lambda k: (not k.isdigit(), int(k) if k.isdigit() else 0)):
-        label = t.get(f"brand.lex.{MEETING_LEX.get(key, '')}", "") if key in MEETING_LEX else ""
-        if label:
-            parts.append(f"<h3>{esc(_cap(label))}</h3>")
-        items = "".join(
-            f'<li><a href="documents/{esc(name)}">{esc(title)}</a>'
-            + (f' <span class="by">{esc(meta.get("author", ""))}</span>' if meta.get("author") else "")
-            + "</li>" for name, title, meta in groups[key])
-        parts.append(f"<ul>{items}</ul>")
-    if decks:
-        parts.append("<ul>" + "".join(
-            f'<li><a href="presentations/{esc(d)}">{esc(d[:-5])}</a></li>' for d in decks) + "</ul>")
+    documents, phase = [], None
+    for d in data["documents"]:
+        if d["phase"] != phase:
+            if phase is not None:
+                documents.append("</ul>")
+            phase = d["phase"]
+            label = t.get(f"brand.phase.{phase}", "")
+            documents.append((f"<h3>{esc(label)}</h3>" if label else "") + "<ul>")
+        by = f' <span class="by">{esc(d["author"])}</span>' if d["author"] else ""
+        documents.append(f'<li><a href="documents/{esc(d["name"])}">{esc(d["title"])}</a>{by}</li>')
+    if documents:
+        documents.append("</ul>")
 
-    title = t.get("brand.space.title", "{project}").replace("{project}", project)
+    decks = "".join(f'<li><a href="presentations/{esc(x)}">{esc(x[:-5])}</a></li>' for x in data["decks"])
+    blocks = _brand_blocks(root / "docs" / "brace" / "brand", t)
+
+    panels = [("home", "\n".join(home)), ("meetings", meetings_html),
+              ("documents", "\n".join(documents)), ("presentations", f"<ul>{decks}</ul>" if decks else "")]
+    if blocks:
+        panels.append(("brand", "\n".join(
+            f'<div class="block"><h3>{esc(title)}</h3>\n{body}</div>' for title, body in blocks)))
+    selected = "brand" if blocks and data["delivered"] else "home"
+    tabs = "".join(
+        f'<button role="tab" id="tab-{name}" aria-controls="p-{name}" '
+        f'aria-selected="{"true" if name == selected else "false"}">{esc(t.get(f"brand.space.tab.{name}", name))}</button>'
+        for name, _ in panels)
+    sections = "\n".join(
+        f'<section class="panel" role="tabpanel" id="p-{name}" aria-labelledby="tab-{name}">\n'
+        f'<h2 class="panel-title">{esc(t.get(f"brand.space.tab.{name}", name))}</h2>\n{body or none}\n</section>'
+        for name, body in panels)
+
+    title = t.get("brand.space.title", "{project}").replace("{project}", data["brand"])
     return (
         "<!DOCTYPE html>\n"
-        f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
+        f'<html lang="{data["lang"]}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{esc(title)}</title>\n"
         '<link rel="stylesheet" href="doc.css">\n</head>\n<body>\n<main class="page">\n'
         f'<header class="doc-head">\n<div class="kicker">BRACE</div>\n<h1>{esc(title)}</h1>\n</header>\n'
-        '<div class="body space">\n' + "\n".join(parts) + "\n</div>\n</main>\n</body>\n</html>\n")
+        f'<nav class="tabs" role="tablist">{tabs}</nav>\n'
+        f'<div class="body space">\n{sections}\n</div>\n</main>\n{TABS_SCRIPT}</body>\n</html>\n')
 
 
 if __name__ == "__main__":
