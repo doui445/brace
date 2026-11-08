@@ -270,8 +270,9 @@ class PluginManifestTests(unittest.TestCase):
                "announcement", "before", "after", "archive")
         keys = [f"team.{a}.{f}" for a in agents for f in ("name", "role")]
         keys += [f"lex.{t}" for t in lex]
-        keys += ["sessions.meeting", "space.title", "space.meetings", "space.documents",
-                 "space.next", "space.none", "doc.by", "notify.ready"]
+        keys += ["sessions.meeting", "space.title", "space.next", "space.none", "doc.by", "notify.ready"]
+        keys += [f"space.tab.{t}" for t in ("home", "meetings", "documents", "presentations", "brand")]
+        keys += [f"phase.{p}" for p in ("contact", "framing", "strategy", "platform", "visual", "delivery")]
         for code in ("en", "fr"):
             text = (i18n / f"{code}.md").read_text(encoding="utf-8")
             for key in keys:
