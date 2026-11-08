@@ -529,6 +529,17 @@ def main(argv):
         return 1
 
 
+# The client documents and their form, as in references/documents.md
+# (a test keeps the two equal). Minutes are client documents too, kept apart.
+CLIENT_DOCS = {
+    "proposal": "read", "brief": "read", "benchmark": "read", "personas": "presented",
+    "routes": "presented", "audit": "presented", "platform": "presented",
+    "editorial-guide": "read", "manifesto": "presented", "test-plan": "read",
+    "transition": "read", "announcement": "read", "creative-brief": "read",
+}
+# The phases a mission is built from, in order ("visual" comes in a later release).
+PHASES = ("contact", "framing", "strategy", "platform", "visual", "delivery")
+
 MEETING_LEX = {"0": "contact", "1": "workshop", "2": "recommendation", "3": "platform", "4": "delivery"}
 
 

@@ -1,5 +1,6 @@
 """Tests for skills/brand/scripts/render.py.
 Run: python3 -m unittest discover -s skills/brand/scripts -p 'test_*.py'"""
+import re
 import subprocess
 import sys
 import tempfile
@@ -162,6 +163,19 @@ class DeckNoteTests(unittest.TestCase):
         css = (ASSETS / "deck.css").read_text(encoding="utf-8")
         printed = css.split("@media print", 1)[1]
         self.assertRegex(printed, r"\.note\b[^{]*\{\s*display:\s*none")
+
+
+class ClientDocsTableTests(unittest.TestCase):
+    def test_documents_md_table_matches_client_docs(self):
+        md = (HERE.parent / "references" / "documents.md").read_text(encoding="utf-8")
+        rows = re.findall(r"^\| [^|]+ \| `([a-z-]+?)(?:-<n>)?` \| [^|]+ \| `([a-z]+)` \| (presented|read) \|", md, re.M)
+        self.assertEqual({name: form for name, _, form in rows}, render.CLIENT_DOCS)
+        for _, phase, _ in rows:
+            self.assertIn(phase, render.PHASES)
+        self.assertIn("creative-brief", render.CLIENT_DOCS)
+        self.assertEqual(render.CLIENT_DOCS["platform"], "presented")
+        self.assertEqual(render.CLIENT_DOCS["editorial-guide"], "read")
+        self.assertEqual(render.PHASES, ("contact", "framing", "strategy", "platform", "visual", "delivery"))
 
 
 class RenderDocTests(unittest.TestCase):

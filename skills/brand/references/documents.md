@@ -8,21 +8,39 @@ document is there for whoever wants to dig.
 
 ## Who writes what
 
-| Document | File name | Author | Meeting |
-|---|---|---|---|
-| Proposal | `proposal` | account director (`brand`) | 0 |
-| Brief (the workshop's minutes) | `brief` | account director (`brand`) | 1 |
-| Minutes of each meeting | `minutes-<n>` | account director (`brand`) | each |
-| Competitive benchmark | `benchmark` | `analyst` | 2 |
-| Personas | `personas` | `strategist` | 2 |
-| Routes and recommendation | `routes` | `strategist` | 2 |
-| Brand platform | `platform` | `strategist` | 3 |
-| Editorial guide | `editorial-guide` | `copywriter` | 3 |
-| Manifesto | `manifesto` | `copywriter` | 3 |
-| Test plan | `test-plan` | `strategist` | 4 |
-| Brand audit (a rebrand) | `audit` | `strategist` | 2 |
-| Transition plan (a rebrand) | `transition` | `strategist` | 4 |
-| Announcement (a rebrand) | `announcement` | `copywriter` | 4 |
+| Document | File name | Author | Phase | Form |
+|---|---|---|---|---|
+| Proposal | `proposal` | account director (`brand`) | `contact` | read |
+| Brief (the workshop's minutes) | `brief` | account director (`brand`) | `framing` | read |
+| Minutes of each meeting | `minutes-<n>` | account director (`brand`) | each meeting | read |
+| Competitive benchmark | `benchmark` | `analyst` | `strategy` | read |
+| Personas | `personas` | `strategist` | `strategy` | presented |
+| Routes and recommendation | `routes` | `strategist` | `strategy` | presented |
+| Brand audit (a rebrand) | `audit` | `strategist` | `strategy` | presented |
+| Brand platform | `platform` | `strategist` | `platform` | presented |
+| Editorial guide | `editorial-guide` | `copywriter` | `platform` | read |
+| Manifesto | `manifesto` | `copywriter` | `platform` | presented |
+| Test plan | `test-plan` | `strategist` | `delivery` | read |
+| Transition plan (a rebrand) | `transition` | `strategist` | `delivery` | read |
+| Announcement (a rebrand) | `announcement` | `copywriter` | `delivery` | read |
+| Creative brief (only when the scope leaves the visual to someone else) | `creative-brief` | `strategist` | `delivery` | read |
+
+**Only these are client documents.** Everything else the team writes
+(agent reports, checks and screenings, intermediate rounds, the creative
+director's review notes, raw interview notes, a names proposal) is
+internal work: it feeds a client document or a slide, stays Markdown in
+the agents' folders, is never rendered or opened for the client, and the
+client can read it on request. An extra need (the team's first names, say)
+goes into a client document or the deck as one consolidated
+recommendation, never as a new document.
+
+**One form per document.** `presented`: its content goes into the deck of
+its meeting (the Markdown stays the source the deck is built from), never
+also rendered as a page. `read`: rendered as a vertical page, read in the
+client space. A deck presents; a read document details; never both for
+the same content. The visual identity's documents join this table in a
+later release (visual routes and the identity in place, presented; the
+brand guidelines, read).
 
 An agent writes its documents in its own folder
 (`docs/brace/agents/<agent>/<YYYY-MM-DD>-<file name>.md`); the account
@@ -42,6 +60,8 @@ title: Competitive benchmark
 author: <first name, from brand.team.<agent>.name>
 role: <role, from brand.team.<agent>.role>
 lang: <working language code>
+doc: benchmark
+phase: strategy
 meeting: 2
 date: 2026-11-05
 ---
@@ -49,6 +69,10 @@ date: 2026-11-05
 ## What we looked at
 ...
 ```
+
+`doc:` is its file name from the table (the client space lists only those,
+the latest version of each), `phase:` the phase it belongs to, `meeting:`
+the meeting's number in this mission's plan.
 
 The subset `render.py` renders: headings `#` to `###`, paragraphs, `-` and
 `1.` lists (a wrapped line joins its item; items indented by two spaces
