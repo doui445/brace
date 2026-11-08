@@ -1314,4 +1314,3 @@ Closed out the portfolio sub-pages work and cut the release:
 - The owner questioned the visual identity sitting in `brand` (1.2, decided
   2026-10-19): not reopened; the new meeting flow keeps a slot for a visual
   phase, the decision is revisited at the 1.2 spec.
-\n
