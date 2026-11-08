@@ -1314,3 +1314,24 @@ Closed out the portfolio sub-pages work and cut the release:
 - The owner questioned the visual identity sitting in `brand` (1.2, decided
   2026-10-19): not reopened; the new meeting flow keeps a slot for a visual
   phase, the decision is revisited at the 1.2 spec.
+
+## 2026-11-08 — The fix pass scoped, and the version order changed
+
+- Read the rebrand trial's transcripts: about 30 M tokens read from cache
+  on Opus (the conversation) against 10 M on Sonnet (the team); the cost
+  sits in rereading the main conversation. The 17-minute work batch was
+  mostly the write, review, fix chain (3 minutes of permission waits);
+  two name rounds took 33 and 46 minutes on 16 to 21 quick searches. The
+  agency advised against the folder rename because the strategist read
+  the rule as applying only when the brand's name changes.
+- Settled with the owner: four pieces of work (the renderer and the
+  client space, the account director writing without prompts, the
+  agency's voice and flow, a light intake of the brand work the client
+  already has), then 1.1. Version order changed: 1.2 = the brand's face
+  in `brand`, 1.3 = `design` (see `DECISIONS.md`). The scope is proposed
+  from what the client already has; the client stays in charge of it.
+- Budget in the proposal: a token range from the two real measures, with a
+  frugality commitment; the weekly quota share to measure at the next
+  trial (`/usage` before and after).
+- Spec written (local, gitignored) and checked by a builder review; the
+  plan comes next.

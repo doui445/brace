@@ -619,3 +619,28 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
   free first); offering the agency on every new project (the owner prefers
   to wait for the topic); the five-second test (thinly documented, not
   convincing).
+
+## 2026-11-08 — Finish `brand` before `design` (revises 2026-10-19)
+
+- **Context**: the owner pointed out that adding the visual to `brand`
+  means new agents, new meetings and deliverables, and new first names to
+  choose; doing it while `design` is built would reopen `brand` twice.
+  The rebrand trial also left the owner frustrated with no visual identity
+  at the end.
+- **Chosen**: 1.1 = `brand` with the trial's fix pass, which already lays
+  the frame for a visual phase; 1.2 = the brand's face in `brand` (visual
+  routes, logo, palette, type, `art-director`, `designer`); 1.3 =
+  `design`, which reads a complete brand identity and reuses what `brand`
+  1.2 builds (design-skill delegation, visual tests). The visual still
+  belongs to `brand` (2026-10-19 unchanged on that point).
+- **Chosen**: the scope of a mission is proposed from what the client
+  already has, never offered as a menu: everything when nothing exists,
+  the visual only on a solid strategy, the missing parts named on an
+  incomplete one, and only what the client asks for when they want just
+  one part (with a creative brief for whoever does the rest). The client
+  decides the scope; the agency runs the process.
+- **Rejected**: shipping the visual with `design` (the 2026-10-19 reason,
+  shared tooling, is built in `brand` first and reused); holding 1.1 until
+  the visual is done (a very long branch, the substance is ready); a
+  "strategy only / strategy and identity" choice in every proposal
+  (agencies scope from the existing brand, not from a menu).

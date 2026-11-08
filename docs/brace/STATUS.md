@@ -69,8 +69,11 @@ for 2027-05-10.
 1. **Fix pass from the rebrand trial feedback** (2026-11-06 to 11-08, owner's
    notes collected live; full list in the local, gitignored
    `docs/superpowers/research/2026-11-06-rebrand-trial-feedback.md`): spec
-   then plan. Acceptance test for every console line: "would the account
-   director really say this?". Main points: the agency takes charge of the
+   written 2026-11-08 (local, `2026-11-08-brand-trial-2-fixes-design.md`),
+   plan next. It also lays the frame for the 1.2 visual phase and a light
+   intake of the client's existing brand work (the scope follows it).
+   Acceptance test for every console line: "would the account director
+   really say this?". Main points: the agency takes charge of the
    process and the client decides only on the brand; questions anticipated
    in one batch before the team works; a meeting only to present (5 parts:
    welcome, presentation in the browser, discussion, recap and next
@@ -82,11 +85,11 @@ for 2027-05-10.
    items, `---`, space language and name); the account director may write
    without a prompt (auto mode refused writes); token frugality as a design
    rule. Also: measure the tokens and the 17-minute work batch from the
-   session ids, and why the agency advised against the folder rename.
+   session ids (done 2026-11-08, see `JOURNAL.md`).
 2. **Merge and release 1.1.0**, with the 1.1 riders if they fit (keep the
    Antigravity copy up to date, tidy a bloated `AGENTS.md`, both in
-   `BACKLOG.md`). 1.2 brings the brand's face (logo, palette, type) in
-   `brand` plus `brace:design` (see `DECISIONS.md`).
+   `BACKLOG.md`). Then 1.2 = the brand's face in `brand` (two new agents),
+   1.3 = `brace:design` (order changed 2026-11-08, see `DECISIONS.md`).
 3. **BRACE's own brand** (delivered 2026-11-08, review 2027-05-10): at
    the 1.1 release, set the GitHub description and topics (owner's yes)
    and publish the announcement; the test with real people stays ready
