@@ -127,6 +127,12 @@ printf '# S\r\n\r\n- meeting: %s\r\n' "$(when 1)" > "$M/docs/brace/brand/SESSION
 has "$(run "$M" claude clear)" "came back early" "SESSIONS.md with CRLF line ends -> meeting still read"
 printf '# S\n\n- meeting: %s\n\n- meeting: next thursday\n' "$(when 2)" > "$M/docs/brace/brand/SESSIONS.md"
 hasnt "$(run "$M" claude clear)" "came back early" "newest meeting line malformed -> no older meeting used"
+printf '# S\n\n- meeting: %s\n\n## Meeting\n\n- held: %s\n- phase: strategy\n' "$(when 1)" "$(when 0)" > "$M/docs/brace/brand/SESSIONS.md"
+OUT="$(run "$M" claude clear)"
+hasnt "$OUT" "came back early" "meeting already started (held after it) -> no early-arrival sentence"
+has "$OUT" "in progress" "meeting already started -> still resumes"
+printf '# S\n\n- held: %s\n- meeting: %s\n' "$(when -2)" "$(when 1)" > "$M/docs/brace/brand/SESSIONS.md"
+has "$(run "$M" claude clear)" "came back early" "next meeting set after the last held one -> early-arrival sentence"
 proj "$M" "brand_stage: presentation
 "
 printf '# S\n\n## 2026-10-01 Mission\n\n- mission: new\n\n## 2026-11-05 Rebrand\n\n- mission: rebrand\r\n' > "$M/docs/brace/brand/SESSIONS.md"

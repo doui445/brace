@@ -50,10 +50,11 @@ case "$STAGE" in
   *[!a-z_-]*) exit 0 ;;
   *)
     LINE="[BRACE] A brand mission is in progress (stage $STAGE). In your first reply, resume the agency (invoke the $SKILL skill): greet the client, say where we are and what the team did."
-    # The newest "- meeting:" line, whatever its form; kept only when well formed.
-    MEETING="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | grep '^- meeting:' | tail -1 | sed -n 's/^- meeting: \([0-9]\{4\}-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]\)[[:blank:]]*$/\1/p')"
+    # The newest "- meeting:" line, whatever its form; kept only when well
+    # formed, and only when no "- held:" line follows it (that meeting started).
+    MEETING="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | grep -E '^- (meeting|held):' | tail -1 | sed -n 's/^- meeting: \([0-9]\{4\}-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]\)[[:blank:]]*$/\1/p')"
     if [ -n "$MEETING" ] && python3 -c 'import sys,datetime; sys.exit(0 if datetime.datetime.strptime(sys.argv[1], "%Y-%m-%d %H:%M") > datetime.datetime.now() else 1)' "$MEETING" 2>/dev/null; then
-      LINE="$LINE The next meeting is $MEETING; the client came back early: ask whether to move on now, ask a question, or change something from the last meeting."
+      LINE="$LINE The next meeting is $MEETING; the client came back early: ask them, the way a person would, what brings them (they may have news), never as a menu of options."
     fi
     # The last "- mission:" line says what kind of mission this is.
     MISSION="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | sed -n 's/^- mission:[[:blank:]]*\([a-z]*\)[[:blank:]]*$/\1/p' | tail -1)"

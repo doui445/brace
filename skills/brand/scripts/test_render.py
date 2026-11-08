@@ -242,19 +242,25 @@ class RenderDocTests(unittest.TestCase):
             self.assertEqual(run("doc", str(src), str(Path(d) / "o.html")).returncode, 1)
 
 
-def project(d, sessions=None, docs=(), decks=(), lang="en"):
+def project(d, sessions=None, docs=(), decks=(), lang="en", stage="adjustments", files=None):
+    """A tracked project with a brand folder. docs: (file name, meeting, title)
+    or (file name, meeting, title, {extra front matter}); files: brand file
+    name -> text (BRIEF.md, FOUNDATIONS.md...)."""
     root = Path(d) / "proj"
     brand = root / "docs" / "brace" / "brand"
     (brand / "documents").mkdir(parents=True)
     (brand / "presentations").mkdir()
     (root / "docs" / "brace" / "STATUS.md").write_text(
-        f"---\nproject: tally\nlanguage: {lang}\nbrand_stage: adjustments\n---\n", encoding="utf-8")
+        f"---\nproject: tally\nlanguage: {lang}\nbrand_stage: {stage}\n---\n", encoding="utf-8")
     if sessions is not None:
         (brand / "SESSIONS.md").write_text(sessions, encoding="utf-8")
-    for name, meeting, title in docs:
-        (brand / "documents" / name).write_text(render.render_doc(doc("Text.", meeting=meeting, title=title)), encoding="utf-8")
+    for name, meeting, title, *extra in docs:
+        fm = dict(meeting=meeting, title=title, **(extra[0] if extra else {}))
+        (brand / "documents" / name).write_text(render.render_doc(doc("Text.", **fm)), encoding="utf-8")
     for name in decks:
         (brand / "presentations" / name).write_text("<html></html>", encoding="utf-8")
+    for name, text in (files or {}).items():
+        (brand / name).write_text(text, encoding="utf-8")
     return root
 
 
@@ -283,6 +289,116 @@ class MarkdownEdgeTests(unittest.TestCase):
         self.assertIn('href="http://a.com/**b**/c"', out)
         self.assertIn('href="https://e.com/a_*b*_c"', out)
         self.assertIn("<strong>t</strong>", render.inline("[**t**](x.html)"))
+
+
+class SpaceDataTests(unittest.TestCase):
+    def data(self, **kw):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+        self.root = project(self._d.name, **kw)
+        return render.space_data(self.root)
+
+    def test_language_from_sessions_over_status(self):
+        self.assertEqual(self.data(sessions="# S\n\n- language: fr\n")["lang"], "fr")
+
+    def test_language_falls_back_to_status(self):
+        self.assertEqual(self.data(sessions="# S\n", lang="fr")["lang"], "fr")
+
+    def test_brand_name_from_sessions(self):
+        self.assertEqual(self.data(sessions="# S\n\n- brand: Acme\n- brand: Zest\n")["brand"], "Zest")
+
+    def test_brand_name_falls_back_to_project(self):
+        self.assertEqual(self.data(sessions="# S\n")["brand"], "tally")
+
+    def test_mission_is_first_paragraph_of_project_section(self):
+        brief = ("# BRIEF\n\nIntro.\n\n## The project\n\n- **Why now**: x\n  and more\n\n"
+                 "A small tool that\nlogs hours.\n\n## Who it is for\n\nFreelancers.\n")
+        self.assertEqual(self.data(files={"BRIEF.md": brief})["mission"], "A small tool that logs hours.")
+
+    def test_mission_in_a_french_brief(self):
+        brief = "# BRIEF\n\n## Le projet\n\nUn petit outil.\n"
+        self.assertEqual(self.data(files={"BRIEF.md": brief})["mission"], "Un petit outil.")
+
+    def test_mission_from_foundations_after_delivery(self):
+        files = {"BRIEF.md": "## The project\n\nOld line.\n",
+                 "FOUNDATIONS.md": "# F\n\n## Purpose\n\nGive everyone their hours back.\n"}
+        self.assertEqual(self.data(stage="done", files=files)["mission"], "Give everyone their hours back.")
+
+    def test_meetings_are_held_entries_named_by_phase(self):
+        sessions = ("# S\n\n## 2026-11-06 Our team's work\n\nDone.\n\n"
+                    "## 2026-11-07 Anything\n\n- held: 2026-11-07 14:00\n- phase: strategy\n")
+        meetings = self.data(sessions=sessions)["meetings"]
+        self.assertEqual(len(meetings), 1)
+        self.assertEqual(meetings[0]["title"], "Strategic recommendation")
+        self.assertEqual(meetings[0]["held"], "2026-11-07 14:00")
+        self.assertEqual(meetings[0]["phase"], "strategy")
+
+    def test_meeting_titles_in_french(self):
+        sessions = "# S\n\n- language: fr\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: platform\n"
+        self.assertEqual(self.data(sessions=sessions)["meetings"][0]["title"], "Plateforme de marque")
+
+    def test_minutes_sit_next_to_their_meeting(self):
+        sessions = "# S\n\n## 2026-11-07 x\n\n- held: 2026-11-07 14:00\n- phase: strategy\n"
+        docs = (("2026-11-07-minutes-2.html", "2", "Minutes", {"doc": "minutes", "phase": "strategy"}),)
+        data = self.data(sessions=sessions, docs=docs)
+        self.assertEqual(data["meetings"][0]["minutes"], "2026-11-07-minutes-2.html")
+        self.assertEqual(data["documents"], [])
+
+    def test_meeting_before_held_is_not_next(self):
+        sessions = "# S\n\n- meeting: 2099-01-01 10:00\n\n## 2099-01-01 x\n\n- held: 2099-01-01 10:05\n- phase: strategy\n"
+        self.assertEqual(self.data(sessions=sessions)["next"], "")
+
+    def test_future_meeting_after_held_is_next(self):
+        sessions = "# S\n\n## 2026-01-01 x\n\n- held: 2026-01-01 10:05\n- phase: strategy\n- meeting: 2099-01-02 10:00\n"
+        self.assertEqual(self.data(sessions=sessions)["next"], "2099-01-02 10:00")
+
+    def test_only_client_documents_latest_version(self):
+        docs = (("2026-11-06-names-check.html", "2", "Names"),
+                ("2026-11-07-names-check-2.html", "2", "Names 2"),
+                ("2026-11-06-benchmark.html", "2", "Benchmark old"),
+                ("2026-11-07-benchmark.html", "2", "Benchmark new"),
+                ("2026-11-06-minutes-1.html", "1", "Minutes 1"),
+                ("2026-11-07-minutes-2.html", "2", "Minutes 2"))
+        documents = self.data(sessions="# S\n", docs=docs)["documents"]
+        self.assertEqual([(d["name"], d["title"]) for d in documents], [("2026-11-07-benchmark.html", "Benchmark new")])
+        self.assertEqual(documents[0]["phase"], "strategy")
+        self.assertEqual(documents[0]["form"], "read")
+
+    def test_doc_meta_wins_over_the_file_name(self):
+        docs = (("2026-11-07-anything.html", "2", "Guide", {"doc": "editorial-guide", "phase": "platform"}),)
+        documents = self.data(sessions="# S\n", docs=docs)["documents"]
+        self.assertEqual(documents[0]["phase"], "platform")
+
+    def test_legacy_mission_without_new_lines(self):
+        sessions = ("# S\n\n## 2026-11-06 First contact\n\n- meeting: 2026-11-06 18:00\n\n"
+                    "## 2026-11-07 Meeting 2: the recommendation\n\nText.\n")
+        docs = (("2026-11-06-proposal.html", "0", "Proposal"),
+                ("2026-11-07-routes.html", "2", "Routes"),
+                ("2026-11-06-minutes-1.html", "1", "Minutes 1"),
+                ("2026-11-07-team-names-3.html", "2", "Names"))
+        data = self.data(sessions=sessions, docs=docs)
+        self.assertEqual([m["title"] for m in data["meetings"]],
+                         ["2026-11-06 First contact", "2026-11-07 Meeting 2: the recommendation"])
+        self.assertEqual([(d["name"], d["phase"]) for d in data["documents"]],
+                         [("2026-11-06-proposal.html", "contact"), ("2026-11-07-routes.html", "strategy")])
+
+    def test_legacy_language_from_the_documents(self):
+        docs = (("2026-11-07-benchmark.html", "2", "Analyse", {"lang": "fr"}),)
+        self.assertEqual(self.data(sessions="# S\n", docs=docs)["lang"], "fr")
+
+    def test_legacy_brand_name_from_the_brief_title(self):
+        files = {"BRIEF.md": "# BRAND BRIEF \u2014 Acme\n\n## The project\n\nA tool.\n"}
+        self.assertEqual(self.data(sessions="# S\n", files=files)["brand"], "Acme")
+
+    def test_mission_skips_an_indented_list_continuation(self):
+        files = {"FOUNDATIONS.md": "## Purpose\n\n- **Why**: x\n\n  Still the list.\n",
+                 "BRIEF.md": "## The project\n\nA small tool.\n"}
+        self.assertEqual(self.data(stage="done", files=files)["mission"], "A small tool.")
+
+    def test_delivered_flag_and_stage(self):
+        data = self.data(stage="done")
+        self.assertTrue(data["delivered"])
+        self.assertEqual(data["stage"], "done")
 
 
 class RenderSpaceTests(unittest.TestCase):

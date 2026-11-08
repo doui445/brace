@@ -227,6 +227,12 @@ The macOS notification sent when a brand presentation is ready.
 - brand.space.documents: Your documents
 - brand.space.next: Next meeting
 - brand.space.none: Nothing here yet.
+- brand.phase.contact: First contact and proposal
+- brand.phase.framing: Framing workshop
+- brand.phase.strategy: Strategic recommendation
+- brand.phase.platform: Brand platform
+- brand.phase.visual: Visual identity
+- brand.phase.delivery: Delivery
 - brand.doc.by: {name}, {role}
 - brand.notify.title: BRACE
 - brand.notify.ready: The agency's work is ready.

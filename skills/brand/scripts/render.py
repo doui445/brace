@@ -578,6 +578,135 @@ def _cap(text):
     return text[:1].upper() + text[1:]
 
 
+MEETING_PHASE = {"0": "contact", "1": "framing", "2": "strategy", "3": "platform", "4": "delivery"}
+
+
+def _last(text, key):
+    """The value of the last "- <key>: " line of SESSIONS.md, or ""."""
+    found = re.findall(rf"(?m)^- {re.escape(key)}:[ \t]*(.*?)\s*$", text)
+    return found[-1] if found else ""
+
+
+def _section(text, key):
+    """The body under the "## " heading named by catalogue key `key`, in
+    English or French, up to the next "## " heading; "" when absent."""
+    names = {catalogue(c).get(key, "").strip().lower() for c in ("en", "fr")} - {""}
+    body, inside = [], False
+    for line in text.replace("\r\n", "\n").split("\n"):
+        if line.startswith("## "):
+            if inside:
+                break
+            inside = line[3:].strip().lower() in names
+            continue
+        if inside:
+            body.append(line)
+    return "\n".join(body).strip()
+
+
+def _first_paragraph(text):
+    """The first plain paragraph of a section (never a list, table, quote or heading)."""
+    for block in re.split(r"\n[ \t]*\n", text):
+        raw = [x for x in block.split("\n") if x.strip()]
+        lines = [x.strip() for x in raw]
+        # An indented block is the continuation of a list item, not a paragraph.
+        if lines and not raw[0][:1].isspace() and not (_marker(lines[0]) or re.match(r"(#|>|\|)", lines[0])):
+            return " ".join(lines)
+    return ""
+
+
+def _doc_kind(path, meta):
+    """(document type, date, version) of a rendered document."""
+    m = re.match(r"(\d{4}-\d{2}-\d{2})-(.+)$", path.stem)
+    date, rest = (m.group(1), m.group(2)) if m else ("", path.stem)
+    if re.fullmatch(r"minutes(-\d+)?", rest):
+        return "minutes", date, 0
+    v = re.fullmatch(r"(.+?)-(\d+)", rest)
+    kind, version = (v.group(1), int(v.group(2))) if v else (rest, 1)
+    return meta.get("doc") or kind, date, version
+
+
+def space_data(root):
+    """What the client space shows, read from the project's files."""
+    root = Path(root)
+    brand = root / "docs" / "brace" / "brand"
+    status = _front(root / "docs" / "brace" / "STATUS.md")
+    sessions = _read(brand / "SESSIONS.md")
+    lang = _last(sessions, "language")
+    docs_dir = brand / "documents"
+    if not re.fullmatch(r"[a-z]{2}", lang):
+        # A mission from before the "- language:" line: its documents say it.
+        for path in sorted(docs_dir.glob("*.html"), reverse=True) if docs_dir.is_dir() else ():
+            m = re.search(r'<html lang="([a-z]{2})"', _read(path))
+            if m:
+                lang = m.group(1)
+                break
+    if not re.fullmatch(r"[a-z]{2}", lang):
+        lang = status.get("language", "")
+    if not re.fullmatch(r"[a-z]{2}", lang):
+        lang = "en"
+    t = catalogue(lang)
+    stage = status.get("brand_stage", "")
+    # Before the "- brand:" line, the brief's title carries the brand's name.
+    titled = re.search(r"(?m)^# .+? \u2014 (.+?)\s*$", _read(brand / "BRIEF.md"))
+    name = _last(sessions, "brand") or (titled.group(1) if titled else "") or status.get("project", "") or root.name
+
+    mission = ""
+    if stage == "done":
+        mission = _first_paragraph(_section(_read(brand / "FOUNDATIONS.md"), "brand.foundations.heading.purpose"))
+    if not mission:
+        mission = _first_paragraph(_section(_read(brand / "BRIEF.md"), "brand.brief.heading.project"))
+
+    # Documents: client documents only, the latest version of each type.
+    latest, minutes = {}, []
+    for path in sorted(docs_dir.glob("*.html")) if docs_dir.is_dir() else ():
+        meta, title = _doc_info(path)
+        kind, date, version = _doc_kind(path, meta)
+        phase = meta.get("phase") or MEETING_PHASE.get(meta.get("meeting", ""), "")
+        item = {"name": path.name, "title": title, "author": meta.get("author", ""), "phase": phase,
+                "form": CLIENT_DOCS.get(kind, "read"), "date": date}
+        if kind == "minutes":
+            minutes.append(item)
+        elif kind in CLIENT_DOCS and (kind not in latest or (date, version) >= latest[kind][0]):
+            latest[kind] = ((date, version), item)
+    documents = sorted((x for _, x in latest.values()),
+                       key=lambda d: (PHASES.index(d["phase"]) if d["phase"] in PHASES else len(PHASES), d["date"], d["name"]))
+
+    # Meetings: the entries marked held, named by their phase; an older
+    # mission (no held line anywhere) lists every entry as it was.
+    entries = re.split(r"(?m)^## ", sessions)[1:]
+    held = [e for e in entries if re.search(r"(?m)^- held:", e)]
+    meetings = []
+    if held:
+        for e in held:
+            phase = _last(e, "phase")
+            heading = e.split("\n", 1)[0].strip()
+            title = t.get(f"brand.phase.{phase}", "") or re.sub(r"^\d{4}-\d{2}-\d{2}\s*", "", heading)
+            linked = [m for m in minutes if m["phase"] == phase]
+            meetings.append({"title": title, "phase": phase, "held": _last(e, "held"),
+                             "minutes": linked[-1]["name"] if linked else ""})
+        loose = []
+    else:
+        meetings = [{"title": e.split("\n", 1)[0].strip(), "phase": "", "held": "", "minutes": ""} for e in entries]
+        loose = minutes
+
+    nxt = ""
+    when = _last(sessions, "meeting")
+    last_held = re.findall(r"(?m)^- held:[ \t]*(.*?)\s*$", sessions)
+    try:
+        at = datetime.datetime.strptime(when, "%Y-%m-%d %H:%M")
+        done = datetime.datetime.strptime(last_held[-1], "%Y-%m-%d %H:%M") if last_held else None
+        if at > datetime.datetime.now() and (done is None or at > done):
+            nxt = when
+    except ValueError:
+        nxt = ""
+
+    decks = sorted(p.name for p in (brand / "presentations").glob("*.html")
+                   if p.name != "draft.html") if (brand / "presentations").is_dir() else []
+    return {"lang": lang, "brand": name, "mission": mission, "next": nxt, "meetings": meetings,
+            "loose_minutes": loose, "documents": documents, "decks": decks, "stage": stage,
+            "delivered": stage == "done"}
+
+
 def render_space(root):
     """The client space: the mission, the meetings, the documents, next meeting."""
     root = Path(root)
