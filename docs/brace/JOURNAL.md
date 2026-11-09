@@ -1381,3 +1381,14 @@ Closed out the portfolio sub-pages work and cut the release:
   each needs its own small spec. BRACE's own mission keeps its documents
   signed with the team's former first names, as its archive.
 - Released 1.1.0: `feat/brand` merged into `main`.
+
+## 2026-11-09 — 1.1.0 published
+
+- `main` and the `v1.1.0` tag pushed; the repo's GitHub description and
+  topics now carry the new positioning.
+- The copywriter's announcement, brought up to the 1.1.0 that shipped
+  (the client space, the real meeting flow, the update commands), is the
+  GitHub release; a short "New in 1.1" paragraph sits under the README's
+  opening.
+- BRACE has no social account yet: the announcement's short post waits,
+  noted in the backlog to discuss later.
