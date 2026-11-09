@@ -17,6 +17,11 @@ It asks. It writes it down. You decide.
 
 Formerly project-tracker.
 
+**New in 1.1.** `brace:brand` writes your project's voice and strategy in plain
+files you can read, after meetings where you validate each document, and keeps
+everything it delivers in a client space you open in your browser. Everything
+else stays: tracking, decisions written down, all your projects on one page.
+
 ## Quick start
 
 **Claude Code**

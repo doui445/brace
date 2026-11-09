@@ -32,6 +32,13 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   the voice drift hook). How documents come in and are marked as
   "provided", to design first.
 
+- [ ] **BRACE on social networks** (S, ⭐⭐) — surfaced 2026-11-09 at the
+  1.1.0 release. BRACE has no social account yet, so the short social post
+  in the rebrand announcement
+  (`docs/brace/agents/copywriter/2026-11-07-announcement.md`) waits. To
+  discuss later: which networks, under what name, who posts, and whether
+  `brand` should one day help a client open theirs.
+
 - [ ] **BRACE in the Claude plugin directory** (S, ⭐⭐⭐) — surfaced
   2026-11-08. Community listing after a basic automated review, "Anthropic
   Verified" after a further quality and safety review (no guarantee).
