@@ -648,6 +648,19 @@ def _doc_kind(path, meta):
     return meta.get("doc") or kind, date, version
 
 
+# A 1.2 mission sorts its documents and decks by meeting: documents/05-creation/...
+# The numbers are fixed, a skipped meeting leaves its number unused.
+MEETING_FOLDERS = {"contact": "01", "framing": "02", "strategy": "03", "naming": "04",
+                   "creation": "05", "refinement": "06", "delivery": "07"}
+
+
+def meeting_folder(phase):
+    """The folder of a 1.2 meeting, "05-creation"."""
+    if phase not in MEETING_FOLDERS:
+        raise RenderError(f"no meeting folder for phase {phase!r}")
+    return f"{MEETING_FOLDERS[phase]}-{phase}"
+
+
 def _form(kind, phase, meta):
     """How a document is shown. Its own "form" meta wins; a 1.1 platform
     (phase "platform") was presented, the 1.2 one is read."""
@@ -668,7 +681,7 @@ def space_data(root):
     docs_dir = brand / "documents"
     if not re.fullmatch(r"[a-z]{2}", lang):
         # A mission from before the "- language:" line: its documents say it.
-        for path in sorted(docs_dir.glob("*.html"), reverse=True) if docs_dir.is_dir() else ():
+        for path in sorted(docs_dir.rglob("*.html"), reverse=True) if docs_dir.is_dir() else ():
             m = re.search(r'<html lang="([a-z]{2})"', _read(path))
             if m:
                 lang = m.group(1)
@@ -692,11 +705,11 @@ def space_data(root):
 
     # Documents: client documents only, the latest version of each type.
     latest, minutes = {}, []
-    for path in sorted(docs_dir.glob("*.html")) if docs_dir.is_dir() else ():
+    for path in sorted(docs_dir.rglob("*.html")) if docs_dir.is_dir() else ():
         meta, title = _doc_info(path)
         kind, date, version = _doc_kind(path, meta)
         phase = meta.get("phase") or MEETING_PHASE.get(meta.get("meeting", ""), "")
-        item = {"name": path.name, "title": title, "author": meta.get("author", ""), "phase": phase,
+        item = {"name": path.name, "path": path.relative_to(docs_dir).as_posix(), "title": title, "author": meta.get("author", ""), "phase": phase,
                 "form": _form(kind, phase, meta), "date": date}
         if kind == "minutes":
             minutes.append(item)
@@ -727,7 +740,7 @@ def space_data(root):
         mine = next((m for m in unused if m["phase"] == phase and m["date"] >= when[:10]), None)
         if mine:
             unused.remove(mine)
-        meetings.append({"title": title, "phase": phase, "held": when, "minutes": mine["name"] if mine else ""})
+        meetings.append({"title": title, "phase": phase, "held": when, "minutes": mine["path"] if mine else ""})
     loose = unused
 
     nxt = ""
@@ -744,8 +757,9 @@ def space_data(root):
     # What we need from the client: the "- ask:" lines of the latest entry.
     asks = [] if stage == "done" or not entries else re.findall(r"(?m)^- ask:[ \t]*(.+?)\s*$", entries[-1])
 
-    decks = sorted(p.name for p in (brand / "presentations").glob("*.html")
-                   if p.name != "draft.html") if (brand / "presentations").is_dir() else []
+    deck_dir = brand / "presentations"
+    decks = sorted(p.relative_to(deck_dir).as_posix() for p in deck_dir.rglob("*.html")
+                   if p.name != "draft.html") if deck_dir.is_dir() else []
     return {"lang": lang, "brand": name, "mission": mission, "next": nxt, "meetings": meetings,
             "loose_minutes": loose, "asks": asks, "documents": documents, "decks": decks, "stage": stage,
             "delivered": stage == "done"}
@@ -869,7 +883,7 @@ def render_space(root):
     meetings_html = ("<ul>" + "".join(meetings) + "</ul>") if meetings else ""
     if data["loose_minutes"]:
         meetings_html += "<ul>" + "".join(
-            f'<li><a href="documents/{esc(m["name"])}">{esc(m["title"])}</a></li>' for m in data["loose_minutes"]) + "</ul>"
+            f'<li><a href="documents/{esc(m["path"])}">{esc(m["title"])}</a></li>' for m in data["loose_minutes"]) + "</ul>"
 
     documents, phase = [], None
     for d in data["documents"]:
@@ -880,7 +894,7 @@ def render_space(root):
             label = t.get(f"brand.phase.{phase}", "")
             documents.append((f"<h3>{esc(label)}</h3>" if label else "") + "<ul>")
         by = f' <span class="by">{esc(d["author"])}</span>' if d["author"] else ""
-        documents.append(f'<li><a href="documents/{esc(d["name"])}">{esc(d["title"])}</a>{by}</li>')
+        documents.append(f'<li><a href="documents/{esc(d["path"])}">{esc(d["title"])}</a>{by}</li>')
     if documents:
         documents.append("</ul>")
 

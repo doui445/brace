@@ -266,8 +266,10 @@ def project(d, sessions=None, docs=(), decks=(), lang="en", stage="adjustments",
         (brand / "SESSIONS.md").write_text(sessions, encoding="utf-8")
     for name, meeting, title, *extra in docs:
         fm = dict(meeting=meeting, title=title, **(extra[0] if extra else {}))
+        (brand / "documents" / name).parent.mkdir(parents=True, exist_ok=True)
         (brand / "documents" / name).write_text(render.render_doc(doc("Text.", **fm)), encoding="utf-8")
     for name in decks:
+        (brand / "presentations" / name).parent.mkdir(parents=True, exist_ok=True)
         (brand / "presentations" / name).write_text("<html></html>", encoding="utf-8")
     for name, text in (files or {}).items():
         (brand / name).write_text(text, encoding="utf-8")
@@ -375,6 +377,31 @@ class SpaceDataTests(unittest.TestCase):
                          [("2026-11-07-benchmark.html", "Benchmark new"), ("2026-11-07-names-check-2.html", "Names 2")])
         self.assertEqual(documents[0]["phase"], "strategy")
         self.assertEqual(documents[0]["form"], "read")
+
+    def test_meeting_folder(self):
+        self.assertEqual(render.meeting_folder("creation"), "05-creation")
+        self.assertEqual(render.meeting_folder("contact"), "01-contact")
+        with self.assertRaises(render.RenderError):
+            render.meeting_folder("platform")
+
+    def test_space_reads_meeting_folders(self):
+        docs = (("05-creation/2026-03-01-routes.html", "4", "Routes", {"phase": "creation"}),)
+        documents = self.data(sessions="# S\n", docs=docs)["documents"]
+        self.assertEqual([(d["name"], d["path"]) for d in documents],
+                         [("2026-03-01-routes.html", "05-creation/2026-03-01-routes.html")])
+
+    def test_space_reads_deck_folders(self):
+        data = self.data(sessions="# S\n", decks=("05-creation/2026-03-01-creation.html", "05-creation/draft.html"))
+        self.assertEqual(data["decks"], ["05-creation/2026-03-01-creation.html"])
+
+    def test_legacy_flat_documents_still_listed(self):
+        # Review Focus 1: a 1.1 mission, flat folder, plan with platform.
+        sessions = "# S\n\n## 2026-01-01 x\n\n- plan: contact, framing, strategy, platform, delivery\n"
+        docs = (("2026-01-02-brief.html", "1", "Brief", {"phase": "framing"}),
+                ("2026-01-05-platform.html", "3", "Platform", {"phase": "platform"}))
+        documents = self.data(sessions=sessions, docs=docs)["documents"]
+        self.assertEqual([(d["path"], d["form"]) for d in documents],
+                         [("2026-01-02-brief.html", "read"), ("2026-01-05-platform.html", "presented")])
 
     def test_legacy_platform_stays_presented(self):
         # Review Focus 1: a 1.1 platform document (phase platform) keeps its form.
@@ -497,6 +524,14 @@ class RenderSpaceTests(unittest.TestCase):
             out = (root / "docs" / "brace" / "brand" / "index.html").read_text(encoding="utf-8")
             self.assertIn("Nothing here yet.", out)
             self.assertTrue((root / "docs" / "brace" / "brand" / "doc.css").is_file())
+
+    def test_space_links_meeting_folders(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = project(d, docs=(("05-creation/2026-03-01-routes.html", "4", "Routes", {"phase": "creation"}),),
+                           decks=("05-creation/2026-03-01-creation.html",))
+            out = render.render_space(root)
+            self.assertIn('href="documents/05-creation/2026-03-01-routes.html"', panel(out, "documents"))
+            self.assertIn('href="presentations/05-creation/2026-03-01-creation.html"', panel(out, "presentations"))
 
     def test_space_lists_presentations_not_draft(self):
         with tempfile.TemporaryDirectory() as d:
