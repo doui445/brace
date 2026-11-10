@@ -1392,3 +1392,19 @@ Closed out the portfolio sub-pages work and cut the release:
   opening.
 - BRACE has no social account yet: the announcement's short post waits,
   noted in the backlog to discuss later.
+
+## 2026-11-10 — 1.2 designed: the brand's face
+
+- Design discussion for 1.2 (spec kept local, gitignored). The visual is not
+  a sequel: one agency, one mission, realigned on how real agencies work
+  (checked on the web and in owner-supplied videos): framing, strategy,
+  name when needed, creation, refinement when visual, delivery; the
+  platform is written and validated at the end of the strategy meeting.
+- Two new agents (`art-director`, `designer`), first names chosen at the
+  first trial. The agency runs on the client's machine, so it works with
+  the client's own design tools, per need: we drive them, the client does
+  and we direct, or everything in code; each host tool (Claude Code,
+  Antigravity) offers only what it supports, nothing blocks.
+- Every agency document realigned on agency practice, sorted by meeting;
+  new: creative and refinement decks, brand guidelines, a one-page brand
+  board, `VISUAL.md`. First trial: BRACE's own full mission on 1.2.

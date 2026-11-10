@@ -39,6 +39,16 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   discuss later: which networks, under what name, who posts, and whether
   `brand` should one day help a client open theirs.
 
+- [ ] **Several agents per trade, working routes in parallel** (?, ⭐⭐) —
+  surfaced 2026-11-09 during the 1.2 design. A question to weigh: one
+  `copywriter` or `art-director` per route, run in parallel, instead of
+  one agent doing every route in turn. Weigh speed and route diversity
+  against tokens.
+
+- [ ] **Lighten the files before `brace:design` (1.3)** (M, ⭐⭐) — surfaced
+  2026-11-09. Before the design work, trim the README and the other heavy
+  files where possible.
+
 - [ ] **BRACE in the Claude plugin directory** (S, ⭐⭐⭐) — surfaced
   2026-11-08. Community listing after a basic automated review, "Anthropic
   Verified" after a further quality and safety review (no guarantee).
