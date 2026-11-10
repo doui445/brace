@@ -687,3 +687,19 @@ rationale for the pre-2026-08-30 entries lives in the local (gitignored)
 - **Rejected**: keeping the main conversation under the user's settings
   only (the trial's failure stays); widening to the whole `docs/brace/`
   (the tracking files are the user's, under `track`'s rules).
+
+## 2026-11-10 — The look joins the brand mission, on the client's own tools
+
+- **Context**: 1.2 had to give `brace:brand` the brand's face. Checked
+  against real agency practice (web research and videos supplied by the
+  owner).
+- **Chosen**: one agency, one mission, from the substance to the form:
+  framing, strategy (platform validated on the spot), name when needed,
+  creative routes (words and look together), refinement, delivery. The
+  agency runs on the client's machine, so it uses the client's design
+  tools per need (we drive, the client does and we direct, or code); each
+  host tool offers what it supports, the code mode always works.
+  Missions started in 1.1 finish as 1.1.
+- **Rejected**: the look as a later phase sold on its own; uniform tool
+  support across hosts; a legal expert in the team (an AI cannot vouch
+  that a name can be filed).

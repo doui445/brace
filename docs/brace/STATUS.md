@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-11-09
+last_updated: 2026-11-10
 next_milestone: "BRACE 1.2: the brand's face in brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -62,14 +62,14 @@ description and topics, a "New in 1.1" paragraph in the README.
 
 ## Next 3 actions
 
-1. **Next real trial** on a dogfood project, on 1.1.0: check in auto mode
-   that a write in `brand/` no longer prompts, the agency's voice and
-   five-part meetings, the scope from existing documents; measure the
-   quota with `/usage` before and after.
-2. **1.2: the brand's face in `brand`** (visual routes, logo, palette,
-   type, `art-director` and `designer`): spec first. Then 1.3 =
-   `brace:design`; the Antigravity copy update and the `AGENTS.md` tidy
-   come after it.
+1. **1.2 built on `feat/brand-face`** (the brand's look in `brace:brand`,
+   two new agents, the client's tools, every document realigned): the
+   whole-branch review, then the owner's real trial, **BRACE's own full
+   mission** on the branch (`--plugin-dir`), choosing the two new first
+   names and measuring tokens with `/usage`. Release 1.2.0 after it.
+2. **1.3 = `brace:design`**, after lightening the README and the heavy
+   files; the Antigravity copy update and the `AGENTS.md` tidy come after
+   it.
 3. **Social networks**: BRACE has none yet; talk it over with the owner
    (which networks, what name, who posts), then the announcement's short
    post can go out.

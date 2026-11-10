@@ -364,7 +364,9 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   the exact category list + question wording for tool integration; the
   curated `design-skills.md` catalogue contents.
 
-- [ ] **Brand / visual identity (the project's "DA")** (M, ⭐⭐) — surfaced by
+- [ ] **Brand / visual identity (the project's "DA")** (M, ⭐⭐) — **2026-11-10:
+  built into `brace:brand` for 1.2; BRACE's own look comes from its full
+  1.2 mission (the release trial).** Surfaced by
   the website discussion (2026-09-02). Prerequisite for the public website:
   the user wants that site "at least as clean as impeccable.style" and holds
   that a tool site's polish reflects on the skill's author. Today the
@@ -558,7 +560,8 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
   `researcher` (prepares tests with real people and reads the answers;
   replaces `reader`). Built on `feat/brand` 2026-10-26: `strategist`,
   `copywriter`, `creative-director`. Left: `art-director`, `designer`
-  (with the brand's face in 1.2), `researcher`.
+  (with the brand's face in 1.2), `researcher`. **2026-11-10:** `art-director`
+  and `designer` built for 1.2; `researcher` left.
 
 - [x] **Agents write only in their own folder** (M, ⭐⭐⭐) — built and
   tested for real on Claude Code 2026-10-26; Antigravity to check in the

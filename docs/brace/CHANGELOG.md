@@ -14,6 +14,31 @@ the bump, a release never breaks an existing project. The version lives in
 
 ## [Unreleased]
 
+### Added
+- `brace:brand` makes the brand's look too (logo, colours, type,
+  applications), inside the same mission: strategy, the name when one is
+  needed, creative routes (words and look together), a short refinement
+  meeting, the delivery with the brand guidelines, a one-page brand board,
+  the files in `brand/` and `VISUAL.md`.
+- Two agents, `art-director` and `designer` (first names chosen at the
+  first trial).
+- The client's own design tools: presented by need at the first contact,
+  driven, directed or replaced by code, per need; each host tool offers
+  what it supports (`references/tools.md`).
+- `scripts/check_visual.py`: contrast, logo files and font licences.
+- Decks: palette, type, logo and mood slides; the refinement and handover
+  decks wear the client's identity (`theme:`); exploration images show a
+  neutral placeholder where they are absent.
+
+### Changed
+- The mission follows a real agency's order: the platform is written and
+  validated at the end of the strategy meeting; the strategy shows
+  territories (the tagline moves to the creative routes); names are
+  screened before they are shown; every document realigned on agency
+  practice; documents and decks sorted by meeting.
+- Missions started before 1.2 finish unchanged, on their archived
+  references.
+
 ## [1.1.0] — 2026-11-08
 
 ### Added
