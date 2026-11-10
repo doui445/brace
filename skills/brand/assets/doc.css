@@ -59,11 +59,19 @@ body { background: var(--paper-2); font-family: var(--sans); color: var(--ink); 
 .tabbed .space .panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .space .block { border-top: 1px solid var(--line); padding-top: 14px; margin-bottom: 24px; }
 .space .block h3 { margin-top: 0; font-family: var(--sans); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+/* Brand guidelines: horizontal pages. Brand board: the whole brand on one page. */
+body.landscape .page { max-width: 1180px; page: landscape; }
+body.board .page { max-width: 820px; page: board; padding: 48px 56px; }
+body.board .body h2 { font-size: 20px; margin: 20px 0 8px; }
+body.board .doc-sign { margin-top: 24px; }
 @page { size: A4; margin: 18mm; }
+@page landscape { size: A4 landscape; margin: 14mm; }
+@page board { size: A4 portrait; margin: 10mm; }
 @media print {
   body { background: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page { margin: 0; padding: 0; max-width: none; box-shadow: none; background: none; }
   .tabs { display: none !important; }
+  body.board .page { break-inside: avoid; zoom: .82; }
   .space .panel[hidden] { display: block; }
   .tabbed .space .panel-title { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
   .tabbed .space .panel + .panel { margin-top: 40px; }

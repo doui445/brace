@@ -189,6 +189,24 @@ class ClientDocsTableTests(unittest.TestCase):
 
 
 class RenderDocTests(unittest.TestCase):
+    def test_portrait_is_the_default_layout(self):
+        self.assertIn("<body>", render.render_doc(doc("Text.")))
+
+    def test_landscape_doc(self):
+        self.assertIn('<body class="landscape">', render.render_doc(doc("Text.", layout="landscape")))
+
+    def test_board_doc(self):
+        self.assertIn('<body class="board">', render.render_doc(doc("Text.", layout="board")))
+
+    def test_unknown_layout(self):
+        with self.assertRaises(render.RenderError):
+            render.render_doc(doc("Text.", layout="poster"))
+
+    def test_doc_css_has_page_sizes(self):
+        css = (ASSETS / "doc.css").read_text(encoding="utf-8")
+        self.assertIn("A4 landscape", css)
+        self.assertRegex(css, r"body\.board")
+
     def test_doc_signature_and_meta(self):
         out = render.render_doc(doc("## Who else\n\nText."))
         self.assertIn('<meta name="brace-author" content="Bruno">', out)

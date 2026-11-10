@@ -233,6 +233,11 @@ def md_to_html(text):
 
 # --- documents ---------------------------------------------------------------
 
+# A read document's shape: a vertical page (default), the brand guidelines on
+# horizontal pages, the brand board on one single page.
+LAYOUTS = ("portrait", "landscape", "board")
+
+
 def render_doc(text, css="doc.css"):
     meta, body = parse_front_matter(text)
     for key in ("title", "author", "role", "lang"):
@@ -242,6 +247,10 @@ def render_doc(text, css="doc.css"):
     head, _, rest = body.lstrip("\n").partition("\n")
     if head.strip() == "# " + meta["title"].strip():
         body = rest
+    layout = meta.get("layout", "portrait")
+    if layout not in LAYOUTS:
+        raise RenderError(f"unknown layout {layout!r} (portrait, landscape or board)")
+    body_tag = "<body>" if layout == "portrait" else f'<body class="{layout}">'
     lang = meta["lang"] if re.fullmatch(r"[a-z]{2}", meta["lang"]) else "en"
     by = catalogue(lang).get("brand.doc.by", "{name}, {role}")
     sign = esc(by.replace("{name}", meta["author"]).replace("{role}", meta["role"]))
@@ -254,7 +263,7 @@ def render_doc(text, css="doc.css"):
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{esc(meta['title'])}</title>\n{metas}"
-        f'<link rel="stylesheet" href="{esc(css)}">\n</head>\n<body>\n<main class="page">\n'
+        f'<link rel="stylesheet" href="{esc(css)}">\n</head>\n{body_tag}\n<main class="page">\n'
         f'<header class="doc-head">\n<div class="kicker">BRACE</div>\n<h1>{esc(meta["title"])}</h1>\n{date}</header>\n'
         f'<div class="body">\n{md_to_html(body)}\n</div>\n'
         f'<footer class="doc-sign"><span>{sign}</span><span>BRACE</span></footer>\n'
