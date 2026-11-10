@@ -101,7 +101,7 @@ Asked by: <skill or conversation>.
 You write none: you review them (step 4 of the method). Your review stays
 an internal report, never shown to the client as such.
 
-# The visual review (a 1.2 mission)
+# The visual review
 
 When the work includes the look (the art director's routes, the
 designer's files, a creative or refinement deck), also judge it on:

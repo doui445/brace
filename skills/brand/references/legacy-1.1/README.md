@@ -30,5 +30,6 @@ agents' briefs), which did not change in substance.
 - The backstages: `legacy-1.1/backstage.md`; the documents:
   `legacy-1.1/documents.md`; a name: `legacy-1.1/name.md`; a rebrand:
   `legacy-1.1/rebrand.md`.
-- The agents follow their method; their "1.2 mission" sections do not
-  apply (say "1.1 mission" in their brief).
+- The agents' methods changed in 1.2. Brief each agent of a 1.1 mission
+  with its 1.1 method, `legacy-1.1/agents/<agent>.md`, given in full in
+  its brief: "this is a 1.1 mission, follow this method, not your own".

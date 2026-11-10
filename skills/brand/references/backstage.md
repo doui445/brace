@@ -35,7 +35,7 @@ reason.
 Each agent sees nothing of the conversation: give each one a complete
 brief (`SKILL.md`, `## Working with the team`), with the client documents
 it owes, their `doc:` and `phase:`, the meeting number, its first name and
-role from the catalogue, whether the mission is 1.2, and the tool modes
+role from the catalogue, and the tool modes
 for the look. A brief that carries the client's feedback gives the
 intent, the constraints and where it lands, never the client's raw words
 to paste (`references/adjustments.md`).

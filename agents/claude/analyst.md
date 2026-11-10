@@ -150,7 +150,7 @@ rounds and proposals stay internal reports. The skill that launched you renders 
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 
-# Names, in a 1.2 mission
+# Names
 
 When a name is needed, screen the candidates **before** they are shown to
 the client, so that only names that passed are presented: identical
