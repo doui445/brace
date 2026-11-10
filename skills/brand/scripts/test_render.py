@@ -175,9 +175,17 @@ class ClientDocsTableTests(unittest.TestCase):
         for _, phase, _ in rows:
             self.assertIn(phase, render.PHASES)
         self.assertIn("creative-brief", render.CLIENT_DOCS)
-        self.assertEqual(render.CLIENT_DOCS["platform"], "presented")
         self.assertEqual(render.CLIENT_DOCS["editorial-guide"], "read")
-        self.assertEqual(render.PHASES, ("contact", "framing", "strategy", "platform", "visual", "delivery"))
+
+    def test_new_phases_order(self):
+        # platform and visual stay for 1.1 missions, in their old place.
+        self.assertEqual(render.PHASES, ("contact", "framing", "strategy", "platform", "naming",
+                                         "creation", "refinement", "visual", "delivery"))
+
+    def test_new_client_docs(self):
+        for kind, form in (("guidelines", "read"), ("brand-board", "read"),
+                           ("names-check", "read"), ("platform", "read")):
+            self.assertEqual(render.CLIENT_DOCS[kind], form)
 
 
 class RenderDocTests(unittest.TestCase):
@@ -363,9 +371,23 @@ class SpaceDataTests(unittest.TestCase):
                 ("2026-11-06-minutes-1.html", "1", "Minutes 1"),
                 ("2026-11-07-minutes-2.html", "2", "Minutes 2"))
         documents = self.data(sessions="# S\n", docs=docs)["documents"]
-        self.assertEqual([(d["name"], d["title"]) for d in documents], [("2026-11-07-benchmark.html", "Benchmark new")])
+        self.assertEqual([(d["name"], d["title"]) for d in documents],
+                         [("2026-11-07-benchmark.html", "Benchmark new"), ("2026-11-07-names-check-2.html", "Names 2")])
         self.assertEqual(documents[0]["phase"], "strategy")
         self.assertEqual(documents[0]["form"], "read")
+
+    def test_legacy_platform_stays_presented(self):
+        # Review Focus 1: a 1.1 platform document (phase platform) keeps its form.
+        docs = (("2026-01-05-platform.html", "3", "Platform", {"phase": "platform"}),)
+        self.assertEqual(self.data(sessions="# S\n", docs=docs)["documents"][0]["form"], "presented")
+
+    def test_new_platform_is_read(self):
+        docs = (("2026-03-05-platform.html", "2", "Platform", {"phase": "strategy"}),)
+        self.assertEqual(self.data(sessions="# S\n", docs=docs)["documents"][0]["form"], "read")
+
+    def test_doc_form_meta_wins(self):
+        docs = (("2026-03-05-guidelines.html", "5", "Guidelines", {"phase": "delivery", "form": "presented"}),)
+        self.assertEqual(self.data(sessions="# S\n", docs=docs)["documents"][0]["form"], "presented")
 
     def test_doc_meta_wins_over_the_file_name(self):
         docs = (("2026-11-07-anything.html", "2", "Guide", {"doc": "editorial-guide", "phase": "platform"}),)

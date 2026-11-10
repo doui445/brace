@@ -247,7 +247,7 @@ def render_doc(text, css="doc.css"):
     sign = esc(by.replace("{name}", meta["author"]).replace("{role}", meta["role"]))
     metas = "".join(
         f'<meta name="brace-{k}" content="{esc(meta[k])}">\n'
-        for k in ("author", "role", "meeting", "date", "doc", "phase") if meta.get(k))
+        for k in ("author", "role", "meeting", "date", "doc", "phase", "form") if meta.get(k))
     date = f'<div class="doc-date">{esc(meta["date"])}</div>\n' if meta.get("date") else ""
     return (
         "<!DOCTYPE html>\n"
@@ -538,12 +538,14 @@ def main(argv):
 # (a test keeps the two equal). Minutes are client documents too, kept apart.
 CLIENT_DOCS = {
     "proposal": "read", "brief": "read", "benchmark": "read", "personas": "presented",
-    "routes": "presented", "audit": "presented", "platform": "presented",
-    "editorial-guide": "read", "manifesto": "presented", "test-plan": "read",
+    "routes": "presented", "audit": "presented", "platform": "read", "names-check": "read",
+    "editorial-guide": "read", "guidelines": "read", "brand-board": "read",
+    "manifesto": "presented", "test-plan": "read",
     "transition": "read", "announcement": "read", "creative-brief": "read",
 }
-# The phases a mission is built from, in order ("visual" comes in a later release).
-PHASES = ("contact", "framing", "strategy", "platform", "visual", "delivery")
+# The phases a mission is built from, in order. "platform" and "visual" belong
+# to 1.1 missions only, kept so their client space reads as before.
+PHASES = ("contact", "framing", "strategy", "platform", "naming", "creation", "refinement", "visual", "delivery")
 
 MEETING_LEX = {"0": "contact", "1": "workshop", "2": "recommendation", "3": "platform", "4": "delivery"}
 
@@ -646,6 +648,16 @@ def _doc_kind(path, meta):
     return meta.get("doc") or kind, date, version
 
 
+def _form(kind, phase, meta):
+    """How a document is shown. Its own "form" meta wins; a 1.1 platform
+    (phase "platform") was presented, the 1.2 one is read."""
+    if meta.get("form") in ("presented", "read"):
+        return meta["form"]
+    if kind == "platform" and phase == "platform":
+        return "presented"
+    return CLIENT_DOCS.get(kind, "read")
+
+
 def space_data(root):
     """What the client space shows, read from the project's files."""
     root = Path(root)
@@ -685,7 +697,7 @@ def space_data(root):
         kind, date, version = _doc_kind(path, meta)
         phase = meta.get("phase") or MEETING_PHASE.get(meta.get("meeting", ""), "")
         item = {"name": path.name, "title": title, "author": meta.get("author", ""), "phase": phase,
-                "form": CLIENT_DOCS.get(kind, "read"), "date": date}
+                "form": _form(kind, phase, meta), "date": date}
         if kind == "minutes":
             minutes.append(item)
         elif kind in CLIENT_DOCS and (kind not in latest or (date, version) >= latest[kind][0]):

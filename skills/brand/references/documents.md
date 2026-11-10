@@ -15,11 +15,14 @@ document is there for whoever wants to dig.
 | Minutes of each meeting | `minutes-<n>` | account director (`brand`) | each meeting | read |
 | Competitive benchmark | `benchmark` | `analyst` | `strategy` | read |
 | Personas | `personas` | `strategist` | `strategy` | presented |
-| Routes and recommendation | `routes` | `strategist` | `strategy` | presented |
+| Territories and recommendation | `routes` | `strategist` | `strategy` | presented |
 | Brand audit (a rebrand) | `audit` | `strategist` | `strategy` | presented |
-| Brand platform | `platform` | `strategist` | `platform` | presented |
-| Editorial guide | `editorial-guide` | `copywriter` | `platform` | read |
-| Manifesto | `manifesto` | `copywriter` | `platform` | presented |
+| Brand platform, the manifesto as its last page | `platform` | `strategist`, `copywriter` | `strategy` | read |
+| Names screening (when a name is needed) | `names-check` | `analyst` | `naming` | read |
+| Editorial guide | `editorial-guide` | `copywriter` | `delivery` | read |
+| Brand guidelines (when the visual is in scope) | `guidelines` | `designer` | `delivery` | read |
+| Brand board (when the visual is in scope) | `brand-board` | `designer` | `delivery` | read |
+| Manifesto (1.1 missions only) | `manifesto` | `copywriter` | `platform` | presented |
 | Test plan | `test-plan` | `strategist` | `delivery` | read |
 | Transition plan (a rebrand) | `transition` | `strategist` | `delivery` | read |
 | Announcement (a rebrand) | `announcement` | `copywriter` | `delivery` | read |
