@@ -991,6 +991,15 @@ def _exclude(root, add=(), drop=()):
         path.write_text("\n".join(kept) + ("\n" if kept else ""), encoding="utf-8")
 
 
+SOURCES_LINE = "/brand/sources/"
+
+
+def exclude_sources(root):
+    """Keep brand/sources/ (source files, exploration images) out of git, in
+    the repository's own info/exclude; nothing outside git."""
+    _exclude(root, add=(SOURCES_LINE,))
+
+
 def write_shortcut(root, data):
     """During the mission, a small page at the project root that opens the
     client space (a redirect, not a link: file:// resolves relative paths
