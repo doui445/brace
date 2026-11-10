@@ -62,11 +62,11 @@ description and topics, a "New in 1.1" paragraph in the README.
 
 ## Next 3 actions
 
-1. **1.2 built on `feat/brand-face`** (the brand's look in `brace:brand`,
-   two new agents, the client's tools, every document realigned): the
-   whole-branch review, then the owner's real trial, **BRACE's own full
-   mission** on the branch (`--plugin-dir`), choosing the two new first
-   names and measuring tokens with `/usage`. Release 1.2.0 after it.
+1. **Test 1.2 on 2026-11-11**: built on `feat/brand-face` (15 commits,
+   reviewed, all tests green). The owner's real trial is **BRACE's own
+   full mission** from the branch (`claude --plugin-dir .`): choose the two
+   new first names (provisional Sam and Hugo), measure tokens with
+   `/usage`. Merge and release 1.2.0 after it.
 2. **1.3 = `brace:design`**, after lightening the README and the heavy
    files; the Antigravity copy update and the `AGENTS.md` tidy come after
    it.

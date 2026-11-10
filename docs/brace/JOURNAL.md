@@ -1408,3 +1408,21 @@ Closed out the portfolio sub-pages work and cut the release:
 - Every agency document realigned on agency practice, sorted by meeting;
   new: creative and refinement decks, brand guidelines, a one-page brand
   board, `VISUAL.md`. First trial: BRACE's own full mission on 1.2.
+
+## 2026-11-10 — 1.2 built on `feat/brand-face`
+
+- Spec, plan, then the build: the brand's look inside the mission (the
+  name before the look, creative routes, a short refinement, the
+  guidelines and a one-page brand board), `art-director` and `designer`,
+  the client's design tools per need, every document realigned and sorted
+  by meeting; the four existing agents rewritten for 1.2, their 1.1
+  methods archived with the 1.1 references for missions already running.
+- A whole-branch review found a way to slip script through a logo SVG:
+  logos now pass an allowlist and are inlined from the parsed tree. Also
+  fixed: exploration images in draft and final decks, the 1.1 map, the
+  1.1 detection, and every minor the review listed.
+- Added after the review, at the owner's request: `brand/sources/` in the
+  project's `.gitignore`, and a favicon's legibility at 16 px (rules in
+  `check_visual.py`, a favicon slide for the creative director).
+- Next: the owner's real trial, BRACE's own full mission, on 2026-11-11.
+

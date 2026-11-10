@@ -25,7 +25,11 @@ the bump, a release never breaks an existing project. The version lives in
 - The client's own design tools: presented by need at the first contact,
   driven, directed or replaced by code, per need; each host tool offers
   what it supports (`references/tools.md`).
-- `scripts/check_visual.py`: contrast, logo files and font licences.
+- `scripts/check_visual.py`: contrast, safe logo files (an allowlist of
+  plain drawing), font licences, and a favicon's legibility at 16 px; a
+  `favicon` slide shows it at 16, 32 and 48 px on light and dark tabs.
+- `render.py sources`: `brand/sources/` (source files, exploration images)
+  goes to the project's `.gitignore`.
 - Decks: palette, type, logo and mood slides; the refinement and handover
   decks wear the client's identity (`theme:`); exploration images show a
   neutral placeholder where they are absent.
