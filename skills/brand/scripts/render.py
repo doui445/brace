@@ -241,7 +241,11 @@ def md_to_html(text):
 LAYOUTS = ("portrait", "landscape", "board")
 
 
-def render_doc(text, css="doc.css"):
+def _theme_link(theme):
+    return f'<link rel="stylesheet" href="{esc(theme)}">\n' if theme else ""
+
+
+def render_doc(text, css="doc.css", theme=None):
     meta, body = parse_front_matter(text)
     for key in ("title", "author", "role", "lang"):
         if not meta.get(key):
@@ -266,7 +270,7 @@ def render_doc(text, css="doc.css"):
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{esc(meta['title'])}</title>\n{metas}"
-        f'<link rel="stylesheet" href="{esc(css)}">\n</head>\n{body_tag}\n<main class="page">\n'
+        f'<link rel="stylesheet" href="{esc(css)}">\n{_theme_link(theme)}</head>\n{body_tag}\n<main class="page">\n'
         f'<header class="doc-head">\n<div class="kicker">BRACE</div>\n<h1>{esc(meta["title"])}</h1>\n{date}</header>\n'
         f'<div class="body">\n{md_to_html(body)}\n</div>\n'
         f'<footer class="doc-sign"><span>{sign}</span><span>BRACE</span></footer>\n'
@@ -558,7 +562,7 @@ SCRIPT = """<script>
 """
 
 
-def render_deck(text, css="deck.css", base=None):
+def render_deck(text, css="deck.css", base=None, theme=None):
     meta, slides = parse_deck(text)
     lang = meta.get("lang", "en")
     if not re.fullmatch(r"[a-z]{2}", lang):
@@ -572,11 +576,22 @@ def render_deck(text, css="deck.css", base=None):
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{esc(meta.get('title', ''))}</title>\n"
-        f'<link rel="stylesheet" href="{esc(css)}">\n</head>\n<body>\n'
+        f'<link rel="stylesheet" href="{esc(css)}">\n{_theme_link(theme)}</head>\n<body>\n'
         f'<nav class="dots">{dots}</nav>\n\n{body}\n{SCRIPT}</body>\n</html>\n')
 
 
 # --- command line ------------------------------------------------------------
+
+def _theme_href(src, dst, theme):
+    """The client's own stylesheet (theme: in the front matter, relative to
+    the source), as a link from the output; None without one."""
+    if not theme:
+        return None
+    path = (Path(src).parent / theme).resolve()
+    if not path.is_file():
+        raise RenderError(f"no such theme: {theme}")
+    return Path(os.path.relpath(path, Path(dst).resolve().parent)).as_posix()
+
 
 def main(argv):
     try:
@@ -588,10 +603,11 @@ def main(argv):
                 text = src.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 raise RenderError(f"{src} is not UTF-8 text")
+            theme = _theme_href(src, dst, parse_front_matter(text)[0].get("theme", ""))
             if argv[0] == "doc":
-                out = render_doc(text, css_href(dst, "doc.css"))
+                out = render_doc(text, css_href(dst, "doc.css"), theme=theme)
             else:
-                out = render_deck(text, css_href(dst, "deck.css"), base=src.parent)
+                out = render_deck(text, css_href(dst, "deck.css"), base=src.parent, theme=theme)
             dst.parent.mkdir(parents=True, exist_ok=True)
             ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")

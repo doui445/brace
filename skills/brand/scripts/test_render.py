@@ -236,6 +236,51 @@ class CreativeSlideTests(unittest.TestCase):
         self.assertEqual(render.render_deck(md, base=ASSETS), html_)
 
 
+class ThemeTests(unittest.TestCase):
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+        self.tmp = Path(self._d.name)
+
+    def write(self, name, text):
+        p = self.tmp / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(text, encoding="utf-8")
+        return p
+
+    def test_theme_link_after_agency_css(self):
+        src = self.write("src/deck.md", "---\ntitle: T\ntheme: ../brand/brand.css\n---\n::: cover\ntitle: T\n")
+        self.write("brand/brand.css", ":root { --accent: #f00; }")
+        dst = self.tmp / "out" / "deck.html"
+        self.assertEqual(render.main(["deck", str(src), str(dst)]), 0)
+        out = dst.read_text(encoding="utf-8")
+        self.assertIn('href="../brand/brand.css"', out)
+        self.assertLess(out.index("deck.css"), out.index("brand.css"))
+
+    def test_theme_on_a_document(self):
+        src = self.write("src/g.md", doc("Text.", theme="../brand/brand.css", layout="landscape"))
+        self.write("brand/brand.css", ":root { --accent: #f00; }")
+        dst = self.tmp / "out" / "g.html"
+        self.assertEqual(render.main(["doc", str(src), str(dst)]), 0)
+        out = dst.read_text(encoding="utf-8")
+        self.assertLess(out.index("doc.css"), out.index("brand.css"))
+
+    def test_missing_theme_exits_1_and_writes_nothing(self):
+        # Review Focus 4
+        src = self.write("deck.md", "---\ntitle: T\ntheme: nope.css\n---\n::: cover\ntitle: T\n")
+        dst = self.tmp / "out" / "deck.html"
+        r = run("deck", str(src), str(dst))
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("theme", r.stderr)
+        self.assertFalse(dst.exists())
+
+    def test_agency_css_takes_theme_variables(self):
+        for name in ("deck.css", "doc.css"):
+            css = (ASSETS / name).read_text(encoding="utf-8")
+            for var in ("--paper", "--ink", "--accent", "--serif", "--sans"):
+                self.assertIn(f"var({var}", css, (name, var))
+
+
 class ClientDocsTableTests(unittest.TestCase):
     def test_documents_md_table_matches_client_docs(self):
         md = (HERE.parent / "references" / "documents.md").read_text(encoding="utf-8")
