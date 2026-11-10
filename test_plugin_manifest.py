@@ -146,6 +146,17 @@ class PluginManifestTests(unittest.TestCase):
         # docs/brace/agents/ holds BRACE agents' per-project folders, never a skill.
         self.assertFalse((REPO / "skills" / "agents").exists())
 
+    def test_brand_keys_in_every_language(self):
+        # Review Focus 5: a key in one language only shows raw in the other.
+        i18n = REPO / "skills" / "track" / "references" / "i18n"
+        keys = lambda c: set(re.findall(r"(?m)^- (brand\.[a-z0-9_.]+):", (i18n / f"{c}.md").read_text(encoding="utf-8")))
+        self.assertEqual(keys("en"), keys("fr"))
+        for k in ("brand.phase.naming", "brand.phase.creation", "brand.phase.refinement",
+                  "brand.team.art_director.name", "brand.team.art_director.role",
+                  "brand.team.designer.name", "brand.team.designer.role",
+                  "brand.deck.explore_placeholder", "brand.cost.visual_unmeasured"):
+            self.assertIn(k, keys("en"))
+
     def test_i18n_has_brand_touchpoints_heading(self):
         # The voice-drift hook finds the Touchpoints section by these values.
         i18n = REPO / "skills" / "track" / "references" / "i18n"

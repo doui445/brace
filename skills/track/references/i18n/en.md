@@ -198,6 +198,10 @@ The macOS notification sent when a brand presentation is ready.
 - brand.team.copywriter.role: copywriter
 - brand.team.creative_director.name: Lou
 - brand.team.creative_director.role: creative director
+- brand.team.art_director.name: Sam
+- brand.team.art_director.role: art director
+- brand.team.designer.name: Hugo
+- brand.team.designer.role: designer
 - brand.lex.contact: first contact
 - brand.lex.proposal: proposal
 - brand.lex.kickoff: kickoff meeting
@@ -246,10 +250,14 @@ The macOS notification sent when a brand presentation is ready.
 - brand.phase.framing: Framing workshop
 - brand.phase.strategy: Strategic recommendation
 - brand.phase.platform: Brand platform
+- brand.phase.naming: The name
+- brand.phase.creation: Creative routes
+- brand.phase.refinement: Refinement
 - brand.phase.visual: Visual identity
 - brand.phase.delivery: Delivery
 - brand.doc.by: {name}, {role}
 - brand.deck.explore_placeholder: Exploration image, not published
+- brand.cost.visual_unmeasured: The visual part has not been measured yet: we will tell you what it really cost once it is done, and the next version of this proposal will give a range.
 - brand.notify.title: BRACE
 - brand.notify.ready: The agency's work is ready.
 
