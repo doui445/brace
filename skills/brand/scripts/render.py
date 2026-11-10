@@ -19,6 +19,9 @@ import shutil
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import check_visual  # noqa: E402
+
 HERE = Path(__file__).resolve().parent
 ASSETS = HERE.parent / "assets"
 I18N = HERE.parents[1] / "track" / "references" / "i18n"
@@ -280,6 +283,11 @@ FIELDS = {
     "refs": {"note", "meta", "title", "intro", "foot"},
     "reco": {"note", "meta", "eyebrow", "title", "lede", "item", "next", "foot"},
     "doc": {"note", "meta", "title", "intro", "ask", "foot"},
+    # The creative deck (1.2): a route's palette, type pair, logo and mood.
+    "palette": {"note", "meta", "title", "intro", "swatch", "foot"},
+    "type": {"note", "meta", "title", "pair", "sample", "why", "foot"},
+    "logo": {"note", "meta", "title", "svg", "why", "foot"},
+    "mood": {"note", "meta", "title", "intro", "foot"},
 }
 BLOCKS = {
     "laptop hero": {"bar", "brand", "title", "text", "cta", "caption"},
@@ -287,8 +295,10 @@ BLOCKS = {
     "phone post": {"name", "handle", "text", "card", "url", "caption"},
     "phone profile": {"banner", "name", "handle", "bio", "stats", "caption"},
     "ref": {"mark", "title", "text", "take", "src"},
+    "image": {"src", "caption"},
 }
-BLOCKS_IN = {"context": ("laptop hero", "laptop readme", "phone post", "phone profile"), "refs": ("ref",)}
+BLOCKS_IN = {"context": ("laptop hero", "laptop readme", "phone post", "phone profile"), "refs": ("ref",),
+             "mood": ("ref", "image")}
 KEY = re.compile(r"([a-z]+): (.*)\Z")
 
 
@@ -396,7 +406,39 @@ def _mock(b):
     return f'    <div>\n{device}      <div class="caption">{i("caption")}</div>\n    </div>\n'
 
 
-def _slide(s, n, total, footer, t=None):
+def inline_svg(path):
+    """An SVG file's markup, to inline in a slide; refused (RenderError) when
+    it is not valid, carries a script or an event, or links outside itself."""
+    path = Path(path)
+    if not path.is_file():
+        raise RenderError(f"no such SVG: {path}")
+    problems = [p for p in check_visual.svg_problems(path) if "viewBox" not in p]
+    if problems:
+        raise RenderError("; ".join(problems))
+    text = path.read_text(encoding="utf-8")
+    return re.sub(r"<\?xml[^>]*\?>|<!DOCTYPE[^>]*>|<!--.*?-->", "", text, flags=re.S).strip()
+
+
+def _ref(b):
+    return ('    <div class="ref">\n'
+            f'      <div class="mark">{inline(b.get("mark"), "b")}</div>\n'
+            f'      <h3>{inline(b.get("title"), "b")}</h3>\n      <p>{inline(b.get("text"), "b")}</p>\n'
+            f'      <div class="take">{inline(b.get("take"), "b")}</div>\n'
+            f'      <div class="src">{inline(b.get("src"), "b")}</div>\n    </div>\n')
+
+
+def _swatch(value):
+    colour, name, role = (list(x.strip() for x in value.split(" | ")) + ["", ""])[:3]
+    try:
+        on_white, on_black = check_visual.contrast(colour, "#ffffff"), check_visual.contrast(colour, "#000000")
+    except ValueError as e:
+        raise RenderError(f"palette: {e}")
+    return (f'    <div class="swatch {esc(role)}"><div class="chip" style="background:{esc(colour)}"></div>\n'
+            f'      <b>{inline(name, "b")}</b><code>{esc(colour.upper())}</code>\n'
+            f'      <span>{on_white}:1 / {on_black}:1</span></div>\n')
+
+
+def _slide(s, n, total, footer, t=None, base=None):
     i = lambda k: inline(s.get(k), "b")  # noqa: E731
     out = _meta(s)
     if s.kind == "cover":
@@ -443,14 +485,40 @@ def _slide(s, n, total, footer, t=None):
         if s.kind == "context":
             out += '  <div class="stage">\n' + "".join(_mock(b) for b in s.blocks) + "  </div>\n"
         else:
-            refs = "".join(
-                '    <div class="ref">\n'
-                f'      <div class="mark">{inline(b.get("mark"), "b")}</div>\n'
-                f'      <h3>{inline(b.get("title"), "b")}</h3>\n      <p>{inline(b.get("text"), "b")}</p>\n'
-                f'      <div class="take">{inline(b.get("take"), "b")}</div>\n'
-                f'      <div class="src">{inline(b.get("src"), "b")}</div>\n    </div>\n'
-                for b in s.blocks)
+            refs = "".join(_ref(b) for b in s.blocks)
             out += f'  <div class="grid">\n{refs}  </div>\n'
+    elif s.kind == "palette":
+        out += ('  <div class="head">\n'
+                f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n'
+                '  <div class="swatches">\n' + "".join(_swatch(v) for v in s.all("swatch")) + "  </div>\n")
+    elif s.kind == "type":
+        display, text = _pair(s.get("pair"))
+        out += ('  <div class="specimen">\n'
+                f'    <h2>{_lines(s.get("title"))}</h2>\n'
+                f'    <div class="big" style="font-family:{esc(repr(display))}, var(--serif)">{i("sample")}</div>\n'
+                f'    <p class="txt" style="font-family:{esc(repr(text))}, var(--sans)">{i("why")}</p>\n'
+                f'    <div class="fonts"><b>{inline(display, "b")}</b><span>{inline(text, "b")}</span></div>\n'
+                "  </div>\n")
+    elif s.kind == "logo":
+        svg = Path(s.get("svg"))
+        svg = svg if svg.is_absolute() or base is None else Path(base) / svg
+        out += ('  <div class="reveal">\n'
+                f'    <div class="mark">{inline_svg(svg)}</div>\n'
+                f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("why")}</p>\n  </div>\n')
+    elif s.kind == "mood":
+        placeholder = esc((t or {}).get("brand.deck.explore_placeholder", ""))
+        tiles = ""
+        for b in s.blocks:
+            if b.kind == "ref":
+                tiles += _ref(b)
+            else:
+                tiles += ('    <figure class="explore">'
+                          f'<span class="ph">{placeholder}</span>'
+                          f'<img src="{esc(b.get("src"))}" alt="{placeholder}" onerror="this.hidden=true">'
+                          f'<figcaption>{inline(b.get("caption"), "b")}</figcaption></figure>\n')
+        out += ('  <div class="head">\n'
+                f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n'
+                f'  <div class="grid">\n{tiles}  </div>\n')
     elif s.kind == "reco":
         items = "".join(f"      <li>{inline(x, 'b')}</li>\n" for x in s.all("item"))
         a, b = _pair(s.get("next"))
@@ -490,7 +558,7 @@ SCRIPT = """<script>
 """
 
 
-def render_deck(text, css="deck.css"):
+def render_deck(text, css="deck.css", base=None):
     meta, slides = parse_deck(text)
     lang = meta.get("lang", "en")
     if not re.fullmatch(r"[a-z]{2}", lang):
@@ -498,7 +566,7 @@ def render_deck(text, css="deck.css"):
     total = len(slides)
     dots = "".join(f'<a href="#s{n}"></a>' for n in range(1, total + 1))
     t = catalogue(lang)
-    body = "\n".join(_slide(s, n, total, meta.get("footer", ""), t) for n, s in enumerate(slides, 1))
+    body = "\n".join(_slide(s, n, total, meta.get("footer", ""), t, base) for n, s in enumerate(slides, 1))
     return (
         "<!DOCTYPE html>\n"
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
@@ -523,7 +591,7 @@ def main(argv):
             if argv[0] == "doc":
                 out = render_doc(text, css_href(dst, "doc.css"))
             else:
-                out = render_deck(text, css_href(dst, "deck.css"))
+                out = render_deck(text, css_href(dst, "deck.css"), base=src.parent)
             dst.parent.mkdir(parents=True, exist_ok=True)
             ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")

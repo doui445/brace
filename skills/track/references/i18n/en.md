@@ -249,6 +249,7 @@ The macOS notification sent when a brand presentation is ready.
 - brand.phase.visual: Visual identity
 - brand.phase.delivery: Delivery
 - brand.doc.by: {name}, {role}
+- brand.deck.explore_placeholder: Exploration image, not published
 - brand.notify.title: BRACE
 - brand.notify.ready: The agency's work is ready.
 

@@ -167,6 +167,75 @@ class DeckNoteTests(unittest.TestCase):
         self.assertRegex(printed, r"\.note\b[^{]*\{\s*display:\s*none")
 
 
+class CreativeSlideTests(unittest.TestCase):
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+        self.tmp = Path(self._d.name)
+
+    def write(self, name, text):
+        p = self.tmp / name
+        p.write_text(text, encoding="utf-8")
+        return p
+
+    def test_palette_slide_shows_code_and_contrast(self):
+        out = render.render_deck("---\ntitle: T\n---\n::: palette\ntitle: P\nswatch: #2F3E46 | ink | main\n")
+        self.assertIn("#2F3E46", out)
+        self.assertIn("ink", out)
+        self.assertRegex(out, r"\d+(\.\d+)?:1")
+
+    def test_palette_bad_colour_is_an_error(self):
+        with self.assertRaises(render.RenderError):
+            render.render_deck("---\ntitle: T\n---\n::: palette\ntitle: P\nswatch: teal | x | main\n")
+
+    def test_type_slide(self):
+        out = render.render_deck("---\ntitle: T\n---\n::: type\ntitle: Ty\npair: Fraunces | Inter\nsample: Think in peace\n")
+        self.assertIn("Fraunces", out)
+        self.assertIn("Think in peace", out)
+
+    def test_logo_svg_inlined(self):
+        svg = self.write("logo.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><circle r="4"/></svg>')
+        self.assertIn("<circle", render.inline_svg(svg))
+        out = render.render_deck("---\ntitle: T\n---\n::: logo\ntitle: L\nsvg: logo.svg\n", base=self.tmp)
+        self.assertIn("<circle", out)
+
+    def test_logo_svg_hostile_refused(self):
+        # Review Focus 3
+        for bad in ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><script>x</script></svg>',
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" onload="x"/>',
+                    '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1 1">'
+                    '<use xlink:href="http://e.x/a.svg#a"/></svg>',
+                    '<svg><unclosed></svg>'):
+            with self.subTest(bad=bad), self.assertRaises(render.RenderError):
+                render.inline_svg(self.write("bad.svg", bad))
+
+    def test_logo_missing_file(self):
+        with self.assertRaises(render.RenderError):
+            render.render_deck("---\ntitle: T\n---\n::: logo\ntitle: L\nsvg: none.svg\n", base=self.tmp)
+
+    def test_explore_image_has_placeholder(self):
+        # Review Focus 2: in a clone, the image is absent; the figure still reads.
+        out = render.render_deck("---\ntitle: T\nlang: en\n---\n::: mood\ntitle: M\n"
+                                 "@image\nsrc: ../../../brand/sources/a.png\ncaption: c\n")
+        self.assertIn('class="explore"', out)
+        self.assertIn(render.catalogue("en")["brand.deck.explore_placeholder"], out)
+        self.assertIn('src="../../../brand/sources/a.png"', out)
+        self.assertIn('onerror="this.hidden=true"', out)  # no broken-image icon over the placeholder
+
+    def test_explore_placeholder_in_french(self):
+        out = render.render_deck("---\ntitle: T\nlang: fr\n---\n::: mood\ntitle: M\n@image\nsrc: a.png\ncaption: c\n")
+        self.assertIn(render.esc(render.catalogue("fr")["brand.deck.explore_placeholder"]), out)
+
+    def test_mood_keeps_text_refs(self):
+        out = render.render_deck("---\ntitle: T\n---\n::: mood\ntitle: M\n@ref\ntitle: Paper\ntake: margins\n")
+        self.assertIn("Paper", out)
+
+    def test_example_creation_md_renders_to_example_creation_html(self):
+        md = (ASSETS / "example-creation.md").read_text(encoding="utf-8")
+        html_ = (ASSETS / "example-creation.html").read_text(encoding="utf-8")
+        self.assertEqual(render.render_deck(md, base=ASSETS), html_)
+
+
 class ClientDocsTableTests(unittest.TestCase):
     def test_documents_md_table_matches_client_docs(self):
         md = (HERE.parent / "references" / "documents.md").read_text(encoding="utf-8")
