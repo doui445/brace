@@ -17,7 +17,14 @@ from pathlib import Path
 HEX = re.compile(r"#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\Z")
 FONTS = ("*.ttf", "*.otf", "*.woff", "*.woff2")
 LICENCES = ("OFL.txt", "OFL*", "LICENSE*", "LICENCE*")
-FORBIDDEN = ("script", "foreignObject")
+# A logo is inlined into a deck: only plain drawing survives. Anything that
+# can run, load or hide markup from the parser is refused.
+ALLOWED = {"svg", "g", "path", "rect", "circle", "ellipse", "line", "polyline", "polygon",
+           "text", "tspan", "textPath", "defs", "use", "symbol", "title", "desc",
+           "linearGradient", "radialGradient", "stop", "clipPath", "mask", "pattern"}
+SVG_NS = "http://www.w3.org/2000/svg"
+XLINK_NS = "http://www.w3.org/1999/xlink"
+URL = re.compile(r"url\(\s*['\"]?\s*([^)'\"\s]*)", re.I)
 
 
 def _rgb(colour):
@@ -40,30 +47,67 @@ def contrast(fg, bg):
     return round((a + 0.05) / (b + 0.05), 2)
 
 
-def svg_problems(path):
-    """What makes an SVG unsafe or unfit to inline: invalid XML, a script,
-    an event attribute, a link outside the file, no viewBox."""
+def _parse_svg(path):
+    """(root, problems) of an SVG file: root is None when it is refused
+    before parsing (a DOCTYPE, an entity, a processing instruction)."""
     path = Path(path)
     try:
-        root = ET.parse(path).getroot()
-    except (ET.ParseError, OSError) as e:
-        return [f"{path.name}: not a valid SVG ({e})"]
-    problems = []
+        raw = path.read_bytes()
+    except OSError as e:
+        return None, [f"{path.name}: not readable ({e})"]
+    head = raw.decode("utf-8", errors="replace")
+    if re.search(r"<!DOCTYPE|<!ENTITY", head, re.I):
+        return None, [f"{path.name}: a DOCTYPE or ENTITY is not allowed"]
+    if re.search(r"<\?(?!xml[\s?])", head):
+        return None, [f"{path.name}: a processing instruction is not allowed"]
+    try:
+        return ET.fromstring(raw), []
+    except ET.ParseError as e:
+        return None, [f"{path.name}: not a valid SVG ({e})"]
+
+
+def svg_problems(path):
+    """What makes an SVG unsafe or unfit to inline: invalid XML, a DOCTYPE,
+    an entity or processing instruction, an element outside plain drawing,
+    an event attribute, a link or url() outside the file, javascript:, no
+    viewBox."""
+    path = Path(path)
+    root, problems = _parse_svg(path)
+    if root is None:
+        return problems
     for el in root.iter():
         tag = el.tag.rsplit("}", 1)[-1]
-        if tag in FORBIDDEN:
+        ns = el.tag[1:].split("}", 1)[0] if el.tag.startswith("{") else ""
+        if tag not in ALLOWED or ns not in ("", SVG_NS):
             problems.append(f"{path.name}: <{tag}> is not allowed")
         for key, value in el.attrib.items():
             name = key.rsplit("}", 1)[-1]
+            low = value.lower().replace(" ", "")
             if name.lower().startswith("on"):
                 problems.append(f"{path.name}: event attribute {name} is not allowed")
-            if name == "href" and not value.startswith("#"):
+            if name in ("href", "src") and not value.startswith("#"):
                 problems.append(f"{path.name}: link outside the file ({value})")
+            if "javascript:" in low or "data:" in low:
+                problems.append(f"{path.name}: {name} carries a script or data URL")
+            for target in URL.findall(value):
+                if not target.startswith("#"):
+                    problems.append(f"{path.name}: url() outside the file ({target})")
     if root.tag.rsplit("}", 1)[-1] != "svg":
         problems.append(f"{path.name}: the root element is not <svg>")
     if "viewBox" not in root.attrib:
         problems.append(f"{path.name}: no viewBox, the logo will not scale")
     return problems
+
+
+def clean_svg(path):
+    """The SVG as parsed and serialised again (comments and declarations
+    gone), for inlining; call svg_problems first."""
+    root, problems = _parse_svg(path)
+    if root is None:
+        raise ValueError("; ".join(problems))
+    ET.register_namespace("", SVG_NS)
+    ET.register_namespace("xlink", XLINK_NS)
+    return ET.tostring(root, encoding="unicode")
 
 
 def _css_vars(text):

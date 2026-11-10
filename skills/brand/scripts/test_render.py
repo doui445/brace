@@ -205,9 +205,35 @@ class CreativeSlideTests(unittest.TestCase):
                     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" onload="x"/>',
                     '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1 1">'
                     '<use xlink:href="http://e.x/a.svg#a"/></svg>',
-                    '<svg><unclosed></svg>'):
+                    '<svg><unclosed></svg>',
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><?foo > <img src=x onerror=alert(1)> ?></svg>',
+                    '<!DOCTYPE svg [<!ENTITY a "> <img src=x onerror=alert(2)>">]><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"/>',
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><a><animate attributeName="href" values="javascript:alert(3)"/></a></svg>',
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><style>@import url(https://e.x/a.css);</style></svg>'):
             with self.subTest(bad=bad), self.assertRaises(render.RenderError):
                 render.inline_svg(self.write("bad.svg", bad))
+
+    def test_inlined_svg_is_the_parsed_tree(self):
+        svg = self.write("c.svg", '<?xml version="1.0"?><!-- note --><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><circle r="4"/></svg>')
+        out = render.inline_svg(svg)
+        self.assertTrue(out.startswith("<svg"), out)
+        self.assertNotIn("note", out)
+        self.assertNotIn("ns0:", out)
+
+    def test_non_utf8_svg_is_a_clean_error_or_inlined(self):
+        p = self.tmp / "l.svg"
+        p.write_bytes('<?xml version="1.0" encoding="iso-8859-1"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><title>caf\xe9</title></svg>'.encode("latin-1"))
+        self.assertIn("caf", render.inline_svg(p))
+
+    def test_image_src_follows_the_output(self):
+        # The same Markdown rendered as the draft and as the final shows the same image.
+        src = self.tmp / "agents" / "deck.md"
+        src.parent.mkdir()
+        src.write_text("---\ntitle: T\n---\n::: mood\ntitle: M\n@image\nsrc: ../sources/a.png\ncaption: c\n", encoding="utf-8")
+        for dst in (self.tmp / "pres" / "draft.html", self.tmp / "pres" / "05-creation" / "d.html"):
+            self.assertEqual(render.main(["deck", str(src), str(dst)]), 0)
+            m = re.search(r'<img src="([^"]+)"', dst.read_text(encoding="utf-8"))
+            self.assertEqual((dst.parent / m.group(1)).resolve(), (self.tmp / "sources" / "a.png").resolve())
 
     def test_logo_missing_file(self):
         with self.assertRaises(render.RenderError):

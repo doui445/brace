@@ -146,6 +146,8 @@ printf '# S\n\n- held: 2026-01-01 10:00\n' > "$M/docs/brace/brand/SESSIONS.md"
 has "$(run "$M" claude clear)" "references/legacy-1.1/" "no plan line -> a mission from before plans, finished as 1.1"
 printf '# S\n\n- plan: contact, framing, strategy, creation, refinement, delivery\n' > "$M/docs/brace/brand/SESSIONS.md"
 hasnt "$(run "$M" claude clear)" "legacy" "1.2 plan -> no legacy note"
+printf '# S\n\n- plan: contact, framing, strategy, platform, delivery\n\n## Later\n\n- plan: delivery\n' > "$M/docs/brace/brand/SESSIONS.md"
+has "$(run "$M" claude clear)" "references/legacy-1.1/" "1.1 plan narrowed later (no platform in the last line) -> still 1.1"
 proj "$M" "brand_stage: interview
 "
 has "$(run "$M" claude startup)" "stage interview" "a 1.0 stage -> resume too"

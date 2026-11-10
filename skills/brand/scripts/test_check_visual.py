@@ -52,10 +52,24 @@ class SvgTests(unittest.TestCase):
                     '<use xlink:href="http://e.x/a.svg#a"/></svg>',
             "foreign": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><foreignObject/></svg>',
             "xml": '<svg><unclosed></svg>',
+            "pi": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><?foo > <img src=x onerror=alert(1)> ?></svg>',
+            "doctype": '<!DOCTYPE svg [<!ENTITY a "> <img src=x onerror=alert(2)>">]><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"/>',
+            "animate": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><a><animate attributeName="href" values="javascript:alert(3)"/></a></svg>',
+            "style-import": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><style>@import url(https://e.x/a.css);</style></svg>',
+            "embed": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><embed src="https://e.x/a"/></svg>',
+            "url-attr": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect fill="url(https://e.x/a#b)"/></svg>',
         }
         for why, text in bad.items():
             with self.subTest(why):
                 self.assertTrue(check_visual.svg_problems(self.svg(text)))
+
+    def test_gradient_reference_is_fine(self):
+        text = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><defs><linearGradient id="g">'
+                '<stop offset="0" stop-color="#000"/></linearGradient></defs><rect fill="url(#g)"/></svg>')
+        self.assertEqual(check_visual.svg_problems(self.svg(text)), [])
+
+    def test_xml_declaration_is_fine(self):
+        self.assertEqual(check_visual.svg_problems(self.svg('<?xml version="1.0" encoding="UTF-8"?>' + GOOD_SVG)), [])
 
     def test_internal_href_is_fine(self):
         text = ('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1 1">'

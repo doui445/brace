@@ -46,7 +46,7 @@ everywhere.
 The `palette` slide prints each colour's code and its contrast on white
 and on black. The `logo` slide inlines the SVG; an unsafe or invalid SVG
 stops the render (fix it with the designer). An `@image` is an
-exploration image (`brand/sources/`, out of git): where it is missing (a
+exploration image (`brand/sources/`, out of git; `src:` relative to the deck's Markdown, like `svg:`): where it is missing (a
 clone), the slide shows a neutral placeholder instead. A front matter
 `theme:` (a path to the brand's `brand.css`, relative to the Markdown)
 dresses the deck in the client's identity, after the agency's style.

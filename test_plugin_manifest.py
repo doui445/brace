@@ -146,6 +146,17 @@ class PluginManifestTests(unittest.TestCase):
         # docs/brace/agents/ holds BRACE agents' per-project folders, never a skill.
         self.assertFalse((REPO / "skills" / "agents").exists())
 
+    def test_legacy_missions_have_their_own_map(self):
+        # A 1.1 mission is finished as 1.1: the README maps its phases to the
+        # archived references, and every file it names is there.
+        import re
+        legacy = REPO / "skills" / "brand" / "references" / "legacy-1.1"
+        readme = (legacy / "README.md").read_text(encoding="utf-8")
+        self.assertIn("references/legacy-1.1/<name>.md", readme)
+        for name in set(re.findall(r"legacy-1\.1/([a-z-]+\.md)", readme)):
+            self.assertTrue((legacy / name).is_file(), name)
+        self.assertIn("references/legacy-1.1/README.md", (REPO / "skills" / "brand" / "SKILL.md").read_text(encoding="utf-8"))
+
     def test_brand_keys_in_every_language(self):
         # Review Focus 5: a key in one language only shows raw in the other.
         i18n = REPO / "skills" / "track" / "references" / "i18n"

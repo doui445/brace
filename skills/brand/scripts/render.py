@@ -420,8 +420,7 @@ def inline_svg(path):
     problems = [p for p in check_visual.svg_problems(path) if "viewBox" not in p]
     if problems:
         raise RenderError("; ".join(problems))
-    text = path.read_text(encoding="utf-8")
-    return re.sub(r"<\?xml[^>]*\?>|<!DOCTYPE[^>]*>|<!--.*?-->", "", text, flags=re.S).strip()
+    return check_visual.clean_svg(path)
 
 
 def _ref(b):
@@ -443,7 +442,16 @@ def _swatch(value):
             f'      <span>{on_white}:1 / {on_black}:1</span></div>\n')
 
 
-def _slide(s, n, total, footer, t=None, base=None):
+def _image_src(src, base, out):
+    """An exploration image's path: written relative to the deck's Markdown
+    (base), linked relative to the output (out), so the draft and the final
+    deck both find it. A URL or a deck rendered in memory keeps it as is."""
+    if base is None or out is None or re.match(r"[a-z]+:", src, re.I) or src.startswith("/"):
+        return src
+    return Path(os.path.relpath((Path(base) / src).resolve(), Path(out).resolve())).as_posix()
+
+
+def _slide(s, n, total, footer, t=None, base=None, out=None):
     i = lambda k: inline(s.get(k), "b")  # noqa: E731
     out = _meta(s)
     if s.kind == "cover":
@@ -519,7 +527,7 @@ def _slide(s, n, total, footer, t=None, base=None):
             else:
                 tiles += ('    <figure class="explore">'
                           f'<span class="ph">{placeholder}</span>'
-                          f'<img src="{esc(b.get("src"))}" alt="{placeholder}" onerror="this.hidden=true">'
+                          f'<img src="{esc(_image_src(b.get("src"), base, out))}" alt="{placeholder}" onerror="this.hidden=true">'
                           f'<figcaption>{inline(b.get("caption"), "b")}</figcaption></figure>\n')
         out += ('  <div class="head">\n'
                 f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n'
@@ -563,7 +571,7 @@ SCRIPT = """<script>
 """
 
 
-def render_deck(text, css="deck.css", base=None, theme=None):
+def render_deck(text, css="deck.css", base=None, theme=None, out=None):
     meta, slides = parse_deck(text)
     lang = meta.get("lang", "en")
     if not re.fullmatch(r"[a-z]{2}", lang):
@@ -571,7 +579,7 @@ def render_deck(text, css="deck.css", base=None, theme=None):
     total = len(slides)
     dots = "".join(f'<a href="#s{n}"></a>' for n in range(1, total + 1))
     t = catalogue(lang)
-    body = "\n".join(_slide(s, n, total, meta.get("footer", ""), t, base) for n, s in enumerate(slides, 1))
+    body = "\n".join(_slide(s, n, total, meta.get("footer", ""), t, base, out) for n, s in enumerate(slides, 1))
     return (
         "<!DOCTYPE html>\n"
         f'<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
@@ -608,7 +616,7 @@ def main(argv):
             if argv[0] == "doc":
                 out = render_doc(text, css_href(dst, "doc.css"), theme=theme)
             else:
-                out = render_deck(text, css_href(dst, "deck.css"), base=src.parent, theme=theme)
+                out = render_deck(text, css_href(dst, "deck.css"), base=src.parent, theme=theme, out=dst.parent)
             dst.parent.mkdir(parents=True, exist_ok=True)
             ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")

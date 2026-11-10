@@ -222,9 +222,9 @@ starts, not before.
   gets an appointment, even the same day. The team takes the time it
   needs between meetings: the agency optimises the result and the tokens,
   never the clock.
-- **A 1.1 mission** (its `- plan:` has `platform`, or there is no `- plan:`
-  line) is finished entirely as 1.1: its meetings, documents and folders,
-  following `references/legacy-1.1/`. Never mix the two.
+- **A 1.1 mission** (any `- plan:` line has `platform`, or there is no
+  `- plan:` line) is finished entirely as 1.1: its meetings, documents and
+  folders, following `references/legacy-1.1/README.md`. Never mix the two.
 - The client changes the scope during the mission: propose the remaining
   plan in a sentence and write a new `- plan:` line; what is validated
   stays validated.
