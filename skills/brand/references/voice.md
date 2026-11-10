@@ -1,6 +1,6 @@
 # Voice, and voice drift
 
-Read by `references/adjustments.md` for the content of `VOICE.md`, and
+Read by `references/backstage.md` (the editorial guide, before the refinement) for the content of `VOICE.md`, and
 whenever a public text is checked against the voice.
 
 ## Writing the voice (`VOICE.md`)

@@ -61,22 +61,26 @@ after.
 2. **The extent, as a decision**, a `reco` slide: a refresh (keep the
    core, modernise), a repositioning, or a new name, one `item` each, the
    agency's recommendation and why; the client decides.
-3. **The routes**, each with a `compare` slide: today next to tomorrow
-   (promise, audience, tagline, tone, name).
+3. **The territories**, each with a `compare` slide: today next to
+   tomorrow (promise, audience, stance, name).
 
-The minutes record the extent chosen. A new name: the analyst checks its
-availability in the next backstage (a check, never legal advice), and
-`references/name.md` applies.
+The minutes record the extent chosen. The platform is written and
+validated at the end of this meeting, as in any 1.2 mission
+(`references/presentation.md`): the documents the audit found dated (as
+the extent decided), **and every brand document that was never made** (a
+brand from 1.0 has no brief, minutes, benchmark, personas, routes,
+platform, editorial guide or manifesto as documents) are written by the
+team before the creative meeting. A document that still holds is kept,
+never redone. A new name: `references/name.md` applies (the naming
+meeting).
 
-## 3. Brand platform
+## 3. Creative routes and refinement
 
-`references/adjustments.md`. The team writes, between meetings 2 and 3:
-the documents the audit found dated (as the extent decided), **and every
-brand document that was never made** (a brand from 1.0 has no brief,
-minutes, benchmark, personas, routes, platform, editorial guide or
-manifesto as documents). A document that still holds is kept, never
-redone. They are presented together at the platform meeting, where the
-feedback is taken at once (`references/adjustments.md`).
+`references/creation.md` and `references/refinement.md`, with the current
+look audited: each route's look stands next to today's (a `compare` slide
+or the old and the new side by side, never only the new). What people
+already recognise and the client keeps (a colour, a mark) is carried into
+every route.
 
 ## 4. Delivery
 

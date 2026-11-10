@@ -31,6 +31,13 @@ person pivots.
   anything else; one role per format. An owned medium (a site, a
   newsletter) comes last.
 
+## The look
+
+Same path as any brand. The "logo" is often a monogram or the name set in
+a well chosen typeface; the applications are the person's profiles, an
+email signature, a personal site. A personal brand under the person's own
+name is never sent to a trademark filing.
+
 ## Keep in mind
 
 One personal brand at a time, and a long-term investment.

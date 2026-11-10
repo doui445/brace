@@ -1,51 +1,23 @@
-# Brand platform
+# Adjustments and feedback
 
-Read by `SKILL.md` once a route is chosen (`brand_stage: adjustments`).
-Our team writes the platform's documents together in the backstage that
-follows the strategic recommendation (`references/backstage.md`); the
-platform meeting presents them together, in one deck.
+Read by `SKILL.md` and by every meeting, whenever the client gives
+feedback on what we presented. A 1.1 mission (its plan has `platform`)
+holds its platform meeting as `references/legacy-1.1/adjustments.md` says.
 
-## The documents, in this order
+## The rounds
 
-1. **Brand platform** (`platform`, by the strategist): feeds
-   `FOUNDATIONS.md` (content in `references/foundations.md`) and
-   `STRATEGY.md` (content in `references/strategy.md`).
-2. **Editorial guide** (`editorial-guide`, by the copywriter): feeds
-   `VOICE.md` (content in `references/voice.md`).
-3. **Manifesto** (`manifesto`, by the copywriter): feeds the brand story
-   in `FOUNDATIONS.md`.
-4. **Name**, only when one is needed (no name yet, a working name, a
-   rebrand): `references/name.md`.
-
-A personal brand adds the parts listed in `references/personal.md`.
-
-## The deck
-
-One deck presents the platform: the brand platform's essentials and the
-manifesto as slides (their Markdown is the source, `presented` in
-`references/documents.md`); the editorial guide is a read document, in
-the client space, and the deck says what it settles in one slide. The
-name, when one is needed, has its own slides.
-
-## The meeting
-
-The five parts of `SKILL.md` (a meeting):
-
-1. **Welcome and a short recap.**
-2. **The presentation**: open the deck, say how to read it and what to
-   look at. Nothing restated in the console.
-3. **The discussion**: the decisions to take, as selectable choices where
-   they fit (keep the platform as it is, change something, say what is
-   missing), never document by document. A line the client cannot answer
-   stays "to fill in". Invite all the feedback at once.
-4. **The recap, the next appointment, goodbye**: close the meeting
-   (`SKILL.md`, closing a meeting). The batch of questions for the
-   delivery includes the **test choice** (real test, checked personas, not
-   now; `references/delivery.md` says what each is), as a selectable
-   choice: it takes the client's time, so it is theirs.
-5. **Our team gets to work**: once the client says yes, write the brand
-   files each document feeds (the project's memory that the skills read),
-   with a link to the document. Set `brand_stage: delivery`.
+- **One round of adjustments is included after each presentation**, a
+  second on request (the proposal says so). It happens at a distance: the
+  client reads in their space whenever they like and tells the account
+  director what they change; the teammate concerned reworks it; the
+  client space is rendered again and the notification says it is ready.
+  No meeting for it.
+- **A new proposal** is a meeting of its own: when no territory, no name
+  or no route suits, dig into why, then set an appointment for a new
+  proposal. Say what it costs before setting it (the proposal announced
+  it). The minutes record the reframing.
+- **Nothing is built on a document the client has not validated**, except
+  the minutes, which only record what was decided in the meeting.
 
 ## Feedback
 
@@ -59,11 +31,10 @@ logic, its arc and the brand. Never the client's raw words pasted in.
   meeting. A teammate works on it in the background while the discussion
   goes on; the updated document comes back with the change highlighted,
   never a new deck.
-- **A big change** (a direction rejected, a territory, a set of names):
-  never improvised. Dig into why (what is missing, what felt off), reframe
-  in the console with the questions in one batch, commit to one or more
-  new directions, and set a new presentation. The minutes record the
-  reframing. This uses the adjustment round included in the proposal.
+- **A big change** (a direction rejected, a territory, a set of names,
+  the routes): never improvised. Dig into why (what is missing, what felt
+  off), reframe in the console with the questions in one batch, commit to
+  one or more new directions, and set a new proposal meeting (above).
 
 Whatever changes is checked inside the agency first (the analyst when a
 fact is involved, the creative director's review) before the client sees

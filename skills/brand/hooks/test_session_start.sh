@@ -140,6 +140,12 @@ printf '# S\n\n## 2026-10-01 Mission\n\n- mission: new\n\n## 2026-11-05 Rebrand\
 has "$(run "$M" claude clear)" "This is a rebrand: follow references/rebrand.md" "last mission line rebrand -> rebrand named"
 printf '# S\n\n- mission: rebrand\n\n- mission: new\n' > "$M/docs/brace/brand/SESSIONS.md"
 hasnt "$(run "$M" claude clear)" "rebrand" "last mission line not rebrand -> plain resume"
+printf '# S\n\n- plan: contact, framing, strategy, platform, delivery\n' > "$M/docs/brace/brand/SESSIONS.md"
+has "$(run "$M" claude clear)" "references/legacy-1.1/" "1.1 plan (platform) -> finished as 1.1"
+printf '# S\n\n- held: 2026-01-01 10:00\n' > "$M/docs/brace/brand/SESSIONS.md"
+has "$(run "$M" claude clear)" "references/legacy-1.1/" "no plan line -> a mission from before plans, finished as 1.1"
+printf '# S\n\n- plan: contact, framing, strategy, creation, refinement, delivery\n' > "$M/docs/brace/brand/SESSIONS.md"
+hasnt "$(run "$M" claude clear)" "legacy" "1.2 plan -> no legacy note"
 proj "$M" "brand_stage: interview
 "
 has "$(run "$M" claude startup)" "stage interview" "a 1.0 stage -> resume too"

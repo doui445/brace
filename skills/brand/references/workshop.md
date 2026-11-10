@@ -51,7 +51,16 @@ recommendation. Never an open question on its own.
    the project, with your recommendation.
 8. **What you never want**: a tone, a word, a cliche of the market. Offer
    the cliches you spotted.
-9. **The brand's languages**, always asked, in one question: the brand's
+9. **When the look is in scope**: the brands they like and dislike *to
+   look at* (the visual side of 6 and 8), what must stay (a logo, colours,
+   a typeface), and whether the brand will be printed (it decides the
+   print colour codes). In a rebrand, the current look goes to the audit.
+10. **How we will know it works**: two or three success criteria, in the
+   client's words (for example, a client trusts it at first glance; it
+   never looks like a productivity app). Offer criteria drawn from 2 and
+   7. They come back at the creative meeting: the client judges the
+   routes by them.
+11. **The brand's languages**, always asked, in one question: the brand's
    **main language** (what the public reads), named as such, pre-filled
    with the language of the project's front page or public texts; and any
    **secondary languages**, now or later (`SKILL.md`, languages). The
@@ -82,7 +91,10 @@ place.
 
 ## Closing the workshop
 
-1. Re-render the completed brief and get a yes.
+1. Re-render the completed brief and get a yes **now, before leaving**:
+   nothing is built on a brief that is not validated. A correction is
+   made on the spot. A client who leaves before saying yes finds the
+   brief first at their next session.
 2. Write `docs/brace/brand/BRIEF.md` (the `brand.brief.*` headings) and the
    `SESSIONS.md` entry; a new `- brand:` line if the name changed.
 3. Close the meeting (`SKILL.md`, closing a meeting): the questions the

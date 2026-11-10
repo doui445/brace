@@ -1,7 +1,8 @@
 # Strategic recommendation
 
-Read by `SKILL.md` to build a deck, and at meeting 2 (`brand_stage:
-presentation`).
+Read by `SKILL.md` to build any deck (the syntax below), and at the
+strategy meeting (`brand_stage: presentation`). A 1.1 mission follows
+`references/legacy-1.1/presentation.md` for the meeting itself.
 
 ## The deck: Markdown, rendered
 
@@ -16,8 +17,10 @@ python3 "<skill>/scripts/render.py" deck \
 The model is `assets/example.md` (its rendering is `assets/example.html`):
 read it before writing a deck. Work on `draft.html`; after the creative
 director's review, render the final version as
-`presentations/<YYYY-MM-DD>-<meeting>.html` (`strategy`, `adjustments`,
-`delivery`). Keep every final version; overwrite only the draft.
+`presentations/<NN-phase>/<YYYY-MM-DD>-<meeting>.html`, in the folder of
+its meeting (`03-strategy`, `04-naming`, `05-creation`, `06-refinement`,
+`07-delivery`; `references/documents.md`). Keep every final version;
+overwrite only the draft.
 
 **The syntax.** A front matter (`title`, `lang` the working language,
 `footer`), then one slide per `::: <type>` line, then `field: value` lines.
@@ -35,6 +38,18 @@ everywhere.
 | `refs` | `meta`, `title`, `intro`, `foot` | `@ref` (`mark`, `title`, `text`, `take`, `src`) |
 | `reco` | `meta`, `eyebrow`, `title`, `lede`, `item` (repeat), `next` (label, pipe, text), `foot` | |
 | `doc` | `meta`, `title`, `intro`, `ask`, `foot`, then free Markdown | |
+| `palette` | `meta`, `title`, `intro`, `swatch` (repeat: hex, pipe, name, pipe, role: `main`, `accent` or `neutral`), `foot` | |
+| `type` | `meta`, `title`, `pair` (display font, pipe, text font), `sample`, `why`, `foot` | |
+| `logo` | `meta`, `title`, `svg` (a path, relative to the deck's Markdown), `why`, `foot` | |
+| `mood` | `meta`, `title`, `intro`, `foot` | `@ref`, `@image` (`src`, `caption`) |
+
+The `palette` slide prints each colour's code and its contrast on white
+and on black. The `logo` slide inlines the SVG; an unsafe or invalid SVG
+stops the render (fix it with the designer). An `@image` is an
+exploration image (`brand/sources/`, out of git): where it is missing (a
+clone), the slide shows a neutral placeholder instead. A front matter
+`theme:` (a path to the brand's `brand.css`, relative to the Markdown)
+dresses the deck in the client's identity, after the agency's style.
 
 Every slide type also takes `note` (repeat): `note: <first name> | <text>`,
 a short line signed by the teammate who would present that slide, so the
@@ -54,21 +69,24 @@ fix the Markdown.
 
 - The frame (cover, recommendation, documents) is in the agency's house
   style, `deck.css` as it is.
-- The mockups show each route's words on real supports (project page,
-  post, home page, profile) in a neutral layout; the route's own visual
-  identity comes in a later release.
+- The mockups show the words on real supports (project page, post, home
+  page, profile). In the creative deck, each route's look dresses them
+  (`references/creation.md`).
 
 ## The strategy deck
 
-Order of slides, one route at a time:
+The market, the audience and the territories, then our recommendation;
+one or two slides per section:
 
-1. `cover`: the client's own sentence from the brief, and the routes to
-   come.
-2. For each route: `route` (positioning, who it is for, against whom, the
-   risk, the tagline and the one-liner), `context` (two mockups:
-   `laptop` with `readme` or `hero`, `phone` with `post` or `profile`),
-   `refs` (the analyst's references).
-3. `reco`: the agency's recommendation, and the weighing of the client's
+1. `cover`: the client's own sentence from the brief, and the territories
+   to come.
+2. The category and the competitors, in short (the benchmark's essentials;
+   a `doc` or `compare` slide), then the audience (the personas as cards).
+   For a rebrand, the audit first (`references/rebrand.md`).
+3. For each territory: `route` (the stance, who it is for, against whom,
+   the risk; no tagline: words and look come at the creative meeting),
+   `refs` (the analyst's references, when they help).
+4. `reco`: the agency's recommendation, and the weighing of the client's
    tastes against the target, said plainly ("You like loud brands; your
    target trusts calm ones. We recommend calm, and here is what we kept
    from your taste.").
@@ -102,14 +120,28 @@ recommendation:
    options: route 1, route 2, a mix of both, or another round. Point at
    what the client said they never wanted, and how the recommended route
    avoids it. Invite all the feedback at once.
-4. **The recap, the next appointment, goodbye**: the client picks one
-   route, combines elements of several (a small change, settled now), or
-   rejects the direction (a big change: `references/adjustments.md`,
-   feedback). Close the meeting (`SKILL.md`, closing a meeting): the
-   questions for the platform phase, the minutes (the route chosen, the
-   routes set aside and why, also in `docs/brace/brand/DECISIONS.md`), the
-   next appointment.
-5. **Our team gets to work**: set `brand_stage: adjustments`.
+4. **The recap, the platform, the next appointment, goodbye**: the client
+   picks one territory, combines elements of several (a small change,
+   settled now), or rejects the direction (a big change:
+   `references/adjustments.md`, a new proposal). Then, in this order:
+   - **The platform, written now.** While you recap what was decided and
+     ask the questions for the next phase (`references/backstage.md`),
+     `strategist` writes the `platform` (purpose, personality,
+     positioning, promise, proofs, and the compass: five to seven
+     questions the brand asks itself before each choice) and
+     `copywriter` its last page, the manifesto, in parallel. Everything in
+     it was just decided: nothing is reopened. Render it (a read document,
+     phase `strategy`), open it, and get a yes **before the client leaves**:
+     the creative work is built on it. A word to change is changed on the
+     spot. A client who leaves before saying yes finds it first at their
+     next session.
+   - On the yes, write `FOUNDATIONS.md` and `STRATEGY.md` from it
+     (`references/foundations.md`, `references/strategy.md`), with a link.
+   - Close the meeting (`SKILL.md`, closing a meeting): the minutes (the
+     territory chosen, the ones set aside and why, also in
+     `docs/brace/brand/DECISIONS.md`), the next appointment (`naming` when
+     a name is needed, else `creation`).
+5. **Our team gets to work**: set `brand_stage: backstage`.
 
 Decks speak like the agency: verbs and the active voice ("We keep", never
 a bare "Kept"), and the team's short signed notes (`note:`) on a few

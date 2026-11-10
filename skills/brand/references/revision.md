@@ -40,12 +40,16 @@ hook line gives: it silences the reminder for 30 days.
 3. Review the indicator and the feedback received: one indicator, not a
    dashboard.
 4. Check the touchpoints list: places added, places gone.
-5. Leave `FOUNDATIONS.md` alone, unless the review shows a rebrand is
+5. When the brand has its look (`VISUAL.md`): is the logo used as the
+   guidelines say, do the colours and type hold on the new touchpoints,
+   does anything need a variant (a new format, a small size)? Run
+   `scripts/check_visual.py brand "<root>/brand"` again.
+6. Leave `FOUNDATIONS.md` alone, unless the review shows a rebrand is
    needed.
-6. If `STRATEGY.md` or `FOUNDATIONS.md` changed, re-read `VOICE.md` and
+7. If `STRATEGY.md` or `FOUNDATIONS.md` changed, re-read `VOICE.md` and
    propose the lines to change. Show every change rendered, never as
    Markdown.
-7. Set `brand_reviewed` to today.
+8. Set `brand_reviewed` to today.
 
 ## Rebrand
 

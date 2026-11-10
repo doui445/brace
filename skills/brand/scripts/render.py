@@ -5,6 +5,7 @@ Usage:
   render.py doc  <src.md> <dst.html>   a written document (benchmark, minutes...)
   render.py deck <src.md> <dst.html>   a presentation (see references/presentation.md)
   render.py space <project-root>       the client space, docs/brace/brand/index.html
+  render.py sources <project-root>     keep brand/sources/ out of git (info/exclude)
 
 Every render copies deck.css, doc.css and fonts/ next to its output when
 they are missing. Exit 0 rendered, 1 bad input (message on stderr).
@@ -611,6 +612,9 @@ def main(argv):
             dst.parent.mkdir(parents=True, exist_ok=True)
             ensure_assets(assets_dir(dst))
             dst.write_text(out, encoding="utf-8")
+            return 0
+        if len(argv) == 2 and argv[0] == "sources":
+            exclude_sources(Path(argv[1]))
             return 0
         if len(argv) == 2 and argv[0] == "space":
             root = Path(argv[1])

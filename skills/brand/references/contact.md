@@ -64,8 +64,9 @@ agency they hired. Read what exists before scoping anything.
   as input.
 - **The scope follows from it**, proposed, never offered as a menu; the
   client accepts or corrects it:
-  - nothing exists: everything this release does (strategy, platform,
-    delivery);
+  - nothing exists: the whole mission (strategy, the name if one is
+    needed, the creative routes, the refinement when the look is in scope,
+    the delivery);
   - a solid and complete strategy: the voice and the words only, or
     nothing to do (say so honestly);
   - an incomplete strategy: say once what is missing and what that risks
@@ -75,15 +76,25 @@ agency they hired. Read what exists before scoping anything.
   - the client wants one part only (someone they know does the rest): do
     what they need, and point the way for the rest (a creative brief at
     delivery, `references/delivery.md`).
-- **The visual identity** is not in this release. Existing visual elements
-  are noted (`- existing: visual ...`) and kept as a constraint (a logo
-  the client loves shapes the strategy and the voice; write it in the
-  brief). If the client asks for a visual identity, say it is coming soon
-  at the agency and point the way (the creative brief); never an internal
-  reason.
+- **The look of the brand** (logo, colours, type, applications) is part
+  of the mission when the client needs it. Existing visual elements are
+  noted (`- existing: visual ...`): a logo the client keeps takes the look
+  out of scope (the creative routes then work on words only) or stays a
+  constraint the routes respect; write it in the brief.
+- **"I just want a logo."** Never a logo on its own: a logo without the
+  strategy behind it says nothing and is worth little. Say so warmly, in
+  your own words, and propose a mission sized to the project (a short
+  framing, a light strategy, the creative routes, the refinement, the
+  delivery).
+- **A brand delivered by BRACE 1.1, without its look**: the platform
+  exists, so propose a mission for the look only (first contact with the
+  tools, a short visual framing, the creative routes, the refinement, the
+  delivery); never redo the strategy. Say plainly it is the first time the
+  agency runs that shorter mission.
 - **Other cases:**
   1. **One piece only** (a name, a tagline) within a mission: the plan is
-     `contact, framing`, then the piece through a reduced platform phase.
+     `contact, framing`, then the meeting the piece belongs to (`naming`
+     for a name, `creation` on words only for a tagline).
      Without a mission, the one-off request (`SKILL.md`) is the right path.
   2. **The brand is done and looked after elsewhere** (an agency still
      handles it): no mission; offer to keep watch (the voice on public
@@ -110,6 +121,35 @@ agency they hired. Read what exists before scoping anything.
       repositories): not in this release; say so and work in the open
       project.
 
+## Your tools (when the look is in scope)
+
+After presenting the agency and listening to the need, and before the
+proposal, the account director says what is particular here: our team
+works on the client's own computer, so with the client's own tools. Then
+she shows what can serve the look, **by need, in the client's words**,
+from `references/tools.md` (only what works in this host tool; what is
+actually plugged in is read from the session's tools, never assumed):
+
+- finding inspiration;
+- imagining visuals (mood images, first logo sketches);
+- drawing the logo and the supports;
+- creating a typeface (only if the client already knows how; else free or
+  bought fonts);
+- none of these: the agency does everything in code (clean, simpler).
+
+Then one open question: what the client has, masters, wants us to drive,
+or plans to get (a subscription they own but have not installed counts).
+The agency recommends a **mode per need**, and modes mix: we drive your
+tool; you do it and we direct (you master the tool); or in code. Say what
+each costs beyond the agency: more tokens, and credits or a subscription
+on the tool's side. Documents, presentations and the client space are
+always made by the agency in code; the choice is only about the look.
+
+Plugging a tool in may need the client to restart their tool once: never
+change their configuration yourself. Say what to install or switch on,
+in their words, right after the proposal is accepted; the session picks up
+where it stopped.
+
 ## The proposal
 
 A client document (`references/documents.md`, file name `proposal`, phase
@@ -117,6 +157,8 @@ A client document (`references/documents.md`, file name `proposal`, phase
 rendered and shown. What it carries, written as a document, in full
 sentences:
 
+- **What we understood**: the project and its goals, in a few sentences,
+  in the client's words.
 - **A short introduction to how we work**, before the plan: what a meeting
   is with us (a presentation, then a conversation, about 20 to 30
   minutes) and what happens between two meetings (our team works, the
@@ -126,15 +168,22 @@ sentences:
 - **The plan**: the meetings of this mission's phases (`SKILL.md`, the
   mission), each in one line with its rough length and what it asks of the
   client. The brand's main language is named as such in its line.
+- **The tools** (when the look is in scope): the mode chosen for each
+  need, and what it costs on the tool's side.
 - **The adjustment rounds**: one round after each presentation, a second
-  on request.
+  on request. If a whole set of territories, names or routes does not
+  suit, a meeting with a new proposal is added, and its cost said then.
 - **The time**: the client's own time over the mission, and that our team
-  works about a quarter of an hour between two meetings.
+  takes the time it needs between two meetings (the first contact and the
+  workshop can follow each other at once; every other meeting gets an
+  appointment).
 - **The budget**: a confident range, scaled to the project and the number
   of rounds, from about 15 to 40 million tokens read; and the agency's
   commitment, in its own words: we do everything to keep the work on your
   brand light, without taking anything from its quality. Never an internal
   reason for the figure (how it was measured, a first time, the cache).
+  When the look is in scope, add `brand.cost.visual_unmeasured` in your
+  own words: no figure is invented for it.
 - **The client space**, introduced once: where it is (a shortcut at the
   project's root), how to open it, what it is for (everything we deliver,
   the minutes, the next appointment, and their brand once delivered).
@@ -147,11 +196,13 @@ choice. Yes:
 1. Write the `SESSIONS.md` entry (the proposal accepted, a link to the
    document, `- held:` with the time of this first contact and
    `- phase: contact`) with `- plan:` (the phases, machine values, for example
-   `- plan: contact, framing, strategy, platform, delivery`), and set
+   `- plan: contact, framing, strategy, naming, creation, refinement, delivery`), and set
    `brand_stage: brief`, so that the agency comes back on its own if the
    client leaves now.
 2. Render the client space (`render.py space "<root>"`): it makes the
    shortcut at the project's root.
-3. Propose a day and a time for the workshop, or now if they have an hour
-   (`SKILL.md`, the next appointment). The workshop starts in the same
-   session when the client wants: `references/workshop.md`.
+3. Tools to plug in, if any: say how, now (above).
+4. Ask whether we start the workshop right away or set an appointment
+   (the only two meetings that may follow each other at once). The
+   workshop starts in the same session when the client wants:
+   `references/workshop.md`.

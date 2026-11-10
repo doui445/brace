@@ -1,6 +1,6 @@
 # Strategy
 
-Read by `references/adjustments.md`. Describes the content of
+Read by `references/presentation.md` (the platform, written at the end of the strategy meeting). Describes the content of
 `STRATEGY.md`, drafted from the chosen route, shown rendered, written once
 the user says yes.
 

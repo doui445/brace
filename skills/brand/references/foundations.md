@@ -1,6 +1,6 @@
 # Foundations
 
-Read by `references/adjustments.md`. Describes the content of
+Read by `references/presentation.md` (the platform, written at the end of the strategy meeting). Describes the content of
 `FOUNDATIONS.md`, drafted from the chosen route and the brief, shown
 rendered, written once the user says yes.
 

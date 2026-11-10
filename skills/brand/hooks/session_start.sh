@@ -59,6 +59,12 @@ case "$STAGE" in
     # The last "- mission:" line says what kind of mission this is.
     MISSION="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | sed -n 's/^- mission:[[:blank:]]*\([a-z]*\)[[:blank:]]*$/\1/p' | tail -1)"
     [ "$MISSION" = "rebrand" ] && LINE="$LINE This is a rebrand: follow references/rebrand.md."
+    # A mission planned before 1.2 (its plan has platform, or no plan line)
+    # is finished entirely as 1.1.
+    PLAN="$(tr -d '\r' 2>/dev/null < "$ROOT/docs/brace/brand/SESSIONS.md" | sed -n 's/^- plan:[[:blank:]]*//p' | tail -1)"
+    case " $PLAN " in
+      "  "|*[!a-z]platform[!a-z]*) LINE="$LINE This mission started before 1.2: finish it as 1.1, following references/legacy-1.1/." ;;
+    esac
     echo "$LINE"
     exit 0 ;;
 esac

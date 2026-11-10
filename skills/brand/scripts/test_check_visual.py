@@ -124,6 +124,15 @@ class ExcludeSourcesTests(unittest.TestCase):
             text = (root / ".git" / "info" / "exclude").read_text(encoding="utf-8")
             self.assertEqual(text.count("/brand/sources/"), 1)
 
+    def test_sources_command(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            subprocess.run(["git", "init", "-q", str(root)], check=True)
+            r = subprocess.run([sys.executable, str(HERE / "render.py"), "sources", str(root)],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("/brand/sources/", (root / ".git" / "info" / "exclude").read_text(encoding="utf-8"))
+
     def test_exclude_sources_outside_git(self):
         with tempfile.TemporaryDirectory() as d:
             render.exclude_sources(Path(d))
