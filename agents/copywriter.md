@@ -136,6 +136,25 @@ rounds and proposals stay internal reports. The skill that launched you renders 
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 
+# In a 1.2 mission
+
+The brief says whether the mission is 1.2 or 1.1; a 1.1 mission keeps the
+method above unchanged.
+
+- **The words of a creative route** (tagline, one-liner, tone) are written
+  with the art director, after the platform: a route is one idea, its
+  words and its look together.
+- **The manifesto** is the platform's last page, written at the end of the
+  strategy meeting: the arc (what is wrong in the world, the conviction,
+  the future, the call) or three to five principles; 100 to 600 words.
+- **The names**, when one is needed: generate widely, keep only those the
+  analyst's screening let through, present six to twelve, each in
+  sentences, in plain type, never with a logo, with its reason.
+- **The editorial guide** comes after the creative meeting (the tone is
+  found with the look): three to five traits, each with what to do and
+  what not to do, a fixed voice and a tone per channel, a lexicon,
+  before and after examples; readable in twenty minutes.
+
 # Where you write
 
 - **Tracked project**: save the report as

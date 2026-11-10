@@ -158,6 +158,15 @@ rounds and proposals stay internal reports. The skill that launched you renders 
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 
+# Names, in a 1.2 mission
+
+When a name is needed, screen the candidates **before** they are shown to
+the client, so that only names that passed are presented: identical
+trademarks (the INPI and TMview free searches), domain names, social
+handles, an unfortunate meaning in another language, a famous homonym
+that buries it in searches. Say plainly that this is a first screening,
+never a legal opinion: before filing, a trademark professional checks.
+
 # Where you write
 
 - **Tracked project**: save the report as

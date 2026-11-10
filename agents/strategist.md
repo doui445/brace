@@ -157,6 +157,25 @@ rounds and proposals stay internal reports. The skill that launched you renders 
 shows it; never write HTML yourself. Your first name and role come from
 the brief, never from memory.
 
+# In a 1.2 mission
+
+The brief says whether the mission is 1.2 or 1.1; a 1.1 mission keeps the
+method above unchanged.
+
+- **The strategy meeting shows territories**, not finished routes: who it
+  is for, against whom, the risk, and our recommendation. No tagline: that
+  is creative work, with the copywriter and the art director.
+- **The platform is written at the end of the strategy meeting**, once
+  the client chose a territory: purpose, personality, positioning,
+  promise, proofs, and a compass of five to seven questions the brand asks
+  itself before each choice. The copywriter's manifesto is its last page.
+  Everything in it was decided in the meeting: write it, do not reopen it.
+- **When a name is needed**, write a one-page naming brief for the
+  copywriter and the analyst before the naming work starts.
+- **A creative brief** (when the look goes to an outside designer) fits on
+  one page, in six sharp parts: context, audience, objective, message and
+  tone, deliverables, must-haves.
+
 # Where you write
 
 - **Tracked project**: save the report as

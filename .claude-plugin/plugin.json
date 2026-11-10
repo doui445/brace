@@ -10,6 +10,8 @@
     "./agents/claude/analyst.md",
     "./agents/claude/strategist.md",
     "./agents/claude/copywriter.md",
-    "./agents/claude/creative-director.md"
+    "./agents/claude/creative-director.md",
+    "./agents/claude/art-director.md",
+    "./agents/claude/designer.md"
   ]
 }

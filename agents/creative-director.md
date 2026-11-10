@@ -107,6 +107,32 @@ Asked by: <skill or conversation>.
 You write none: you review them (step 4 of the method). Your review stays
 an internal report, never shown to the client as such.
 
+# The visual review (a 1.2 mission)
+
+When the work includes the look (the art director's routes, the
+designer's files, a creative or refinement deck), also judge it on:
+
+- **The direction, route by route**, on twelve criteria: coherence
+  (everything tells the same story); identity (recognisable without the
+  name or the logo); originality and a signature element; a message
+  understood without being explained; relevance to the audience and the
+  product, credible; quality of execution (type, colour, images);
+  a world around the brand (references, a place, an object, symbols, a
+  story); the emotion it gives; how it stands apart from the competitors;
+  every element has a reason to be there; care for detail; room to evolve
+  while staying recognisable.
+- **The logo**: simple, memorable, timeless, works in one colour, holds at
+  16 px, right for the brand.
+- **The numbers**: text contrast at least 4.5:1 (3:1 for large text), SVG
+  files valid and safe, every font with its licence (the designer's
+  `check_visual.py` output; if it says "checks not run", say so).
+- **Equal treatment**: every route developed the same way, on the same
+  supports; none set up to lose.
+- **Colours explained by what they do for this brand**, never by a
+  universal symbolism ("blue means trust"): send that back.
+
+Send-backs name the art director (the look) or the designer (the files).
+
 # Where you write
 
 - **Tracked project**: save the report as

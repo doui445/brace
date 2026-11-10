@@ -14,7 +14,10 @@ ANTIGRAVITY_HOOK_SCRIPTS = {"session_start.sh", "post_tool_use.sh"}
 CLAUDE_AGENT_TOOLS = {"WebSearch", "WebFetch", "Read", "Write", "Edit", "Glob", "Grep",
                       "mcp__claude-in-chrome__*"}
 # Antigravity hangs on an unknown tool name: only names verified in its docs.
-AGENTS = ("analyst", "strategist", "copywriter", "creative-director")
+AGENTS = ("analyst", "strategist", "copywriter", "creative-director", "art-director", "designer")
+# The visual trades inherit the session's tools on Claude Code (the client's
+# design connectors included): their frontmatter has no tools list.
+VISUAL_AGENTS = ("art-director", "designer")
 ANTIGRAVITY_AGENT_TOOLS = {"search_web", "read_url_content", "view_file", "grep_search",
                            "write_to_file", "replace_file_content"}
 
@@ -162,7 +165,10 @@ class PluginManifestTests(unittest.TestCase):
                 for fm in (claude, agy):
                     self.assertEqual(fm.get("name"), name)
                     self.assertTrue(fm.get("description"))
-                self.assertTrue(set(t.strip() for t in claude["tools"].split(",")) <= CLAUDE_AGENT_TOOLS)
+                if name in VISUAL_AGENTS:
+                    self.assertNotIn("tools", claude)
+                else:
+                    self.assertTrue(set(t.strip() for t in claude["tools"].split(",")) <= CLAUDE_AGENT_TOOLS)
                 self.assertEqual(claude.get("model"), "sonnet")
                 self.assertEqual(claude.get("background"), "true")
                 self.assertTrue(set(agy["tools"]) <= ANTIGRAVITY_AGENT_TOOLS)
@@ -181,11 +187,13 @@ class PluginManifestTests(unittest.TestCase):
 
     def test_new_agents_report_formats(self):
         for name, head in (("strategist", "# Routes: "), ("copywriter", "# Words: "),
-                           ("creative-director", "# Review: ")):
+                           ("creative-director", "# Review: "), ("art-director", "# Visual: "),
+                           ("designer", "# Files: ")):
             claude, body = _split_agent(f"agents/claude/{name}.md")
             self.assertIn(head, body, name)
-            self.assertEqual([t.strip() for t in claude["tools"].split(",")],
-                             ["Read", "Write", "Edit", "Glob", "Grep"], name)
+            if name not in VISUAL_AGENTS:
+                self.assertEqual([t.strip() for t in claude["tools"].split(",")],
+                                 ["Read", "Write", "Edit", "Glob", "Grep"], name)
 
     def test_skills_frontmatter_and_references_exist(self):
         import re
