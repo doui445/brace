@@ -10,13 +10,14 @@ settled, so that the delivery shows nothing new.
 1. **`designer`**: two or three versions of the chosen logo (weight,
    proportions, the mark alone or with the name), the palette and type
    settled in `brand.css` (CSS variables, the text pairs declared for the
-   checks), two applications on the client's real supports. It works in
+   checks), the favicon (`favicon.svg`, a symbol, never the name), two
+   applications on the client's real supports. It works in
    its own folder (`docs/brace/agents/designer/files/`) and runs the checks
    when it can (`scripts/check_visual.py brand <folder>`); else `brand`
    runs them.
 2. **`brand`** builds the refinement deck **in the client's colours**: its
    front matter carries `theme:` pointing at the designer's `brand.css`
-   (`references/presentation.md`, the syntax). The client sees their brand
+   (`references/presentation.md`, the syntax), with a `favicon` slide. The client sees their brand
    live in a real document.
 3. **`creative-director`** reviews.
 

@@ -235,6 +235,13 @@ class CreativeSlideTests(unittest.TestCase):
             m = re.search(r'<img src="([^"]+)"', dst.read_text(encoding="utf-8"))
             self.assertEqual((dst.parent / m.group(1)).resolve(), (self.tmp / "sources" / "a.png").resolve())
 
+    def test_favicon_slide_shows_three_sizes_light_and_dark(self):
+        self.write("f.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/></svg>')
+        out = render.render_deck("---\ntitle: T\n---\n::: favicon\ntitle: F\nsvg: f.svg\n", base=self.tmp)
+        for size in ("16", "32", "48"):
+            self.assertIn(f'class="fav s{size}"', out)
+        self.assertIn('class="tab dark"', out)
+
     def test_logo_slide_without_svg_says_so(self):
         with self.assertRaisesRegex(render.RenderError, "svg:"):
             render.render_deck("---\ntitle: T\n---\n::: logo\ntitle: L\n", base=self.tmp)

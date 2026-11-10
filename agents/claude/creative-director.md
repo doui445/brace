@@ -116,7 +116,8 @@ designer's files, a creative or refinement deck), also judge it on:
   every element has a reason to be there; care for detail; room to evolve
   while staying recognisable.
 - **The logo**: simple, memorable, timeless, works in one colour, holds at
-  16 px, right for the brand.
+  16 px (judge it on the `favicon` slide's screenshot, light and dark
+  tabs), right for the brand.
 - **The numbers**: text contrast at least 4.5:1 (3:1 for large text), SVG
   files valid and safe, every font with its licence (the designer's
   `check_visual.py` output; if it says "checks not run", say so).

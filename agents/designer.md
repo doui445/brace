@@ -51,7 +51,10 @@ your report and work with what you have; never invent it.
    generator is an inspiration, never a file to trace and ship: redraw it.
    Give every SVG a `viewBox`; no script, no event, no outside link.
 3. **The family**: main logo (colour, one colour, reversed), secondary,
-   small mark, symbol, favicon; graphic elements when the route has them.
+   small mark, symbol, favicon (`favicon.svg`: the symbol, never the name;
+   strokes and shapes of at least one pixel once scaled to 16 px; twelve
+   shapes at most; 3:1 against its background); graphic elements when the
+   route has them.
 4. **The system**: `brand.css` with the colours and fonts as CSS variables
    (`--paper`, `--ink`, `--accent`, `--serif`, `--sans` and the brand's
    own), each text pair declared as a comment, `/* pair: --ink on --paper */`

@@ -292,6 +292,7 @@ FIELDS = {
     "palette": {"note", "meta", "title", "intro", "swatch", "foot"},
     "type": {"note", "meta", "title", "pair", "sample", "why", "foot"},
     "logo": {"note", "meta", "title", "svg", "why", "foot"},
+    "favicon": {"note", "meta", "title", "svg", "why", "foot"},
     "mood": {"note", "meta", "title", "intro", "foot"},
 }
 BLOCKS = {
@@ -522,6 +523,18 @@ def _slide(s, n, total, footer, t=None, base=None, out=None):
         out += ('  <div class="reveal">\n'
                 f'    <div class="mark">{inline_svg(svg)}</div>\n'
                 f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("why")}</p>\n  </div>\n')
+    elif s.kind == "favicon":
+        if not s.get("svg"):
+            raise RenderError("a favicon slide needs svg: <path to the SVG>")
+        svg = Path(s.get("svg"))
+        mark = inline_svg(svg if svg.is_absolute() or base is None else Path(base) / svg)
+        tabs = "".join(
+            f'    <div class="tab {tone}">'
+            + "".join(f'<span class="fav s{n}">{mark}</span>' for n in (16, 32, 48))
+            + "</div>\n" for tone in ("light", "dark"))
+        out += ('  <div class="head">\n'
+                f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("why")}</p>\n  </div>\n'
+                f'  <div class="tabs-preview">\n{tabs}  </div>\n')
     elif s.kind == "mood":
         placeholder = esc((t or {}).get("brand.deck.explore_placeholder", ""))
         tiles = ""

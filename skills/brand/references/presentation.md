@@ -41,6 +41,7 @@ everywhere.
 | `palette` | `meta`, `title`, `intro`, `swatch` (repeat: hex, pipe, name, pipe, role: `main`, `accent` or `neutral`), `foot` | |
 | `type` | `meta`, `title`, `pair` (display font, pipe, text font), `sample`, `why`, `foot` | |
 | `logo` | `meta`, `title`, `svg` (a path, relative to the deck's Markdown), `why`, `foot` | |
+| `favicon` | `meta`, `title`, `svg` (the favicon), `why`, `foot`: the symbol at 16, 32 and 48 px, on a light and a dark tab | |
 | `mood` | `meta`, `title`, `intro`, `foot` | `@ref`, `@image` (`src`, `caption`) |
 
 The `palette` slide prints each colour's code and its contrast on white

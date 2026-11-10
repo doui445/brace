@@ -80,6 +80,45 @@ class SvgTests(unittest.TestCase):
         self.assertIn("viewBox", "\n".join(check_visual.svg_problems(self.svg('<svg xmlns="http://www.w3.org/2000/svg"/>'))))
 
 
+FAV = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">{}</svg>'
+
+
+class FaviconTests(unittest.TestCase):
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.addCleanup(self._d.cleanup)
+
+    def fav(self, inner):
+        p = Path(self._d.name) / "favicon.svg"
+        p.write_text(FAV.format(inner), encoding="utf-8")
+        return check_visual.favicon_problems(p)
+
+    def test_good_favicon(self):
+        self.assertEqual(self.fav('<circle cx="16" cy="16" r="12" fill="#1F2A44"/>'), [])
+
+    def test_thin_stroke(self):
+        # 1.5 units on a 32-unit box is 0.75 px at 16 px: it vanishes.
+        probs = "\n".join(self.fav('<circle cx="16" cy="16" r="12" fill="none" stroke="#000" stroke-width="1.5"/>'))
+        self.assertIn("16 px", probs)
+
+    def test_text_in_favicon(self):
+        self.assertIn("text", "\n".join(self.fav('<text x="2" y="20" fill="#000">tally</text>')))
+
+    def test_too_many_shapes(self):
+        shapes = "".join(f'<rect x="{i}" y="0" width="1" height="32" fill="#000"/>' for i in range(0, 30, 2))
+        self.assertIn("detail", "\n".join(self.fav(shapes)))
+
+    def test_tiny_dot(self):
+        self.assertIn("16 px", "\n".join(self.fav('<circle cx="16" cy="16" r="0.8" fill="#000"/>')))
+
+    def test_low_contrast_on_white(self):
+        self.assertIn("contrast", "\n".join(self.fav('<circle cx="16" cy="16" r="12" fill="#eeeeee"/>')))
+
+    def test_contrast_against_own_background(self):
+        inner = '<rect x="0" y="0" width="32" height="32" fill="#1F2A44"/><circle cx="16" cy="16" r="8" fill="#ffffff"/>'
+        self.assertEqual(self.fav(inner), [])
+
+
 class BrandTests(unittest.TestCase):
     def brand(self, svgs=None, fonts=None, css=None):
         self._d = tempfile.TemporaryDirectory()
@@ -108,6 +147,11 @@ class BrandTests(unittest.TestCase):
         probs = "\n".join(check_visual.check_brand(d))
         for needle in ("logo.svg", "viewBox", "licence", "4.5"):
             self.assertIn(needle, probs)
+
+    def test_brand_checks_the_favicon(self):
+        d = self.brand(svgs={"logo.svg": GOOD_SVG,
+                             "favicon.svg": FAV.format('<text x="2" y="20" fill="#000">t</text>')})
+        self.assertIn("favicon.svg", "\n".join(check_visual.check_brand(d)))
 
     def test_large_pair_needs_three(self):
         d = self.brand(svgs={"logo.svg": GOOD_SVG},

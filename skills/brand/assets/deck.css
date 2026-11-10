@@ -184,6 +184,15 @@ table.cmp { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 1.
 .reveal .mark svg { width: min(46vw, 640px); height: auto; max-height: 40vh; }
 .reveal h2 { font-size: clamp(28px, 2.8vw, 44px); }
 .reveal p { max-width: 56ch; color: var(--ink-2); line-height: 1.55; }
+.tabs-preview { flex: 1; display: grid; gap: 3vh; align-content: center; }
+.tab { display: flex; align-items: center; gap: 48px; padding: 28px 36px; border: 1px solid var(--line); }
+.tab.light { background: #fff; }
+.tab.dark { background: #202124; }
+.fav { display: inline-block; line-height: 0; }
+.fav svg { width: 100%; height: 100%; }
+.fav.s16 { width: 16px; height: 16px; }
+.fav.s32 { width: 32px; height: 32px; }
+.fav.s48 { width: 48px; height: 48px; }
 .mood .grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4vw; margin-top: 5vh; align-content: center; }
 .explore { position: relative; min-height: 44vh; background: var(--paper-2); border: 1px dashed var(--line); display: grid; place-items: center; overflow: hidden; }
 .explore .ph { color: var(--ink-3); font-size: 13px; padding: 0 20px; text-align: center; }

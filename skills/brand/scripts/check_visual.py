@@ -99,6 +99,65 @@ def svg_problems(path):
     return problems
 
 
+SHAPES = {"path", "rect", "circle", "ellipse", "line", "polyline", "polygon"}
+FAVICON_MAX_SHAPES = 12
+TAB = "#ffffff"  # a favicon without its own background sits on a light tab
+
+
+def _num(value, default=0.0):
+    m = re.match(r"\s*(-?[\d.]+)", value or "")
+    return float(m.group(1)) if m else default
+
+
+def _style(el, key):
+    m = re.search(rf"(?:^|;)\s*{key}\s*:\s*([^;]+)", el.attrib.get("style", ""))
+    return (m.group(1).strip() if m else el.attrib.get(key, "")).strip()
+
+
+def favicon_problems(path):
+    """Why a favicon would not read at 16 px: a stroke or a shape under one
+    pixel once scaled, text, too many shapes, a colour without contrast
+    against its own background (or a light tab when it has none)."""
+    path = Path(path)
+    root, problems = _parse_svg(path)
+    if root is None:
+        return problems
+    box = [_num(x) for x in root.attrib.get("viewBox", "").replace(",", " ").split()]
+    if len(box) != 4 or max(box[2:]) <= 0:
+        return [f"{path.name}: no viewBox, the favicon cannot be checked at 16 px"]
+    w, h = box[2], box[3]
+    scale = 16 / max(w, h)
+    shapes, bg = [], TAB
+    for el in root.iter():
+        tag = el.tag.rsplit("}", 1)[-1]
+        if tag in ("text", "tspan", "textPath"):
+            problems.append(f"{path.name}: text in the favicon is unreadable at 16 px; use the symbol")
+        if tag not in SHAPES:
+            continue
+        fill = _style(el, "fill")
+        if (tag == "rect" and not shapes and _num(el.attrib.get("x")) <= 0 and _num(el.attrib.get("y")) <= 0
+                and _num(el.attrib.get("width")) >= w and _num(el.attrib.get("height")) >= h and HEX.match(fill)):
+            bg = fill  # the favicon's own background
+            continue
+        shapes.append(el)
+    if len(shapes) > FAVICON_MAX_SHAPES:
+        problems.append(f"{path.name}: too much detail for 16 px ({len(shapes)} shapes)")
+    for el in shapes:
+        tag = el.tag.rsplit("}", 1)[-1]
+        stroke = _style(el, "stroke")
+        if stroke and stroke != "none" and _num(_style(el, "stroke-width"), 1.0) * scale < 1:
+            problems.append(f"{path.name}: a <{tag}> stroke is under 1 px at 16 px")
+        size = {"circle": 2 * _num(el.attrib.get("r"), 99), "ellipse": 2 * min(_num(el.attrib.get("rx"), 99), _num(el.attrib.get("ry"), 99)),
+                "rect": min(_num(el.attrib.get("width"), 99), _num(el.attrib.get("height"), 99))}.get(tag)
+        if size is not None and size * scale < 1:
+            problems.append(f"{path.name}: a <{tag}> is under 1 px at 16 px")
+        for colour in (_style(el, "fill"), stroke):
+            if HEX.match(colour or "") and contrast(colour, bg) < 3:
+                problems.append(f"{path.name}: {colour} on {bg} has too little contrast for a tab icon "
+                                f"({contrast(colour, bg)}:1, needs 3:1)")
+    return list(dict.fromkeys(problems))
+
+
 def clean_svg(path):
     """The SVG as parsed and serialised again (comments and declarations
     gone), for inlining; call svg_problems first."""
@@ -122,6 +181,8 @@ def check_brand(brand_dir):
         problems.append("logo.svg is missing")
     for svg in sorted(d.rglob("*.svg")):
         problems += svg_problems(svg)
+    for fav in sorted(d.rglob("favicon*.svg")):
+        problems += favicon_problems(fav)
     for pattern in FONTS:
         for font in sorted(d.rglob(pattern)):
             if not any(next(font.parent.glob(lic), None) for lic in LICENCES):

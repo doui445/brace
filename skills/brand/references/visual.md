@@ -45,9 +45,13 @@ the account director, who briefs them and talks to the client.
 
 `scripts/check_visual.py brand "<folder>"` lists what fails: `logo.svg`
 missing, an SVG unsafe or without `viewBox`, a font without its licence
-next to it, a text pair declared in `brand.css` below its contrast.
-`check_visual.py contrast <fg> <bg>` gives one ratio. Lou reviews the rest
-(the twelve criteria, the logo at 16 px on the rendered slides).
+next to it, a text pair declared in `brand.css` below its contrast, and
+for `favicon.svg` what will not read at 16 px (a stroke or a shape under
+one pixel once scaled, text, more than twelve shapes, a colour under 3:1
+against its own background or a light tab). `check_visual.py contrast
+<fg> <bg>` gives one ratio. Lou judges the rest on the rendered slides:
+the twelve criteria, and the `favicon` slide (the symbol at 16, 32 and
+48 px, on light and dark tabs) for the final say on legibility.
 
 ## `VISUAL.md`
 
