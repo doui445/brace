@@ -114,6 +114,12 @@ class BrandTests(unittest.TestCase):
                        css="/* pair: --a on --b large */\n:root { --a: #777; --b: #fff; }\n")
         self.assertEqual(check_visual.check_brand(d), [])
 
+    def test_bad_hex_reports_the_pair_and_goes_on(self):
+        d = self.brand(css="/* pair: --a on --b */\n:root { --a: #abcd; --b: #fff; }\n")
+        probs = "\n".join(check_visual.check_brand(d))
+        self.assertIn("--a", probs)
+        self.assertIn("logo.svg", probs)  # the other checks still ran
+
     def test_pair_with_unknown_variable(self):
         d = self.brand(svgs={"logo.svg": GOOD_SVG}, css="/* pair: --a on --zz */\n:root { --a: #000; }\n")
         self.assertIn("--zz", "\n".join(check_visual.check_brand(d)))
@@ -128,29 +134,28 @@ class BrandTests(unittest.TestCase):
         self.assertEqual((r.returncode, r.stdout.strip()), (0, "21.0:1"))
 
 
-class ExcludeSourcesTests(unittest.TestCase):
-    def test_exclude_sources_idempotent(self):
+class IgnoreSourcesTests(unittest.TestCase):
+    def test_gitignore_created_and_idempotent(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
-            subprocess.run(["git", "init", "-q", str(root)], check=True)
-            render.exclude_sources(root)
-            render.exclude_sources(root)
-            text = (root / ".git" / "info" / "exclude").read_text(encoding="utf-8")
-            self.assertEqual(text.count("/brand/sources/"), 1)
+            render.ignore_sources(root)
+            render.ignore_sources(root)
+            self.assertEqual((root / ".gitignore").read_text(encoding="utf-8").count("/brand/sources/"), 1)
+
+    def test_gitignore_kept_and_appended(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / ".gitignore").write_text("node_modules/", encoding="utf-8")
+            render.ignore_sources(root)
+            self.assertEqual((root / ".gitignore").read_text(encoding="utf-8"), "node_modules/\n/brand/sources/\n")
 
     def test_sources_command(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
-            subprocess.run(["git", "init", "-q", str(root)], check=True)
             r = subprocess.run([sys.executable, str(HERE / "render.py"), "sources", str(root)],
                                capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stderr)
-            self.assertIn("/brand/sources/", (root / ".git" / "info" / "exclude").read_text(encoding="utf-8"))
-
-    def test_exclude_sources_outside_git(self):
-        with tempfile.TemporaryDirectory() as d:
-            render.exclude_sources(Path(d))
-            self.assertFalse((Path(d) / ".git").exists())
+            self.assertIn("/brand/sources/", (root / ".gitignore").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

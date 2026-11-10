@@ -136,7 +136,11 @@ def check_brand(brand_dir):
                 problems.append(f"brand.css: pair {fg} on {bg}: no hex value for {', '.join(missing)}")
                 continue
             need = 3.0 if large else 4.5
-            ratio = contrast(values[fg], values[bg])
+            try:
+                ratio = contrast(values[fg], values[bg])
+            except ValueError as e:
+                problems.append(f"brand.css: pair {fg} on {bg}: {e}")
+                continue
             if ratio < need:
                 problems.append(f"brand.css: {fg} on {bg} is {ratio}:1, needs {need}:1")
     return problems

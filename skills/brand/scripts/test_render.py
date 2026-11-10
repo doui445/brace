@@ -235,6 +235,14 @@ class CreativeSlideTests(unittest.TestCase):
             m = re.search(r'<img src="([^"]+)"', dst.read_text(encoding="utf-8"))
             self.assertEqual((dst.parent / m.group(1)).resolve(), (self.tmp / "sources" / "a.png").resolve())
 
+    def test_logo_slide_without_svg_says_so(self):
+        with self.assertRaisesRegex(render.RenderError, "svg:"):
+            render.render_deck("---\ntitle: T\n---\n::: logo\ntitle: L\n", base=self.tmp)
+
+    def test_type_slide_without_pair_says_so(self):
+        with self.assertRaisesRegex(render.RenderError, "pair:"):
+            render.render_deck("---\ntitle: T\n---\n::: type\ntitle: Ty\nsample: s\n")
+
     def test_logo_missing_file(self):
         with self.assertRaises(render.RenderError):
             render.render_deck("---\ntitle: T\n---\n::: logo\ntitle: L\nsvg: none.svg\n", base=self.tmp)
@@ -560,6 +568,12 @@ class SpaceDataTests(unittest.TestCase):
         documents = self.data(sessions=sessions, docs=docs)["documents"]
         self.assertEqual([(d["path"], d["form"]) for d in documents],
                          [("2026-01-02-brief.html", "read"), ("2026-01-05-platform.html", "presented")])
+
+    def test_new_mission_meeting_without_phase_is_not_platform(self):
+        # A 1.2 document with meeting: 3 and no phase: is never filed as the 1.1 platform.
+        sessions = "# S\n\n## x\n\n- plan: contact, framing, strategy, creation, delivery\n"
+        docs = (("2026-03-05-routes.html", "3", "Routes"),)
+        self.assertNotEqual(self.data(sessions=sessions, docs=docs)["documents"][0]["phase"], "platform")
 
     def test_legacy_platform_stays_presented(self):
         # Review Focus 1: a 1.1 platform document (phase platform) keeps its form.

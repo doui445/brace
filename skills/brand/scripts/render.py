@@ -5,7 +5,7 @@ Usage:
   render.py doc  <src.md> <dst.html>   a written document (benchmark, minutes...)
   render.py deck <src.md> <dst.html>   a presentation (see references/presentation.md)
   render.py space <project-root>       the client space, docs/brace/brand/index.html
-  render.py sources <project-root>     keep brand/sources/ out of git (info/exclude)
+  render.py sources <project-root>     keep brand/sources/ out of git (.gitignore)
 
 Every render copies deck.css, doc.css and fonts/ next to its output when
 they are missing. Exit 0 rendered, 1 bad input (message on stderr).
@@ -505,6 +505,8 @@ def _slide(s, n, total, footer, t=None, base=None, out=None):
                 f'    <h2>{_lines(s.get("title"))}</h2>\n    <p>{i("intro")}</p>\n  </div>\n'
                 '  <div class="swatches">\n' + "".join(_swatch(v) for v in s.all("swatch")) + "  </div>\n")
     elif s.kind == "type":
+        if not s.get("pair"):
+            raise RenderError("a type slide needs pair: <display font> | <text font>")
         display, text = _pair(s.get("pair"))
         out += ('  <div class="specimen">\n'
                 f'    <h2>{_lines(s.get("title"))}</h2>\n'
@@ -513,6 +515,8 @@ def _slide(s, n, total, footer, t=None, base=None, out=None):
                 f'    <div class="fonts"><b>{inline(display, "b")}</b><span>{inline(text, "b")}</span></div>\n'
                 "  </div>\n")
     elif s.kind == "logo":
+        if not s.get("svg"):
+            raise RenderError("a logo slide needs svg: <path to the SVG>")
         svg = Path(s.get("svg"))
         svg = svg if svg.is_absolute() or base is None else Path(base) / svg
         out += ('  <div class="reveal">\n'
@@ -622,7 +626,7 @@ def main(argv):
             dst.write_text(out, encoding="utf-8")
             return 0
         if len(argv) == 2 and argv[0] == "sources":
-            exclude_sources(Path(argv[1]))
+            ignore_sources(Path(argv[1]))
             return 0
         if len(argv) == 2 and argv[0] == "space":
             root = Path(argv[1])
@@ -776,12 +780,31 @@ def _form(kind, phase, meta):
     return CLIENT_DOCS.get(kind, "read")
 
 
+def _plan(sessions):
+    """The phases of the mission's last plan line, and whether the mission
+    is 1.1 (any plan line has platform, or there is none)."""
+    plans = re.findall(r"(?m)^- plan:[ \t]*(.+?)\s*$", sessions)
+    phases = [x.strip() for x in plans[-1].split(",")] if plans else []
+    legacy = not plans or any(re.search(r"\bplatform\b", x) for x in plans)
+    return phases, legacy
+
+
+def _meeting_phase(meeting, plan):
+    """The phase of a document that only says its meeting's number: the
+    1.1 numbering for a 1.1 mission, else the plan's own order."""
+    phases, legacy = plan
+    if legacy:
+        return MEETING_PHASE.get(meeting, "")
+    return phases[int(meeting)] if meeting.isdigit() and int(meeting) < len(phases) else ""
+
+
 def space_data(root):
     """What the client space shows, read from the project's files."""
     root = Path(root)
     brand = root / "docs" / "brace" / "brand"
     status = _front(root / "docs" / "brace" / "STATUS.md")
     sessions = _read(brand / "SESSIONS.md")
+    plan = _plan(sessions)
     lang = _last(sessions, "language")
     docs_dir = brand / "documents"
     if not re.fullmatch(r"[a-z]{2}", lang):
@@ -813,7 +836,7 @@ def space_data(root):
     for path in sorted(docs_dir.rglob("*.html")) if docs_dir.is_dir() else ():
         meta, title = _doc_info(path)
         kind, date, version = _doc_kind(path, meta)
-        phase = meta.get("phase") or MEETING_PHASE.get(meta.get("meeting", ""), "")
+        phase = meta.get("phase") or _meeting_phase(meta.get("meeting", ""), plan)
         item = {"name": path.name, "path": path.relative_to(docs_dir).as_posix(), "title": title, "author": meta.get("author", ""), "phase": phase,
                 "form": _form(kind, phase, meta), "date": date}
         if kind == "minutes":
@@ -1090,10 +1113,14 @@ def _exclude(root, add=(), drop=()):
 SOURCES_LINE = "/brand/sources/"
 
 
-def exclude_sources(root):
+def ignore_sources(root):
     """Keep brand/sources/ (source files, exploration images) out of git, in
-    the repository's own info/exclude; nothing outside git."""
-    _exclude(root, add=(SOURCES_LINE,))
+    the project's .gitignore (created if needed, never rewritten)."""
+    path = Path(root) / ".gitignore"
+    text = _read(path)
+    if SOURCES_LINE in text.split("\n"):
+        return
+    path.write_text(text + ("" if not text or text.endswith("\n") else "\n") + SOURCES_LINE + "\n", encoding="utf-8")
 
 
 def write_shortcut(root, data):
