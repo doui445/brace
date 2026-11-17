@@ -199,3 +199,32 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 - La revue de six mois. La mission est terminée.
 
 - meeting: 2027-05-10 14:00
+
+## 2026-11-17 — Prise de contact : le bilan de la marque et son visage
+
+- held: 2026-11-17 16:22
+- phase: contact
+- language: fr
+- brand: BRACE
+- plan: contact, framing, strategy, creation, refinement, delivery
+
+### Décidé
+
+- Une nouvelle mission : le bilan complet de la marque livrée le
+  8 novembre, puis son identité visuelle. La stratégie n'est pas refaite,
+  seulement corrigée là où elle ne tient plus.
+- Rien de visuel n'existe encore : page blanche.
+- Les outils, sans rien installer : l'inspiration dans le navigateur,
+  Canva piloté pour l'exploration, le logo et les supports en code, des
+  polices libres. Pixelmator Pro est sur le Mac, pas utilisé pour ce plan.
+- [La proposition](documents/01-contact/2026-11-17-proposal.html),
+  acceptée.
+
+### En attente
+
+- Le cadrage visuel : tout de suite ou à une date.
+
+### Suite
+
+- Le cadrage visuel.
+- La revue de six mois du 2027-05-10 tient toujours.
