@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-11-10
+last_updated: 2026-11-17
 next_milestone: "BRACE 1.2: the brand's face in brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -13,7 +13,7 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: backstage
+brand_stage: presentation
 brand_reviewed: 2026-11-08
 ---
 

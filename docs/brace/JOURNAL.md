@@ -1426,3 +1426,19 @@ Closed out the portfolio sub-pages work and cut the release:
   `check_visual.py`, a favicon slide for the creative director).
 - Next: the owner's real trial, BRACE's own full mission, on 2026-11-11.
 
+
+## 2026-11-17 — 1.2 trial: BRACE's own look mission, first meetings
+
+- Trial of 1.2 on BRACE itself, from `feat/brand-face`: first contact
+  with a tools inventory (connected: Canva, the browser; installed:
+  Pixelmator Pro; the owner installs nothing for now), then the visual
+  framing workshop, brief validated. Plan: contact, framing, strategy
+  (run as a full check-up of the delivered brand), creation, refinement,
+  delivery.
+- Backstage for the check-up: fresh benchmark (the look of each
+  neighbour, unverified on screen: no browser connected for the
+  analyst), an audit with ten small corrections, the meeting deck.
+- Found in the trial: a `reco` item written `**lead** : text` breaks the
+  slide layout (the `li` grid turns the bold and the text into separate
+  cells); worked around with plain sentences, to fix in `render.py` or
+  `deck.css`. Check-up meeting set for 19:00.

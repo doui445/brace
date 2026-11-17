@@ -251,3 +251,23 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 - Le bilan de la marque.
 
 - meeting: 2026-11-17 19:00
+
+## 2026-11-17 — Le travail de l'équipe (avant le bilan)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu valides au rendez-vous.
+
+### En attente
+
+- Ravi : [le benchmark](documents/03-strategy/2026-11-17-benchmark.html),
+  avec le visuel de chaque voisin (pas encore vu à l'écran).
+- Constance : l'audit, dix corrections proposées, présenté dans
+  [la présentation](presentations/03-strategy/2026-11-17-strategy.html).
+- Lou : relu, corrections faites.
+
+### Suite
+
+- Le bilan de la marque, ce soir à 19 h.
+
+- meeting: 2026-11-17 19:00
