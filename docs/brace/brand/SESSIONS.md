@@ -228,3 +228,26 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 
 - Le cadrage visuel.
 - La revue de six mois du 2027-05-10 tient toujours.
+
+## 2026-11-17 — Atelier de cadrage visuel
+
+- held: 2026-11-17 16:33
+- phase: framing
+
+### Décidé
+
+- [Le brief](documents/02-framing/2026-11-17-brief.html), validé : le
+  calme et le nu, jamais les clichés de l'IA ni le look hacker, la
+  mascotte et le SaaS d'entreprise ouverts sans conviction, un logo en une
+  couleur, le critère de la confiance au premier coup d'œil.
+- [Le compte rendu](documents/02-framing/2026-11-17-minutes-2.html).
+
+### En attente
+
+- Rien de ton côté.
+
+### Suite
+
+- Le bilan de la marque.
+
+- meeting: 2026-11-17 19:00

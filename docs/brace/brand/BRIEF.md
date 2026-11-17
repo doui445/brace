@@ -1,41 +1,28 @@
 # BRIEF DE MARQUE — BRACE
 
-Ce qui a été demandé à l'agence. Validé à l'atelier de cadrage du 2026-11-06 : [le brief](documents/2026-11-06-brief.html).
+Ce qui a été demandé à l'agence. Validé à l'atelier de cadrage visuel du
+2026-11-17 : [le brief](documents/02-framing/2026-11-17-brief.html). Le
+brief du rebranding (2026-11-06) reste dans
+[ses documents](documents/2026-11-06-brief.html).
 
-## Le rebranding
+Marque produit.
 
-- **Pourquoi maintenant** : le premier branding n'était pas complet. Aucun
-  des documents d'une marque n'a été fait.
-- **Ce qui ne marche plus** (validé) :
-  1. rien n'est documenté : ni brief, ni benchmark, ni personas, ni
-     territoires comparés, ni plateforme, ni charte, ni manifeste ;
-  2. des bases fragiles : des personas construits sur six réponses de ton
-     entourage, une signature jamais testée ;
-  3. une promesse qui parle surtout de mémoire, alors que BRACE suit tes
-     projets, fait la marque et bientôt le design (le point qui décidera de
-     l'ampleur) ;
-  4. des restes d'avant : l'ancien nom à plusieurs endroits, les prénoms
-     provisoires de l'équipe, aucune porte d'entrée pour les utilisateurs
-     d'applications web.
-- **Ce qui doit rester** (validé) : le nom BRACE et sa signature cachée
-  « Barely Remarkable, Admittedly Capable Engine », la personnalité façon
-  Jarvis, les valeurs. Et la phrase d'accroche « Finally on the same
-  page. » : elle ne parle pas que de mémoire. L'expression veut d'abord
-  dire « d'accord, alignés », ce qui relie toutes les compétences de BRACE.
-  L'audit vérifie seulement qu'elle tient pour tout le système.
-- **Ce qui a changé** (validé) : le produit (le suivi, puis une agence de
-  marque, et le design qui arrive) et le public, qui s'élargit. L'ambition
-  ne change pas pour l'instant.
-- **En plus de la mission** : l'explication de la signature en une ou deux
-  phrases simples, en anglais et en français, pour une page « À propos »
-  ou le pied de page du site. Et les vrais prénoms de l'équipe de
-  l'agence.
+## La mission
+
+Deux temps. D'abord un bilan complet de la marque livrée le 8 novembre :
+la plateforme, les personas, la voix, la phrase d'accroche, les endroits
+où la marque apparaît, et le paysage concurrentiel. On corrige seulement
+ce qui ne tient plus. Ensuite le visage de BRACE, à partir d'une page
+blanche : le logo et ses déclinaisons, le favicon, les couleurs, la
+typographie, l'image de partage, et la feuille de style que tous les
+supports portent.
 
 ## Le projet
 
-BRACE transforme ton IA en vrai assistant pour tes projets : il s'en
-souvient, il les garde propres et professionnels, et il les suit tous. Un
-plugin libre et gratuit pour Claude Code et Antigravity.
+BRACE transforme ton IA en vrai assistant pour tes projets. Il lit ce que
+le projet dit déjà, il demande ce qu'il ne peut pas savoir, et il note ce
+qui est décidé : c'est toi qui tranches. Un plugin libre et gratuit pour
+Claude Code, qui fonctionne aussi avec Antigravity.
 
 ## Ce que la marque doit obtenir
 
@@ -43,40 +30,31 @@ plugin libre et gratuit pour Claude Code et Antigravity.
 2. Une réputation de confiance dans le monde des agents IA.
 3. Des revenus, un jour (aucun modèle choisi).
 
+Pour le visage : être reconnu au premier coup d'œil là où les gens tombent
+sur BRACE (une page GitHub, une liste de plugins, un message partagé).
+
 ## Pour qui
 
-- **Le pilote** (la cible d'aujourd'hui) : il mène plusieurs projets ou une
-  entreprise avec Claude et Claude Code, et vérifie tout lui-même.
-- **Le débrouillard** (la cible de demain) : étudiant, créatif ou
-  entrepreneur qui démarre, surtout sur des applications web.
-- **Élargi à l'atelier** : toute personne qui a plusieurs projets concrets
-  à mener, entrepreneurs compris. Chloé reprend les personas sur cette
-  base.
-
-Les plateformes : d'abord une version stable et fiable pour Claude Code.
-Antigravity a surtout servi à vérifier que BRACE pourra s'ouvrir plus tard,
-et à poser les règles qui le faciliteront. L'ouverture à d'autres agents
-reste une direction, pas une promesse affichée.
+Toute personne qui mène plusieurs projets concrets avec une IA sur sa
+machine, entrepreneurs compris. Le pilote d'abord. Le bilan relit les
+personas.
 
 ## Les concurrents que tu connais
 
-- Les alternatives : les applications d'IA (ChatGPT, l'application
-  Claude), les éditeurs (Cursor, Copilot), la mémoire native des agents.
-- Les concurrents directs : superpowers, ECC, claude-mem, Spec Kit, BMAD,
-  Taskmaster.
-- Une promesse voisine : OpenClaw, Hermes, Meta Muse, Tab, Notion AI,
-  Manus.
-- *Hypothèse* : avec la marque, il faut ajouter les outils de branding par
-  IA. Bruno ira voir.
+Ceux du premier cadrage : les applications d'IA et les éditeurs, les
+plugins voisins (superpowers, ECC, claude-mem, Spec Kit, BMAD,
+Taskmaster), les assistants qui vendent des résultats, les outils de
+branding par IA. Le bilan vérifie si quelqu'un est arrivé depuis.
 
 ## Le nom
 
-BRACE, gardé depuis le 4 octobre, et confirmé à l'atelier.
+BRACE, gardé.
 
 ## Ce que tu aimes
 
 Jarvis pour le comportement, Apple pour la sensation : simple, sobre, sans
-friction.
+friction. À regarder : le calme et le nu (Apple, Things, Linear). Beaucoup
+d'air, peu de couleurs, une typographie soignée.
 
 ## L'émotion à laisser
 
@@ -86,17 +64,35 @@ La sérénité, appuyée sur la confiance : c'est pris en charge, tu n'as plus
 ## Ce que tu ne veux surtout pas
 
 La surenchère de chiffres, la magie promise, les mécaniques d'addiction,
-les dark patterns, la télémétrie, les outils imposés.
+les dark patterns, la télémétrie, les outils imposés. Côté visuel : jamais
+les clichés de l'IA (dégradés violets, étincelles, cerveaux, robots,
+néons), jamais le look hacker (vert sur noir, matrice, glitch).
 
-## Les langues (de travail, de la marque)
+Ouverts sans conviction : une mascotte, le style SaaS d'entreprise. Une
+piste peut les essayer s'ils servent vraiment la direction.
+
+## Où le visage apparaîtra
+
+La page d'accueil du projet sur GitHub, l'avatar et l'image de partage du
+dépôt, les listes de plugins à l'installation, les notes de version, les
+messages qui présentent BRACE, le portfolio que BRACE génère, l'espace
+client de l'agence, plus tard un site et des réseaux sociaux. Beaucoup de
+ces endroits sont minuscules (16 pixels) ou sombres (un terminal).
+
+## Ce qui doit rester
+
+Rien de visuel n'existe : aucune contrainte. Impression peut-être plus
+tard (stickers, t-shirts) : un logo qui tient en une couleur, pas encore
+de codes d'impression.
+
+## Comment on saura que ça marche
+
+On lui fait confiance au premier coup d'œil, comme à un outil qu'on
+installe sans hésiter.
+
+## Les langues (principale, secondaires)
 
 - **Langue de travail** : le français.
-- **Langue de la marque** : l'anglais d'abord, le français en second.
-  D'autres langues viendront peut-être plus tard (l'espagnol, par
-  exemple).
-
-## Hypothèses à vérifier
-
-- Les outils de branding par IA sont à ajouter aux concurrents (Bruno
-  vérifie).
-- La phrase d'accroche tient pour tout le système (l'audit vérifie).
+- **Langue principale de la marque** : l'anglais.
+- **Langue secondaire** : le français. Peut-être d'autres plus tard
+  (l'espagnol, par exemple).
