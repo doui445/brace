@@ -43,6 +43,10 @@ the bump, a release never breaks an existing project. The version lives in
 - Missions started before 1.2 finish unchanged, on their archived
   references.
 
+### Fixed
+- Deck images (`@image` on mood slides) written from the agents' folders
+  were linked with a wrong relative path and showed the placeholder.
+
 ## [1.1.0] — 2026-11-08
 
 ### Added

@@ -27,6 +27,11 @@ the guide is ready. Detail: [personas](documents/2026-11-06-personas.html).
 1. **The pilot** (first): runs several projects with Claude and Claude
    Code, checks everything, and fears silent drift. Judges the promise:
    everything written is readable. Well supported by the data.
+   *Assumption, not tested* (added 2026-11-18): his real alternative is
+   his own files: "I use a gitignored ADR directory in all of my repos
+   right now" (developer, 9 November 2026). BRACE has to show what it adds
+   to them: it reads them, asks what is missing, and puts all his projects
+   on one page.
 2. **The entrepreneur with several hats** (next): "a brilliant consultant
    who gets amnesia every Monday morning". The least supported persona.
    *Assumption*: uses an AI on their machine.
@@ -49,13 +54,17 @@ sources: `docs/brace/agents/analyst/2026-10-19-competitors.md` and the
   Anthropic's marketing plugin, next door on "on-brand".
 - **Level 2, direct competitors**: superpowers, ECC, claude-mem, Spec Kit,
   BMAD, Taskmaster. Each covers one piece, none the whole. Their tone is
-  dense and one-upping.
+  dense and one-upping. Taskmaster has not moved since 28 April 2026.
 - **Level 3, a similar promise**: OpenClaw, Hermes, Meta Muse, Tab, Notion
   AI, Manus. They sell outcomes. Tab bets on trust (not rechecked).
 - **Level 4, AI branding tools and AI "agencies"**: logo and brand kits
   (Looka, Brandmark), platforms shouting numbers and claiming to replace
   the agency (MarkGrid, MarkBase). Tailor Brands comes near the calm
-  register, for starting a US business.
+  register, for starting a US business. BrandingStudio.ai (launched March
+  2026, per a third-party directory) works in the same order as we do,
+  strategy before the logo, in an editorial tone. It delivers a web
+  report, not files in your project. Updated 2026-11-18 from the
+  [check-up benchmark](documents/03-strategy/2026-11-17-benchmark.html).
 - **Nobody holds**: calm instead of numbers, a project record you can
   read, and the user deciding.
 
@@ -148,7 +157,7 @@ No public promise on what is not shipped.
 | Taking over documents made by you or an agency | Idea for later | Nothing until shipped and checked |
 | Other agents than Claude Code | A direction | Antigravity cited as a fact, always second: "for Claude Code, also works with Antigravity" |
 | "Replaces your agency" | Against the line | Never |
-| Former name project-tracker | To clean up | One "formerly project-tracker", in the README only |
+| Former name project-tracker | To clean up | One "Formerly project-tracker." line in the README, plus the update notes for people who still have the old plugin. All of it leaves at the six-month review |
 
 ## Indicator
 
@@ -157,6 +166,10 @@ recommends BRACE without being asked (a post, a comment, an issue from a
 stranger, a friend installing it for someone else). Counted by hand, from
 time to time; no telemetry. Few are expected at first; to be adjusted or
 changed later if needed.
+
+- 2026-11-17: 2 stars on GitHub, no spontaneous mention found in the
+  check-up (limited to GitHub and Hacker News). To review at the six-month
+  review.
 
 ## Touchpoints
 
@@ -167,7 +180,11 @@ In the repo (checked against the voice when written):
 - `plugin.json`: the description shown at install (Antigravity)
 - `.claude-plugin/marketplace.json`: the description in the marketplace
 
-Outside the repo: the GitHub repo description and topics; GitHub release
+Also in the repo, checked by hand at reviews (added 2026-11-18): the
+descriptions of the agents and of the skills, the portfolio page, the
+client space, and the macOS notification.
+
+Outside the repo: the GitHub repo description and its seven topics; GitHub release
 notes; posts and messages presenting BRACE; social networks, now and
 then; the site (planned; add its files here once they exist).
 

@@ -66,7 +66,7 @@ One voice everywhere; only the tone shifts.
 | **README, site** | composed and clear: the situation, what BRACE does, then how to install it | "Monday morning. You paste in the same instructions as last week, and you are not sure which of your notes is still true." (FR: "Lundi matin. Tu recolles les mêmes consignes que la semaine dernière, et tu ne sais plus laquelle de tes notes est encore vraie.") |
 | **Plugin message during a session** | very short, factual, Jarvis-like: what is happening, and what you can do | "Your tracking files are 3 commits behind. Update them now?" (FR: "Tes fichiers de suivi ont 3 commits de retard. Je les mets à jour ?") |
 | **A question from BRACE** | one question at a time, with a proposal to confirm | "I suggest "calm and direct" for your voice. Keep it, or change it?" (FR: "Je te propose « calme et direct » pour ta voix. Tu la gardes, ou tu la changes ?") |
-| **Disagreement** | once, calmly, with the reason, then you decide | "I would not publish this yet: the page says the feature is ready and it is not. Your call." (FR: "Je ne publierais pas encore : la page annonce une fonction qui n'est pas prête. C'est toi qui décides.") |
+| **Disagreement** | calmly, with its reasons, looking for what best serves the goal; if your argument holds, its reservations said plainly, then we go (since 2026-11-18) | "I would not publish this yet: the page says the feature is ready and it is not. If you need it out today, that holds: add a line saying it is in testing." (FR: "Je ne publierais pas encore : la page annonce une fonction qui n'est pas prête. Si tu dois la sortir aujourd'hui, ça se défend : ajoute une ligne qui dit qu'elle est en test.") |
 | **What it does not know** | it says so and marks the gap | "I don't know your launch date. Marked "to fill in"." (FR: "Je ne connais pas ta date de lancement. Marqué « à compléter ».") |
 | **Error** | calm, no apology, no drama: what happened, then how to fix it | "The portfolio could not be written: the folder is missing. Create it, or pick another one with /brace:config." (FR: "Le portfolio n'a pas pu être écrit : le dossier n'existe pas. Crée-le, ou choisis-en un autre avec /brace:config.") |
 | **Announcement, release notes** | sober, concrete: what changes for you, not technical feats | "BRACE 1.1 adds brand: your project's voice and strategy, written down like the rest of its memory." |
@@ -130,7 +130,7 @@ Other limits that stay:
 
 - No promise about other AI agents.
 - Antigravity is always said the same way: "for Claude Code, also works with Antigravity" (FR: "pour Claude Code, fonctionne aussi avec Antigravity"). Never on par with Claude Code, never first.
-- The word "agency" does not appear in public texts: it suggests humans.
+- The word "agency" does not appear in texts that present BRACE to people who are not yet its users: README, descriptions, release notes, posts. Inside the client's own space, the team keeps its name and its role (since 2026-11-18).
 - A public text always says an AI agent is needed on your machine.
 
 ## Tagline and boilerplate

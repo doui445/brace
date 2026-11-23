@@ -6,6 +6,31 @@ abandoned. Effort S/M/L, value ⭐–⭐⭐⭐.
 
 ## Open
 
+- [ ] **Brand decks and documents: four rendering gaps seen at BRACE's
+  handover** (S, ⭐⭐) — surfaced 2026-11-23. The palette slide prints
+  ratios against pure white and black, not the brand's paper and ink; the
+  type slide shows its second font as body text (a mono pair puts the
+  paragraph in mono); the mood grid crops wide images into squares;
+  `render.py doc` shows no images, so guidelines and brand board carry
+  none. Worked around with a deck theme (`deck-theme.css`) and slide
+  splits. Also: on a light remark ("slightly too grey") the agency
+  retouched the whole page; say in `references/adjustments.md` that a
+  light intent gets a light retouch, the validated version staying the
+  reference.
+- [ ] **Mood slide: reference cards look like missing images** (S, ⭐⭐) —
+  surfaced 2026-11-18 at the creative meeting of the BRACE rebrand. In
+  code mode the `mood` slide's `@ref` cards keep a tall empty white area
+  under the text, so the client asked whether images failed to load. Fix
+  the layout in `render.py` / `deck.css` (cards sized to their content,
+  or a flat-colour / type-specimen block in the empty area). Also: the
+  creative deck went to `presentations/04-creation/` while the spec fixes
+  creation at `05-creation`; check how `render.py` picks the folder.
+  Same family, found at the refinement: `@image` uses `object-fit:
+  cover` in a square tile with the exploration placeholder printed over
+  it, so logo SVGs, the 16 px zoom and application PNGs come out cropped.
+  The refinement needs a whole-image block (contain, no placeholder) or a
+  two-SVG `logo` slide to show both directions side by side.
+
 - [ ] **Help the user get the most out of their AI** (L, ⭐⭐⭐) — surfaced
   2026-11-07 at meeting 3 of the BRACE rebrand. People know their AI can
   do a lot, but often not how to use it best, what is possible, or how it

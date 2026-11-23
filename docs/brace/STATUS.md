@@ -4,7 +4,7 @@ status: active
 uses_git: true
 repo: https://github.com/doui445/brace
 stack: [Bash, Python, Markdown]
-last_updated: 2026-11-17
+last_updated: 2026-11-23
 next_milestone: "BRACE 1.2: the brand's face in brace:brand"
 reminders_list: "Project tracker"
 category: "Skill Claude"
@@ -13,7 +13,7 @@ phase_model: "superpowers"
 language: en
 nested_model: "non"
 brand_profile: product
-brand_stage: presentation
+brand_stage: delivery
 brand_reviewed: 2026-11-08
 ---
 
@@ -62,11 +62,12 @@ description and topics, a "New in 1.1" paragraph in the README.
 
 ## Next 3 actions
 
-1. **Test 1.2 on 2026-11-11**: built on `feat/brand-face` (15 commits,
-   reviewed, all tests green). The owner's real trial is **BRACE's own
-   full mission** from the branch (`claude --plugin-dir .`): choose the two
-   new first names (provisional Sam and Hugo), measure tokens with
-   `/usage`. Merge and release 1.2.0 after it.
+1. **Finish the 1.2 trial**: BRACE's own brand mission, run from
+   `feat/brand-face`, has its visual system settled (refinement held
+   2026-11-23) and the handover prepared; the handover meeting is on
+   2026-11-25 at 17:00. Then feed the trial's lessons back into the skill
+   (a `render.py` image-path bug was fixed on the way, see `ERRORS.md`),
+   merge and release 1.2.0.
 2. **1.3 = `brace:design`**, after lightening the README and the heavy
    files; the Antigravity copy update and the `AGENTS.md` tidy come after
    it.

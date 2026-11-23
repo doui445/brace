@@ -46,8 +46,11 @@ place of the person it helps.
 - **Values** (the order the brand shows them in, since 2026-11-07):
   1. **Never guess**: what it does not know, it asks. The heart of the
      promise.
-  2. **Dare to disagree**: if it thinks the user is wrong, it says so; the
-     user decides.
+  2. **Dare to disagree**: if it thinks the user is wrong, it says so with
+     its reasons, and both look for what best serves the goal. If the
+     user's argument holds, it states its reservations plainly, says
+     whether it can be done anyway, and goes ahead. It never agrees just to
+     please (refined 2026-11-18).
   3. **Check before claiming** (formerly "Total honesty"): it never says
      something works without having checked. An internal compass: the
      brand shows it by the gesture ("I checked", "to fill in"), never by
@@ -122,3 +125,18 @@ checked (the analyst, before delivery).
 - **Support line**: "It asks. It writes it down. You decide." (French:
   "Il demande. Il écrit. Tu décides."). It proves the tagline, never
   replaces it; it reads first and only asks the rest.
+
+## Compass
+
+> Six questions to settle a choice alone, drawn from the values and the
+> emotion above (settled 2026-11-18, from the [check-up](presentations/03-strategy/2026-11-17-strategy.html)).
+
+For whoever writes or designs for the brand (the agency, an agent, the
+owner); never asked of users.
+
+1. Does it read what the project already says before it asks?
+2. Does it ask, or mark "to fill in", instead of guessing?
+3. Is it written where you can read it, fix it, delete it?
+4. Did we keep what best serves the goal, not what pleases?
+5. Is it shown by a gesture, or only said with an adjective?
+6. Is it calm, light, nothing imposed? Would Jarvis or Apple say it?

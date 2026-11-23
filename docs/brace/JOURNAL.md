@@ -1442,3 +1442,60 @@ Closed out the portfolio sub-pages work and cut the release:
   slide layout (the `li` grid turns the bold and the text into separate
   cells); worked around with plain sentences, to fix in `render.py` or
   `deck.css`. Check-up meeting set for 19:00.
+
+## 2026-11-18 — 1.2 trial: check-up held, creative routes prepared
+
+- Check-up meeting held (a day late): the ten corrections accepted and
+  applied (brand files, README, marketplace description). The owner
+  rewrote the compass's fourth question and refined "dare to disagree":
+  both sides give their reasons, BRACE states its reservations plainly
+  when the owner's argument holds, then goes ahead; never agrees to
+  please. Test of the look: checked personas. The two new teammates'
+  names, missing from the plan, are now chosen at the creative meeting.
+- Backstage for the creation: two routes (Rassemblé, Écrit), SVG logos
+  and favicons in code, words, names screened, a yellow-mark check, the
+  creative deck reviewed twice by the creative director. Creative
+  meeting set for 2026-11-19 17:00.
+- Found in the trial, to fix in 1.2:
+  - `art-director` and `designer` are not registered agent types when
+    the installed plugin is 1.1 (`--plugin-dir` not used): run as
+    general-purpose agents fed their definition file.
+  - `render.py` / `deck.css`: a `mood` grid with four `@ref` overflows
+    the footer; the `type` slide's specimen falls back to the deck's
+    serif when the route's fonts are not installed; each swatch prints
+    two unlabelled ratios (on white, on black), not the route's own
+    pairs; mockups and share cards stay in the agency's neutral look and
+    green accent, not the route's; `compare` styles the second column as
+    the recommended one, so a two-route comparison is not neutral (used
+    a `doc` table instead); a `reco` with long items breaks into narrow
+    columns.
+  - The `reco` slide's `next:` band read like a form ("Oui à tout, ou
+    dis-nous lesquelles tu écartes."): the owner disliked it. The band
+    says in one natural sentence what happens next, as the account
+    director would; never an instruction on how to answer. Add the rule
+    to `references/presentation.md` and reword the `next:` of
+    `assets/example.md` ("Pick a route, or mix two, or ask for
+    another." leads there).
+
+## 2026-11-23 — BRACE's own brand: refinement settled, handover prepared
+
+The owner came back early (10:08 instead of 17:00) to finish the
+refinement on the site mockup. Live retouches in three rounds: Bricolage
+everywhere at weight 600 with wider spacing, Atkinson for body text, white
+cards and more petrol; the owner found each round further from the first
+mockup and asked to go back to it. Settled: logo with the brace above the
+name (Bricolage 600, 0.03 em), Bricolage for headings and text, Commit
+Mono for commands, the 20 November palette with paper 2 replacing the
+grey surfaces and the first mockup's greys, a small petrol band, the
+hand-drawn B as tab icon. Lesson for the skill: on a "slightly too grey"
+remark the agency changed the dosage of the whole page; a light intent
+calls for a light retouch, and the first version stays the reference.
+
+Handover prepared for 2026-11-25 17:00: logo family and files, guidelines,
+brand board (FR and EN), transition plan, test plan (checked personas),
+announcement, handover deck in the brand's colours through a deck theme
+(`deck-theme.css`, no pure white). Lou's review took three rounds; on the
+way, a `render.py` bug hid deck images (`ERRORS.md`). Open for the skill:
+the palette slide prints ratios against pure white and black, the type
+slide shows its second font as body text, the mood grid crops wide
+images, and `render.py doc` shows no images.

@@ -86,3 +86,59 @@ Brand choices: what was tried, why it was set aside, what was kept.
   geste. Abandonnés : la promesse de mémoire (« it remembers », « real
   assistant »), « clean and professional », Claude Code et Antigravity au
   même rang, le design annoncé avant d'exister.
+
+## 2026-11-18 — Le bilan de la marque
+
+- **Les dix corrections de l'audit** acceptées
+  ([la présentation](presentations/03-strategy/2026-11-17-strategy.html)).
+- **La boussole**, six questions, ajoutée aux fondations. Écartée pour la
+  quatrième : « Est-ce que c'est toi qui tranches, même quand BRACE n'est
+  pas d'accord ? », qui faisait de BRACE quelqu'un qui s'efface. Retenue :
+  « Est-ce qu'on a gardé ce qui sert le mieux l'objectif, et pas ce qui
+  fait plaisir ? »
+- **Le désaccord** précisé dans les valeurs et la charte : les raisons de
+  chacun, ce qui sert le mieux l'objectif, les réserves dites franchement
+  si l'argument du client tient, puis on y va. Écarté : « une fois, puis tu
+  décides ».
+- **Le test du visage** : les personas vérifiés. Écartés : de vraies
+  personnes, pas maintenant.
+- **Les prénoms du directeur artistique et du designer** choisis par le
+  client à la présentation des pistes créatives.
+
+## 2026-11-18 — Les pistes créatives
+
+- **La piste Rassemblé** retenue : l'accolade couchée d'un seul trait, le
+  pétrole rare, Schibsted Grotesk et Commit Mono. « Tenir ensemble »
+  raconte deux gestes réels : BRACE tient le projet avec son utilisateur
+  et garde tous les fichiers de suivi au même endroit. Écartée : Écrit
+  (le nom souligné de jaune, Newsreader et Instrument Sans), que l'agence
+  recommandait.
+- **Le papier et le fond sombre d'Écrit** pris dans Rassemblé (#F4F1EA,
+  #171614).
+- **L'accolade pointe en bas** testée à l'affinage à côté de la pointe en
+  haut ; le client tranche en voyant les deux.
+- **Les prénoms** : Olivier, directeur artistique ; Isabelle, designer.
+  Écartés : Nicolas, Margot pour la direction artistique ; Hélène,
+  Daniel, Maxime pour le design (le client voulait une designer).
+
+## 2026-11-23 — L'affinage, le système visuel fixé
+
+- **Le logo** : l'accolade au-dessus du nom, pointe vers le haut, lettres
+  Bricolage Grotesque 600, espacement 0,03 em. Écartés : l'accolade sous
+  le nom pointe en bas, le A à l'accolade (lisible seulement en grand),
+  l'espacement 0,05 em.
+- **Les polices** : Bricolage Grotesque (titres 500, texte 400) et Commit
+  Mono pour les commandes. Écartées : Schibsted Grotesk (trop compacte en
+  texte), Atkinson Hyperlegible Next pour le texte (trop grasse, puis
+  fine à 300), Atkinson Hyperlegible Mono pour les commandes.
+- **Les couleurs** : la palette du 20 novembre ; le papier 2 #EAE5DA à la
+  place de #E7E3D9 pour les blocs de code et la liste des fichiers ; gris
+  #5F5B53 sur papier, #A5A199 sur sombre ; un bandeau pétrole pleine
+  largeur pour une phrase. Écartés : le blanc pur, des gris plus foncés,
+  plus de pétrole (trop loin de la première maquette).
+- **L'icône d'onglet** : le B dessiné à la main sur la grille de 16
+  pixels. Écartés : le B dérivé de Bricolage, l'accolade couchée, le A.
+- La maquette de référence : `docs/brace/agents/designer/files/maquette-4/`
+  (texte en Bricolage).
+- **Le test de l'identité visuelle** : les personas confrontés à la marque,
+  hypothèse, non testée auprès de vraies personnes.

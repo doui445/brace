@@ -271,3 +271,229 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 - Le bilan de la marque, ce soir à 19 h.
 
 - meeting: 2026-11-17 19:00
+
+## 2026-11-18 — Le bilan de la marque
+
+- held: 2026-11-18 16:54
+- phase: strategy
+
+### Décidé
+
+- Les dix corrections, acceptées. La boussole entre dans les fondations,
+  avec une quatrième question réécrite. Le désaccord est précisé dans les
+  valeurs et la charte.
+- Le test du visage : les personas vérifiés.
+- Les prénoms du directeur artistique et du designer : à choisir aux
+  pistes créatives.
+- [Le compte rendu](documents/03-strategy/2026-11-18-minutes-3.html).
+
+### En attente
+
+- Rien de ton côté.
+
+### Suite
+
+- Les pistes créatives.
+
+- meeting: 2026-11-19 17:00
+
+## 2026-11-18 — Le travail de l'équipe (avant les pistes créatives)
+
+### Décidé
+
+- Les corrections du bilan sont en place : la boussole et le désaccord
+  dans les fondations et la charte, le paysage, le pilote, l'indicateur
+  et les points de contact dans la stratégie, la page d'accueil et la
+  description de la place de marché.
+- Rien d'autre : l'équipe prépare, tu choisis au rendez-vous.
+
+### En attente
+
+- Deux pistes, Rassemblé et Écrit, dans
+  [la présentation](presentations/04-creation/2026-11-18-creation.html),
+  avec notre recommandation et les prénoms à choisir.
+- Les polices des pistes ne sont pas encore installées : les lettres des
+  logos sont provisoires.
+
+### Suite
+
+- Les pistes créatives, jeudi 19 novembre à 17 h.
+
+- meeting: 2026-11-19 17:00
+
+## 2026-11-18 — Les pistes créatives
+
+- held: 2026-11-18 18:51
+- phase: creation
+
+### Décidé
+
+- Rassemblé, avec le papier et le fond sombre d'Écrit. Écrit mis de côté.
+- L'accolade pointe en bas, testée à l'affinage à côté de la pointe en
+  haut.
+- Olivier, notre directeur artistique ; Isabelle, notre designer.
+- [Le compte rendu](documents/04-creation/2026-11-19-minutes-4.html).
+
+### En attente
+
+- Rien de ton côté.
+
+### Suite
+
+- L'affinage, vendredi 20 novembre à 17 h.
+
+- meeting: 2026-11-20 17:00
+
+## 2026-11-19 — Le travail de l'équipe (avant l'affinage)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu choisis au rendez-vous.
+
+### En attente
+
+- [La présentation de l'affinage](presentations/05-refinement/2026-11-19-refinement.html) :
+  l'accolade dans les deux sens, trois versions du logo, les couleurs et
+  la typographie, avec ses vraies polices.
+- [Le guide éditorial](documents/05-refinement/2026-11-19-editorial-guide.html).
+- La planche de contrôle (l'icône agrandie, les applications) est à part :
+  la présentation ne sait pas encore les montrer entières.
+
+### Suite
+
+- L'affinage, vendredi 20 novembre à 17 h.
+
+- meeting: 2026-11-20 17:00
+
+## 2026-11-19 — L'affinage
+
+- held: 2026-11-19 15:07
+- phase: refinement
+
+### Décidé
+
+- Rien de tranché : un tour de retouches avant de choisir.
+- [Le compte rendu](documents/05-refinement/2026-11-20-minutes-5.html).
+
+### En attente
+
+- L'accolade sous le nom (dans les deux sens), l'icône aux deux accolades,
+  d'autres idées de logo, la palette vérifiée, d'autres polices avec un
+  exemple chacune.
+- Le sens de l'accolade, la version du logo, l'encre plus chaude.
+
+### Suite
+
+- L'affinage, suite et choix, lundi 23 novembre à 17 h.
+
+- meeting: 2026-11-23 17:00
+
+## 2026-11-20 — Le travail de l'équipe (avant la suite de l'affinage)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu choisis au rendez-vous.
+
+### En attente
+
+- [La présentation](presentations/05-refinement/2026-11-23-refinement-2.html) :
+  l'accolade sous le nom, l'icône aux deux accolades, trois autres idées
+  de logo, la palette revérifiée, quatre polices.
+- Deux planches à part, montrées à côté : les polices dans leurs exemples,
+  et l'icône agrandie à 16 pixels.
+
+### Suite
+
+- L'affinage, suite et choix, lundi 23 novembre à 17 h.
+
+- meeting: 2026-11-23 17:00
+
+## 2026-11-20 — L'affinage, la suite et le choix (avancé)
+
+- held: 2026-11-20 18:40
+- phase: refinement
+
+### Décidé
+
+- La palette, avec ses trois réglages, et un seul noir (#171614).
+- [Le compte rendu](documents/05-refinement/2026-11-20-minutes-6.html).
+
+### En attente
+
+- Le logo : sous le nom pointe vers le bas, au-dessus pointe vers le haut,
+  ou le A à l'accolade.
+- La police : Schibsted ou Bricolage, un peu plus fine.
+- L'icône de l'onglet : l'accolade couchée ou une lettre avec l'accolade.
+- Une maquette de site à tes couleurs, pour choisir en situation.
+
+### Suite
+
+- L'affinage, le choix sur la maquette, lundi 23 novembre à 17 h.
+
+- meeting: 2026-11-23 17:00
+
+## 2026-11-20 — Le travail de l'équipe (la maquette)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu choisis au rendez-vous.
+
+### En attente
+
+- [La maquette de la page d'accueil](../agents/designer/files/maquette/maquette.html) :
+  deux polices, trois logos et trois icônes d'onglet, à tes couleurs.
+
+### Suite
+
+- L'affinage, le choix sur la maquette, lundi 23 novembre à 17 h.
+
+- meeting: 2026-11-23 17:00
+
+## 2026-11-23 — L'affinage, le choix sur la maquette (avancé)
+
+- held: 2026-11-23 10:08
+- phase: refinement
+
+### Décidé
+
+- Le logo : l'accolade au-dessus du nom, pointe vers le haut, lettres en
+  Bricolage dans leur graisse et leur espacement d'origine.
+- Les polices : Bricolage pour les titres et le texte, Commit Mono pour
+  les commandes.
+- Les couleurs : la palette de vendredi, le papier 2 à la place des fonds
+  gris, les gris de la première maquette, un petit bandeau pétrole.
+- L'icône de l'onglet : le B dessiné à la main.
+- [Le compte rendu](documents/05-refinement/2026-11-23-minutes-7.html).
+
+### En attente
+
+- Rien : l'équipe prépare la remise.
+
+### Suite
+
+- La remise de ta marque, mercredi 25 novembre à 17 h.
+
+- meeting: 2026-11-25 17:00
+
+## 2026-11-23 — Le travail de l'équipe (avant la remise)
+
+### Décidé
+
+- Rien : l'équipe prépare, tu décides à la remise.
+
+### En attente
+
+- [La présentation de la remise](presentations/06-delivery/2026-11-23-delivery.html).
+- [La charte graphique](documents/06-delivery/2026-11-23-guidelines.html),
+  [la planche de marque](documents/06-delivery/2026-11-23-brand-board.html),
+  [le plan de transition](documents/06-delivery/2026-11-23-transition.html),
+  [tes personas face à ta marque](documents/06-delivery/2026-11-23-test-plan.html),
+  [l'annonce](documents/06-delivery/2026-11-23-announcement.html).
+- À trancher : les trois mots de ta marque, les règles de détail de la
+  charte, le portfolio et l'espace client, la mise en place des fichiers.
+
+### Suite
+
+- La remise de ta marque, mercredi 25 novembre à 17 h.
+
+- meeting: 2026-11-25 17:00
