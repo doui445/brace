@@ -1,0 +1,143 @@
+/* BRACE brand.css, final (delivery, round 2, 2026-11-27, tracking round included). Variables, fonts and the text
+   pairs the checks read. The same file themes the client documents.
+
+   FONTS (SIL OFL 1.1, each folder holds OFL.txt, hosted with the brand, Latin subset, WOFF):
+   Bricolage Grotesque, weights 400 (text) and 500 (titles); optical size pinned to 24 and
+   width to 100. The LOGO's letters are no longer set in Bricolage: they are drawn (strokes
+   in the SVG files, in the hand of the tab icon's B), so they need no font.
+   Commit Mono 400, for commands and code only. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/bricolage-grotesque/BricolageGrotesque-400-600.woff") format("woff");
+  font-weight: 400 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Commit Mono";
+  src: url("fonts/commit-mono/CommitMono-400.woff") format("woff");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+:root {
+  /* neutrals, about 60 % */
+  --paper: #F4F1EA;          /* page, never pure white */
+  --paper-2: #EAE5DA;        /* code blocks, file list, the few surfaces */
+  --ink: #171614;            /* text, the name, one-colour version: the one black */
+  --grey: #5F5B53;           /* secondary text: the lightest text allowed on paper */
+  --rule: #DAD5CA;           /* separators: decoration, never text */
+  /* accent, 10 % at most, in practice under 5 % */
+  --accent: #1D5E66;         /* petrol: the brace, a link, a button, the band */
+  --accent-dark: #123E44;    /* hover, accent text on a tint */
+  --accent-mid: #3E8A92;     /* interface elements on paper, never text */
+  --accent-light: #6FB7BE;   /* the accent on dark */
+  --accent-veil: #DCEBEA;    /* a note, a selected state */
+  /* dark mode, terminal */
+  --dark: #171614;           /* same black as --ink */
+  --dark-surface: #211F1C;   /* cards and code blocks on dark */
+  --on-dark: #ECE9E2;
+  --grey-on-dark: #A5A199;
+  --github-dark: #0D1117;    /* GitHub's own dark page, where the logo must hold */
+
+  --sans: "Bricolage Grotesque", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: var(--sans);      /* one family: no serif in the brand */
+  --mono: "Commit Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --title-weight: 500;
+  --text-weight: 400;
+  --measure: 66ch;
+
+  /* TYPE SCALE, one fixed value per level (rule in the guidelines, "La typographie").
+     Bricolage is pinned at opsz 24, so the font no longer tightens by itself as the size grows:
+     the tracking does that work. Rule: tracking = -0.02 em per doubling of size, counted from
+     the body size (17 px = 0), clamped to -0.04 em (floor) and +0.02 em, rounded to 0.005 em.
+     Capitals: that value + 0.06 em (the letters were spaced for lowercase neighbours).
+     Monospace: 0 (any tracking breaks the fixed pitch). Light text on dark: + 0.01 em. */
+  --size-display: 56px;  --lead-display: 1.1;   --track-display: -0.035em;
+  --size-h1: 44px;       --lead-h1: 1.15;       --track-h1: -0.025em;
+  --size-h2: 32px;       --lead-h2: 1.2;        --track-h2: -0.02em;
+  --size-h3: 26px;       --lead-h3: 1.25;       --track-h3: -0.01em;
+  --size-h4: 20px;       --lead-h4: 1.3;        --track-h4: -0.005em;
+  --size-body: 17px;     --lead-body: 1.5;      --track-body: 0;
+  --size-small: 14px;    --lead-small: 1.5;     --track-small: 0.005em;
+  --size-caption: 13px;  --lead-caption: 1.4;   --track-caption: 0.01em;
+  --size-label: 12px;    --lead-label: 1.3;     --track-label: 0.07em;   /* capitals */
+  --size-code: .9em;     --lead-code: 1.5;      --track-code: 0;
+  --track-on-dark: 0.01em;   /* added to the body, small and caption values on a dark ground */
+  --text-size: var(--size-body);
+  --text-leading: var(--lead-body);
+  --title-leading: var(--lead-h1);
+
+  /* names the agency documents use (doc.css), mapped to the brand */
+  --ink-2: var(--grey);
+  --ink-3: var(--grey);
+  --line: var(--rule);
+  --accent-soft: var(--accent-veil);
+}
+body { font-weight: var(--text-weight); font-size: var(--size-body); letter-spacing: var(--track-body); font-variant-ligatures: common-ligatures; }
+.body p, .body li { line-height: var(--lead-body); }
+.body code, .body pre { font-family: var(--mono); font-size: var(--size-code); letter-spacing: var(--track-code); line-height: var(--lead-code); background: var(--paper-2); }
+.on-dark { letter-spacing: var(--track-on-dark); }
+
+/* levels (each selector takes its level's size, leading and tracking) */
+.doc-head h1 { font-weight: var(--title-weight); font-size: var(--size-h1); line-height: var(--lead-h1); letter-spacing: var(--track-h1); }
+.body h1 { font-weight: var(--title-weight); font-size: var(--size-h2); line-height: var(--lead-h2); letter-spacing: var(--track-h2); }
+.body h2 { font-weight: var(--title-weight); font-size: var(--size-h3); line-height: var(--lead-h3); letter-spacing: var(--track-h3); }
+.body h3 { font-weight: var(--title-weight); font-size: var(--size-h4); line-height: var(--lead-h4); letter-spacing: var(--track-h4); }
+.body blockquote, .space .mission { font-size: var(--size-h4); line-height: var(--lead-body); letter-spacing: var(--track-h4); }
+.body table, .tabs button { font-size: var(--size-small); letter-spacing: var(--track-small); }
+.doc-date, .space .by, .doc-sign { font-size: var(--size-caption); line-height: var(--lead-caption); letter-spacing: var(--track-caption); }
+.kicker, .body th, .space .block h3 { font-size: var(--size-label); line-height: var(--lead-label); letter-spacing: var(--track-label); font-weight: 500; }
+.body h1, .body h2, .body h3, .doc-head h1 { text-wrap: balance; }
+.body p, .body li, .body blockquote { text-wrap: pretty; }
+.body p, .body li, .body td { overflow-wrap: break-word; hyphens: manual; }
+
+/* states the page engine leaves out */
+.body a:hover { color: var(--accent-dark); }
+.body a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.tabs button:hover { color: var(--ink); border-bottom-color: var(--rule); }
+.tabs button[aria-selected="true"]:hover { border-bottom-color: var(--accent); }
+
+/* narrow screens: the page engine keeps a 80 px side padding down to 320 px wide */
+@media (max-width: 720px) {
+  body { background: var(--paper); }
+  .page { margin: 0; padding: 32px 20px 48px; box-shadow: none; }
+  .doc-head { padding-bottom: 20px; margin-bottom: 24px; }
+  .doc-head h1 { font-size: var(--size-h2); line-height: var(--lead-h2); letter-spacing: var(--track-h2); }  /* one level down, with its own tracking */
+  .tabbed .tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-top: 0; }
+  .tabs button { white-space: nowrap; padding: 12px 14px; }
+  .body table { display: block; overflow-x: auto; }
+  .body blockquote { padding-left: 14px; }
+  .doc-sign { flex-direction: column; gap: 6px; }
+}
+
+/* RULE: no text lighter than --grey (#5F5B53) on paper. On dark, no text
+   darker than --grey-on-dark. --accent-mid is for lines and fills, never text. */
+
+/* pair: --ink on --paper */
+/* pair: --ink on --paper-2 */
+/* pair: --grey on --paper */
+/* pair: --grey on --paper-2 */
+/* pair: --grey on --accent-veil */
+/* pair: --accent on --paper */
+/* pair: --accent on --paper-2 */
+/* pair: --paper on --accent */
+/* pair: --accent-dark on --paper */
+/* pair: --accent-dark on --accent-veil */
+/* pair: --accent on --accent-veil */
+/* pair: --accent-mid on --paper large */
+/* pair: --accent-mid on --paper-2 large */
+/* pair: --on-dark on --dark */
+/* pair: --grey-on-dark on --dark */
+/* pair: --accent-light on --dark */
+/* pair: --on-dark on --dark-surface */
+/* pair: --grey-on-dark on --dark-surface */
+/* pair: --accent-light on --dark-surface */
+/* pair: --accent-light on --github-dark */
+/* pair: --grey-on-dark on --github-dark */
+/* pair: --on-dark on --github-dark */
+/* Contrasts (ratio): ink #171614 on paper 16.03, on paper 2 (#EAE5DA) 14.40;
+   grey #5F5B53 on paper 5.99, paper 2 5.38, veil 5.51; accent on paper 6.54,
+   paper 2 5.88, veil 6.02; paper on accent 6.54; accent-dark on veil 9.52;
+   accent-mid on paper 3.54, on paper 2 3.18 (interface elements, 3:1 only);
+   on-dark on dark 14.91, grey-on-dark 7.02, accent-light 7.92; on dark-surface:
+   on-dark 13.56, grey-on-dark 6.39, accent-light 7.20.
+   Refused (not declared as pairs): --accent on --dark-surface 2.23, --accent
+   on --dark 2.45, --accent-light on --paper 2.03, mid grey #8A857B on paper
+   3.25, --rule as text 1.30. */

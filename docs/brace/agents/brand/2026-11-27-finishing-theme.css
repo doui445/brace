@@ -1,0 +1,10 @@
+/* Deck theme for the finishing before/after deck: the brand, plus whole images. */
+@import url("../designer/files/delivery-2/brand.css");
+.mood .grid { grid-template-columns: 1fr 1fr; margin-top: 3vh; }
+.explore { min-height: 62vh; background: var(--paper-2, #EAE5DA); border-style: solid; }
+.explore img { object-fit: contain; padding: 2vh 1.5vw 5vh; box-sizing: border-box; }
+.explore .ph { display: none; }
+.slide.mood:nth-of-type(4) .explore { background: var(--paper, #F4F1EA); }
+.slide.mood:nth-of-type(5) .grid { grid-template-columns: 1fr; gap: 1.6vh; margin-top: 2vh; }
+.slide.mood:nth-of-type(5) .explore { min-height: 33vh; }
+.slide.mood:nth-of-type(5) .explore img { padding: 0 0 4.2vh; }

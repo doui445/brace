@@ -142,3 +142,27 @@ Brand choices: what was tried, why it was set aside, what was kept.
   (texte en Bricolage).
 - **Le test de l'identité visuelle** : les personas confrontés à la marque,
   hypothèse, non testée auprès de vraies personnes.
+
+## 2026-11-27 — La remise, le logo redessiné
+
+- **Le logo** : les lettres dessinées dans le trait du B de l'icône (plus
+  de Bricolage dans le logo), l'accolade au-dessus pointe vers le haut sur
+  le sommet du A, le A en pétrole, espacement du dessin −0,02 em, en
+  formes pleines. Écartés : le B en pétrole sous l'accolade (couleur loin
+  de la pointe, gardé dans `brand/sources/variant-b-petrol/`), seul le B
+  dessiné à côté de lettres Bricolage (deux écritures dans un mot), le B
+  Bricolage en pétrole.
+- **Le nom seul** : sans accolade, le B en pétrole ; entre 64 et 96 px, ou
+  là où le logo ne tient pas, jamais à côté de lui.
+- **L'icône** : le B recentré (étendue 4 à 12 sur la grille de 16).
+- **L'espacement des lettres** : −0,02 em par doublement de la taille
+  depuis 17 px, plancher −0,04, plafond +0,02 ; capitales + 0,06 ; code 0 ;
+  clair sur sombre + 0,01.
+- **Les trois mots** : calme, fiable, franc.
+- **Les règles de détail** de la charte validées (espace de protection,
+  tailles minimales, teintes dérivées).
+- **L'espace client** prend la marque ; le portfolio reste neutre.
+- **Le test** : hypothèse, non testée auprès de vraies personnes.
+- **L'héritage** : gardés, le nom BRACE, la phrase et la plateforme ;
+  laissé, le nom en texte seul sans signe. L'ancienne marque est dans
+  `archive/`.

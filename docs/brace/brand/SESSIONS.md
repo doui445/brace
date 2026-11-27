@@ -497,3 +497,27 @@ Une entrée par séance avec l'agence : ce qui est décidé, ce qui attend, ce q
 - La remise de ta marque, mercredi 25 novembre à 17 h.
 
 - meeting: 2026-11-25 17:00
+
+## 2026-11-27 — La remise de ta marque
+
+- held: 2026-11-27 11:22
+- phase: delivery
+
+### Décidé
+
+- Le logo redessiné de la même main que l'icône, le A en pétrole sous la
+  pointe ; le nom seul avec le B en pétrole ; l'icône recentrée.
+- L'espacement des lettres niveau par niveau, et la finition de la page
+  d'accueil et de l'espace client.
+- Calme, fiable, franc ; les règles de détail de la charte ; la marque sur
+  l'espace client, le portfolio neutre ; les fichiers mis en place.
+- [Le compte rendu](documents/06-delivery/2026-11-27-minutes-8.html).
+
+### En attente
+
+- À la sortie de la prochaine version : la page d'accueil avec le logo,
+  l'avatar et l'image de partage sur GitHub, l'annonce.
+
+### Suite
+
+- La revue de ta marque, dans six mois.

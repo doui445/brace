@@ -88,3 +88,25 @@ Aucune pour l'instant.
 
 - Dossier `files/maquette/`, générateur `files/make_maquette.py <retouches> <maquette>` (réutilise make_retouches.py). Noir unique #171614 (plus de #1A1916). Titres et logo à 500 (un cran sous 600), texte 400; Bricolage fixé à opsz 24 comme le logo.
 - Six pages (police A/B x logo a/b/c) + page interactive `maquette.html#A-a`; PNG pleine page dans `maquette/png/`; planche d'icônes `favicon-board`.
+
+## Retours du client, remise (2026-11-27)
+
+- Le logo ne doit plus être tout en encre : le **B en pétrole**.
+- Le B du logo doit être **celui de l'avatar** (le B dessiné à la main, dont la taille reprend la pointe de l'accolade), que le client préfère au B de Bricolage.
+- Choix du client : **tout le nom dessiné** dans le même trait que ce B (R, A, C, E redessinées de la même main), pour que logo et icône forment une seule famille. L'accolade au-dessus, pointe vers le haut, reste.
+- L'avatar paraît **décentré** dans le cercle et le carré arrondi : vérifié, le B penche vers la droite (étendue 4 à 12,4 sur la grille de 16). Le recentrer optiquement et le vérifier dans les deux cadres.
+
+## Retours du client, remise, suite (2026-11-27)
+
+- Le A, lettre du milieu, ne paraît plus centré sous la pointe de l'accolade : aligner la pointe sur le sommet du A, à l'œil.
+- Montrer une variante avec le **A en pétrole** à la place du B, à côté de la version B en pétrole, au même soin. Ne pas trancher à sa place.
+- Notes de Lou à reprendre au passage : l'écart B-R un peu plus large que les autres, le petit cran en haut à gauche du R en grand.
+
+Choix du client (2026-11-27) : le A en pétrole ; l'icône reste le B pétrole.
+Choix du client (2026-11-27, ajout) : une version sans accolade (nom seul, `logos/wordmark/`), avec le B en pétrole et le A en encre ; règle : avec l'accolade le A est pétrole, sans elle le B est pétrole ; le nom seul seulement là où le logo complet ne tient pas, jamais à côté du logo complet.
+Logo en contours remplis (plus de traits) depuis `sources/make_delivery_2.py` (shapely requis) ; ancien logo B pétrole gardé dans `logos/variant-b-petrol/`.
+
+## Demande du client avant la remise (2026-11-27)
+
+- Espacement des lettres selon la taille, fixé niveau par niveau dans la charte et `brand.css` : resserré sur les grands titres et le logo en toutes lettres, proche de zéro dans le texte courant, un peu ouvert sur les petits textes et les capitales. Chaque valeur vient d'une règle qu'on peut expliquer.
+- Puis relecture de finition de la page d'accueil et de l'espace client avec l'outil impeccable : finition seulement, la direction ne bouge pas. Le client veut voir le résultat avant la livraison.

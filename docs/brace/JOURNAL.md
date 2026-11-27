@@ -1499,3 +1499,28 @@ way, a `render.py` bug hid deck images (`ERRORS.md`). Open for the skill:
 the palette slide prints ratios against pure white and black, the type
 slide shows its second font as body text, the mood grid crops wide
 images, and `render.py doc` shows no images.
+
+## 2026-11-27 — Brand handover held, mission closed
+
+Handover meeting held two days after the appointment. In-meeting
+adjustments on the logo: the client wanted colour in the name and the
+avatar's hand-drawn B in the logo, so the whole name was redrawn in that
+B's stroke (no more Bricolage in the logo), outlined for print; the brace
+tip realigned on the A's apex; the A in petrol under the tip (the petrol B
+variant set aside), plus a brace-less name-only version with the B in
+petrol, used only between 64 and 96 px or where the full logo does not fit.
+The tab icon was re-centred. Before delivery the client asked for a
+tracking scale (one rule, one value per level, written in the guidelines
+and `brand.css`, the drawn logo tightened to -0.02 em) and a finishing-only
+review of the README and the client space with the impeccable skill.
+Files moved into `brand/` (sources out of git), `VISUAL.md` written,
+`brand_stage: done`, review in six months.
+
+Plugin-side issues found on the way, not fixed during the mission (to feed
+into 1.2): `doc.css` keeps desktop padding on mobile, has no dark mode,
+no scroll hint or hover on the space's tabs, and puts an all-caps eyebrow
+on every block; `deck.css` mood tiles crop with `object-fit: cover` and
+print the "exploration image" placeholder behind transparent images (a
+per-project deck theme worked around both). Lesson: four creative-director
+rounds in one live meeting is heavy; image-comparison slides need a
+first-class before/after layout.
